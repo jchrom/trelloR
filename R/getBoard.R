@@ -12,6 +12,7 @@
 #'
 #' board = getBoard("board.json")
 #'
+#'
 
 getBoard = function(path.json, archived = F, comments = F) {
 
