@@ -1,17 +1,20 @@
 #' Export Trello board
 #'
-#' This function takes JSON object which you can obtained by Trello's native export function. It converts it then into a R data frame.
+#' This function takes JSON object obtained by Trello's native export function and converts it into an R data frame.
 #' @param path.json path to your JSON file
 #' @param archived whether to export archived cards as well. Defaults to \code{FALSE}
 #' @param comments whether to export comments as well. Defaults to \code{FALSE}
 #' @export
 #' @example
 #'
-#' #download public Trello Board
-#' # (code here)
+#' # Download a Trello Board by pasting ".json" in the browser and save it as
+#' # myboard.json in your working directory.
 #'
-#' board = getBoard("board.json")
+#' board = getBoard("myboard.json")
 #'
+#' # To get archived cards and comments, do:
+#'
+#' board = getBoard("myboard.json", archvied = T, comments = T)
 #'
 
 getBoard = function(path.json, archived = F, comments = F) {
