@@ -1,8 +1,8 @@
 Package: extr
-Title: What the Package Does (one line, title case)
+Title: Converts an exported Trello board to an R data frame
 Version: 0.0.0.9000
-Authors@R: person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph)
+Authors@R: person("Jakub", "Chromec", , "chromec.jakub@gmail.com", role = c("aut", "cre"))
+Description: Building on the {RJSONIO} package, you can easily convert a Trello board saved as JSON object into a data frame. Supports checklists, comments, archived items and more.
 Depends: R (>= 3.1.2)
-License: What license is it under?
+License: MIT
 LazyData: true
