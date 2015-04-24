@@ -4,8 +4,8 @@
 #' @param path.json path to your JSON file
 #' @param archived whether to export archived cards as well. Defaults to \code{FALSE}
 #' @param comments whether to export comments as well. Defaults to \code{FALSE}
-#'
-#' @example
+#' @export
+#' @examples
 #'
 #' # Download a Trello Board by pasting ".json" in the browser and save it as
 #' # myboard.json in your working directory.
@@ -15,8 +15,6 @@
 #' # To get archived cards and comments, do:
 #'
 #' board = getBoard("myboard.json", archvied = T, comments = T)
-#'
-#' @export
 
 getBoard = function(path.json, archived = F, comments = F) {
 
