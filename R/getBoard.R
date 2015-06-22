@@ -23,13 +23,15 @@ getBoard = function(path.json, archived = F, comments = F) {
     data.list = fromJSON(data.json)
 
     # EXPORT
-    cards   = getCards(data.list)
+    cards   = getCards(data.list, archived)
     lists   = getLists(data.list)
     chlists = getChlists(data.list)
     members = getMembers(data.list)
 
     # ADD
+    cards              = cards[order(cards$name), ]    # order cards or they won't match with list.name vector from addLists
     cards$list.id      = addLists(cards, lists)
+    cards              = cards[order(cards$list.id), ] # order them back to list name
     cards$member.id    = addMembers(cards, members)
     cards$checklist.id = addChlists(cards, chlists)
 
@@ -178,6 +180,7 @@ getLists = function(data.list) {
 addLists = function(cards, lists) {
 
     x = merge(cards, lists, by = "list.id", all.x = T)
+    x = x[order(x$name), ]
     x = x$list.name
 
     return(x)
