@@ -91,8 +91,8 @@ getCards = function(data.list, archived = F) {
    names(cards) = c("list.id", "card#", "name", "archived", "url", "description", "checklist.id", "attachments", "duedate", "last.activity", "member.id", "labels", "card.id")
 
    # Convert columns with date strings to proper datetime format
-   cards$duedate = strptime(cards$duedate, "%FT%T")
-   cards$last.activity = strptime(cards$last.activity, "%FT%T")
+   cards$duedate = as.POSIXct(strptime(cards$duedate, "%FT%T"))
+   cards$last.activity = as.POSIXct(strptime(cards$last.activity, "%FT%T"))
 
    return(cards)
 }
