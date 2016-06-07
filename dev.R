@@ -32,20 +32,11 @@ board = get_board(url, token)
 # Get cards
 cards = board$cards
 
-# List member's boards
-api   = "https://api.trello.com/1/"
-level = "organizations"
-id    = "elffmu"
-what  = "boards"
-
-call  = paste0(api, level, "/", id, "/", what, "?key=", key)
-
-req  = GET(call_req, config(token = token))
-json = content(req, as = "text")
-data = fromJSON(json)
+# List member's boards/organizations/cards
+id   = "kancelar_elearningu"
+what = "cards"
+data = get_members(id, what, token)
 View(data)
-
-
 
 
 
