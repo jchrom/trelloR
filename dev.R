@@ -17,6 +17,9 @@
 #    - count: cards per list, labels
 #    - flow: how many cards in what list at every time (actions...?)
 
+# ...
+#    - determine when card changed lists: http://stackoverflow.com/a/9812454/2416535
+
 library(httr)
 library(jsonlite)
 # library(dplyr)
@@ -39,7 +42,9 @@ what = "cards"
 data = get_members(id, what, token)
 View(data)
 
-
+api  = "https://api.trello.com/1/actions/"
+id   = ""
+call = paste0(api, "/", id, "/", what, "?key=", key)
 
 
 
