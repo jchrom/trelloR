@@ -15,7 +15,6 @@ get_board(url, token = NULL)
 Read in data either via API using oauth1 token or from a local file (which you can get by downloading data from Trello and saving as a text file)
 }
 \examples{
-
 # Source credentials from non-shared location (important!)
 source("mykeys.R")
 token = get_token(key, secret)
