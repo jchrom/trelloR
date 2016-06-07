@@ -23,6 +23,7 @@ library(jsonlite)
 
 # Authorization: get token
 source("keys/keys_elf.R")
+source("keys/keys.R")
 token = get_token(key, secret)
 
 # Get data from a board
