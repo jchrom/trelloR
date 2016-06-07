@@ -7,7 +7,6 @@
 #' @importFrom jsonlite fromJSON
 #' @export
 #' @examples
-#'
 #' # Source credentials from non-shared location (important!)
 #' source("mykeys.R")
 #' token = get_token(key, secret)
