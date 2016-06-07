@@ -10,17 +10,13 @@ library(httr)
 library(jsonlite)
 # library(dplyr)
 
+# Authorization: get token
 source("keys/keys.R")
 token = get_token(key, secret)
 
-url  = "https://trello.com/b/4rm75Nol/evidence-kurzu.json"
-req  = GET(url, config(token = token))
-json = content(req, as = "text")
+# Get data from a board
+url   = "https://trello.com/b/4rm75Nol/evidence-kurzu.json"
+board = get_board(url, token)
 
-
-b = fromJSON("sp_evidence_2016-02-13.json")
-
-
-
-board = fromJSON(json)
+# Get cards
 cards = board$cards
