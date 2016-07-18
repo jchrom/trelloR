@@ -15,6 +15,6 @@ get_board_labels(boardid, token)
 Returns a flat \code{data.frame} with all labels from a given Trello board.
 }
 \examples{
-lists = get_board_members(url, token)
+members = get_board_members(url, token)
 }
 
