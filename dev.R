@@ -1,18 +1,26 @@
 # Plan:
 
-# 1. Function to connect to trello api using keys (and perhaps storing oauth token in the work dir)
+# [ok] Function to connect to trello api using keys
 
-# 2. Function to download content and parse data
+# Organization functions
+# [  ] Get list of:
+#    - all boards
+#    - all teams
+#    - all members
+
+# Board functions
+# [  ] Function to download content and parse data
 #    - included by default: labels
-#    - optional chocies (logical): archived, members, comments
+#    - optional choices (logical): archived, members
+#    - additional API CALL: comments
 
-# 3. More functions
+# [  ] More functions
 #    - organization-centered overview: teams, boards, members
 #    - member-centered overview: teams, boards, cards
 #    - comments per card
 #    - board-centered overview: members, cards
 
-# 4. stats
+# [  ] stats
 #    - cards per member, members per card, list with most/least cards
 #    - count: cards per list, labels
 #    - flow: how many cards in what list at every time (actions...?)
@@ -22,7 +30,9 @@
 
 library(httr)
 library(jsonlite)
-# library(dplyr)
+library(extr)
+library(dplyr)
+library(purrr)
 
 # Authorization: get token
 source("keys/keys_elf.R")
@@ -35,6 +45,22 @@ board = get_board(url, token)
 
 # Get cards
 cards = board$cards
+
+# Munge
+paste_labels = function(x, column) {
+    x = as.data.frame.list(x)
+    if (nrow(x) > 0) {
+        x = paste(x[, column], collapse = ", ")
+    } else {x = ""}
+}
+
+cards2 = cards %>%
+    group_by(
+        id) %>%
+    mutate(
+        lab_colors = paste_labels(labels, "color"),
+        lab_names  = paste_labels(labels, "name"))
+
 
 # List member's boards/organizations/cards
 id   = "kancelar_elearningu"
