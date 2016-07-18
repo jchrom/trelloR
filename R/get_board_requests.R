@@ -39,7 +39,7 @@ get_board_cards = function(boardid, token) {
 #' @param token previously generated token (see ?get_token for help)
 #' @export
 #' @examples
-#' lists = get_board_lists(url, token)
+#' cards = get_board_lists(url, token)
 
 get_board_lists = function(boardid, token) {
 
@@ -88,7 +88,7 @@ get_board_members = function(boardid, token) {
 #' @param token previously generated token (see ?get_token for help)
 #' @export
 #' @examples
-#' lists = get_board_members(url, token)
+#' members = get_board_members(url, token)
 
 get_board_labels = function(boardid, token) {
 
