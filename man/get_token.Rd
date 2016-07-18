@@ -4,15 +4,17 @@
 \alias{get_token}
 \title{Authorize API access to Trello}
 \usage{
-get_token(key, secret)
+get_token(key, secret, app = "trello")
 }
 \arguments{
 \item{key}{key}
 
 \item{secret}{secret}
+
+\item{app}{optional app name, defaults to "trello"}
 }
 \description{
-To get data directly from Trello via API, get your 'key' and 'secret' here: https://trello.com/app-key.
+Token is needed in order to get data directly from Trello via API. To create it, get your 'key' and 'secret' here: https://trello.com/app-key.
 }
 \examples{
 # Source credentials from non-shared location (important!)
