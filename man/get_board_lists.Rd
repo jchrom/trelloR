@@ -15,6 +15,6 @@ get_board_lists(boardid, token)
 Returns a flat \code{data.frame} with all lists from a given Trello board.
 }
 \examples{
-lists = get_board_lists(url, token)
+cards = get_board_lists(url, token)
 }
 
