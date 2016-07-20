@@ -107,3 +107,23 @@ get_board_labels = function(boardid, token) {
 
     return(labels)
 }
+
+#' Get All Trello Board Comments
+#'
+#' Returns a flat \code{data.frame} with all comments from a given Trello board.
+#' @param boardid id of the desired board
+#' @param token previously generated token (see ?get_token for help)
+#' @export
+#' @examples
+#' members = get_board_members(url, token)
+
+get_board_comments = function(boardid, token) {
+
+    # Get data
+    comments = get_request("board", boardid, "actions?filter=commentCard", token)
+
+    # Tidy up a bit
+
+
+    return(comments)
+}
