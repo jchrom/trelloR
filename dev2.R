@@ -1,6 +1,6 @@
 # To do ----
-# 1. Pagination
-# 2. 'Raw' option for all functions (=response as flat data.frame without tidying)
+# 1. [DONE] Pagination
+# 2. []     'Raw' option for all functions (=response as flat data.frame without tidying)
 
 # Libs ----
 library(httr)
