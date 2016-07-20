@@ -4,7 +4,7 @@
 \alias{get_request}
 \title{Request Data From Trello}
 \usage{
-get_request(endpoint, id, query, token)
+get_request(endpoint, id, query, token, paginate = FALSE)
 }
 \arguments{
 \item{endpoint}{character ("organization", "board", "card"...)}
@@ -14,6 +14,8 @@ get_request(endpoint, id, query, token)
 \item{query}{url query, such as '?lists=open'}
 
 \item{token}{previously generated token (see ?get_token for help)}
+
+\item{paginate}{logical whether pagination should be used (if not, results will be limited to 50 rows)}
 }
 \description{
 This is a generic function to perform query via trello API. Other function such as 'get_board_cards' or 'get_board_lists' are convenience wrappers for this function.
