@@ -48,7 +48,7 @@ get_request = function(endpoint, id, query, token, paginate = FALSE) {
         rsp = get_flat(url, token)
 
         # If the result reached 1000 rows, suggest using pagination
-        if (nrow(flat) >= 1000) {
+        if (nrow(rsp) >= 1000) {
             message("Reached 1000 results.")
             message("Use 'paginate = TRUE' to get more but BEWARE: the results may be large!")
         }
