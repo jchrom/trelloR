@@ -2,6 +2,7 @@
 
 export(get_board)
 export(get_board_cards)
+export(get_board_comments)
 export(get_board_labels)
 export(get_board_lists)
 export(get_board_members)
