@@ -13,17 +13,20 @@ get_board_cards = function(boardid, token) {
     cards = get_request("board", boardid, "cards", token)
 
     # Tidy up a bit
+    timestamp = strtoi(strtrim(cards$id, 8), 16L)
+    cards$card_created = as.POSIXct(timestamp, origin = "1970-01-01")
     cards = cards %>%
         select(
             card_name = name,
             card_id = id,
             card_url = url,
-            labels,
+            card_labels = labels,
             card_desc = desc,
             card_arch = closed,
             card_url_short = shortUrl,
-            last_act = dateLastActivity,
-            date_due = due,
+            card_last_act = dateLastActivity,
+            card_due = due,
+            card_created,
             board_id = idBoard,
             list_id = idList,
             checklist_id = idChecklists,
