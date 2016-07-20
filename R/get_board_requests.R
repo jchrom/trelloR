@@ -123,6 +123,7 @@ get_board_comments = function(boardid, token) {
     comments = get_request("board", boardid, "actions?filter=commentCard", token)
 
     # Tidy up a bit
+    # comments =
 
 
     return(comments)
