@@ -4,7 +4,7 @@
 \alias{get_board_comments}
 \title{Get All Trello Board Comments}
 \usage{
-get_board_comments(boardid, token, paginate = FALSE)
+get_board_comments(boardid, token, paginate = FALSE, simplify = TRUE)
 }
 \arguments{
 \item{boardid}{id of the desired board}
@@ -12,6 +12,8 @@ get_board_comments(boardid, token, paginate = FALSE)
 \item{token}{previously generated token (see ?get_token for help)}
 
 \item{paginate}{logical whether to use pagination (for requests returning more than 1000 rows). Defaults to 'False'}
+
+\item{simplify}{logical drop and rename some columns to make the result simpler}
 }
 \description{
 Returns a flat \code{data.frame} with all comments from a given Trello board.

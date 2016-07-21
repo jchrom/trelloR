@@ -4,12 +4,19 @@
 \alias{get_board_cards}
 \title{Get All Trello Board Cards}
 \usage{
-get_board_cards(boardid, token)
+get_board_cards(boardid, token, filter = "all", paginate = FALSE,
+  simplify = TRUE)
 }
 \arguments{
 \item{boardid}{id of the desired board}
 
 \item{token}{previously generated token (see ?get_token for help)}
+
+\item{filter}{character whether to return only archived ("closed"), "open" or "all" (which is the default)}
+
+\item{paginate}{logical whether to use pagination (for requests returning more than 1000 rows). Defaults to 'FALSE'}
+
+\item{simplify}{logical drop and rename some columns to make the result simpler or leave it as it is. Defaults to 'TRUE'}
 }
 \description{
 Returns a flat \code{data.frame} with all cards from a given Trello board.
