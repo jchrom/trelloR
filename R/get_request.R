@@ -18,6 +18,7 @@ get_request = function(endpoint, id, query, token, paginate = FALSE) {
         url = .build_url(endpoint, id, query)
         rsp = get_flat(url, token)
         cat("Added results 1-", nrow(rsp), "\n", sep = "")
+        if (nrow(rsp) < 1000) return(rsp)
 
         # Paginate over the rest and append
         repeat {
@@ -41,6 +42,7 @@ get_request = function(endpoint, id, query, token, paginate = FALSE) {
             # Stop the loop when the batch is less than 1000 rows (= the end)
             if (nrow(batch) < 1000) break
         }
+        return(rsp)
     } else {
 
         # Build url and get flattened data
@@ -52,8 +54,8 @@ get_request = function(endpoint, id, query, token, paginate = FALSE) {
             message("Reached 1000 results.")
             message("Use 'paginate = TRUE' to get more but BEWARE: the results may be large!")
         }
+        return(rsp)
     }
-    return(rsp)
 }
 
 #' Get Data As A Flattened Data.frame
