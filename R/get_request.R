@@ -10,52 +10,59 @@
 #' @examples
 #' all_cards = get_request("boards", 123456789, "cards", token)
 
-get_request = function(endpoint, id, query, token, paginate = FALSE) {
+get_request = function(endpoint,
+                       id,
+                       query,
+                       token,
+                       paginate = FALSE) {
 
     if (paginate) {
 
         # Get first batch
-        url = .build_url(endpoint, id, query)
-        rsp = get_flat(url, token)
-        cat("Added results 1-", nrow(rsp), "\n", sep = "")
-        if (nrow(rsp) < 1000) return(rsp)
+        url = buil_url(endpoint, id, query)
+        flat = get_flat(url, token)
+        cat("Received results 1-", nrow(flat), "\n", sep = "")
 
-        # Paginate over the rest and append
-        repeat {
+        if (nrow(flat) >= 1000) {
 
-            # Find the lowest date and use the correcponding id
-            before = rsp$id[rsp$date == min(rsp$date)]
+            # Paginate over the rest and append
+            repeat {
 
-            # Get current batch
-            url   = .build_url(endpoint, id, query, limit = 1000, before)
-            batch = get_flat(url, token)
+                # Find the lowest date and use the correcponding id
+                before = flat$id[flat$date == min(flat$date)]
 
-            # Bind this batch to the previous results
-            nrow_rsp = nrow(rsp)
-            nrow_batch = nrow(batch)
-            rsp = bind_rows(rsp, batch)
+                # Get current batch
+                url   = buil_url(endpoint, id, query, limit = 1000, before)
+                batch = get_flat(url, token)
 
-            # Show some info
-            cat("Added results ", nrow_rsp + 1, "-", nrow_rsp + nrow_batch,
-                "\n", sep = "")
+                # Bind this batch to the previous results
+                nrow_flat = nrow(flat)
+                nrow_batch = nrow(batch)
+                flat = bind_rows(flat, batch)
 
-            # Stop the loop when the batch is less than 1000 rows (= the end)
-            if (nrow(batch) < 1000) break
+                # Show some info
+                cat("Received results ", nrow_flat + 1, "-", nrow_flat + nrow_batch,
+                    "\n", sep = "")
+
+                # Stop the loop when the batch is less than 1000 rows (= the end)
+                if (nrow(batch) < 1000) break
+            }
         }
-        return(rsp)
     } else {
 
         # Build url and get flattened data
-        url = .build_url(endpoint, id, query)
-        rsp = get_flat(url, token)
+        url = buil_url(endpoint, id, query)
+        flat = get_flat(url, token)
 
         # If the result reached 1000 rows, suggest using pagination
-        if (nrow(rsp) >= 1000) {
+        if (nrow(flat) >= 1000) {
             message("Reached 1000 results.")
             message("Use 'paginate = TRUE' to get more but BEWARE: the results may be large!")
+        } else {
+            message("Received ", nrow(flat), " results")
         }
-        return(rsp)
     }
+    return(flat)
 }
 
 #' Get Data As A Flattened Data.frame
@@ -72,16 +79,24 @@ get_flat = function(url, token) {
 
     cat("Using query:\n", url, "\n", sep = "")
     req  = GET(url, config(token = token))
-    json = content(req, as = "text")
-    flat = fromJSON(json, flatten = T)
-    return(flat)
+
+    # If no valid json is returned upon request, throw an error and use
+    # the server response as the error message; otherwise just flatten
+    # the data with fromJSON and return that
+    tryCatch(
+        expr = {
+            json = content(req, as = "text")
+            flat = fromJSON(json, flatten = T)
+            return(flat)},
+        error = function(e) {
+            stop(content(req))})
 }
 
-.build_url = function(endpoint, id, query, limit = 1000, before = NULL) {
+buil_url = function(endpoint, id, query, limit = 1000, before = NULL) {
 
     # Add limit=1000 if there isn't one already
     # This is to avoid the default behavior whereby only the last 50 actions are returned when there are more
-    query = .set_limit(query, limit)
+    query = set_limit(query, limit)
 
     # If pagination is applied, add the 'before' argument
     if (!is.null(before)) query = paste0(query, "&before=", before)
@@ -95,7 +110,7 @@ get_flat = function(url, token) {
     return(url)
 }
 
-.set_limit = function(query, limit) {
+set_limit = function(query, limit) {
 
     if (!grepl("limit", query) & (!grepl("\\?", query))) {
         query = paste0(query, "?limit=", limit)
