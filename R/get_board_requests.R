@@ -113,14 +113,16 @@ get_board_labels = function(boardid, token) {
 #' Returns a flat \code{data.frame} with all comments from a given Trello board.
 #' @param boardid id of the desired board
 #' @param token previously generated token (see ?get_token for help)
+#' @param paginate logical whether to use pagination (for requests returning more than 1000 rows). Defaults to 'False'
 #' @export
 #' @examples
 #' members = get_board_members(url, token)
 
-get_board_comments = function(boardid, token) {
+get_board_comments = function(boardid, token, paginate = FALSE) {
 
     # Get data
-    comments = get_request("board", boardid, "actions?filter=commentCard", token)
+    comments = get_request("board", boardid, "actions?filter=commentCard",
+                           token, paginate)
 
     # Tidy up a bit
     # comments =
