@@ -11,7 +11,7 @@ library(tidyr)
 
 # Get token and data ----
 source(file.choose())
-token = get_token(key, secret)
+token = get_token(key, secret, app = "trello_ct")
 
 # Get data from a board
 url = "https://trello.com/b/QnY5i1l7/av-asistence.json"
@@ -19,7 +19,7 @@ brd = get_board(url, token)
 
 # Get boards
 my_b = get_my_boards(token)
-id_b = my_b$board_id[1]
+id_b = my_b$board_id[14]
 
 # Get cards
 crd = get_board_cards(id_b, token)
