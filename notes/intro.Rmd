@@ -80,7 +80,7 @@ The data is always returned in form of a "flattened", possibly nested data.frame
 
 By default, some variables in the resulting `data.frame` are renamed and some dropped. This happens for two reasons:
 
-1. If you want to work with results from multiple requests, the default naming scheme is not very useful. For instance, every column containing IDs is called simply "id" with no indication as to whether it is a board ID, card ID, member ID etc. This is confusing and makes table joins laborious. The naming scheme imposed by the `trello` package uses a preffix to indicate the parent structure. Thus the column containing the card IDs is always called "card_id" and the column containing member IDs is always called "member_id", no matter which request produced it.
+1. If you want to work with results from multiple requests, the default naming scheme is not very useful. For instance, every column containing IDs is called simply "id" with no indication as to whether it is a board ID, card ID, member ID etc. This is confusing and makes table joins laborious. The naming scheme imposed by the `trello` package uses a preffix to indicate its parent structure. Thus the column containing the card IDs is always called "card_id" and the column containing member IDs is always called "member_id", no matter which request produced it.
 
 2. Some columns are expected to be less frequently used than others and thus dropped.
 
