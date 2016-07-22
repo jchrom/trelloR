@@ -6,6 +6,7 @@
 #' @param filter character whether to return only archived ("closed"), "open" or "all" (which is the default)
 #' @param paginate logical whether to use pagination (for requests returning more than 1000 rows). Defaults to 'FALSE'
 #' @param simplify logical drop and rename some columns to make the result simpler or leave it as it is. Defaults to 'TRUE'
+#' @importFrom dplyr %>% select
 #' @export
 #' @examples
 #' cards = get_board_cards(url, token)
@@ -71,6 +72,7 @@ get_board_cards = function(boardid,
 #' @param filter character whether to return only archived ("closed"), "open" or "all" (which is the default)
 #' @param paginate logical whether to use pagination (for requests returning more than 1000 rows). Defaults to 'FALSE'
 #' @param simplify logical drop and rename some columns to make the result simpler
+#' @importFrom dplyr %>% select
 #' @export
 #' @examples
 #' cards = get_board_lists(url, token)
@@ -112,6 +114,7 @@ get_board_lists = function(boardid,
 #' @param token previously generated token (see ?get_token for help)
 #' @param paginate logical whether to use pagination (for requests returning more than 1000 rows). Defaults to 'FALSE'
 #' @param simplify logical drop and rename some columns to make the result simpler
+#' @importFrom dplyr %>% select
 #' @export
 #' @examples
 #' lists = get_board_members(url, token)
@@ -143,6 +146,7 @@ get_board_members = function(boardid,
 #' @param token previously generated token (see ?get_token for help)
 #' @param paginate logical whether to use pagination (for requests returning more than 1000 rows). Defaults to 'FALSE'
 #' @param simplify logical drop and rename some columns to make the result simpler
+#' @importFrom dplyr %>% select
 #' @export
 #' @examples
 #' members = get_board_members(url, token)
@@ -174,6 +178,7 @@ get_board_labels = function(boardid,
 #' @param token previously generated token (see ?get_token for help)
 #' @param paginate logical whether to use pagination (for requests returning more than 1000 rows). Defaults to 'False'
 #' @param simplify logical drop and rename some columns to make the result simpler
+#' @importFrom dplyr %>% select
 #' @export
 #' @examples
 #' members = get_board_members(url, token)
