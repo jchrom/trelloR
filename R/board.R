@@ -54,16 +54,6 @@ get_board_cards = function(boardid,
     return(cards)
 }
 
-# set_filter = function(query, filter) {
-#
-#     if (!grepl("filter", query) & (!grepl("\\?", query))) {
-#         query = paste0(query, "?filter=", filter)
-#     } else if (!grepl("filter", query)) {
-#         query = paste0(query, "&filter=", filter)
-#     }
-#     return(query)
-# }
-
 #' Get All Trello Board Lists
 #'
 #' Returns a flat \code{data.frame} with all lists from a given Trello board.
@@ -206,4 +196,41 @@ get_board_comments = function(boardid,
                 comm_author = memberCreator.fullName)
     }
     return(comments)
+}
+
+#' Get All Trello Board Actions
+#'
+#' Returns a flat \code{data.frame} with all actions from a given Trello board.
+#' @param boardid id of the desired board
+#' @param token previously generated token (see ?get_token for help)
+#' @param paginate logical whether to use pagination (for requests returning more than 1000 rows). Defaults to 'False'
+#' @param simplify logical drop and rename some columns to make the result simpler
+#' @importFrom dplyr %>% select
+#' @export
+#' @examples
+#' members = get_board_members(url, token)
+
+get_board_actions = function(boardid,
+                             token,
+                             paginate = FALSE,
+                             simplify = TRUE) {
+
+    # Get data
+    actions = get_request(endpoint = "board", id = boardid,
+                          query = "actions",
+                          token = token, paginate = paginate)
+
+    # Tidy up a bit
+    # if (simplify) {
+    #     comments = comments %>%
+    #         select(
+    #             comm_id = id,
+    #             card_id = data.card.id,
+    #             card_name = data.card.name,
+    #             comm_added = date,
+    #             comm_last_act = data.dateLastEdited,
+    #             comm_body = data.text,
+    #             comm_author = memberCreator.fullName)
+    # }
+    return(actions)
 }
