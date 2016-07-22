@@ -7,95 +7,95 @@ output: html_document
 
 ## What is it good for
 
-This package allows you to obtain data from Trello using its API. It depends on Hadley Wickham's httr and jsonlite, and if you like writing a lot of code, you could do everything it does by using those two packages. The trello package gets you the same results with less (and easier to read) code.
+Use `trello` to obtain data from the Trello API. It provides a family of functions 
+designed to get data from a parent structure (board, card). They are simple to
+use and always return a `data.frame`. Paging is automated.
+
+`trello` is a convenience wrapper for Hadley Wickham's [httr](https://cran.r-project.org/web/packages/httr/index.html) and Jeroen Ooms' [jsonlite](https://cran.r-project.org/web/packages/jsonlite/index.html). If you like writing a lot of code, you could do everything it does by using these two packages, but with `trello` package you will get the same results with less (and easier to read) code.
 
 You can install latest stable version from CRAN:
 
-```{r}
+```{r, eval=FALSE, include=TRUE}
 install.packages("trello")
 ```
 
 Or a development version from Github:
 
-```{r}
+```{r, eval=FALSE, include=TRUE}
 devtools::install_github("jchrom/trello")
 ```
 
 ## Obtaining a secure token
 
-Before you can start using Trello API, you need to authorize an app. An app is basically all your project code that communicates with the Trello API. It uses a secure "token" to get access to your Trello account.
+Before you can start using the Trello API, you need to authorize an "app". An app is basically all your project code that uses a secure "token" to communicate with the Trello API.
 
-To create a token, visit [Trello dev site](https://trello.com/app-key) and get your developer key and secret. Then, use the get_token function to create a token for your project and to carry out a first-time authorization:
+To create a token, visit <https://trello.com/app-key> and get your developer key and secret. Then, use the `get_token` function to create a token for your project and to carry out first-time authorization:
 
-```{r}
+```{r, eval=FALSE, include=TRUE}
 library(trello)
 my_token = get_token(your_key, your_secret)
 ```
 
-You will be prompted to confirm authorization in a browser. You will also be offered an option to store the authentication data in your working directory, in a hidden '.httr-oauth' file. This is useful, but **do NOT share it with anyone!**
+You will be prompted to confirm authorization in a browser. You will also be offered an option to store the authentication data in your working directory, in a hidden `'.httr-oauth'` file. This is useful, but **do NOT share it with anyone!**
 
-You should also make sure you keep your key and secret in a safe, non-shared location. Use source if you need to make it readily available.
+You should also make sure you keep your key and secret in a safe, non-shared location. Use `source` if you wish to make it available from remote directory.
 
 ## Getting data from Trello
 
-Once you have done this, you can start using the functions designed to retrieve data from Trello. A good starting point is the get_my_boards function, which returns a data.frame with board names and IDs related to the user who authorized the app. Your previously created token is its only argument.
+Once you have done this, you can start using the functions designed to retrieve data from Trello. A good starting point is the `get_my_boards` function, which returns a `data.frame` with board names and IDs related to the user who authorized the app. Your previously created token is its only argument.
 
-```{r}
+```{r, eval=FALSE, include=TRUE}
 my_boards = get_my_boards(my_token)
 ```
 
-You can obtain cards, labels, members, lists and other data related to a board ID using the family of get_board_ functions. Each of these functions returns a data.frame with IDs and other related data. The following code retrieves all the cards on a particular board:
+You can obtain cards, labels, members, lists and other data related to a board ID using the family of `get_board_` functions. Each of these functions returns a data.frame with IDs and other related data. The following code retrieves all the cards on a particular board:
 
-```{r}
+```{r, eval=FALSE, include=TRUE}
 board_id = my_boards$id[1]
 my_cards = get_board_cards(board_id, my_token)
 ```
 
-Once you have ID of a specific card, you can use another family of functions, the get_card_ functions. They do the exact same thing as the get_board_ functions but for cards. The following code returns all the comments related to a particular card:
+Once you have ID of a specific card, you can use another family of functions, the `get_card_` functions. They do the exact same thing as the `get_board_` functions but for cards. The following code returns all the comments related to a particular card:
 
-```{r}
+```{r, eval=FALSE, include=TRUE}
 card_id = my_cards$id[1]
 my_comments = get_card_comments(card_id, my_token)
 ```
 
 ## Overcomming the limits
 
-Trello limits the results of your requests to 1000 (which corresponds to 1000 rows in a data.frame you get). This may not be sufficient when requesting larger amounts of data, e.g. all the actions related to a board ID.
+Trello limits the results of your requests to 1000 (which corresponds to 1000 rows in the resulting `data.frame`). This may not be sufficient when requesting larger amounts of data, e.g. all the actions related to a board ID.
 
-To get more than 1000 results, you need to issue several separate requests, each retrieving no more than 1000 results. This is called "paging" and the trello package automates that for you. In fact, it issues a warning everytime you reach 1000 results and suggests to use paging in that case.
+To get more than 1000 results, you need to break down your request into several separate requests, each retrieving no more than 1000 results. This is called "paging" and `trello` automates that for you. In fact, it issues a warning everytime you reach 1000 results and suggests to use paging in that case.
 
-All you need to do is to use the paginate argument, which is a part of almost every function in the trello package. Set paginate = TRUE, and the resulting data.frame will contain combined results from all the separate requests.
+All you need to do is to use the `paginate` argument, which is a part of almost every function in the `trello` package. Set `paginate = TRUE`, and the resulting `data.frame` will contain combined results from all the separate requests.
 
-```{r}
+```{r, eval=FALSE, include=TRUE}
 my_actions = get_board_actions(card_id, my_token, paginate = TRUE)
 ```
 
 ## Getting the content
 
-The data is always returned in form of a "flattened", possibly nested data.frame, so you don't have to worry about formatting the API response. This is achieved by formatting the JSON response from Trello API using jsonlite::fromJSON.
+The data is always returned in form of a "flattened", possibly nested data.frame, so you don't have to worry about formatting the API response. This is achieved by formatting the JSON response using the `jsonlite::fromJSON` function.
 
-By default, variables in that data.frame are also renamed and some columns dropped. This happens for two reasons:
+By default, some variables in the resulting `data.frame` are renamed and some dropped. This happens for two reasons:
 
-1. If you want to work with multiple results, the default naming scheme is not very useful. For instance, every column containing IDs is called simply "id" with no indication as to whether it is a board ID, card ID, member ID etc. This is confusing and complicates table joins. The naming scheme introduced by the trello package uses a preffix to indicate the parent structure. Thus the column containing the card IDs is always called "card_id" and the column copntaining member IDs is always called "member_id", no matter which request produced it.
+1. If you want to work with results from multiple requests, the default naming scheme is not very useful. For instance, every column containing IDs is called simply "id" with no indication as to whether it is a board ID, card ID, member ID etc. This is confusing and makes table joins laborious. The naming scheme imposed by the `trello` package uses a preffix to indicate the parent structure. Thus the column containing the card IDs is always called "card_id" and the column containing member IDs is always called "member_id", no matter which request produced it.
 
-2. Some columns are expected to be less frequently used than others.
+2. Some columns are expected to be less frequently used than others and thus dropped.
 
-If you dont think this is useful, use simplify = FALSE argument. This will give you the flattened data.frame as formatted by jsonlite::fromJSON, but with all the columns and original variable names.
+If you dont think this is useful, use `simplify = FALSE`. This will give you the flattened `data.frame` as formatted by `jsonlite::fromJSON`, but with all the columns and original variable names.
 
 ## Using the generic request
 
-All the get_board_ and get_card_ functions are really just wrappers for the generic get_request function. The get_request function uses the get_flat function which, in turn calls the GET function from httr.
+All the `get_board_` and `get_card_` functions are really just wrappers for the generic `get_request` function. The `get_request` function uses the `get_flat` function which, in turn calls the `GET` function from [httr](https://cran.r-project.org/web/packages/httr/index.html).
 
-All these layers basically strip away complexity:
+All these layers gradually strip away complexity:
 
-1. get_flat just accepts the query url and the token (without specifying the endpoints) and returns parsed JSON response;
+1. `get_flat` just accepts the query url and the token (without specifying the endpoints) and returns parsed JSON response;
 
-2. get_request helps you to build the query from separate character strings and also automates paging;
+2. `get_request` helps you to build the query url from separate character strings plus it automates paging;
 
-3. get_board_ and get_card_ functions contain prepared urls so that you don't have to specify them yourself.
+3. `get_board_` and `get_card_` functions contain prepared query url so that you don't have to specify them yourself.
 
-Since all of these are exported, you can use them separately. For instance, you can build your own query url and pass it to the get_flat function, which will give you a parsed data.frame.
-
-
-
-
+Since all of these are exported, you can use them separately. For instance, you can build your own query and pass it to the `get_flat` function, which will give you a parsed `data.frame`.
