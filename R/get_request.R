@@ -19,7 +19,7 @@ get_request = function(endpoint,
     if (paginate) {
 
         # Get first batch
-        url = buil_url(endpoint, id, query)
+        url  = build_url(endpoint = endpoint, id = id, query = query)
         flat = get_flat(url, token)
         cat("Received results 1-", nrow(flat), "\n", sep = "")
 
@@ -32,17 +32,17 @@ get_request = function(endpoint,
                 before = flat$id[flat$date == min(flat$date)]
 
                 # Get current batch
-                url   = buil_url(endpoint, id, query, limit = 1000, before)
-                batch = get_flat(url, token)
-
-                # Bind this batch to the previous results
-                nrow_flat = nrow(flat)
-                nrow_batch = nrow(batch)
-                flat = bind_rows(flat, batch)
+                url   = build_url(endpoint = endpoint, id = id, query = query,
+                                  limit = 1000, before = before)
+                batch = get_flat(url = url, token = token)
 
                 # Show some info
-                cat("Received results ", nrow_flat + 1, "-", nrow_flat + nrow_batch,
+                cat("Received results ",
+                    nrow(flat) + 1, "-", nrow(flat) + nrow(batch),
                     "\n", sep = "")
+
+                # Append the batch to the previous results
+                flat = bind_rows(flat, batch)
 
                 # Stop the loop when the batch is less than 1000 rows (= the end)
                 if (nrow(batch) < 1000) break
@@ -51,7 +51,7 @@ get_request = function(endpoint,
     } else {
 
         # Build url and get flattened data
-        url = buil_url(endpoint, id, query)
+        url = build_url(endpoint, id, query)
         flat = get_flat(url, token)
 
         # If the result reached 1000 rows, suggest using pagination
@@ -70,12 +70,15 @@ get_request = function(endpoint,
 #' This function uses http GET to download JSON via API, and returns a flat data.frame
 #' @param url character query url
 #' @param token previously generated token (see ?get_token for help)
+#' @importFrom httr GET content config
+#' @importFrom jsonlite fromJSON
 #' @export
 #' @examples
 #' url = "https://api.trello.com/1/board/56d73a62e690ccd8d46fe5c6/cards"
 #' all_cards = get_flat(url, token)
 
-get_flat = function(url, token) {
+get_flat = function(url,
+                    token) {
 
     cat("Using query:\n", url, "\n", sep = "")
     req  = GET(url, config(token = token))
@@ -92,7 +95,11 @@ get_flat = function(url, token) {
             stop(content(req))})
 }
 
-buil_url = function(endpoint, id, query, limit = 1000, before = NULL) {
+build_url = function(endpoint,
+                     id,
+                     query,
+                     limit = 1000,
+                     before = NULL) {
 
     # Add limit=1000 if there isn't one already
     # This is to avoid the default behavior whereby only the last 50 actions are returned when there are more
