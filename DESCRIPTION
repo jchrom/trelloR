@@ -8,8 +8,8 @@ Description: Uses Trello API to retrieve data. A family of functions designed to
 Depends:
     R (>= 3.2.3)
 Imports:
-    dplyr
-    httr
+    dplyr,
+    httr,
     jsonlite
 License: GPL-3
 LazyData: true
