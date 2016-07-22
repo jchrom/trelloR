@@ -6,6 +6,7 @@
 #' @param query url query, such as '?lists=open'
 #' @param token previously generated token (see ?get_token for help)
 #' @param paginate logical whether pagination should be used (if not, results will be limited to 50 rows)
+#' @importFrom dplyr bind_rows
 #' @export
 #' @examples
 #' all_cards = get_request("boards", 123456789, "cards", token)
@@ -21,7 +22,7 @@ get_request = function(endpoint,
         # Get first batch
         url  = build_url(endpoint = endpoint, id = id, query = query)
         flat = get_flat(url, token)
-        cat("Received results 1-", nrow(flat), "\n", sep = "")
+        message("Received results 1-", nrow(flat), "\n", sep = "")
 
         if (nrow(flat) >= 1000) {
 
@@ -37,7 +38,7 @@ get_request = function(endpoint,
                 batch = get_flat(url = url, token = token)
 
                 # Show some info
-                cat("Received results ",
+                message("Received results ",
                     nrow(flat) + 1, "-", nrow(flat) + nrow(batch),
                     "\n", sep = "")
 
