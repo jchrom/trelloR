@@ -9,3 +9,13 @@ as_POSIXct_hex = function(x) {
     posix_ct  = as.POSIXct(timestamp, origin = "1970-01-01")
     return(posix_ct)
 }
+
+# set_filter = function(query, filter) {
+#
+#     if (!grepl("filter", query) & (!grepl("\\?", query))) {
+#         query = paste0(query, "?filter=", filter)
+#     } else if (!grepl("filter", query)) {
+#         query = paste0(query, "&filter=", filter)
+#     }
+#     return(query)
+# }
