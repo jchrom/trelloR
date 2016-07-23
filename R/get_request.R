@@ -1,64 +1,56 @@
 #' Request Data From Trello
 #'
 #' This is a generic function to perform query via trello API. Other function such as 'get_board_cards' or 'get_board_lists' are convenience wrappers for this function.
-#' @param endpoint character ("organization", "board", "card"...)
-#' @param id id of the given endpoint
-#' @param query url query, such as '?lists=open'
-#' @param token previously generated token (see ?get_token for help)
+#' @param url url for the GET request, see \code{\link[httr]{GET}}
+#' @param query url query see \code{\link[httr]{GET}}
+#' @param token previously generated token, see \code{\link{get_token}} for info on how to obtain it
 #' @param paginate logical whether pagination should be used (if not, results will be limited to 50 rows)
 #' @importFrom dplyr bind_rows
 #' @export
 #' @examples
-#' all_cards = get_request("boards", 123456789, "cards", token)
+#' all_cards = get_request(, token)
 
-get_request = function(endpoint,
-                       id,
-                       query,
+get_request = function(url,
                        token,
+                       query = list(limit = "1000"),
                        paginate = FALSE) {
 
     if (paginate) {
 
         # Get first batch
-        url  = build_url(endpoint = endpoint, id = id, query = query)
-        flat = get_flat(url, token)
+        flat = get_flat(url = url, token = token, query = query)
         message("Received results 1-", nrow(flat), "\n", sep = "")
 
-        if (nrow(flat) >= 1000) {
+        # If it is shorter than 1000 rows, no paging is needed - return result
+        if (nrow(flat)  < 1000) return(flat)
 
-            # Paginate over the rest and append
-            repeat {
+        # If not, paginate over the rest and append
+        repeat {
 
-                # Find the lowest date and use the correcponding id
-                before = flat$id[flat$date == min(flat$date)]
+            # Find the lowest date and use the corresponding id
+            query$before = flat$id[flat$date == min(flat$date)]
+            batch = get_flat(url = url, token = token, query = query)
 
-                # Get current batch
-                url   = build_url(endpoint = endpoint, id = id, query = query,
-                                  limit = 1000, before = before)
-                batch = get_flat(url = url, token = token)
-
-                # Show some info
-                message("Received results ",
+            # Show some info
+            message("Received results ",
                     nrow(flat) + 1, "-", nrow(flat) + nrow(batch),
                     "\n", sep = "")
 
-                # Append the batch to the previous results
-                flat = bind_rows(flat, batch)
+            # Append the batch to the previous results
+            flat = bind_rows(flat, batch)
 
-                # Stop the loop when the batch is less than 1000 rows (= the end)
-                if (nrow(batch) < 1000) break
-            }
+            # Stop the loop if the batch is less than 1000 rows, because
+            # this means that there is no more results to retrieve
+            if (nrow(batch) < 1000) break
         }
     } else {
 
         # Build url and get flattened data
-        url = build_url(endpoint, id, query)
-        flat = get_flat(url, token)
+        flat = get_flat(url = url, token = token, query = query)
 
         # If the result reached 1000 rows, suggest using pagination
         if (nrow(flat) >= 1000) {
-            message("Reached 1000 results.")
-            message("Use 'paginate = TRUE' to get more but BEWARE: the results may be large!")
+            message("Reached 1000 results; use 'paginate = TRUE' to get more but BEWARE: the results may be large!")
         } else {
             message("Received ", nrow(flat), " results")
         }
@@ -71,7 +63,8 @@ get_request = function(endpoint,
 #' This function uses http GET to download JSON via API, and returns a flat data.frame
 #' @param url character query url
 #' @param token previously generated token (see ?get_token for help)
-#' @importFrom httr GET content config
+#' @param query a list of additional url parameters such as filter = "open"
+#' @importFrom httr GET content config http_status headers
 #' @importFrom jsonlite fromJSON
 #' @export
 #' @examples
@@ -79,51 +72,27 @@ get_request = function(endpoint,
 #' all_cards = get_flat(url, token)
 
 get_flat = function(url,
-                    token) {
+                    token,
+                    query = NULL) {
 
-    cat("Using query:\n", url, "\n", sep = "")
-    req  = GET(url, config(token = token))
+    # Issue request and print out the complete url
+    req  = GET(url, config(token = token), query = query)
+    cat("Using URL:\n", req$url, "\n", sep = "")
 
-    # If no valid json is returned upon request, throw an error and use
-    # the server response as the error message; otherwise just flatten
-    # the data with fromJSON and return that
-    tryCatch(
-        expr = {
-            json = content(req, as = "text")
-            flat = fromJSON(json, flatten = T)
-            return(flat)},
-        error = function(e) {
-            stop(content(req))})
+    # If the status is not 200, throw an error
+    if (req$status != 200) stop(http_status(req)$message)
+
+    # If the content is not a valid JSON, throw an error
+    if (!is_json(req)) stop(headers(req)$`content-type`, " is not JSON")
+
+    # For successfull requests with JSON results, return flattened data.frame
+    json = content(req, as = "text")
+    flat = fromJSON(json, flatten = T)
+    return(flat)
 }
 
-build_url = function(endpoint,
-                     id,
-                     query,
-                     limit = 1000,
-                     before = NULL) {
-
-    # Add limit=1000 if there isn't one already
-    # This is to avoid the default behavior whereby only the last 50 actions are returned when there are more
-    query = set_limit(query, limit)
-
-    # If pagination is applied, add the 'before' argument
-    if (!is.null(before)) query = paste0(query, "&before=", before)
-
-    # Construct url
-    url = paste0("https://api.trello.com/1/",
-                 endpoint, "/", id, "/",
-                 query)
-
-    # Print out and return
-    return(url)
-}
-
-set_limit = function(query, limit) {
-
-    if (!grepl("limit", query) & (!grepl("\\?", query))) {
-        query = paste0(query, "?limit=", limit)
-    } else if (!grepl("limit", query)) {
-        query = paste0(query, "&limit=", limit)
-    }
-    return(query)
+is_json = function(req) {
+    cont   = headers(req)$`content-type`
+    isjson = grepl("application/json", cont)
+    return(isjson)
 }
