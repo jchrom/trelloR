@@ -4,12 +4,16 @@
 \alias{get_card_comments}
 \title{Get All Trello Card Comments}
 \usage{
-get_card_comments(id, token)
+get_card_comments(id, token, paginate = FALSE, simplify = TRUE)
 }
 \arguments{
 \item{id}{id of the desired card}
 
 \item{token}{previously generated token, see \code{\link{get_token}} for info on how to obtain it}
+
+\item{paginate}{logical whether to use pagination (for requests returning more than 1000 rows). Defaults to \code{FALSE}}
+
+\item{simplify}{logical drop and rename some columns to make the result simpler or leave it as it is. Defaults to \code{TRUE}}
 }
 \description{
 Returns a flat \code{data.frame} with all comments from a given Trello card.
