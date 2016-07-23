@@ -230,5 +230,3 @@ get_board_comments = function(id,
     }
     return(comments)
 }
-
-
