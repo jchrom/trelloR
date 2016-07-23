@@ -15,15 +15,11 @@ library(tidyr)
 source(file.choose())
 token = get_token(key, secret, app = "trello")
 
-# Get data from a board
-# url = "https://trello.com/b/QnY5i1l7/av-asistence.json"
-# brd = get_board(url, token)
-
-# Get boards
+# get_my_boards ----
 my_b = get_my_boards(token)
 id_b = my_b$board_id[1]
 
-# Get cards
+# get_board_ ----
 crd      = get_board_cards(id_b, token, filter = "open")
 act_1000 = get_board_actions(id_b, token)
 act_all  = get_board_actions(id_b, token, paginate = TRUE)
@@ -31,6 +27,9 @@ lists    = get_board_lists(id_b, token)
 members  = get_board_members(id_b, token)
 labels   = get_board_labels(id_b, token)
 comments = get_board_comments(id_b, token)
+
+# get_card_ ----
+crd_comments = get_card_comments(crd$card_id[18], token)
 
 
 
