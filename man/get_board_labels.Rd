@@ -4,16 +4,16 @@
 \alias{get_board_labels}
 \title{Get All Trello Board Labels}
 \usage{
-get_board_labels(did, token, paginate = FALSE, simplify = TRUE)
+get_board_labels(id, token, paginate = FALSE, simplify = TRUE)
 }
 \arguments{
+\item{id}{id of the desired board}
+
 \item{token}{previously generated token, see \code{\link{get_token}} for info on how to obtain it}
 
 \item{paginate}{logical whether to use pagination (for requests returning more than 1000 rows). Defaults to \code{FALSE}}
 
 \item{simplify}{logical drop and rename some columns to make the result simpler. Defaults to \code{TRUE}}
-
-\item{id}{id of the desired board}
 }
 \description{
 Returns a flat \code{data.frame} with all labels from a given Trello board.

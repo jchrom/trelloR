@@ -4,12 +4,12 @@
 \alias{get_card_comments}
 \title{Get All Trello Card Comments}
 \usage{
-get_card_comments(cardid, token)
+get_card_comments(id, token)
 }
 \arguments{
-\item{token}{previously generated token (see ?get_token for help)}
+\item{id}{id of the desired card}
 
-\item{boardid}{id of the desired board}
+\item{token}{previously generated token, see \code{\link{get_token}} for info on how to obtain it}
 }
 \description{
 Returns a flat \code{data.frame} with all comments from a given Trello card.
