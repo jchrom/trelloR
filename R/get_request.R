@@ -8,7 +8,15 @@
 #' @importFrom dplyr bind_rows
 #' @export
 #' @examples
-#' all_cards = get_request(, token)
+#' # First, build an URL including query parameters (in this case, filter = open)
+#' id  = "id_of_a_given_board"
+#' url = paste0("https://api.trello.com/1/boards/", id, "/cards?filter=open")
+#'
+#' # Obtain a secure token to communicate with Trello API
+#' token = get_token("your_key", "your_secret")
+#'
+#' # Get all cards that are not archived
+#' all_open = get_request(url, token)
 
 get_request = function(url,
                        token,
@@ -60,9 +68,9 @@ get_request = function(url,
 
 #' Get Data As A Flattened Data.frame
 #'
-#' This function uses http GET to download JSON via API, and returns a flat data.frame
-#' @param url character query url
-#' @param token previously generated token (see ?get_token for help)
+#' This function uses http GET to download JSON via API, and returns a flat \code{data.frame}
+#' @param url character url including query parameters
+#' @param token previously generated token, see \code{\link{get_token}} for info on how to obtain it
 #' @param query a list of additional url parameters such as filter = "open"
 #' @importFrom httr GET content config http_status headers
 #' @importFrom jsonlite fromJSON
