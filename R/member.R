@@ -1,7 +1,8 @@
 #' Get All Trello Member Boards
 #'
 #' Returns a flat \code{data.frame} with all your boards.
-#' @param token previously generated token (see ?get_token for help)
+#' @param token previously generated token, see \code{\link{get_token}} for info on how to obtain it
+#' @importFrom dplyr %>%
 #' @export
 #' @examples
 #' myboards = get_my_boards(token)
@@ -9,7 +10,8 @@
 get_my_boards = function(token) {
 
     # Get data
-    boards = get_request("member", "me", "boards", token)
+    url    = paste0("https://api.trello.com/1/member/me/boards")
+    boards = get_request(url, token)
 
     # Tidy up a bit
     boards = boards %>%
