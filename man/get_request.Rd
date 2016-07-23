@@ -16,7 +16,7 @@ get_request(url, token, query = list(limit = "1000"), paginate = FALSE)
 \item{paginate}{logical whether pagination should be used (if not, results will be limited to 50 rows)}
 }
 \description{
-This is a generic function to perform query via trello API. Other function such as 'get_board_cards' or 'get_board_lists' are convenience wrappers for this function.
+This is a generic function to perform query via trello API. Other functions such as 'get_board_cards' or 'get_board_lists' are convenience wrappers for this function.
 }
 \examples{
 all_cards = get_request(, token)
