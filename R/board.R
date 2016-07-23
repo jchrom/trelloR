@@ -1,33 +1,29 @@
 #' Get All Trello Board Cards
 #'
 #' Returns a flat \code{data.frame} with all cards from a given Trello board.
-#' @param boardid id of the desired board
-#' @param token previously generated token (see ?get_token for help)
+#' @param id id of the desired board
+#' @param token previously generated token, see \code{\link{get_token}} for info on how to obtain it
 #' @param filter character whether to return only archived ("closed"), "open" or "all" (which is the default)
-#' @param paginate logical whether to use pagination (for requests returning more than 1000 rows). Defaults to 'FALSE'
-#' @param simplify logical drop and rename some columns to make the result simpler or leave it as it is. Defaults to 'TRUE'
+#' @param paginate logical whether to use pagination (for requests returning more than 1000 rows). Defaults to \code{FALSE}
+#' @param simplify logical drop and rename some columns to make the result simpler or leave it as it is. Defaults to \code{TRUE}
 #' @importFrom dplyr %>% select
 #' @export
 #' @examples
 #' cards = get_board_cards(url, token)
 
-get_board_cards = function(boardid,
+get_board_cards = function(id,
                            token,
                            filter = "all",
                            paginate = FALSE,
                            simplify = TRUE) {
 
-    # Check input
-    if (!is.character(boardid)) stop(("'boardid' must be of class 'character'"))
-    if (!class(token)[1] == "Token1.0") stop(("Needs a valid token"))
-
-    # Add filter
-    if (!filter %in% c("all", "open", "closed")) stop("Invalid filter value (can only be 'all', 'open' or 'closed')")
-    query = paste0("cards?filter=", filter)
+    # Build url and query
+    url   = paste0("https://api.trello.com/1/boards/", id, "/cards")
+    query = list(filter = filter, limit = "1000")
 
     # Get data
-    cards = get_request(endpoint = "board", id = boardid, query = query,
-                        token = token, paginate = paginate)
+    cards = get_request(url = url, token = token, query = query,
+                        paginate = paginate)
 
     # Tidy up a bit
     if (simplify) {
@@ -54,36 +50,64 @@ get_board_cards = function(boardid,
     return(cards)
 }
 
+#' Get All Trello Board Actions
+#'
+#' Returns a flat \code{data.frame} with all actions from a given Trello board.
+#' @param id id of the desired board
+#' @param token previously generated token, see \code{\link{get_token}} for info on how to obtain it
+#' @param paginate logical whether to use pagination (for requests returning more than 1000 rows). Defaults to \code{FALSE}
+#' @param simplify logical drop and rename some columns to make the result simpler. Defaults to \code{TRUE}
+#' @importFrom dplyr %>% select
+#' @export
+#' @examples
+#' members = get_board_members(url, token)
+
+get_board_actions = function(id,
+                             token,
+                             paginate = FALSE,
+                             simplify = TRUE) {
+
+    # Build url & query
+    url = paste0("https://api.trello.com/1/board/", id, "/actions")
+
+    # Get data
+    cards = get_request(url = url, token = token, query = query,
+                        paginate = paginate)
+
+    # Tidy up a bit
+    # if (simplify) {
+    #     actions = actions %>%
+    #         select()
+    # }
+    return(actions)
+}
+
 #' Get All Trello Board Lists
 #'
 #' Returns a flat \code{data.frame} with all lists from a given Trello board.
-#' @param boardid id of the desired board
-#' @param token previously generated token (see ?get_token for help)
+#' @param id id of the desired board
+#' @param token previously generated token, see \code{\link{get_token}} for info on how to obtain it
 #' @param filter character whether to return only archived ("closed"), "open" or "all" (which is the default)
-#' @param paginate logical whether to use pagination (for requests returning more than 1000 rows). Defaults to 'FALSE'
-#' @param simplify logical drop and rename some columns to make the result simpler
+#' @param paginate logical whether to use pagination (for requests returning more than 1000 rows). Defaults to \code{FALSE}
+#' @param simplify logical drop and rename some columns to make the result simpler or leave it as it is. Defaults to \code{TRUE}
 #' @importFrom dplyr %>% select
 #' @export
 #' @examples
 #' cards = get_board_lists(url, token)
 
-get_board_lists = function(boardid,
+get_board_lists = function(id,
                            token,
                            filter = "all",
                            paginate = FALSE,
                            simplify = TRUE) {
 
-    # Check input
-    if (!is.character(boardid)) stop(("'boardid' must be of class 'character'"))
-    if (!class(token)[1] == "Token1.0") stop(("Needs a valid token"))
-
-    # Add filter
-    if (!filter %in% c("all", "open", "closed")) stop("Invalid filter value (can only be 'all', 'open' or 'closed')")
-    query = paste0("cards?filter=", filter)
+    # Build url & query
+    url   = paste0("https://api.trello.com/1/board/", id, "/lists")
+    query = list(filter = filter, limit = "1000")
 
     # Get data
-    lists = get_request(endpoint = "board", id = boardid, query = "lists",
-                        token = token, paginate = paginate)
+    lists = get_request(url = url, token = token, query = query,
+                        paginate = paginate)
 
     # Tidy up a bit
     if (simplify) {
@@ -100,23 +124,26 @@ get_board_lists = function(boardid,
 #' Get All Trello Board Memebers
 #'
 #' Returns a flat \code{data.frame} with all members from a given Trello board.
-#' @param boardid id of the desired board
-#' @param token previously generated token (see ?get_token for help)
-#' @param paginate logical whether to use pagination (for requests returning more than 1000 rows). Defaults to 'FALSE'
-#' @param simplify logical drop and rename some columns to make the result simpler
+#' @param id id of the desired board
+#' @param token previously generated token, see \code{\link{get_token}} for info on how to obtain it
+#' @param paginate logical whether to use pagination (for requests returning more than 1000 rows). Defaults to \code{FALSE}
+#' @param simplify logical drop and rename some columns to make the result simpler. Defaults to \code{TRUE}
 #' @importFrom dplyr %>% select
 #' @export
 #' @examples
 #' lists = get_board_members(url, token)
 
-get_board_members = function(boardid,
+get_board_members = function(id,
                              token,
                              paginate = FALSE,
                              simplify = TRUE) {
 
+    # Build url & query
+    url = paste0("https://api.trello.com/1/board/", id, "/members")
+
     # Get data
-    members = get_request(endpoint = "board", id = boardid, query = "members",
-                          token = token, paginate = paginate)
+    members = get_request(url = url, token = token,
+                          paginate = paginate)
 
     # Tidy up a bit
     if (simplify) {
@@ -132,23 +159,26 @@ get_board_members = function(boardid,
 #' Get All Trello Board Labels
 #'
 #' Returns a flat \code{data.frame} with all labels from a given Trello board.
-#' @param boardid id of the desired board
-#' @param token previously generated token (see ?get_token for help)
-#' @param paginate logical whether to use pagination (for requests returning more than 1000 rows). Defaults to 'FALSE'
-#' @param simplify logical drop and rename some columns to make the result simpler
+#' @param id id of the desired board
+#' @param token previously generated token, see \code{\link{get_token}} for info on how to obtain it
+#' @param paginate logical whether to use pagination (for requests returning more than 1000 rows). Defaults to \code{FALSE}
+#' @param simplify logical drop and rename some columns to make the result simpler. Defaults to \code{TRUE}
 #' @importFrom dplyr %>% select
 #' @export
 #' @examples
 #' members = get_board_members(url, token)
 
-get_board_labels = function(boardid,
+get_board_labels = function(id,
                             token,
                             paginate = FALSE,
                             simplify = TRUE) {
 
+    # Build url & query
+    url = paste0("https://api.trello.com/1/board/", id, "/labels")
+
     # Get data
-    labels = get_request(endpoint = "board", id = boardid, query = "labels",
-                         token = token, paginate = paginate)
+    labels = get_request(url = url, token = token,
+                         paginate = paginate)
 
     # Tidy up a bit
     if (simplify) {
@@ -164,24 +194,27 @@ get_board_labels = function(boardid,
 #' Get All Trello Board Comments
 #'
 #' Returns a flat \code{data.frame} with all comments from a given Trello board.
-#' @param boardid id of the desired board
-#' @param token previously generated token (see ?get_token for help)
-#' @param paginate logical whether to use pagination (for requests returning more than 1000 rows). Defaults to 'False'
-#' @param simplify logical drop and rename some columns to make the result simpler
+#' @param id id of the desired board
+#' @param token previously generated token, see \code{\link{get_token}} for info on how to obtain it
+#' @param paginate logical whether to use pagination (for requests returning more than 1000 rows). Defaults to \code{FALSE}
+#' @param simplify logical drop and rename some columns to make the result simpler. Defaults to \code{TRUE}
 #' @importFrom dplyr %>% select
 #' @export
 #' @examples
 #' members = get_board_members(url, token)
 
-get_board_comments = function(boardid,
+get_board_comments = function(id,
                               token,
                               paginate = FALSE,
                               simplify = TRUE) {
 
+    # Build url & query
+    url   = paste0("https://api.trello.com/1/board/", id, "/actions")
+    query = list(limit = "1000", filter = "commentCard")
+
     # Get data
-    comments = get_request(endpoint = "board", id = boardid,
-                           query = "actions?filter=commentCard",
-                           token = token, paginate = paginate)
+    comments = get_request(url = url, token = token, query = query,
+                           paginate = paginate)
 
     # Tidy up a bit
     if (simplify) {
@@ -198,39 +231,4 @@ get_board_comments = function(boardid,
     return(comments)
 }
 
-#' Get All Trello Board Actions
-#'
-#' Returns a flat \code{data.frame} with all actions from a given Trello board.
-#' @param boardid id of the desired board
-#' @param token previously generated token (see ?get_token for help)
-#' @param paginate logical whether to use pagination (for requests returning more than 1000 rows). Defaults to 'False'
-#' @param simplify logical drop and rename some columns to make the result simpler
-#' @importFrom dplyr %>% select
-#' @export
-#' @examples
-#' members = get_board_members(url, token)
 
-get_board_actions = function(boardid,
-                             token,
-                             paginate = FALSE,
-                             simplify = TRUE) {
-
-    # Get data
-    actions = get_request(endpoint = "board", id = boardid,
-                          query = "actions",
-                          token = token, paginate = paginate)
-
-    # Tidy up a bit
-    # if (simplify) {
-    #     comments = comments %>%
-    #         select(
-    #             comm_id = id,
-    #             card_id = data.card.id,
-    #             card_name = data.card.name,
-    #             comm_added = date,
-    #             comm_last_act = data.dateLastEdited,
-    #             comm_body = data.text,
-    #             comm_author = memberCreator.fullName)
-    # }
-    return(actions)
-}
