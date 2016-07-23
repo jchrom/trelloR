@@ -1,6 +1,6 @@
 #' Request Data From Trello
 #'
-#' This is a generic function to perform query via trello API. Other function such as 'get_board_cards' or 'get_board_lists' are convenience wrappers for this function.
+#' This is a generic function to perform query via trello API. Other functions such as 'get_board_cards' or 'get_board_lists' are convenience wrappers for this function.
 #' @param url url for the GET request, see \code{\link[httr]{GET}}
 #' @param query url query see \code{\link[httr]{GET}}
 #' @param token previously generated token, see \code{\link{get_token}} for info on how to obtain it
