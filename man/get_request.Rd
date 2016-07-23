@@ -4,16 +4,14 @@
 \alias{get_request}
 \title{Request Data From Trello}
 \usage{
-get_request(endpoint, id, query, token, paginate = FALSE)
+get_request(url, token, query = list(limit = "1000"), paginate = FALSE)
 }
 \arguments{
-\item{endpoint}{character ("organization", "board", "card"...)}
+\item{url}{url for the GET request, see \code{\link[httr]{GET}}}
 
-\item{id}{id of the given endpoint}
+\item{token}{previously generated token, see \code{\link{get_token}} for info on how to obtain it}
 
-\item{query}{url query, such as '?lists=open'}
-
-\item{token}{previously generated token (see ?get_token for help)}
+\item{query}{url query see \code{\link[httr]{GET}}}
 
 \item{paginate}{logical whether pagination should be used (if not, results will be limited to 50 rows)}
 }
@@ -21,6 +19,6 @@ get_request(endpoint, id, query, token, paginate = FALSE)
 This is a generic function to perform query via trello API. Other function such as 'get_board_cards' or 'get_board_lists' are convenience wrappers for this function.
 }
 \examples{
-all_cards = get_request("boards", 123456789, "cards", token)
+all_cards = get_request(, token)
 }
 

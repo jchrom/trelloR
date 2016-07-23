@@ -7,7 +7,7 @@
 get_my_boards(token)
 }
 \arguments{
-\item{token}{previously generated token (see ?get_token for help)}
+\item{token}{previously generated token, see \code{\link{get_token}} for info on how to obtain it}
 }
 \description{
 Returns a flat \code{data.frame} with all your boards.

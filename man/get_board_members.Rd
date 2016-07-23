@@ -4,16 +4,16 @@
 \alias{get_board_members}
 \title{Get All Trello Board Memebers}
 \usage{
-get_board_members(boardid, token, paginate = FALSE, simplify = TRUE)
+get_board_members(id, token, paginate = FALSE, simplify = TRUE)
 }
 \arguments{
-\item{boardid}{id of the desired board}
+\item{id}{id of the desired board}
 
-\item{token}{previously generated token (see ?get_token for help)}
+\item{token}{previously generated token, see \code{\link{get_token}} for info on how to obtain it}
 
-\item{paginate}{logical whether to use pagination (for requests returning more than 1000 rows). Defaults to 'FALSE'}
+\item{paginate}{logical whether to use pagination (for requests returning more than 1000 rows). Defaults to \code{FALSE}}
 
-\item{simplify}{logical drop and rename some columns to make the result simpler}
+\item{simplify}{logical drop and rename some columns to make the result simpler. Defaults to \code{TRUE}}
 }
 \description{
 Returns a flat \code{data.frame} with all members from a given Trello board.

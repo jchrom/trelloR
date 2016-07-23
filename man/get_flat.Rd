@@ -4,12 +4,14 @@
 \alias{get_flat}
 \title{Get Data As A Flattened Data.frame}
 \usage{
-get_flat(url, token)
+get_flat(url, token, query = NULL)
 }
 \arguments{
 \item{url}{character query url}
 
 \item{token}{previously generated token (see ?get_token for help)}
+
+\item{query}{a list of additional url parameters such as filter = "open"}
 }
 \description{
 This function uses http GET to download JSON via API, and returns a flat data.frame
