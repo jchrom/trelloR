@@ -7,14 +7,14 @@
 get_flat(url, token, query = NULL)
 }
 \arguments{
-\item{url}{character query url}
+\item{url}{character url including query parameters}
 
-\item{token}{previously generated token (see ?get_token for help)}
+\item{token}{previously generated token, see \code{\link{get_token}} for info on how to obtain it}
 
 \item{query}{a list of additional url parameters such as filter = "open"}
 }
 \description{
-This function uses http GET to download JSON via API, and returns a flat data.frame
+This function uses http GET to download JSON via API, and returns a flat \code{data.frame}
 }
 \examples{
 url = "https://api.trello.com/1/board/56d73a62e690ccd8d46fe5c6/cards"

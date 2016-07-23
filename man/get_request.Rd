@@ -19,6 +19,14 @@ get_request(url, token, query = list(limit = "1000"), paginate = FALSE)
 This is a generic function to perform query via trello API. Other functions such as 'get_board_cards' or 'get_board_lists' are convenience wrappers for this function.
 }
 \examples{
-all_cards = get_request(, token)
+# First, build an URL including query parameters (in this case, filter = open)
+id  = "id_of_a_given_board"
+url = paste0("https://api.trello.com/1/boards/", id, "/cards?filter=open")
+
+# Obtain a secure token to communicate with Trello API
+token = get_token("your_key", "your_secret")
+
+# Get all cards that are not archived
+all_open = get_request(url, token)
 }
 
