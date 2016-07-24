@@ -19,7 +19,7 @@ get_card_comments = function(id,
     query = list(limit = "1000", filter = "commentCard")
 
     # Get data
-    comments = get_request(url = url, token = token, query = query,
+    comments = get_trello(url = url, token = token, query = query,
                            paginate = paginate)
 
     # Tidy up a bit
