@@ -22,7 +22,7 @@ get_board_cards = function(id,
     query = list(filter = filter, limit = "1000")
 
     # Get data
-    cards = get_request(url = url, token = token, query = query,
+    cards = get_trello(url = url, token = token, query = query,
                         paginate = paginate)
 
     # Tidy up a bit
@@ -71,7 +71,7 @@ get_board_actions = function(id,
     url = paste0("https://api.trello.com/1/board/", id, "/actions")
 
     # Get data
-    cards = get_request(url = url, token = token, query = query,
+    cards = get_trello(url = url, token = token, query = query,
                         paginate = paginate)
 
     # Tidy up a bit
@@ -106,7 +106,7 @@ get_board_lists = function(id,
     query = list(filter = filter, limit = "1000")
 
     # Get data
-    lists = get_request(url = url, token = token, query = query,
+    lists = get_trello(url = url, token = token, query = query,
                         paginate = paginate)
 
     # Tidy up a bit
@@ -142,7 +142,7 @@ get_board_members = function(id,
     url = paste0("https://api.trello.com/1/board/", id, "/members")
 
     # Get data
-    members = get_request(url = url, token = token,
+    members = get_trello(url = url, token = token,
                           paginate = paginate)
 
     # Tidy up a bit
@@ -177,7 +177,7 @@ get_board_labels = function(id,
     url = paste0("https://api.trello.com/1/board/", id, "/labels")
 
     # Get data
-    labels = get_request(url = url, token = token,
+    labels = get_trello(url = url, token = token,
                          paginate = paginate)
 
     # Tidy up a bit
@@ -213,7 +213,7 @@ get_board_comments = function(id,
     query = list(limit = "1000", filter = "commentCard")
 
     # Get data
-    comments = get_request(url = url, token = token, query = query,
+    comments = get_trello(url = url, token = token, query = query,
                            paginate = paginate)
 
     # Tidy up a bit
