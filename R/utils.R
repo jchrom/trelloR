@@ -19,3 +19,10 @@ as_POSIXct_hex = function(x) {
 #     }
 #     return(query)
 # }
+
+.onAttach <- function(libname, pkgname) {
+    packageStartupMessage(
+        "R API for Trello\n",
+        "Not affiliated, associated, authorized, endorsed by or in any way officially connected to Trello, Inc. (www.trello.com)\n",
+        "Visit https://github.com/jchrom/trello for introduction\n")
+}
