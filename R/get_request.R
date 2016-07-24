@@ -1,27 +1,32 @@
-#' Request Data From Trello
+#' Get Data From Trello API
 #'
-#' This is a generic function to perform query via trello API. Other functions such as 'get_board_cards' or 'get_board_lists' are convenience wrappers for this function.
-#' @param url url for the GET request, see \code{\link[httr]{GET}}
-#' @param query url query see \code{\link[httr]{GET}}
+#' This is a generic function that issues \code{\link[httr]{GET}} requests for trello API. It accepts JSON responses and converts them into a flat \code{data.frame} using \code{\link[jsonlite]{fromJSON}}. Other functions such as \code{\link{get_board_cards}} or \code{\link{get_card_comments}} are convenience wrappers for this function.
+#' @param url url for the GET request, see \code{\link[httr]{GET}} for details
+#' @param query url parameters that form the query, see \code{\link[httr]{GET}} for details
 #' @param token previously generated token, see \code{\link{get_token}} for info on how to obtain it
-#' @param paginate logical whether pagination should be used (if not, results will be limited to 50 rows)
+#' @param paginate logical whether paging should be used (if not, results will be limited to 1000 rows)
 #' @importFrom dplyr bind_rows
+#' @importFrom httr GET content config http_status headers
+#' @importFrom jsonlite fromJSON
 #' @export
 #' @examples
-#' # First, build an URL including query parameters (in this case, filter = open)
-#' id  = "id_of_a_given_board"
-#' url = paste0("https://api.trello.com/1/boards/", id, "/cards?filter=open")
-#'
-#' # Obtain a secure token to communicate with Trello API
+#' # First, obtain a secure token to communicate with Trello API
 #' token = get_token("your_key", "your_secret")
 #'
+#' # Second, build an URL
+#' id  = "id_of_a_given_board"
+#' url = paste0("https://api.trello.com/1/boards/", id, "/cards")
+#'
+#' # Third, store query parametrs in a list (see ?httr::GET for details)
+#' query = list(filter = "open")
+#'
 #' # Get all cards that are not archived
-#' all_open = get_request(url, token)
+#' all_open = get_request(url, token, query)
 
-get_request = function(url,
-                       token,
-                       query = list(limit = "1000"),
-                       paginate = FALSE) {
+get_trello = function(url,
+                      token,
+                      query = list(limit = "1000"),
+                      paginate = FALSE) {
 
     if (paginate) {
 
@@ -65,19 +70,6 @@ get_request = function(url,
     }
     return(flat)
 }
-
-#' Get Data As A Flattened Data.frame
-#'
-#' This function uses http GET to download JSON via API, and returns a flat \code{data.frame}
-#' @param url character url including query parameters
-#' @param token previously generated token, see \code{\link{get_token}} for info on how to obtain it
-#' @param query a list of additional url parameters such as filter = "open"
-#' @importFrom httr GET content config http_status headers
-#' @importFrom jsonlite fromJSON
-#' @export
-#' @examples
-#' url = "https://api.trello.com/1/board/56d73a62e690ccd8d46fe5c6/cards"
-#' all_cards = get_flat(url, token)
 
 get_flat = function(url,
                     token,
