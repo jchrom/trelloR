@@ -1,10 +1,12 @@
 Package: extr
-Title: Converts an exported Trello board to an R data frame
+Title: R API for Trello
 Version: 0.0.0.9000
 Authors@R: person("Jakub", "Chromec", , "chromec.jakub@gmail.com", role = c("aut", "cre"))
-Description: Uses Trello API to retrieve data. A family of functions designed to
-    get data from a parent structure (board, card) parses the server response
-    and returns a data.frame that is easy to work with. Paging is automated.
+Description: Uses Trello API to retrieve data from a parent JSON structure
+    (board, card). The response is returned as a flat data.frame. Paging is
+    automated for larger requests. Disclaimer: the authors are not affiliated,
+    associated, authorized, endorsed by or in any way officially connected to
+    Trello, Inc. (www.trello.com).
 Depends:
     R (>= 3.2.3)
 Imports:
