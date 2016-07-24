@@ -1,0 +1,30 @@
+http://help.trello.com/article/840-trellos-trademark
+
+R API for Trello
+rapit
+trapi
+rapitr
+trellor
+rtrello
+rapitre
+rfortrello
+trapir
+
+rapifortrello
+
+
+Naming your app
+
+Generally speaking, we encourage third-party app creators to use the “... for Trello” naming convention. For example, “ Scrum for Trello,” “Calendar for Trello,” or “Harvest for Trello.” This is usually a good way to make it clear what an extension does, while not implying that it’s made by Trello.
+
+We ask that you include a disclaimer indicating that you’re not affiliated with Trello, such as:
+
+We are not affiliated, associated, authorized, endorsed by or in any way officially connected to Trello, Inc. (www.trello.com).
+
+The “Trello” in your app’s name should have a trademark symbol (™) next to it.
+
+Names that are derivative of Trello’s own name are not permitted. Neither are names with “by Trello.” For example, “Huskello” or “Huskies by Trello” can’t be used. However, “Huskies for Trello” could be used.
+
+If you have questions about your app’s name, feel free to contact Support directly.
+
+
