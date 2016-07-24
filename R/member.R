@@ -11,7 +11,7 @@ get_my_boards = function(token) {
 
     # Get data
     url    = paste0("https://api.trello.com/1/member/me/boards")
-    boards = get_request(url, token)
+    boards = get_trello(url, token)
 
     # Tidy up a bit
     boards = boards %>%
