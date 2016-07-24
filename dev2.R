@@ -8,11 +8,11 @@
 # 6. []     Make a list of things necessary to submit to CRAN
 
 # Libs ----
-library(httr)
-library(jsonlite)
-library(extr)
-library(dplyr)
-library(tidyr)
+# library(httr)
+# library(jsonlite)
+library(trello)
+# library(dplyr)
+# library(tidyr)
 
 # Get token and data ----
 source(file.choose())
