@@ -1,10 +1,17 @@
 #' Get Data From Trello API
 #'
-#' This is a generic function that issues \code{\link[httr]{GET}} requests for trello API. It accepts JSON responses and converts them into a flat \code{data.frame} using \code{\link[jsonlite]{fromJSON}}. Other functions such as \code{\link{get_board_cards}} or \code{\link{get_card_comments}} are convenience wrappers for this function.
+#' This generic function issues \code{\link[httr]{GET}} requests for trello API.
+#' It accepts JSON responses and converts them into flat \code{data.frame}s
+#' using \code{\link[jsonlite]{fromJSON}}. It also takes care of paging, setting
+#' the query parameter \code{before} to the earliest result. For unsuccessfull
+#' requests, server error messages are reprinted on ther console. Functions such
+#' as \code{\link{get_board_cards}} or \code{\link{get_card_comments}} are
+#' convenience wrappers for this function.
 #' @param url url for the GET request, see \code{\link[httr]{GET}} for details
 #' @param query url parameters that form the query, see \code{\link[httr]{GET}} for details
-#' @param token previously generated token, see \code{\link{get_token}} for info on how to obtain it
+#' @param token previously generated token, see \code{\link{get_token}} for how to obtain it
 #' @param paginate logical whether paging should be used (if not, results will be limited to 1000 rows)
+#' @seealso \code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}}, \code{\link{get_token}}
 #' @importFrom dplyr bind_rows
 #' @importFrom httr GET content config http_status headers
 #' @importFrom jsonlite fromJSON
@@ -35,7 +42,7 @@ get_trello = function(url,
         message("Received results 1-", nrow(flat), "\n", sep = "")
 
         # If it is shorter than 1000 rows, no paging is needed - return result
-        if (nrow(flat)  < 1000) return(flat)
+        if (nrow(flat) < 1000) return(flat)
 
         # If not, paginate over the rest and append
         repeat {
@@ -52,8 +59,9 @@ get_trello = function(url,
             # Append the batch to the previous results
             flat = bind_rows(flat, batch)
 
-            # Stop the loop if the batch is less than 1000 rows, because
-            # this means that there is no more results to retrieve
+            # Stop the loop if the batch is less than 1000 rows (or is empty
+            # i.e. of length 0), because this means that there is no more
+            # results to retrieve
             if (nrow(batch) < 1000) break
         }
     } else {
@@ -79,15 +87,20 @@ get_flat = function(url,
     req  = GET(url, config(token = token), query = query)
     cat("Using URL:\n", req$url, "\n", sep = "")
 
-    # If the status is not 200, throw an error
-    if (req$status != 200) stop(http_status(req)$message)
+    # If the status is not 200 (=OK), throw an error
+    if (req$status != 200) stop(http_status(req)$message) else cat(http_status(req)$message)
 
     # If the content is not a valid JSON, throw an error
     if (!is_json(req)) stop(headers(req)$`content-type`, " is not JSON")
 
-    # For successfull requests with JSON results, return flattened data.frame
+    # For successfull requests, flatten the JSON results
     json = content(req, as = "text")
     flat = fromJSON(json, flatten = T)
+
+    # In case they're empty, convert into an empty data.frame
+    if (length(flat) == 0) flat = data.frame()
+
+    # Return the result
     return(flat)
 }
 
