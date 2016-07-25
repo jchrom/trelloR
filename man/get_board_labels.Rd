@@ -2,7 +2,7 @@
 % Please edit documentation in R/board.R
 \name{get_board_labels}
 \alias{get_board_labels}
-\title{Get All Trello Board Labels}
+\title{Get Board Labels}
 \usage{
 get_board_labels(id, token, paginate = FALSE, simplify = TRUE)
 }
@@ -11,14 +11,14 @@ get_board_labels(id, token, paginate = FALSE, simplify = TRUE)
 
 \item{token}{previously generated token, see \code{\link{get_token}} for info on how to obtain it}
 
-\item{paginate}{logical whether to use pagination (for requests returning more than 1000 rows). Defaults to \code{FALSE}}
+\item{paginate}{whether paging should be used (necessary for requests returning more than 1000 rows). Defaults to \code{FALSE}}
 
-\item{simplify}{logical drop and rename some columns to make the result simpler. Defaults to \code{TRUE}}
+\item{simplify}{drop and rename some columns or leave it as it is. Defaults to \code{TRUE}}
 }
 \description{
-Returns a flat \code{data.frame} with all labels from a given Trello board.
+Given a board ID, returns a flat \code{data.frame} with labels-related data.
 }
 \examples{
-members = get_board_members(url, token)
+labels = get_board_labels(id, token)
 }
 

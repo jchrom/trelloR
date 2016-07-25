@@ -2,23 +2,23 @@
 % Please edit documentation in R/board.R
 \name{get_board_actions}
 \alias{get_board_actions}
-\title{Get All Trello Board Actions}
+\title{Get Board Actions}
 \usage{
 get_board_actions(id, token, paginate = FALSE, simplify = TRUE)
 }
 \arguments{
 \item{id}{id of the desired board}
 
-\item{token}{previously generated token, see \code{\link{get_token}} for info on how to obtain it}
+\item{token}{previously generated token, see \code{\link{get_token}} for how to obtain it}
 
-\item{paginate}{logical whether to use pagination (for requests returning more than 1000 rows). Defaults to \code{FALSE}}
+\item{paginate}{whether paging should be used (necessary for requests returning more than 1000 rows). Defaults to \code{FALSE}}
 
-\item{simplify}{logical drop and rename some columns to make the result simpler. Defaults to \code{TRUE}}
+\item{simplify}{drop and rename some columns or leave it as it is. Defaults to \code{TRUE}}
 }
 \description{
-Returns a flat \code{data.frame} with all actions from a given Trello board.
+Given a board ID, returns a flat \code{data.frame} with actions-related data.
 }
 \examples{
-members = get_board_members(url, token)
+actions = get_board_actions(id, token)
 }
 

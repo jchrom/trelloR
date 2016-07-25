@@ -2,23 +2,23 @@
 % Please edit documentation in R/card.R
 \name{get_card_comments}
 \alias{get_card_comments}
-\title{Get All Trello Card Comments}
+\title{Get Card Comments}
 \usage{
 get_card_comments(id, token, paginate = FALSE, simplify = TRUE)
 }
 \arguments{
 \item{id}{id of the desired card}
 
-\item{token}{previously generated token, see \code{\link{get_token}} for info on how to obtain it}
+\item{token}{previously generated token, see \code{\link{get_token}} for how to obtain it}
 
-\item{paginate}{logical whether to use pagination (for requests returning more than 1000 rows). Defaults to \code{FALSE}}
+\item{paginate}{whether paging should be used (necessary for requests returning more than 1000 rows). Defaults to \code{FALSE}}
 
-\item{simplify}{logical drop and rename some columns to make the result simpler or leave it as it is. Defaults to \code{TRUE}}
+\item{simplify}{drop and rename some columns or leave it as is. Defaults to \code{TRUE}}
 }
 \description{
-Returns a flat \code{data.frame} with all comments from a given Trello card.
+Given a card ID, returns a flat \code{data.frame} with comments-related data.
 }
 \examples{
-comments = get_card_comments(cardid, token)
+comments = get_card_comments(id, token)
 }
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/board.R
 \name{get_board_lists}
 \alias{get_board_lists}
-\title{Get All Trello Board Lists}
+\title{Get Board Lists}
 \usage{
 get_board_lists(id, token, filter = "all", paginate = FALSE,
   simplify = TRUE)
@@ -10,18 +10,18 @@ get_board_lists(id, token, filter = "all", paginate = FALSE,
 \arguments{
 \item{id}{id of the desired board}
 
-\item{token}{previously generated token, see \code{\link{get_token}} for info on how to obtain it}
+\item{token}{previously generated token, see \code{\link{get_token}} for how to obtain it}
 
-\item{filter}{character whether to return only archived ("closed"), "open" or "all" (which is the default)}
+\item{filter}{whether to return "all" (the default), archived ("closed") or "open" cards}
 
-\item{paginate}{logical whether to use pagination (for requests returning more than 1000 rows). Defaults to \code{FALSE}}
+\item{paginate}{whether paging should be used (necessary for requests returning more than 1000 rows). Defaults to \code{FALSE}}
 
-\item{simplify}{logical drop and rename some columns to make the result simpler or leave it as it is. Defaults to \code{TRUE}}
+\item{simplify}{drop and rename some columns or leave it as it is. Defaults to \code{TRUE}}
 }
 \description{
-Returns a flat \code{data.frame} with all lists from a given Trello board.
+Given a board ID, returns a flat \code{data.frame} with lists-related data.
 }
 \examples{
-cards = get_board_lists(url, token)
+lists = get_board_lists(id, token)
 }
 

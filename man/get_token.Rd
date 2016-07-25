@@ -7,14 +7,16 @@
 get_token(key, secret, app = "trello")
 }
 \arguments{
-\item{key}{key}
+\item{key}{developer key as character string}
 
-\item{secret}{secret}
+\item{secret}{developer secret as character string}
 
 \item{app}{optional app name, defaults to "trello"}
 }
 \description{
-Token is needed in order to get data directly from Trello via API. To create it, get your 'key' and 'secret' here: https://trello.com/app-key.
+Creates a secure token to communicate with Trello API. You will need your
+developer 'key' and 'secret' - get them here:
+\url{https://trello.com/app-key}.
 }
 \examples{
 # Source credentials from non-shared location (important!)
@@ -24,5 +26,8 @@ token = get_token(key, secret)
 # You will be prompted to confirm the authorization in a browser. You will
 # also be offered an option to store the authentication in your working
 # directory, in a hidden '.httr-oauth' file (do NOT share it with anyone!).
+}
+\seealso{
+\code{\link[httr]{oauth_app}}, \code{\link[httr]{oauth_endpoint}}, \code{\link[httr]{oauth1.0_token}}
 }
 

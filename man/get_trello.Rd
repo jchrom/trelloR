@@ -9,14 +9,20 @@ get_trello(url, token, query = list(limit = "1000"), paginate = FALSE)
 \arguments{
 \item{url}{url for the GET request, see \code{\link[httr]{GET}} for details}
 
-\item{token}{previously generated token, see \code{\link{get_token}} for info on how to obtain it}
+\item{token}{previously generated token, see \code{\link{get_token}} for how to obtain it}
 
 \item{query}{url parameters that form the query, see \code{\link[httr]{GET}} for details}
 
 \item{paginate}{logical whether paging should be used (if not, results will be limited to 1000 rows)}
 }
 \description{
-This is a generic function that issues \code{\link[httr]{GET}} requests for trello API. It accepts JSON responses and converts them into a flat \code{data.frame} using \code{\link[jsonlite]{fromJSON}}. Other functions such as \code{\link{get_board_cards}} or \code{\link{get_card_comments}} are convenience wrappers for this function.
+This generic function issues \code{\link[httr]{GET}} requests for trello API.
+It accepts JSON responses and converts them into flat \code{data.frame}s
+using \code{\link[jsonlite]{fromJSON}}. It also takes care of paging, setting
+the query parameter \code{before} to the earliest result. For unsuccessfull
+requests, server error messages are reprinted on ther console. Functions such
+as \code{\link{get_board_cards}} or \code{\link{get_card_comments}} are
+convenience wrappers for this function.
 }
 \examples{
 # First, obtain a secure token to communicate with Trello API
@@ -31,5 +37,8 @@ query = list(filter = "open")
 
 # Get all cards that are not archived
 all_open = get_request(url, token, query)
+}
+\seealso{
+\code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}}, \code{\link{get_token}}
 }
 
