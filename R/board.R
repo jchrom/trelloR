@@ -1,15 +1,16 @@
-#' Get All Trello Board Cards
+#' Get Board Cards
 #'
-#' Returns a flat \code{data.frame} with all cards from a given Trello board.
+#' Given a board ID, returns a flat \code{data.frame} with card-related data.
+#' board.
 #' @param id id of the desired board
-#' @param token previously generated token, see \code{\link{get_token}} for info on how to obtain it
-#' @param filter character whether to return only archived ("closed"), "open" or "all" (which is the default)
-#' @param paginate logical whether to use pagination (for requests returning more than 1000 rows). Defaults to \code{FALSE}
-#' @param simplify logical drop and rename some columns to make the result simpler or leave it as it is. Defaults to \code{TRUE}
+#' @param token previously generated token, see \code{\link{get_token}} for how to obtain it
+#' @param filter whether to return "all" (the default), archived ("closed") or "open" cards
+#' @param paginate whether paging should be used (necessary for requests returning more than 1000 rows). Defaults to \code{FALSE}
+#' @param simplify drop and rename some columns or leave it as is. Defaults to \code{TRUE}
 #' @importFrom dplyr %>% select
 #' @export
 #' @examples
-#' cards = get_board_cards(url, token)
+#' cards = get_board_cards(id, token)
 
 get_board_cards = function(id,
                            token,
@@ -50,17 +51,17 @@ get_board_cards = function(id,
     return(cards)
 }
 
-#' Get All Trello Board Actions
+#' Get Board Actions
 #'
-#' Returns a flat \code{data.frame} with all actions from a given Trello board.
+#' Given a board ID, returns a flat \code{data.frame} with actions-related data.
 #' @param id id of the desired board
-#' @param token previously generated token, see \code{\link{get_token}} for info on how to obtain it
-#' @param paginate logical whether to use pagination (for requests returning more than 1000 rows). Defaults to \code{FALSE}
-#' @param simplify logical drop and rename some columns to make the result simpler. Defaults to \code{TRUE}
+#' @param token previously generated token, see \code{\link{get_token}} for how to obtain it
+#' @param paginate whether paging should be used (necessary for requests returning more than 1000 rows). Defaults to \code{FALSE}
+#' @param simplify drop and rename some columns or leave it as it is. Defaults to \code{TRUE}
 #' @importFrom dplyr %>% select
 #' @export
 #' @examples
-#' members = get_board_members(url, token)
+#' actions = get_board_actions(id, token)
 
 get_board_actions = function(id,
                              token,
@@ -71,29 +72,28 @@ get_board_actions = function(id,
     url = paste0("https://api.trello.com/1/board/", id, "/actions")
 
     # Get data
-    cards = get_trello(url = url, token = token, query = query,
-                        paginate = paginate)
+    actions = get_trello(url = url, token = token,
+                         paginate = paginate)
 
     # Tidy up a bit
-    # if (simplify) {
-    #     actions = actions %>%
-    #         select()
-    # }
+    if (simplify) actions = simplify_actions(actions)
+
+    # Return result
     return(actions)
 }
 
-#' Get All Trello Board Lists
+#' Get Board Lists
 #'
-#' Returns a flat \code{data.frame} with all lists from a given Trello board.
+#' Given a board ID, returns a flat \code{data.frame} with lists-related data.
 #' @param id id of the desired board
-#' @param token previously generated token, see \code{\link{get_token}} for info on how to obtain it
-#' @param filter character whether to return only archived ("closed"), "open" or "all" (which is the default)
-#' @param paginate logical whether to use pagination (for requests returning more than 1000 rows). Defaults to \code{FALSE}
-#' @param simplify logical drop and rename some columns to make the result simpler or leave it as it is. Defaults to \code{TRUE}
+#' @param token previously generated token, see \code{\link{get_token}} for how to obtain it
+#' @param filter whether to return "all" (the default), archived ("closed") or "open" cards
+#' @param paginate whether paging should be used (necessary for requests returning more than 1000 rows). Defaults to \code{FALSE}
+#' @param simplify drop and rename some columns or leave it as it is. Defaults to \code{TRUE}
 #' @importFrom dplyr %>% select
 #' @export
 #' @examples
-#' cards = get_board_lists(url, token)
+#' lists = get_board_lists(id, token)
 
 get_board_lists = function(id,
                            token,
@@ -121,17 +121,17 @@ get_board_lists = function(id,
     return(lists)
 }
 
-#' Get All Trello Board Memebers
+#' Get Board Members
 #'
-#' Returns a flat \code{data.frame} with all members from a given Trello board.
+#' Given a board ID, returns a flat \code{data.frame} with members-related data.
 #' @param id id of the desired board
-#' @param token previously generated token, see \code{\link{get_token}} for info on how to obtain it
-#' @param paginate logical whether to use pagination (for requests returning more than 1000 rows). Defaults to \code{FALSE}
-#' @param simplify logical drop and rename some columns to make the result simpler. Defaults to \code{TRUE}
+#' @param token previously generated token, see \code{\link{get_token}} for how to obtain it
+#' @param paginate whether paging should be used (necessary for requests returning more than 1000 rows). Defaults to \code{FALSE}
+#' @param simplify drop and rename some columns or leave it as it is. Defaults to \code{TRUE}
 #' @importFrom dplyr %>% select
 #' @export
 #' @examples
-#' lists = get_board_members(url, token)
+#' members = get_board_members(id, token)
 
 get_board_members = function(id,
                              token,
@@ -156,17 +156,17 @@ get_board_members = function(id,
     return(members)
 }
 
-#' Get All Trello Board Labels
+#' Get Board Labels
 #'
-#' Returns a flat \code{data.frame} with all labels from a given Trello board.
+#' Given a board ID, returns a flat \code{data.frame} with labels-related data.
 #' @param id id of the desired board
 #' @param token previously generated token, see \code{\link{get_token}} for info on how to obtain it
-#' @param paginate logical whether to use pagination (for requests returning more than 1000 rows). Defaults to \code{FALSE}
-#' @param simplify logical drop and rename some columns to make the result simpler. Defaults to \code{TRUE}
+#' @param paginate whether paging should be used (necessary for requests returning more than 1000 rows). Defaults to \code{FALSE}
+#' @param simplify drop and rename some columns or leave it as it is. Defaults to \code{TRUE}
 #' @importFrom dplyr %>% select
 #' @export
 #' @examples
-#' members = get_board_members(url, token)
+#' labels = get_board_labels(id, token)
 
 get_board_labels = function(id,
                             token,
@@ -191,17 +191,17 @@ get_board_labels = function(id,
     return(labels)
 }
 
-#' Get All Trello Board Comments
+#' Get Board Comments
 #'
-#' Returns a flat \code{data.frame} with all comments from a given Trello board.
+#' Given a board ID, returns a flat \code{data.frame} with labels-related data.
 #' @param id id of the desired board
 #' @param token previously generated token, see \code{\link{get_token}} for info on how to obtain it
-#' @param paginate logical whether to use pagination (for requests returning more than 1000 rows). Defaults to \code{FALSE}
-#' @param simplify logical drop and rename some columns to make the result simpler. Defaults to \code{TRUE}
+#' @param paginate whether paging should be used (necessary for requests returning more than 1000 rows). Defaults to \code{FALSE}
+#' @param simplify drop and rename some columns or leave it as it is. Defaults to \code{TRUE}
 #' @importFrom dplyr %>% select
 #' @export
 #' @examples
-#' members = get_board_members(url, token)
+#' comments = get_board_comments(id, token)
 
 get_board_comments = function(id,
                               token,
@@ -220,13 +220,13 @@ get_board_comments = function(id,
     if (simplify) {
         comments = comments %>%
             select(
-                comm_id = id,
-                card_id = data.card.id,
-                card_name = data.card.name,
-                comm_added = date,
-                comm_last_act = data.dateLastEdited,
-                comm_body = data.text,
-                comm_author = memberCreator.fullName)
+                comment_id      = id,
+                card_id         = data.card.id,
+                card_name       = data.card.name,
+                comment_created = date,
+                comment_last_ed = data.dateLastEdited,
+                comment_text    = data.text,
+                member_name     = memberCreator.fullName)
     }
     return(comments)
 }
