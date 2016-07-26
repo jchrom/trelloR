@@ -1,4 +1,4 @@
-#' Authorize API access to Trello
+#' Authorize API Access To Trello
 #'
 #' Creates a secure token to communicate with Trello API. You will need your
 #' developer 'key' and 'secret' - get them here:
