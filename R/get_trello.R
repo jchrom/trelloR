@@ -1,12 +1,12 @@
 #' Get Data From Trello API
 #'
-#' This generic function issues \code{\link[httr]{GET}} requests for trello API.
-#' It accepts JSON responses and converts them into flat \code{data.frame}s
-#' using \code{\link[jsonlite]{fromJSON}}. It also takes care of paging, setting
-#' the query parameter \code{before} to the earliest result. For unsuccessfull
-#' requests, server error messages are reprinted on ther console. Functions such
-#' as \code{\link{get_board_cards}} or \code{\link{get_card_comments}} are
-#' convenience wrappers for this function.
+#' Issues \code{\link[httr]{GET}} requests for Trello API endpoints.
+#'
+#' It accepts JSON responses and uses \code{\link[jsonlite]{fromJSON}} to convert them into flat \code{data.frame}s. It hrows an error if non-JSON type of data is received. It also takes care of paging (if \code{paginate = TRUE}), setting the query parameter \code{before} to the earliest date from the previous result, essentially getting all there is for the given request.
+#'
+#' For unsuccessfull requests, server error messages are extracted from the response header and reprinted on the console.
+#'
+#' Functions such as \code{\link{get_board_cards}} or \code{\link{get_card_comments}} are convenience wrappers for this function. They remove the need for specifying the query parameters and optionally simplify the result so as to give you more consistent and easy to work with data.
 #' @param url url for the GET request, see \code{\link[httr]{GET}} for details
 #' @param query url parameters that form the query, see \code{\link[httr]{GET}} for details
 #' @param token previously generated token, see \code{\link{get_token}} for how to obtain it
