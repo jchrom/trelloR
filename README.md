@@ -18,7 +18,7 @@ You can currently install the development version from Github:
 devtools::install_github("jchrom/trellor")
 ```
 
-# Using `trellor`
+# Using R API for Trello
 
 The first step is to open a new R project and authorize your API access. `trellor` can help you with that. When you're done, you can start getting data out of Trello.
 
