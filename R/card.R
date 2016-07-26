@@ -85,12 +85,8 @@ get_card_members = function(id,
                          paginate = paginate)
 
     # Tidy up a bit
-    if (simplify) {
-        members = members %>%
-            select(
-                member_id = id,
-                member_name = fullName,
-                member_uname = username)
-    }
+    if (simplify) members = simplify_members(members)
+
+    # Return result
     return(members)
 }
