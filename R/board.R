@@ -27,27 +27,9 @@ get_board_cards = function(id,
                         paginate = paginate)
 
     # Tidy up a bit
-    if (simplify) {
-        # timestamp = strtoi(strtrim(cards$id, 8), 16L)
-        # cards$card_created = as.POSIXct(timestamp, origin = "1970-01-01")
-        cards$card_created = cards$id %>% strtrim(8) %>% as_POSIXct_hex()
-        cards = cards %>%
-            select(
-                card_name = name,
-                card_id = id,
-                card_url = url,
-                card_labels = labels,
-                card_desc = desc,
-                card_arch = closed,
-                card_url_short = shortUrl,
-                card_last_act = dateLastActivity,
-                card_due = due,
-                card_created,
-                board_id = idBoard,
-                list_id = idList,
-                checklist_id = idChecklists,
-                member_id = idMembers)
-    }
+    if (simplify) cards = simplify_cards(cards)
+
+    # Return result
     return(cards)
 }
 
@@ -110,14 +92,9 @@ get_board_lists = function(id,
                         paginate = paginate)
 
     # Tidy up a bit
-    if (simplify) {
-        lists = lists %>%
-            select(
-                list_id = id,
-                list_name = name,
-                list_arch = closed,
-                board_id = idBoard)
-    }
+    if (simplify) lists = simplify_lists(lists)
+
+    # Return result
     return(lists)
 }
 
@@ -146,13 +123,9 @@ get_board_members = function(id,
                           paginate = paginate)
 
     # Tidy up a bit
-    if (simplify) {
-        members = members %>%
-            select(
-                member_id = id,
-                member_name = fullName,
-                member_uname = username)
-    }
+    if (simplify) members = simplify_members(members)
+
+    # Return result
     return(members)
 }
 
@@ -217,16 +190,8 @@ get_board_comments = function(id,
                            paginate = paginate)
 
     # Tidy up a bit
-    if (simplify) {
-        comments = comments %>%
-            select(
-                comment_id      = id,
-                card_id         = data.card.id,
-                card_name       = data.card.name,
-                comment_created = date,
-                comment_last_ed = data.dateLastEdited,
-                comment_text    = data.text,
-                member_name     = memberCreator.fullName)
-    }
+    if (simplify) comments = simplify_comments(comments)
+
+    # Return result
     return(comments)
 }
