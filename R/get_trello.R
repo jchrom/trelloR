@@ -13,7 +13,7 @@
 #' @param paging logical whether paging should be used (if not, results will be limited to 1000 rows)
 #' @seealso \code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}}, \code{\link{get_token}}
 #' @importFrom dplyr bind_rows
-#' @importFrom httr GET content config http_status headers
+#' @importFrom httr GET content config http_status headers http_type http_error
 #' @importFrom jsonlite fromJSON
 #' @export
 #' @examples
@@ -70,7 +70,7 @@ get_trello = function(url,
         #   the use of paging
         # - Otherwise just return the result as is
         if (!is.data.frame(flat)) {
-            message("Empty or complex JSON: subset manually for flat data")
+            cat("Returning empty or complex JSON: subset manually")
         } else if (is.data.frame(flat) & nrow(flat) >= 1000) {
             message("Reached 1000 results; use 'paging = TRUE' to get more")
         } else if (is.data.frame(flat)) {
@@ -89,14 +89,15 @@ get_flat = function(url,
     cat("Request URL:\n", req$url, "\n", sep = "")
 
     # If the status is not 200 (=OK), throw an error
-    if (req$status != 200) stop(http_status(req)$message)
+    if (http_error(req)) stop(http_status(req)$message, " : ", req)
 
     # If the content is JSON, convert into a flat data.frame, otherwise error
-    if (is_json(req)) {
+    if (http_type(req) == "application/json") {
         json = content(req, as = "text")
         flat = fromJSON(json, flatten = T)
     } else {
-        stop(headers(req)$`content-type`, " is not JSON")
+        req_trim = paste0(strtrim(content(req, as = "text"), 50), "...")
+        stop(http_type(req), " is not JSON : ", req_trim)
     }
 
     # If the result is an empty list, convert into an empty data.frame
@@ -104,12 +105,6 @@ get_flat = function(url,
 
     # Return the result
     return(flat)
-}
-
-is_json = function(req) {
-    cont   = headers(req)$`content-type`
-    isjson = grepl("application/json", cont)
-    return(isjson)
 }
 
 set_before = function(batch) {
@@ -126,7 +121,7 @@ keep_going = function(flat) {
     # If the result is not a data.frame, it cannot be bound by bind_rows; return
     # whatever came back and print out a message
     if (!is.data.frame(flat)) {
-        message("Empty or complex JSON: will not use paging")
+        message("Returning empty or complex JSON: will not use paging")
         go_on = FALSE
     }
 
