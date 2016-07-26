@@ -14,7 +14,7 @@ get_token(key, secret, app = "trello")
 \item{app}{optional app name, defaults to "trello"}
 }
 \description{
-Creates a secure token to communicate with Trello API. You will need your
+Creates a secure token to communicate with Trello API. Make sure you have your
 developer 'key' and 'secret' - get them here:
 \url{https://trello.com/app-key}.
 }

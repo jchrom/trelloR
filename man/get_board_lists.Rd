@@ -24,4 +24,7 @@ Given a board ID, returns a flat \code{data.frame} with lists-related data.
 \examples{
 lists = get_board_lists(id, token)
 }
+\seealso{
+\code{\link{get_token}}, \code{\link{get_trello}}
+}
 

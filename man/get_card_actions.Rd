@@ -21,4 +21,7 @@ Given a card ID, returns a flat \code{data.frame} with actions-related data.
 \examples{
 actions = get_card_actions(id, token)
 }
+\seealso{
+\code{\link{get_token}}, \code{\link{get_trello}}
+}
 

@@ -21,4 +21,7 @@ Given a card ID, returns a flat \code{data.frame} with comments-related data.
 \examples{
 comments = get_card_comments(id, token)
 }
+\seealso{
+\code{\link{get_token}}, \code{\link{get_trello}}
+}
 

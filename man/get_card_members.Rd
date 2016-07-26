@@ -21,4 +21,7 @@ Given a card ID, returns a flat \code{data.frame} with members-related data.
 \examples{
 members = get_board_members(id, token)
 }
+\seealso{
+\code{\link{get_token}}, \code{\link{get_trello}}
+}
 

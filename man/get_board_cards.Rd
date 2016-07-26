@@ -20,9 +20,11 @@ get_board_cards(id, token, filter = "all", paginate = FALSE,
 }
 \description{
 Given a board ID, returns a flat \code{data.frame} with card-related data.
-board.
 }
 \examples{
 cards = get_board_cards(id, token)
+}
+\seealso{
+\code{\link{get_token}}, \code{\link{get_trello}}
 }
 

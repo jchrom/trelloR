@@ -21,4 +21,7 @@ Given a board ID, returns a flat \code{data.frame} with labels-related data.
 \examples{
 comments = get_board_comments(id, token)
 }
+\seealso{
+\code{\link{get_token}}, \code{\link{get_trello}}
+}
 
