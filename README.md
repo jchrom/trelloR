@@ -24,7 +24,7 @@ The first step is to open a new R project and authorize your API access. After t
 
 ## Step 1: Authorize your API access
 
-Before you can start using the Trello API, you need to authorize an "app". An app uses a secure "token" to communicate with the Trello API. This process will allow you to retrieve private data only you have the access to.
+Before you can start using the Trello API, you need to authorize an "app". An app uses a secure "token" to communicate with the Trello API. This will allow you to retrieve private data only you have the access to.
 
 To create a token, visit <https://trello.com/app-key> and get your developer key and secret. Then, use the `get_token()` function to create a token for your project. This will also trigger first-time authorization (you only have to do it once):
 
