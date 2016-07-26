@@ -1,12 +1,12 @@
 #' Get Board Cards
 #'
 #' Given a board ID, returns a flat \code{data.frame} with card-related data.
-#' board.
 #' @param id id of the desired board
 #' @param token previously generated token, see \code{\link{get_token}} for how to obtain it
 #' @param filter whether to return "all" (the default), archived ("closed") or "open" cards
 #' @param paginate whether paging should be used (necessary for requests returning more than 1000 rows). Defaults to \code{FALSE}
 #' @param simplify drop and rename some columns or leave it as is. Defaults to \code{TRUE}
+#' @seealso \code{\link{get_token}}, \code{\link{get_trello}}
 #' @importFrom dplyr %>% select
 #' @export
 #' @examples
@@ -40,6 +40,7 @@ get_board_cards = function(id,
 #' @param token previously generated token, see \code{\link{get_token}} for how to obtain it
 #' @param paginate whether paging should be used (necessary for requests returning more than 1000 rows). Defaults to \code{FALSE}
 #' @param simplify drop and rename some columns or leave it as it is. Defaults to \code{TRUE}
+#' @seealso \code{\link{get_token}}, \code{\link{get_trello}}
 #' @importFrom dplyr %>% select
 #' @export
 #' @examples
@@ -72,6 +73,7 @@ get_board_actions = function(id,
 #' @param filter whether to return "all" (the default), archived ("closed") or "open" cards
 #' @param paginate whether paging should be used (necessary for requests returning more than 1000 rows). Defaults to \code{FALSE}
 #' @param simplify drop and rename some columns or leave it as it is. Defaults to \code{TRUE}
+#' @seealso \code{\link{get_token}}, \code{\link{get_trello}}
 #' @importFrom dplyr %>% select
 #' @export
 #' @examples
@@ -105,6 +107,7 @@ get_board_lists = function(id,
 #' @param token previously generated token, see \code{\link{get_token}} for how to obtain it
 #' @param paginate whether paging should be used (necessary for requests returning more than 1000 rows). Defaults to \code{FALSE}
 #' @param simplify drop and rename some columns or leave it as it is. Defaults to \code{TRUE}
+#' @seealso \code{\link{get_token}}, \code{\link{get_trello}}
 #' @importFrom dplyr %>% select
 #' @export
 #' @examples
@@ -136,6 +139,7 @@ get_board_members = function(id,
 #' @param token previously generated token, see \code{\link{get_token}} for info on how to obtain it
 #' @param paginate whether paging should be used (necessary for requests returning more than 1000 rows). Defaults to \code{FALSE}
 #' @param simplify drop and rename some columns or leave it as it is. Defaults to \code{TRUE}
+#' @seealso \code{\link{get_token}}, \code{\link{get_trello}}
 #' @importFrom dplyr %>% select
 #' @export
 #' @examples
@@ -171,6 +175,7 @@ get_board_labels = function(id,
 #' @param token previously generated token, see \code{\link{get_token}} for info on how to obtain it
 #' @param paginate whether paging should be used (necessary for requests returning more than 1000 rows). Defaults to \code{FALSE}
 #' @param simplify drop and rename some columns or leave it as it is. Defaults to \code{TRUE}
+#' @seealso \code{\link{get_token}}, \code{\link{get_trello}}
 #' @importFrom dplyr %>% select
 #' @export
 #' @examples
