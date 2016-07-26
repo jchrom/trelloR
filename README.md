@@ -12,7 +12,7 @@ It also provides an intuitive way of authorizing your API access using [Trello d
 
 # Installation
 
-You can currently install the development version from Github:
+You can install the development version from Github:
 
 ```{r, eval=FALSE, include=TRUE}
 devtools::install_github("jchrom/trellor")
