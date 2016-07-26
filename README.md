@@ -20,7 +20,7 @@ devtools::install_github("jchrom/trellor")
 
 # Using R API for Trello
 
-The first step is to open a new R project and authorize your API access. `trellor` can help you with that. When you're done, you can start getting data out of Trello.
+The first step is to open a new R project and authorize your API access. After that you can start using function to query Trello API directly do get data you need.
 
 ## Step 1: Authorize your API access
 
