@@ -39,10 +39,21 @@ get_trello = function(url,
 
         # Get first batch
         flat = get_flat(url = url, token = token, query = query)
-        message("Received results 1-", nrow(flat), "\n", sep = "")
+
+        # If the result is not a data.frame, it cannot be bound by bind_rows,
+        # and most likely is not a sensible request anyway - return whatever
+        # came back and print a message
+        if (!is.data.frame(flat)) {
+            message("Empty or complex JSON: no paging")
+            return(flat)
+        }
 
         # If it is shorter than 1000 rows, no paging is needed - return result
-        if (nrow(flat) < 1000) return(flat)
+        if (nrow(flat) < 1000) {
+            return(flat)
+        } else {
+            message("Received results 1-", nrow(flat), "\n", sep = "")
+        }
 
         # If not, paginate over the rest and append
         repeat {
@@ -69,10 +80,17 @@ get_trello = function(url,
         # Build url and get flattened data
         flat = get_flat(url = url, token = token, query = query)
 
-        # If the result reached 1000 rows, suggest using pagination
-        if (nrow(flat) >= 1000) {
-            message("Reached 1000 results; use 'paginate = TRUE' to get more but BEWARE: the results may be large!")
-        } else {
+        # Comment on results:
+        # - List responses do not fit into the package scheme, but can be subset
+        #   manually
+        # - If 1000 rows is obtained, the true response may be larger - suggest
+        #   the use of paging
+        # - Otherwise just return the result as is
+        if (!is.data.frame(flat)) {
+            message("Empty or complex JSON: subset manually for flat data")
+        } else if (is.data.frame(flat) & nrow(flat) >= 1000) {
+            message("Reached 1000 results; use 'paginate = TRUE' to get more")
+        } else if (is.data.frame(flat)) {
             message("Received ", nrow(flat), " results")
         }
     }
@@ -88,7 +106,11 @@ get_flat = function(url,
     cat("Using URL:\n", req$url, "\n", sep = "")
 
     # If the status is not 200 (=OK), throw an error
-    if (req$status != 200) stop(http_status(req)$message) else cat(http_status(req)$message)
+    if (req$status != 200) {
+        stop(http_status(req)$message)
+    } else {
+        cat(http_status(req)$message)
+    }
 
     # If the content is not a valid JSON, throw an error
     if (!is_json(req)) stop(headers(req)$`content-type`, " is not JSON")
