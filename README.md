@@ -1,12 +1,12 @@
 # R API for Trello
 
-The purpose of `trellor` is to provide an easy access to the [Trello API](https://developers.trello.com/) from R. It can retrieve data from various levels of Trello JSON hierarchy (e.g. cards that belong to a particular board, members assigned to a particular card etc.) and return a *flattened* `data.frame` which is easy to work with.
+The purpose of `trellor` is to provide easy access to the [Trello API](https://developers.trello.com/) from R. It can retrieve data from various levels of JSON hierarchy (e.g. cards that belong to a particular board, members assigned to a particular card etc.) and return a *flattened* `data.frame` which is easy to work with.
 
-Requests are carried out by a family of simple functions with consistent naming scheme, such as `get_my_boards()` or `get_card_comments()`. For large requests, there is an automated paging parameter which makes sure all the results will be acquired.
+Requests are carried out by a family of simple functions with meaningful names, such as `get_my_boards()` or `get_card_comments()`. For large requests, there is an automated paging parameter which makes sure all the results will be acquired.
 
 It also provides an intuitive way of authorizing your API access using [Trello developer keys](https://trello.com/app-key).
 
-**Note.** `trellor` is a convenience wrapper for Hadley Wickham's [httr](https://cran.r-project.org/web/packages/httr/index.html) and Jeroen Ooms' [jsonlite](https://cran.r-project.org/web/packages/jsonlite/index.html). If you like writing a lot of code, you could do everything it does by using these two packages, but `trellor` will get you the same results with less code that is easier to read.
+**Note.** `trellor` is a convenience wrapper for Hadley Wickham's [httr](https://cran.r-project.org/web/packages/httr/index.html) and Jeroen Ooms' [jsonlite](https://cran.r-project.org/web/packages/jsonlite/index.html). If you like writing a lot of code, you could do everything it does by using these two packages; `trellor` will get you the same results with less code that is easier to read.
 
 **Disclaimer:** `trellor` is not affiliated, associated, authorized, endorsed by or in any way officially connected to Trello, Inc. (<http://www.trello.com>).
 
