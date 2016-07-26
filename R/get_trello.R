@@ -13,7 +13,7 @@
 #' @param paging logical whether paging should be used (if not, results will be limited to 1000 rows)
 #' @seealso \code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}}, \code{\link{get_token}}
 #' @importFrom dplyr bind_rows
-#' @importFrom httr GET content config http_status headers http_type http_error
+#' @importFrom httr GET content config http_status headers http_type http_error user_agent
 #' @importFrom jsonlite fromJSON
 #' @export
 #' @examples
@@ -85,7 +85,10 @@ get_flat = function(url,
                     query = NULL) {
 
     # Issue request and print out the complete url
-    req  = GET(url, config(token = token), query = query)
+    req  = GET(url,
+               config(token = token),
+               query = query,
+               user_agent("https://github.com/jchrom/trellor"))
     cat("Request URL:\n", req$url, "\n", sep = "")
 
     # If the status is not 200 (=OK), throw an error
