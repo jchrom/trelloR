@@ -2,7 +2,7 @@ Package: trellor
 Title: R API for Trello
 Version: 0.0.0.9000
 Authors@R: person("Jakub", "Chromec", , "chromec.jakub@gmail.com", role = c("aut", "cre"))
-Description: Makes it easy to get data in a friendly format from Trello API.
+Description: Makes it easy to get data from Trello API in a friendly format.
     Disclaimer: trellor is not affiliated, associated, authorized, endorsed by
     or in any way officially connected to Trello, Inc. (www.trello.com).
 Depends:
