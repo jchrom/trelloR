@@ -4,7 +4,7 @@
 \alias{get_trello}
 \title{Get Data From Trello API}
 \usage{
-get_trello(url, token, query = list(limit = "1000"), paginate = FALSE)
+get_trello(url, token, query = list(limit = "1000"), paging = FALSE)
 }
 \arguments{
 \item{url}{url for the GET request, see \code{\link[httr]{GET}} for details}
@@ -13,13 +13,13 @@ get_trello(url, token, query = list(limit = "1000"), paginate = FALSE)
 
 \item{query}{url parameters that form the query, see \code{\link[httr]{GET}} for details}
 
-\item{paginate}{logical whether paging should be used (if not, results will be limited to 1000 rows)}
+\item{paging}{logical whether paging should be used (if not, results will be limited to 1000 rows)}
 }
 \description{
 Issues \code{\link[httr]{GET}} requests for Trello API endpoints.
 }
 \details{
-It accepts JSON responses and uses \code{\link[jsonlite]{fromJSON}} to convert them into flat \code{data.frame}s. It hrows an error if non-JSON type of data is received. It also takes care of paging (if \code{paginate = TRUE}), setting the query parameter \code{before} to the earliest date from the previous result, essentially getting all there is for the given request.
+It accepts JSON responses and uses \code{\link[jsonlite]{fromJSON}} to convert them into flat \code{data.frame}s. It hrows an error if non-JSON type of data is received. It also takes care of paging (if \code{paging = TRUE}), setting the query parameter \code{before} to the earliest date from the previous result, essentially getting all there is for the given request.
 
 For unsuccessfull requests, server error messages are extracted from the response header and reprinted on the console.
 

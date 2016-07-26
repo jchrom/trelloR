@@ -4,7 +4,7 @@
 \alias{get_board_cards}
 \title{Get Board Cards}
 \usage{
-get_board_cards(id, token, filter = "all", paginate = FALSE,
+get_board_cards(id, token, filter = "all", paging = FALSE,
   simplify = TRUE)
 }
 \arguments{
@@ -14,7 +14,7 @@ get_board_cards(id, token, filter = "all", paginate = FALSE,
 
 \item{filter}{whether to return "all" (the default), archived ("closed") or "open" cards}
 
-\item{paginate}{whether paging should be used (necessary for requests returning more than 1000 rows). Defaults to \code{FALSE}}
+\item{paging}{whether paging should be used (necessary for requests returning more than 1000 rows). Defaults to \code{FALSE}}
 
 \item{simplify}{drop and rename some columns or leave it as is. Defaults to \code{TRUE}}
 }

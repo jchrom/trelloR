@@ -4,14 +4,14 @@
 \alias{get_card_actions}
 \title{Get Card Actions}
 \usage{
-get_card_actions(id, token, paginate = FALSE, simplify = TRUE)
+get_card_actions(id, token, paging = FALSE, simplify = TRUE)
 }
 \arguments{
 \item{id}{id of the desired card}
 
 \item{token}{previously generated token, see \code{\link{get_token}} for how to obtain it}
 
-\item{paginate}{whether paging should be used (necessary for requests returning more than 1000 rows). Defaults to \code{FALSE}}
+\item{paging}{whether paging should be used (necessary for requests returning more than 1000 rows). Defaults to \code{FALSE}}
 
 \item{simplify}{drop and rename some columns or leave it as it is. Defaults to \code{TRUE}}
 }

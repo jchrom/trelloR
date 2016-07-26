@@ -4,14 +4,14 @@
 \alias{get_board_members}
 \title{Get Board Members}
 \usage{
-get_board_members(id, token, paginate = FALSE, simplify = TRUE)
+get_board_members(id, token, paging = FALSE, simplify = TRUE)
 }
 \arguments{
 \item{id}{id of the desired board}
 
 \item{token}{previously generated token, see \code{\link{get_token}} for how to obtain it}
 
-\item{paginate}{whether paging should be used (necessary for requests returning more than 1000 rows). Defaults to \code{FALSE}}
+\item{paging}{whether paging should be used (necessary for requests returning more than 1000 rows). Defaults to \code{FALSE}}
 
 \item{simplify}{drop and rename some columns or leave it as it is. Defaults to \code{TRUE}}
 }
