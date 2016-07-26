@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_token.R
 \name{get_token}
 \alias{get_token}
-\title{Authorize API access to Trello}
+\title{Authorize API Access To Trello}
 \usage{
 get_token(key, secret, app = "trello")
 }
