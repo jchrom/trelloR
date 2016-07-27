@@ -9,9 +9,9 @@
 #' Functions such as \code{\link{get_board_cards}} or \code{\link{get_card_comments}} are convenience wrappers for this function. They remove the need for specifying the query parameters and optionally simplify the result so as to give you more consistent and easy to work with data.
 #' @param url url for the GET request, see \code{\link[httr]{GET}} for details
 #' @param query url parameters that form the query, see \code{\link[httr]{GET}} for details
-#' @param token previously generated token, see \code{\link{get_token}} for how to obtain it
+#' @param token previously generated token, see \code{\link{trello_get_token}} for how to obtain it
 #' @param paging logical whether paging should be used (if not, results will be limited to 1000 rows)
-#' @seealso \code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}}, \code{\link{get_token}}
+#' @seealso \code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}}, \code{\link{trello_get_token}}
 #' @importFrom dplyr bind_rows
 #' @importFrom httr GET content config http_status headers http_type http_error user_agent
 #' @importFrom jsonlite fromJSON
