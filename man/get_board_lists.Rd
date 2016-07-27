@@ -14,8 +14,6 @@ get_board_lists(id, token, paging = FALSE, fix = TRUE)
 \item{paging}{whether paging should be used (necessary for requests returning more than 1000 rows). Defaults to \code{FALSE}}
 
 \item{fix}{drop and rename some columns or leave it as it is. Defaults to \code{TRUE}}
-
-\item{filter}{whether to return "all" (the default), archived ("closed") or "open" cards}
 }
 \description{
 Given a board ID, returns a flat \code{data.frame} with lists-related data.
