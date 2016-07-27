@@ -22,7 +22,7 @@ trello_get_token = function(key, secret, app = "trello") {
 
     # 1. Create an app
     trello.app = oauth_app(
-        app = app,
+        appname = app,
         key = key,
         secret = secret)
 
