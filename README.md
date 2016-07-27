@@ -99,11 +99,11 @@ By default, some variables in the resulting `data.frame` are renamed and some dr
 
 2. Some columns are expected to be less frequently used than others and thus dropped.
 
-If you dont think this is useful, set `simplify = FALSE`. This will give you a flat `data.frame` with all the columns and original variable names.
+If you dont think this is useful, set `fix = FALSE`. This will give you a flat `data.frame` with all the columns and original variable names.
 
 ## Calling your own queries
 
-All the `get_` functions are really just wrappers for the `get_trello` function. The `get_trello` function in turn calls the `httr::GET` function.
+All the `get_` functions call the `get_trello` function which is basically a wrapper for `httr::GET` function.
 
 This gradually strips away complexity in the following way:
 
