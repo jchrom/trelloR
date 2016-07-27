@@ -17,6 +17,7 @@
 #' @importFrom jsonlite fromJSON
 #' @export
 #' @examples
+#' \dontrun{
 #' # First, obtain a secure token to communicate with Trello API
 #' token = get_token("your_key", "your_secret")
 #'
@@ -29,13 +30,18 @@
 #'
 #' # Get all cards that are not archived
 #' all_open = get_request(url, token, query)
+#' }
 
-get_trello = function(url,
+trello_get = function(url,
                       token,
-                      query = list(limit = "1000"),
+                      query = NULL,
                       paging = FALSE) {
 
     cat("Sending request...\n")
+
+    # In case of large results, server only returns 50; change to 1000 instead
+    if (is.null(query))       query = list()
+    if (is.null(query$limit)) query$limit = "1000"
 
     if (paging) {
 
@@ -48,8 +54,7 @@ get_trello = function(url,
             batch = get_flat(url = url, token = token, query = query)
             flat  = bind_rows(flat, batch)
 
-            # Check whether paging is needed; if so, set the 'before' parameter
-            # Also, print out a message
+            # If paging is needed, set 'before'; otherwise abort
             if (keep_going(batch)) {
                 query$before = set_before(batch)
                 message("Received 1000 results, keep paging...")
@@ -63,41 +68,56 @@ get_trello = function(url,
         # Build url and get flattened data
         flat = get_flat(url = url, token = token, query = query)
 
-        # Comment on results:
-        # - Responses containing lists do not fit into the package scheme, but
-        #   can be subset manually
-        # - If 1000 rows is obtained, the true response may be larger - suggest
-        #   the use of paging
-        # - Otherwise just return the result as is
+        # Show out
         if (!is.data.frame(flat)) {
-            cat("Returning empty or complex JSON: subset manually")
+            message("Returning", class(flat))
         } else if (is.data.frame(flat) & nrow(flat) >= 1000) {
             message("Reached 1000 results; use 'paging = TRUE' to get more")
-        } else if (is.data.frame(flat)) {
+        } else {
             message("Received ", nrow(flat), " results")
         }
     }
     return(flat)
 }
 
-get_flat = function(url,
-                    token,
-                    query = NULL) {
+set_before = function(batch) {
+    # Get ID that corresponds with the earliest date
+    before = batch$id[batch$date == min(batch$date)]
+    return(before)
+}
 
-    # Issue request and print out the complete url
-    req  = GET(url,
-               config(token = token),
-               query = query,
+keep_going = function(flat) {
+
+    # Only data.frames can be bound by bind_rows; if it isn't one, abort paging
+    if (!is.data.frame(flat)) {
+        message("Response format is not suitable for paging - finished.")
+        go_on = FALSE
+    } else go_on = TRUE
+
+    # If the result is shorter than 1000, it is the last page; abort paging
+    if (nrow(flat) < 1000) go_on = FALSE
+
+    # My heart must
+    return(go_on)
+}
+
+get_flat = function(url, token, query = NULL) {
+
+    # Issue request
+    req  = GET(url, config(token = token), query = query,
                user_agent("https://github.com/jchrom/trellor"))
+
+    # Print out the complete url
     cat("Request URL:\n", req$url, "\n", sep = "")
 
-    # If the status is not 200 (=OK), throw an error
+    # Handle errors
     if (http_error(req)) stop(http_status(req)$message, " : ", req)
 
-    # If the content is JSON, convert into a flat data.frame, otherwise error
+    # Handle response (only JSON is accepted)
     if (http_type(req) == "application/json") {
         json = content(req, as = "text")
         flat = fromJSON(json, flatten = T)
+        # print(headers(req))
     } else {
         req_trim = paste0(strtrim(content(req, as = "text"), 50), "...")
         stop(http_type(req), " is not JSON : ", req_trim)
@@ -110,27 +130,4 @@ get_flat = function(url,
     return(flat)
 }
 
-set_before = function(batch) {
-    # Get ID that corresponds with the earliest date
-    before = batch$id[batch$date == min(batch$date)]
-    return(before)
-}
 
-keep_going = function(flat) {
-
-    # By default, my heart must go on...
-    go_on = TRUE
-
-    # If the result is not a data.frame, it cannot be bound by bind_rows; return
-    # whatever came back and print out a message
-    if (!is.data.frame(flat)) {
-        message("Returning empty or complex JSON: will not use paging")
-        go_on = FALSE
-    }
-
-    # Also, if it is shorter than 1000 rows, no paging is needed since there
-    # are no more results to be fetched
-    if (nrow(flat) < 1000) go_on = FALSE
-
-    return(go_on)
-}
