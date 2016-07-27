@@ -13,12 +13,12 @@ get_card_members(id, token, paging = FALSE, fix = TRUE)
 
 \item{paging}{whether paging should be used (necessary for requests returning more than 1000 rows). Defaults to \code{FALSE}}
 
-\item{simplify}{drop and rename some columns or leave it as it is. Defaults to \code{TRUE}}
+\item{fix}{drop and rename some columns or leave it as it is. Defaults to \code{TRUE}}
 }
 \description{
 Given a card ID, returns a flat \code{data.frame} with members-related data.
 }
 \seealso{
-\code{\link{get_token}}, \code{\link{get_trello}}
+\code{\link{trello_get_token}}, \code{\link{trello_get}}
 }
 
