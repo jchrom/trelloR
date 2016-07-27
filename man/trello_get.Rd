@@ -9,7 +9,7 @@ trello_get(url, token, query = NULL, paging = FALSE)
 \arguments{
 \item{url}{url for the GET request, see \code{\link[httr]{GET}} for details}
 
-\item{token}{previously generated token, see \code{\link{get_token}} for how to obtain it}
+\item{token}{previously generated token, see \code{\link{trello_get_token}} for how to obtain it}
 
 \item{query}{url parameters that form the query, see \code{\link[httr]{GET}} for details}
 
@@ -42,6 +42,6 @@ all_open = get_request(url, token, query)
 }
 }
 \seealso{
-\code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}}, \code{\link{get_token}}
+\code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}}, \code{\link{trello_get_token}}
 }
 

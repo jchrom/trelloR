@@ -9,7 +9,7 @@ get_board_labels(id, token, paging = FALSE, fix = TRUE)
 \arguments{
 \item{id}{board id}
 
-\item{token}{previously generated token, see \code{\link{get_token}} for info on how to obtain it}
+\item{token}{previously generated token, see \code{\link{trello_get_token}} for info on how to obtain it}
 
 \item{paging}{whether paging should be used (necessary for requests returning more than 1000 rows). Defaults to \code{FALSE}}
 
@@ -19,6 +19,6 @@ get_board_labels(id, token, paging = FALSE, fix = TRUE)
 Given a board ID, returns a flat \code{data.frame} with labels-related data.
 }
 \seealso{
-\code{\link{get_token}}, \code{\link{trello_get}}
+\code{\link{trello_get_token}}, \code{\link{trello_get}}
 }
 

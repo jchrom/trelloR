@@ -9,7 +9,7 @@ get_card_actions(id, token, filter = NULL, paging = FALSE, fix = TRUE)
 \arguments{
 \item{id}{card id}
 
-\item{token}{previously generated token, see \code{\link{get_token}} for how to obtain it}
+\item{token}{previously generated token, see \code{\link{trello_get_token}} for how to obtain it}
 
 \item{filter}{limit to just one type of action, e.g. "addMemberToCard"}
 
@@ -21,6 +21,6 @@ get_card_actions(id, token, filter = NULL, paging = FALSE, fix = TRUE)
 Given a card ID, returns a flat \code{data.frame} with actions-related data.
 }
 \seealso{
-\code{\link{trello_get_token}}, \code{\link{trello_trello}}
+\code{\link{trello_get_token}}, \code{\link{trello_get}}
 }
 

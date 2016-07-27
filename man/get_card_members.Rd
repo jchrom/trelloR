@@ -9,7 +9,7 @@ get_card_members(id, token, paging = FALSE, fix = TRUE)
 \arguments{
 \item{id}{card id}
 
-\item{token}{previously generated token, see \code{\link{get_token}} for how to obtain it}
+\item{token}{previously generated token, see \code{\link{trello_get_token}} for how to obtain it}
 
 \item{paging}{whether paging should be used (necessary for requests returning more than 1000 rows). Defaults to \code{FALSE}}
 
