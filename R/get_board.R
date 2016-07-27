@@ -53,7 +53,6 @@ get_board_actions = function(id, token,
 #' Given a board ID, returns a flat \code{data.frame} with lists-related data.
 #' @param id board id
 #' @param token previously generated token, see \code{\link{trello_get_token}} for how to obtain it
-#' @param filter whether to return "all" (the default), archived ("closed") or "open" cards
 #' @param paging whether paging should be used (necessary for requests returning more than 1000 rows). Defaults to \code{FALSE}
 #' @param fix drop and rename some columns or leave it as it is. Defaults to \code{TRUE}
 #' @seealso \code{\link{trello_get_token}}, \code{\link{trello_get}}
