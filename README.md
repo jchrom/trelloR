@@ -2,13 +2,11 @@
 
 [![Build Status](https://travis-ci.org/jchrom/trellor.svg?branch=master)](https://travis-ci.org/jchrom/trellor)
 
-The purpose of `trellor` is to provide easy access to the [Trello API](https://developers.trello.com/) from R. It can retrieve data from various levels of JSON hierarchy (e.g. cards that belong to a particular board, members assigned to a particular card etc.) and return a *flattened* `data.frame` which is easy to work with.
+The purpose of `trellor` is to provide easy access to the [Trello API](https://developers.trello.com/) from R. It can retrieve data from various levels of JSON hierarchy (e.g. cards that belong to a particular board or members assigned to a particular card).
 
-Requests are carried out by a family of simple functions with meaningful names, such as `get_my_boards()` or `get_card_comments()`. For large requests, there is an automated paging parameter which makes sure all the results will be acquired.
+Requests are carried out by simple functions with meaningful names, such as `get_my_boards()` or `get_card_comments()`. Automated paging makes sure that all the results will be acquired. Access to private boards is achieved by obtaining a secure token with [Trello developer keys](https://trello.com/app-key).
 
-It also provides an intuitive way of authorizing your API access using [Trello developer keys](https://trello.com/app-key).
-
-**Note.** `trellor` is a convenience wrapper for Hadley Wickham's [httr](https://cran.r-project.org/web/packages/httr/index.html) and Jeroen Ooms' [jsonlite](https://cran.r-project.org/web/packages/jsonlite/index.html). If you like writing a lot of code, you could do everything it does by using these two packages; `trellor` will get you the same results with less code that is easier to read.
+**Note.** `trellor` is built on top of Hadley Wickham's [httr](https://cran.r-project.org/web/packages/httr/index.html) and Jeroen Ooms' [jsonlite](https://cran.r-project.org/web/packages/jsonlite/index.html).
 
 **Disclaimer:** `trellor` is not affiliated, associated, authorized, endorsed by or in any way officially connected to Trello, Inc. (<http://www.trello.com>).
 
@@ -84,7 +82,7 @@ There are several issues you should know about. They include **handling large re
 
 Trello limits the number of results of a single request to 1000 (which corresponds to 1000 rows in the resulting `data.frame`). This may not be sufficient when requesting larger amounts of data, e.g. all the actions related to a board ID.
 
-To get more than 1000 results, you need to break down your request into several separate requests, each retrieving no more than 1000 results. This is called "paging", and `trellor` will do that for you without a hassle. To use paging, set `paging = TRUE`. This will make `trellor` retrieve **all** the results for given request, i.e. as many pages as needed. IT will then return a `data.frame` with the combined results.
+To get more than 1000 results, you need to break down your request into several separate requests, each retrieving no more than 1000 results. This is called "paging", and `trellor` will do that for you without a hassle. To use paging, set `paging = TRUE`. This will make `trellor` retrieve **all** the results for given request, i.e. as many pages as needed. It will then return a `data.frame` with combined results.
 
 ```{r, eval=FALSE, include=TRUE}
 my_boards  = get_my_boards(my_token)
@@ -94,13 +92,13 @@ my_actions = get_board_actions(board1_id, my_token, paging = TRUE)
 
 ## The format of results
 
-The data is returned in form of a "flattened" `data.frame` whenevr possible, so you don't have to worry about formatting the response (courtesy of the `jsonlite::fromJSON` function). However, sometimes a more complex structure is returned as a `list` which may contain more `list`s and/or `data.frame`s. Ultimately, the fines grain in the hierarchy is always a `data.frame`.
+The data is returned in form of a flat `data.frame` whenevr possible, so you don't have to worry about formatting the response (courtesy of the `jsonlite::fromJSON` function). However, sometimes a more complex structure is returned as a `list` which may contain more `list`s and/or `data.frame`s. Ultimately, the finest grain in the hierarchy is always a `data.frame`.
 
-The names of variables will be the same as they are in the incomming JSON. This is not optimal in many contexts. For instance, card ID and member ID are both called "id", which is not extremely useful when you want to do table joins. In the immediate future, a "facelifting" function will be provided to impose a consistent naming scheme and perhaps dropping some less frequently used variables.
+The names of variables will be the same as they are in the incomming JSON. This is not optimal in many contexts. For instance, card ID and member ID are both called "id", which is not very useful if you want to do table joins. In the immediate future, a "facelifting" function will be provided to impose a consistent naming scheme and perhaps dropping some less frequently used variables.
 
 ## Calling your own queries
 
-All the `get_` functions call `trello_get`, which is basically a wrapper for `httr::GET`. This strips away complexity in the following way:
+All the `get_` functions call `trello_get`, which is a wrapper for `httr::GET`. This strips away complexity in the following way:
 
 1. `httr::GET` fetches results for exactly one request; it needs a complete URL, query parameters and a token. It does the heavy lifting but leaves error handling, response formatting and paging to you.
 
