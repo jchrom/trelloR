@@ -13,8 +13,6 @@
 #' @param paging logical whether paging should be used (if not, results will be limited to 1000 rows)
 #' @seealso \code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}}, \code{\link{trello_get_token}}
 #' @importFrom dplyr bind_rows
-#' @importFrom httr GET content config http_status headers http_type http_error user_agent
-#' @importFrom jsonlite fromJSON
 #' @export
 #' @examples
 #' \dontrun{
@@ -100,6 +98,15 @@ keep_going = function(flat) {
     # My heart must
     return(go_on)
 }
+
+#' GET url and return data.frame
+#'
+#' GET url and return data.frame
+#' @param url url to get
+#' @param token a secure token
+#' @param query additional url parameters (defaults to NULL)
+#' @importFrom httr GET content config http_status headers http_type http_error user_agent
+#' @importFrom jsonlite fromJSON
 
 get_flat = function(url, token, query = NULL) {
 
