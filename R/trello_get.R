@@ -59,7 +59,7 @@ trello_get = function(url,
                 query$before = set_before(batch)
                 message("Received 1000 results, keep paging...")
             } else {
-                message("Received last page (", nrow(batch)," results)")
+                message("Received last page, ", nrow(flat)," results in total")
                 break
             }
         }
@@ -125,6 +125,7 @@ get_flat = function(url, token, query = NULL) {
 
     # If the result is an empty list, convert into an empty data.frame
     if (length(flat) == 0) flat = data.frame()
+    message("The response is empty")
 
     # Return the result
     return(flat)
