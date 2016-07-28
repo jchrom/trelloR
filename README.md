@@ -37,7 +37,7 @@ my_token = trello_get_token(your_key, your_secret)
 
 You will be prompted to confirm authorization in a browser. You will also be offered an option to store the authentication data in your working directory, in a hidden `'.httr-oauth'` file.
 
-**NOTE.** You should also make sure you keep your key and secret in a **safe, non-shared** location. Use `source()` if you wish to make it available from another directory.
+**NOTE.** Make sure you keep your key and secret in a **safe, non-shared** location.
 
 ## Step 2: Getting data out of Trello
 
