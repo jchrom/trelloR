@@ -1,6 +1,6 @@
 #' Build Requests For Trello API
 #'
-#' Creates a function that retirevs data from Trello API.
+#' Creates a function that retrieves data from Trello API.
 #' @param parent e.g. \code{"board"}, \code{"card"}, \code{"member"}
 #' @param child e.g. \code{"cards"}, \code{"actions"}
 #' @seealso \code{\link{trello_get_token}}, \code{\link{trello_get}}
@@ -20,7 +20,7 @@ trello_req = function(parent, child) {
                          paging = paging)
 
         # Assign a class depending on what has been returned
-        class(res) = c(child, "trello.api", class(res))
+        class(res) = c(child, "trello_api", class(res))
 
         # Simplify the response
         if (fix) trello_fix(res)
@@ -31,7 +31,7 @@ trello_req = function(parent, child) {
     return(trello_fun)
 }
 
-# For now just a placeholder; later a wrapper for the trello_fix family
+# For now just a placeholder; later a wrapper for the fix_ family
 trello_fix = function(res) {
     return(res)
 }
