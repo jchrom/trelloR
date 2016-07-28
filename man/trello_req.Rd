@@ -12,7 +12,7 @@ trello_req(parent, child)
 \item{child}{e.g. \code{"cards"}, \code{"actions"}}
 }
 \description{
-Creates a function that retirevs data from Trello API.
+Creates a function that retrieves data from Trello API.
 }
 \seealso{
 \code{\link{trello_get_token}}, \code{\link{trello_get}}
