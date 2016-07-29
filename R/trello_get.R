@@ -1,17 +1,21 @@
 #' Get Data From Trello API
 #'
-#' Issues \code{\link[httr]{GET}} requests for Trello API endpoints.
+#' Issues \code{\link[httr]{GET}} requests for Trello API endpoints. Functions such as \code{\link{get_board_cards}} or \code{\link{get_card_comments}} are convenience wrappers for this function.
 #'
-#' It accepts JSON responses and uses \code{\link[jsonlite]{fromJSON}} to convert them into flat \code{data.frame}s. It hrows an error if non-JSON type of data is received. It also takes care of paging (if \code{paging = TRUE}), setting the query parameter \code{before} to the earliest date from the previous result, essentially getting all there is for the given request.
+#' If the request fails, server error messages are extracted from the response header and reprinted on the console.
 #'
-#' For unsuccessfull requests, server error messages are extracted from the response header and reprinted on the console.
+#' Only JSON responses are accepted. \code{\link[jsonlite]{fromJSON}} converts them into flat \code{data.frame}s. Non-JSON type of response throws an error.
 #'
-#' Functions such as \code{\link{get_board_cards}} or \code{\link{get_card_comments}} are convenience wrappers for this function. They remove the need for specifying the query parameters and optionally simplify the result so as to give you more consistent and easy to work with data.
+#' When \code{paging = TRUE}), then every batch of results is searched and the ID of the earliest result is retrieved. This is used as the \code{before} parameter to the next url request. This way Trello knows where to start fetching the next batch of results. Paging keeps going until there is nothing more to fetch (i.e., the number of results is smaller then 1000 which is the server response limit).
+#'
+#' \code{filter} and \code{limit} are query parameters that can be set individually; you could achieve the same result by using \code{query = list(filter = "filter_value", limit = "limit_value")}
 #' @param url url for the GET request, see \code{\link[httr]{GET}} for details
+#' @param filter url parameter
+#' @param limit url parameter (defaults to 1000; if reached, paging is suggested)
 #' @param query url parameters that form the query, see \code{\link[httr]{GET}} for details
 #' @param token previously generated token, see \code{\link{trello_get_token}} for how to obtain it
-#' @param paging logical whether paging should be used (if not, results will be limited to 1000 rows)
-#' @param bind.rows by default, pages will be combined into one \code{data.frame} by \code{\link[dplyr]{bind_rows}}. Set to \code{FALSE} if you want a \code{list} of pages instead. This is useful on the rare occasion that the JSON response is not formatted correctly making \code{\link[dplyr]{bind_rows}} fail.
+#' @param paging logical whether paging should be used
+#' @param bind.rows by default, pages will be combined into one \code{data.frame} by \code{\link[dplyr]{bind_rows}}. Set to \code{FALSE} if you want \code{list} instead. This is useful on the rare occasion that the JSON response is not formatted correctly and makes \code{\link[dplyr]{bind_rows}} fail
 #' @seealso \code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}}, \code{\link{trello_get_token}}
 #' @importFrom dplyr bind_rows
 #' @export
@@ -20,32 +24,28 @@
 #' # the publicly available Trello Development Roadmap board (notice the .json
 #' # suffix):
 #' url = "https://trello.com/b/nC8QJJoZ/trello-development-roadmap.json"
-#' tdb = trello_get(url)
+#' tdr = trello_get(url)
 #'
 #' # This gives you some useful content already, but you may want to do more
 #' # specific queries. Let's start by getting the ID of the board:
-#' bid = tdb$id
+#' bid = tdr$id
 #'
-#' # We can now use this id to make specific queries using dedicated functions:
-#'
-#' tdb_lists = get_board_lists(bid)   # Get lists
-#' tdb_labels = get_board_labels(bid) # Get labels
-#' tdb_cards = get_board_cards(bid)   # Get cards
+#' # We can now use this ID to make specific queries using dedicated functions:
+#' tdr_lists  = get_board_lists(bid)            # Get all lists
+#' tdr_labels = get_board_labels(bid)           # Get all labels
+#' tdr_cards  = get_board_cards(bid, limit = 5) # Get 5 cards
 #'
 #' # Having acquired card-related data, we can now make queries about specific
 #' # cards. As before, we start by getting the ID of the first card:
-#' card1_id = tdb_cards$id[1]
+#' card1_id   = tdr_cards$id[1]
 #' card1_comm = get_card_comments(card1_id) # Get comments from the card
 #'
-#' # To retrieve large results, a paging might be necessary:
+#' # To retrieve large results, paging might be necessary:
 #'
 #' \dontrun{
-#' tdb_actions = get_board_actions(bid, filter = "commentCard", paging = TRUE)
-#' }
+#' tdr_actions = get_board_actions(bid, filter = "commentCard", paging = TRUE)
 #'
 #' # For private boards, you need a secure token to communicate with Trello API
-#'
-#' \dontrun{
 #' token = get_token("your_key", "your_secret")
 #'
 #' # Get all cards that are not archived
@@ -54,6 +54,8 @@
 
 trello_get = function(url,
                       token = NULL,
+                      filter = NULL,
+                      limit = NULL,
                       query = NULL,
                       paging = FALSE,
                       bind.rows = TRUE) {
@@ -61,57 +63,65 @@ trello_get = function(url,
     cat("Sending request...\n")
 
     # In case of large results, server only returns 50; change to 1000 instead
-    if (is.null(query))       query = list()
+
+    # Build query
+    if (is.null(query)) query = build_query(filter = filter, limit = limit)
     if (is.null(query$limit)) query$limit = "1000"
 
     if (paging) {
 
-        # Create placeholder for results
-        if (bind.rows) flat = data.frame() else flat = list()
+        # Set placeholder for results and a result counter
+        result = list()
+        n_res  = 0
 
         repeat {
 
-            # Get a batch of data and append to the previous results
-            batch = get_flat(url = url, token = token,
+            # Get a batch of data
+            batch = get_flat(url = url,
+                             token = token,
                              query = query)
+            n_res = n_res + nrow(batch)
 
-            if (bind.rows) {
-                # Try to bind row into one big data.frame
-                flat  = tryCatch(
-                    expr  = bind_rows(flat, batch),
-                    error = function(e) {
-                        message(e,
-                                "\nBinding data.frames failed - page not added",
-                                "\nConsider setting bind.rows = FALSE")}
-                    )
-            } else {
-                flat = append(flat, batch)
-            }
+            # Append to the previous results
+            result[[length(result) + 1]] = batch
 
             # If paging is needed, set 'before'; otherwise abort
             if (keep_going(batch)) {
                 query$before = set_before(batch)
                 message("Received 1000 results, keep paging...")
             } else {
-                message("Received last page, ", nrow(flat)," results in total")
+                message("Received last page, ", n_res," results in total")
                 break
             }
+        }
+
+        if (bind.rows) {
+            result = tryCatch(
+                expr  = bind_rows(result),
+                error = function(e) {
+                    message("Binding failed, returning list")
+                    message(length(result), " elements")
+                    result
+                })
         }
     } else {
 
         # Build url and get flattened data
-        flat = get_flat(url = url, token = token, query = query)
+        result = get_flat(url = url, token = token, query = query)
+        message("Returning ", class(result))
 
         # Show out
-        if (!is.data.frame(flat)) {
-            message("Returning ", class(flat))
-        } else if (is.data.frame(flat) & nrow(flat) >= 1000) {
-            message("Reached 1000 results; use 'paging = TRUE' to get more")
+        if (is.data.frame(result)) {
+            if (nrow(result) >= 1000) {
+                message("Reached 1000 results; use 'paging = TRUE' to get more")
+            } else {
+                message("Received ", nrow(result), " results")
+            }
         } else {
-            message("Received ", nrow(flat), " results")
+            message(length(result), " elements")
         }
     }
-    return(flat)
+    return(result)
 }
 
 set_before = function(batch) {
@@ -135,26 +145,6 @@ keep_going = function(flat) {
     return(go_on)
 }
 
-# Sometimes the JSON response is not flattened correctly by jsonlite::fromJSON,
-# returning lists where there should be vectors. This makes fails dplyr::bind_row
-# to fail, because the previous JSON response was flattened correctly, returning
-# a vector with identical name. dplyr::bind_rows cannot bind these due to the
-# class difference.
-
-fix_format = function(x) {
-    x = lapply(x, function(i) if (length(i) == 0) NA else i)
-    x = unlist(x)
-    return(x)
-}
-
-# We also need the name of the column from the error message:
-parse_error = function(erm) {
-    erm_loc = regexpr('".*"', erm)
-    col = regmatches(erm, erm_loc)
-    col = gsub('\\"', "",  col)
-    return(col)
-}
-
 #' GET url and return data.frame
 #'
 #' GET url and return data.frame
@@ -164,10 +154,14 @@ parse_error = function(erm) {
 #' @importFrom httr GET content config http_status headers http_type http_error user_agent
 #' @importFrom jsonlite fromJSON
 
-get_flat = function(url, token, query = NULL) {
+get_flat = function(url,
+                    token = NULL,
+                    query = NULL) {
 
     # Issue request
-    req  = GET(url, config(token = token), query = query,
+    req  = GET(url = url,
+               config(token = token),
+               query = query,
                user_agent("https://github.com/jchrom/trellor"))
 
     # Print out the complete url
