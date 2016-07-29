@@ -9,15 +9,26 @@
 trello_req = function(parent, child) {
 
     # Note: "parent", "child" are used in its body
-    trello_fun = function(id, token,
-                          query,
+    trello_fun = function(id,
+                          filter = NULL,
+                          limit = NULL,
+                          token = NULL,
+                          query = NULL,
                           paging = FALSE,
-                          fix = TRUE) {
+                          fix = TRUE,
+                          bind.rows = TRUE) {
 
-        # Build url & query and send request
+        # Build url
         url = paste0("https://api.trello.com/1/", parent, "/", id, "/", child)
-        res = trello_get(url = url, token = token, query = query,
-                         paging = paging)
+
+        # Send request
+        res = trello_get(url = url,
+                         token = token,
+                         filter = filter,
+                         limit = limit,
+                         query = query,
+                         paging = paging,
+                         bind.rows = bind.rows)
 
         # Assign a class depending on what has been returned
         class(res) = c(child, "trello_api", class(res))
@@ -31,9 +42,15 @@ trello_req = function(parent, child) {
     return(trello_fun)
 }
 
+build_query = function(filter, limit) {
+    query = list()
+    if (!is.null(filter)) query$filter = filter
+    if (!is.null(limit))  query$limit  = limit
+    print(query)
+    return(query)
+}
+
 # For now just a placeholder; later a wrapper for the fix_ family
 trello_fix = function(res) {
     return(res)
 }
-
-
