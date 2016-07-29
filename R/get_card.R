@@ -11,7 +11,7 @@
 #' @seealso \code{\link{trello_get_token}}, \code{\link{trello_get}}
 #' @export
 
-get_card_actions = function(id, token,
+get_card_actions = function(id, token = NULL,
                             filter = NULL,
                             paging = FALSE, fix = TRUE) {
 
@@ -34,7 +34,7 @@ get_card_actions = function(id, token,
 #' @seealso \code{\link{trello_get_token}}, \code{\link{trello_get}}
 #' @export
 
-get_card_comments = function(id, token,
+get_card_comments = function(id, token = NULL,
                              paging = FALSE, fix = TRUE) {
 
     fun = trello_req(parent = "card", child = "actions")
@@ -57,7 +57,7 @@ get_card_comments = function(id, token,
 #' @importFrom dplyr %>% select
 #' @export
 
-get_card_members = function(id, token,
+get_card_members = function(id, token = NULL,
                             paging = FALSE, fix = TRUE) {
 
     fun = trello_req(parent = "card", child = "members")
