@@ -11,6 +11,7 @@
 #' @param query url parameters that form the query, see \code{\link[httr]{GET}} for details
 #' @param token previously generated token, see \code{\link{trello_get_token}} for how to obtain it
 #' @param paging logical whether paging should be used (if not, results will be limited to 1000 rows)
+#' @param bind.rows by default, pages will be combined into one \code{data.frame} by \code{\link[dplyr]{bind_rows}}. Set to \code{FALSE} if you want a \code{list} of pages instead. This is useful on the rare occasion that the JSON response is not formatted correctly making \code{\link[dplyr]{bind_rows}} fail.
 #' @seealso \code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}}, \code{\link{trello_get_token}}
 #' @importFrom dplyr bind_rows
 #' @export
@@ -31,7 +32,7 @@
 #' tdb_labels = get_board_labels(bid) # Get labels
 #' tdb_cards = get_board_cards(bid)   # Get cards
 #'
-#' # Having acquired the card-related data, we can now make queries about specific
+#' # Having acquired card-related data, we can now make queries about specific
 #' # cards. As before, we start by getting the ID of the first card:
 #' card1_id = tdb_cards$id[1]
 #' card1_comm = get_card_comments(card1_id) # Get comments from the card
@@ -54,7 +55,8 @@
 trello_get = function(url,
                       token = NULL,
                       query = NULL,
-                      paging = FALSE) {
+                      paging = FALSE,
+                      bind.rows = TRUE) {
 
     cat("Sending request...\n")
 
@@ -65,19 +67,26 @@ trello_get = function(url,
     if (paging) {
 
         # Create placeholder for results
-        flat = data.frame()
+        if (bind.rows) flat = data.frame() else flat = list()
 
         repeat {
 
             # Get a batch of data and append to the previous results
-            batch = get_flat(url = url, token = token, query = query)
-            flat  = tryCatch(
-                expr  = bind_rows(flat, batch),
-                error = function(e) {
-                    message(e)
-                    return(list(flat, batch))
-                })
+            batch = get_flat(url = url, token = token,
+                             query = query)
 
+            if (bind.rows) {
+                # Try to bind row into one big data.frame
+                flat  = tryCatch(
+                    expr  = bind_rows(flat, batch),
+                    error = function(e) {
+                        message(e,
+                                "\nBinding data.frames failed - page not added",
+                                "\nConsider setting bind.rows = FALSE")}
+                    )
+            } else {
+                flat = append(flat, batch)
+            }
 
             # If paging is needed, set 'before'; otherwise abort
             if (keep_going(batch)) {
@@ -126,6 +135,26 @@ keep_going = function(flat) {
     return(go_on)
 }
 
+# Sometimes the JSON response is not flattened correctly by jsonlite::fromJSON,
+# returning lists where there should be vectors. This makes fails dplyr::bind_row
+# to fail, because the previous JSON response was flattened correctly, returning
+# a vector with identical name. dplyr::bind_rows cannot bind these due to the
+# class difference.
+
+fix_format = function(x) {
+    x = lapply(x, function(i) if (length(i) == 0) NA else i)
+    x = unlist(x)
+    return(x)
+}
+
+# We also need the name of the column from the error message:
+parse_error = function(erm) {
+    erm_loc = regexpr('".*"', erm)
+    col = regmatches(erm, erm_loc)
+    col = gsub('\\"', "",  col)
+    return(col)
+}
+
 #' GET url and return data.frame
 #'
 #' GET url and return data.frame
@@ -150,7 +179,7 @@ get_flat = function(url, token, query = NULL) {
     # Handle response (only JSON is accepted)
     if (http_type(req) == "application/json") {
         json = content(req, as = "text")
-        flat = fromJSON(json, flatten = T)
+        flat = fromJSON(json, flatten = TRUE)
     } else {
         req_trim = paste0(strtrim(content(req, as = "text"), 50), "...")
         stop(http_type(req), " is not JSON : ", req_trim)
