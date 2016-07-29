@@ -27,7 +27,7 @@ get_my_boards = function(token, paging = FALSE, fix = TRUE) {
 #' @param fix drop and rename some columns or return it as is. Defaults to \code{TRUE}
 #' @export
 
-get_member_boards = function(id, token, paging = FALSE, fix = TRUE) {
+get_member_boards = function(id, token = NULL, paging = FALSE, fix = TRUE) {
 
     fun = trello_req(parent = "member", child = "boards")
     dat = fun(id, token = token,
