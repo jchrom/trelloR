@@ -4,7 +4,8 @@
 \alias{trello_get}
 \title{Get Data From Trello API}
 \usage{
-trello_get(url, token = NULL, query = NULL, paging = FALSE)
+trello_get(url, token = NULL, query = NULL, paging = FALSE,
+  bind.rows = TRUE)
 }
 \arguments{
 \item{url}{url for the GET request, see \code{\link[httr]{GET}} for details}
@@ -14,6 +15,8 @@ trello_get(url, token = NULL, query = NULL, paging = FALSE)
 \item{query}{url parameters that form the query, see \code{\link[httr]{GET}} for details}
 
 \item{paging}{logical whether paging should be used (if not, results will be limited to 1000 rows)}
+
+\item{bind.rows}{by default, pages will be combined into one \code{data.frame} by \code{\link[dplyr]{bind_rows}}. Set to \code{FALSE} if you want a \code{list} of pages instead. This is useful on the rare occasion that the JSON response is not formatted correctly making \code{\link[dplyr]{bind_rows}} fail.}
 }
 \description{
 Issues \code{\link[httr]{GET}} requests for Trello API endpoints.
@@ -42,7 +45,7 @@ tdb_lists = get_board_lists(bid)   # Get lists
 tdb_labels = get_board_labels(bid) # Get labels
 tdb_cards = get_board_cards(bid)   # Get cards
 
-# Having acquired the card-related data, we can now make queries about specific
+# Having acquired card-related data, we can now make queries about specific
 # cards. As before, we start by getting the ID of the first card:
 card1_id = tdb_cards$id[1]
 card1_comm = get_card_comments(card1_id) # Get comments from the card
