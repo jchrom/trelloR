@@ -15,23 +15,44 @@
 #' @importFrom dplyr bind_rows
 #' @export
 #' @examples
+#' # For accessing public boards you don't need authorization; this example uses
+#' # the publicly available Trello Development Roadmap board (notice the .json
+#' # suffix):
+#' url = "https://trello.com/b/nC8QJJoZ/trello-development-roadmap.json"
+#' tdb = trello_get(url)
+#'
+#' # This gives you some useful content already, but you may want to do more
+#' # specific queries. Let's start by getting the ID of the board:
+#' bid = tdb$id
+#'
+#' # We can now use this id to make specific queries using dedicated functions:
+#'
+#' tdb_lists = get_board_lists(bid)   # Get lists
+#' tdb_labels = get_board_labels(bid) # Get labels
+#' tdb_cards = get_board_cards(bid)   # Get cards
+#'
+#' # Having acquired the card-related data, we can now make queries about specific
+#' # cards. As before, we start by getting the ID of the first card:
+#' card1_id = tdb_cards$id[1]
+#' card1_comm = get_card_comments(card1_id) # Get comments from the card
+#'
+#' # To retrieve large results, a paging might be necessary:
+#'
 #' \dontrun{
-#' # First, obtain a secure token to communicate with Trello API
+#' tdb_actions = get_board_actions(bid, filter = "commentCard", paging = TRUE)
+#' }
+#'
+#' # For private boards, you need a secure token to communicate with Trello API
+#'
+#' \dontrun{
 #' token = get_token("your_key", "your_secret")
-#'
-#' # Second, build an URL
-#' id  = "id_of_a_given_board"
-#' url = paste0("https://api.trello.com/1/boards/", id, "/cards")
-#'
-#' # Third, store query parametrs in a list (see ?httr::GET for details)
-#' query = list(filter = "open")
 #'
 #' # Get all cards that are not archived
 #' all_open = get_request(url, token, query)
 #' }
 
 trello_get = function(url,
-                      token,
+                      token = NULL,
                       query = NULL,
                       paging = FALSE) {
 
@@ -50,7 +71,13 @@ trello_get = function(url,
 
             # Get a batch of data and append to the previous results
             batch = get_flat(url = url, token = token, query = query)
-            flat  = bind_rows(flat, batch)
+            flat  = tryCatch(
+                expr  = bind_rows(flat, batch),
+                error = function(e) {
+                    message(e)
+                    return(list(flat, batch))
+                })
+
 
             # If paging is needed, set 'before'; otherwise abort
             if (keep_going(batch)) {
@@ -68,7 +95,7 @@ trello_get = function(url,
 
         # Show out
         if (!is.data.frame(flat)) {
-            message("Returning", class(flat))
+            message("Returning ", class(flat))
         } else if (is.data.frame(flat) & nrow(flat) >= 1000) {
             message("Reached 1000 results; use 'paging = TRUE' to get more")
         } else {
@@ -124,15 +151,16 @@ get_flat = function(url, token, query = NULL) {
     if (http_type(req) == "application/json") {
         json = content(req, as = "text")
         flat = fromJSON(json, flatten = T)
-        # print(headers(req))
     } else {
         req_trim = paste0(strtrim(content(req, as = "text"), 50), "...")
         stop(http_type(req), " is not JSON : ", req_trim)
     }
 
     # If the result is an empty list, convert into an empty data.frame
-    if (length(flat) == 0) flat = data.frame()
-    message("The response is empty")
+    if (length(flat) == 0) {
+        flat = data.frame()
+        message("The response is empty")
+    }
 
     # Return the result
     return(flat)
