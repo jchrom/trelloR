@@ -4,24 +4,17 @@
 \alias{get_board_cards}
 \title{Get Board Cards}
 \usage{
-get_board_cards(id, token = NULL, filter = "open", paging = FALSE,
-  fix = TRUE)
+get_board_cards(id, ...)
 }
 \arguments{
 \item{id}{board id}
 
-\item{token}{previously generated token, see \code{\link{trello_get_token}} for how to obtain it}
-
-\item{filter}{whether to return "open" (the default), archived ("closed") or "all" cards}
-
-\item{paging}{whether paging should be used (necessary for requests returning more than 1000 rows). Defaults to \code{FALSE}}
-
-\item{fix}{drop and rename some columns or leave it as is. Defaults to \code{TRUE}}
+\item{...}{additional arguments passed to \code{\link{trello_get}}}
 }
 \description{
 Given a board ID, returns a flat \code{data.frame} with card-related data.
 }
 \seealso{
-\code{\link{trello_get_token}}, \code{\link{trello_get}}
+\code{\link{trello_get}}
 }
 

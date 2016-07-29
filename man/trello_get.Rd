@@ -4,61 +4,63 @@
 \alias{trello_get}
 \title{Get Data From Trello API}
 \usage{
-trello_get(url, token = NULL, query = NULL, paging = FALSE,
-  bind.rows = TRUE)
+trello_get(url, token = NULL, filter = NULL, limit = NULL, query = NULL,
+  paging = FALSE, bind.rows = TRUE)
 }
 \arguments{
 \item{url}{url for the GET request, see \code{\link[httr]{GET}} for details}
 
 \item{token}{previously generated token, see \code{\link{trello_get_token}} for how to obtain it}
 
+\item{filter}{url parameter}
+
+\item{limit}{url parameter (defaults to 1000; if reached, paging is suggested)}
+
 \item{query}{url parameters that form the query, see \code{\link[httr]{GET}} for details}
 
-\item{paging}{logical whether paging should be used (if not, results will be limited to 1000 rows)}
+\item{paging}{logical whether paging should be used}
 
-\item{bind.rows}{by default, pages will be combined into one \code{data.frame} by \code{\link[dplyr]{bind_rows}}. Set to \code{FALSE} if you want a \code{list} of pages instead. This is useful on the rare occasion that the JSON response is not formatted correctly making \code{\link[dplyr]{bind_rows}} fail.}
+\item{bind.rows}{by default, pages will be combined into one \code{data.frame} by \code{\link[dplyr]{bind_rows}}. Set to \code{FALSE} if you want \code{list} instead. This is useful on the rare occasion that the JSON response is not formatted correctly and makes \code{\link[dplyr]{bind_rows}} fail}
 }
 \description{
-Issues \code{\link[httr]{GET}} requests for Trello API endpoints.
+Issues \code{\link[httr]{GET}} requests for Trello API endpoints. Functions such as \code{\link{get_board_cards}} or \code{\link{get_card_comments}} are convenience wrappers for this function.
 }
 \details{
-It accepts JSON responses and uses \code{\link[jsonlite]{fromJSON}} to convert them into flat \code{data.frame}s. It hrows an error if non-JSON type of data is received. It also takes care of paging (if \code{paging = TRUE}), setting the query parameter \code{before} to the earliest date from the previous result, essentially getting all there is for the given request.
+If the request fails, server error messages are extracted from the response header and reprinted on the console.
 
-For unsuccessfull requests, server error messages are extracted from the response header and reprinted on the console.
+Only JSON responses are accepted. \code{\link[jsonlite]{fromJSON}} converts them into flat \code{data.frame}s. Non-JSON type of response throws an error.
 
-Functions such as \code{\link{get_board_cards}} or \code{\link{get_card_comments}} are convenience wrappers for this function. They remove the need for specifying the query parameters and optionally simplify the result so as to give you more consistent and easy to work with data.
+When \code{paging = TRUE}), then every batch of results is searched and the ID of the earliest result is retrieved. This is used as the \code{before} parameter to the next url request. This way Trello knows where to start fetching the next batch of results. Paging keeps going until there is nothing more to fetch (i.e., the number of results is smaller then 1000 which is the server response limit).
+
+\code{filter} and \code{limit} are query parameters that can be set individually; you could achieve the same result by using \code{query = list(filter = "filter_value", limit = "limit_value")}
 }
 \examples{
 # For accessing public boards you don't need authorization; this example uses
 # the publicly available Trello Development Roadmap board (notice the .json
 # suffix):
 url = "https://trello.com/b/nC8QJJoZ/trello-development-roadmap.json"
-tdb = trello_get(url)
+tdr = trello_get(url)
 
 # This gives you some useful content already, but you may want to do more
 # specific queries. Let's start by getting the ID of the board:
-bid = tdb$id
+bid = tdr$id
 
-# We can now use this id to make specific queries using dedicated functions:
-
-tdb_lists = get_board_lists(bid)   # Get lists
-tdb_labels = get_board_labels(bid) # Get labels
-tdb_cards = get_board_cards(bid)   # Get cards
+# We can now use this ID to make specific queries using dedicated functions:
+tdr_lists  = get_board_lists(bid)            # Get all lists
+tdr_labels = get_board_labels(bid)           # Get all labels
+tdr_cards  = get_board_cards(bid, limit = 5) # Get 5 cards
 
 # Having acquired card-related data, we can now make queries about specific
 # cards. As before, we start by getting the ID of the first card:
-card1_id = tdb_cards$id[1]
+card1_id   = tdr_cards$id[1]
 card1_comm = get_card_comments(card1_id) # Get comments from the card
 
-# To retrieve large results, a paging might be necessary:
+# To retrieve large results, paging might be necessary:
 
 \dontrun{
-tdb_actions = get_board_actions(bid, filter = "commentCard", paging = TRUE)
-}
+tdr_actions = get_board_actions(bid, filter = "commentCard", paging = TRUE)
 
 # For private boards, you need a secure token to communicate with Trello API
-
-\dontrun{
 token = get_token("your_key", "your_secret")
 
 # Get all cards that are not archived

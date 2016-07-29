@@ -4,7 +4,7 @@
 \alias{get_flat}
 \title{GET url and return data.frame}
 \usage{
-get_flat(url, token, query = NULL)
+get_flat(url, token = NULL, query = NULL)
 }
 \arguments{
 \item{url}{url to get}

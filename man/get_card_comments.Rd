@@ -4,21 +4,17 @@
 \alias{get_card_comments}
 \title{Get Card Comments}
 \usage{
-get_card_comments(id, token = NULL, paging = FALSE, fix = TRUE)
+get_card_comments(id, ...)
 }
 \arguments{
 \item{id}{card id}
 
-\item{token}{previously generated token, see \code{\link{trello_get_token}} for how to obtain it}
-
-\item{paging}{whether paging should be used (necessary for requests returning more than 1000 rows). Defaults to \code{FALSE}}
-
-\item{fix}{drop and rename some columns or leave it as is. Defaults to \code{TRUE}}
+\item{...}{additional arguments passed to \code{\link{trello_get}}}
 }
 \description{
 Given a card ID, returns a flat \code{data.frame} with comments-related data.
 }
 \seealso{
-\code{\link{trello_get_token}}, \code{\link{trello_get}}
+\code{\link{trello_get}}
 }
 
