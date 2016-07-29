@@ -11,7 +11,7 @@
 #' @seealso \code{\link{trello_get_token}}, \code{\link{trello_get}}
 #' @export
 
-get_board_cards = function(id, token,
+get_board_cards = function(id, token = NULL,
                            filter = "open",
                            paging = FALSE, fix = TRUE) {
 
@@ -35,7 +35,7 @@ get_board_cards = function(id, token,
 #' @seealso \code{\link{trello_get_token}}, \code{\link{trello_get}}
 #' @export
 
-get_board_actions = function(id, token,
+get_board_actions = function(id, token = NULL,
                              filter = NULL,
                              paging = FALSE, fix = TRUE) {
 
@@ -58,7 +58,7 @@ get_board_actions = function(id, token,
 #' @seealso \code{\link{trello_get_token}}, \code{\link{trello_get}}
 #' @export
 
-get_board_lists = function(id, token,
+get_board_lists = function(id, token = NULL,
                            paging = FALSE, fix = TRUE) {
 
     fun = trello_req(parent = "board", child = "lists")
@@ -79,7 +79,7 @@ get_board_lists = function(id, token,
 #' @param fix drop and rename some columns or leave it as it is. Defaults to \code{TRUE}
 #' @seealso \code{\link{trello_get_token}}, \code{\link{trello_get}}
 
-get_board_members = function(id, token,
+get_board_members = function(id, token = NULL,
                              paging = FALSE, fix = TRUE) {
 
     fun = trello_req(parent = "board", child = "members")
@@ -101,7 +101,7 @@ get_board_members = function(id, token,
 #' @seealso \code{\link{trello_get_token}}, \code{\link{trello_get}}
 #' @export
 
-get_board_labels = function(id, token,
+get_board_labels = function(id, token = NULL,
                             paging = FALSE, fix = TRUE) {
 
     fun = trello_req(parent = "board", child = "labels")
@@ -123,7 +123,7 @@ get_board_labels = function(id, token,
 #' @seealso \code{\link{trello_get_token}}, \code{\link{trello_get}}
 #' @export
 
-get_board_comments = function(id, token,
+get_board_comments = function(id, token = NULL,
                               paging = FALSE, fix = TRUE) {
 
     fun = trello_req(parent = "board", child = "actions")
