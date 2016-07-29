@@ -4,7 +4,7 @@
 \alias{trello_get}
 \title{Get Data From Trello API}
 \usage{
-trello_get(url, token, query = NULL, paging = FALSE)
+trello_get(url, token = NULL, query = NULL, paging = FALSE)
 }
 \arguments{
 \item{url}{url for the GET request, see \code{\link[httr]{GET}} for details}

@@ -4,7 +4,7 @@
 \alias{get_board_labels}
 \title{Get Board Labels}
 \usage{
-get_board_labels(id, token, paging = FALSE, fix = TRUE)
+get_board_labels(id, token = NULL, paging = FALSE, fix = TRUE)
 }
 \arguments{
 \item{id}{board id}

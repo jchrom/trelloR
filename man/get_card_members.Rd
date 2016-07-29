@@ -4,7 +4,7 @@
 \alias{get_card_members}
 \title{Get Card Members}
 \usage{
-get_card_members(id, token, paging = FALSE, fix = TRUE)
+get_card_members(id, token = NULL, paging = FALSE, fix = TRUE)
 }
 \arguments{
 \item{id}{card id}

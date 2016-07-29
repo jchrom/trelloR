@@ -4,7 +4,7 @@
 \alias{get_board_members}
 \title{Get Board Members}
 \usage{
-get_board_members(id, token, paging = FALSE, fix = TRUE)
+get_board_members(id, token = NULL, paging = FALSE, fix = TRUE)
 }
 \arguments{
 \item{id}{board id}

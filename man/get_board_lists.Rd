@@ -4,7 +4,7 @@
 \alias{get_board_lists}
 \title{Get Board Lists}
 \usage{
-get_board_lists(id, token, paging = FALSE, fix = TRUE)
+get_board_lists(id, token = NULL, paging = FALSE, fix = TRUE)
 }
 \arguments{
 \item{id}{board id}

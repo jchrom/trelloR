@@ -4,7 +4,8 @@
 \alias{get_board_cards}
 \title{Get Board Cards}
 \usage{
-get_board_cards(id, token, filter = "open", paging = FALSE, fix = TRUE)
+get_board_cards(id, token = NULL, filter = "open", paging = FALSE,
+  fix = TRUE)
 }
 \arguments{
 \item{id}{board id}

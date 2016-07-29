@@ -4,7 +4,8 @@
 \alias{get_board_actions}
 \title{Get Board Actions}
 \usage{
-get_board_actions(id, token, filter = NULL, paging = FALSE, fix = TRUE)
+get_board_actions(id, token = NULL, filter = NULL, paging = FALSE,
+  fix = TRUE)
 }
 \arguments{
 \item{id}{board id}

@@ -4,7 +4,7 @@
 \alias{get_board_comments}
 \title{Get Board Comments}
 \usage{
-get_board_comments(id, token, paging = FALSE, fix = TRUE)
+get_board_comments(id, token = NULL, paging = FALSE, fix = TRUE)
 }
 \arguments{
 \item{id}{board id}

@@ -4,7 +4,8 @@
 \alias{get_card_actions}
 \title{Get Card Actions}
 \usage{
-get_card_actions(id, token, filter = NULL, paging = FALSE, fix = TRUE)
+get_card_actions(id, token = NULL, filter = NULL, paging = FALSE,
+  fix = TRUE)
 }
 \arguments{
 \item{id}{card id}
