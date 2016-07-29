@@ -26,16 +26,37 @@ For unsuccessfull requests, server error messages are extracted from the respons
 Functions such as \code{\link{get_board_cards}} or \code{\link{get_card_comments}} are convenience wrappers for this function. They remove the need for specifying the query parameters and optionally simplify the result so as to give you more consistent and easy to work with data.
 }
 \examples{
+# For accessing public boards you don't need authorization; this example uses
+# the publicly available Trello Development Roadmap board (notice the .json
+# suffix):
+url = "https://trello.com/b/nC8QJJoZ/trello-development-roadmap.json"
+tdb = trello_get(url)
+
+# This gives you some useful content already, but you may want to do more
+# specific queries. Let's start by getting the ID of the board:
+bid = tdb$id
+
+# We can now use this id to make specific queries using dedicated functions:
+
+tdb_lists = get_board_lists(bid)   # Get lists
+tdb_labels = get_board_labels(bid) # Get labels
+tdb_cards = get_board_cards(bid)   # Get cards
+
+# Having acquired the card-related data, we can now make queries about specific
+# cards. As before, we start by getting the ID of the first card:
+card1_id = tdb_cards$id[1]
+card1_comm = get_card_comments(card1_id) # Get comments from the card
+
+# To retrieve large results, a paging might be necessary:
+
 \dontrun{
-# First, obtain a secure token to communicate with Trello API
+tdb_actions = get_board_actions(bid, filter = "commentCard", paging = TRUE)
+}
+
+# For private boards, you need a secure token to communicate with Trello API
+
+\dontrun{
 token = get_token("your_key", "your_secret")
-
-# Second, build an URL
-id  = "id_of_a_given_board"
-url = paste0("https://api.trello.com/1/boards/", id, "/cards")
-
-# Third, store query parametrs in a list (see ?httr::GET for details)
-query = list(filter = "open")
 
 # Get all cards that are not archived
 all_open = get_request(url, token, query)
