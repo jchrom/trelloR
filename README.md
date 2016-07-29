@@ -78,9 +78,11 @@ There are several issues you should know about. They include **handling large re
 
 ## Handling large requests a.k.a. *paging*
 
-Trello limits the number of results of a single request to 1000 (which corresponds to 1000 rows in the resulting `data.frame`). This may not be sufficient when requesting larger amounts of data, e.g. all the actions related to a board ID.
+No request can return more than 1000 results. This may not be sufficient when requesting larger amounts of data, e.g. all the actions related to a board ID.
 
-To get more than 1000 results, you need to break down your request into several separate requests, each retrieving no more than 1000 results. This is called "paging", and `trellor` will do that for you without a hassle. To use paging, set `paging = TRUE`. This will make `trellor` retrieve **all** the results for given request, i.e. as many pages as needed. It will then return a `data.frame` with combined results.
+To get more than 1000 results, you need to break down your request into several separate requests, each retrieving no more than 1000 results. This is called "paging".
+
+Paging with `trellor` is hassle-free. Set `paging = TRUE` and `trellor` will retrieve as many pages as needed, i.e. all the results for given request. Pages can be retrieved as a single combined `data.frame` (default) or list. The latter might be useful as a workaround in the rare case `jsonlite::fromJSON` produces a botched `data.frame` that makes `httr::bind_rows` fail. You can then look up the misfit column and correct it manually, and proceed with `dplyr::bind_rows` yourself.
 
 ```{r, eval=FALSE, include=TRUE}
 my_boards  = get_my_boards(my_token)
@@ -90,7 +92,7 @@ my_actions = get_board_actions(board1_id, my_token, paging = TRUE)
 
 ## The format of results
 
-The data is returned in form of a flat `data.frame` whenevr possible, so you don't have to worry about formatting the response (courtesy of the `jsonlite::fromJSON` function). However, sometimes a more complex structure is returned as a `list` which may contain more `list`s and/or `data.frame`s. Ultimately, the finest grain in the hierarchy is always a `data.frame`.
+The data is returned as a flat `data.frame` whenever possible, so you don't have to worry about formatting the response (courtesy of the `jsonlite::fromJSON` function). However, sometimes a more complex structure is returned as a `list` which may contain more `list`s and/or `data.frame`s. Ultimately, the finest grain in the hierarchy is always a `data.frame`.
 
 The names of variables will be the same as they are in the incomming JSON. This is not optimal in many contexts. For instance, card ID and member ID are both called "id", which is not very useful if you want to do table joins. In the immediate future, a "facelifting" function will be provided to impose a consistent naming scheme and perhaps dropping some less frequently used variables.
 
@@ -100,9 +102,9 @@ All the `get_` functions call `trello_get`, which is a wrapper for `httr::GET`. 
 
 1. `httr::GET` fetches results for exactly one request; it needs a complete URL, query parameters and a token. It does the heavy lifting but leaves error handling, response formatting and paging to you.
 
-2. `trello_get` makes the process a bit cosier: it handles error messages, formats the response and takes care of paging; but you still have to build a complete URL and query parameters.
+2. `trello_get` makes the process a bit cosier: it handles error messages, formats the response and takes care of paging; but you still have to build a complete URL for the GET request.
 
-3. Finally the `get_` functions contain prepackaged URLs and query parameters, eliminating almost all the effort. If you want to use your own URLs and queries, you can fall back to `trello_get`.
+3. Finally the `get_` functions contain prepackaged URLs, incl. query parameters, eliminating almost all the effort. If you want to use your own URLs and queries, you can fall back to `trello_get`.
 
 You can find out more about endpoints and query options on [Trello API reference page](https://developers.trello.com/advanced-reference).
 
