@@ -8,9 +8,9 @@ Description: Makes it easy to get data from Trello API in a friendly format.
 Depends:
     R (>= 3.2.3)
 Imports:
-    dplyr,
-    httr,
-    jsonlite
+    dplyr (>= 0.5),
+    httr (>= 1.2),
+    jsonlite (>= 1.0)
 License: GPL-3
 LazyData: true
 RoxygenNote: 5.0.1
