@@ -23,7 +23,9 @@ library(trello)
 url = "https://trello.com/b/nC8QJJoZ/trello-development-roadmap.json"
 tdb = trello_get(url)
 bid = tdb$id
+
 a = get_board_actions(bid, paging = TRUE)
+
 b = a[[1]]
 x = b[[1]]$data.list.pos
 y = b[[2]]$data.list.pos
