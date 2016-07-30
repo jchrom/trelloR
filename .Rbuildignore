@@ -3,3 +3,4 @@
 ^\.httr-oauth$
 ^cran-comments\.md$
 ^.travis\.yml$
+^README\.html$
