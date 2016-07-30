@@ -1,0 +1,108 @@
+---
+title: "R API for Trello"
+author: "Jakub Chromec"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+library(httr)
+knitr::opts_chunk$set(comment = "#>", collapse = TRUE)
+```
+
+## Introduction
+`trellor` offers a set of consistent functions that retrieve data from specific levels of the JSON hierarchy. Examples are `get_board_cards(id)` which gets cards from a particular board or `get_card_members(id)` which gets members assigned to a particular card. You need an ID of the parent structure, which you can obtain from *its* parent and/or its URL (in case of boards and cards).
+
+You can also set optional arguments such as `filter="value"` to further specify the URL query. Query can also be specified in detail as `query = list(key1 = "value1", key2 = "value2")`. Read `httr::GET` for details.
+
+For private boards, you need to obtain a secure token. Use `trello_get_token` to do that, and then supply the token to the `get_` functions.
+
+To get your own URLs, use `trello_get`. To make your own data retrieval functions, use the function-maker `trello_req`, like so: `get_card_labels = get_req(parent = "card", child = "labels")`, and then call `get_card_labels(id)`.
+
+For large results, set `paging = TRUE`.
+
+More details on each point of this process bellow.
+
+## Getting data
+There are three families of functions that retrieve data from Trello API. The `get_id` family returns an ID of a specified resource, e.g. `get_id_board(url)`. Having obtained that, you can start retrieving its child elements, such as lists, cards, labels etc. by calling the `get_board` family, e.g. `get_board_members(id)`. You can dig deeper with the `get_card` family, e.g. `get_card_comments(id)`.
+
+The following example uses publicly available Trello Development Roadmap board. Let's start by getting the board ID from its url (notice the .json suffix):
+
+```r
+library(trellor)
+url = "https://trello.com/b/nC8QJJoZ/trello-development-roadmap.json"
+bid = get_id_board(url)
+```
+Once we have the ID, we can use it to make specific queries using dedicated functions:
+
+```r
+lists  = get_board_lists(bid)            # Get board lists
+labels = get_board_labels(bid)           # Get all labels
+cards  = get_board_cards(bid, limit = 5) # Get 5 cards
+```
+
+We can extract card ID from card-related data. As with boards, an ID allows us to query specific cards for particular resources:
+
+```r
+card1_id   = cards$id[1]
+card1_comm = get_card_comments(card1_id) # Get all comments from the card
+```
+
+### Function naming scheme
+Every function name refers to a parent structure (the thing after the first underscore, such as `_board_`) and the child structure (such as `_actions`). This makes it easy to guess function names. If you need, say, a list of members assigned to a card, simply call `get_card_members()`.
+
+
+### List your boards
+If you need an overview of all your boards, a good starting point is the `get_my_boards()` function, which returns a `data.frame` with board names and IDs related to a particular user. Since this data is related to a user credentials, you need to provide a secure token (see how below).
+
+## Authorizing your API access
+Access to private boards requires authorization. This process includes creation of an "app" which uses a secure token to communicate with Trello API and will allow you to retrieve data from private boards (provided you have the right to access them).
+
+To create a token, visit <https://trello.com/app-key> and get your developer credentials, i.e. your "key" and "secret". Then, call the `trello_get_token()` function to create a token for your project. This will also trigger first-time authorization in the browser (you only have to do it once):
+
+```r
+library(trellor)
+my_token = trello_get_token(your_key, your_secret)
+```
+
+You will also be offered an option to store the authentication data in your working directory, in a hidden `'.httr-oauth'` file.
+
+**NOTE.** Make sure you keep your credentials in a **safe, non-shared** location.
+
+## Things to be aware of
+
+There are several issues you should know about. They include **handling large requests, choosing the response format** and **building custom queries.**
+
+## Handling large requests a.k.a. *paging*
+
+No request can return more than 1000 results. This may not be sufficient when requesting larger amounts of data, e.g. all the actions related to a board ID.
+
+To get more than 1000 results, you need to break down your request into several separate requests, each retrieving no more than 1000 results. This is called "paging".
+
+Paging with `trellor` is hassle-free. Set `paging = TRUE` and `trellor` will retrieve as many pages as needed, i.e. all the results for given request. Pages can be retrieved as a single combined `data.frame` (default) or list. The latter might be useful as a workaround in the rare case `jsonlite::fromJSON` produces a botched `data.frame` that makes `httr::bind_rows` fail. You can then look up the misfit column and correct it manually, and proceed with `dplyr::bind_rows` yourself.
+
+```r
+my_boards  = get_my_boards(my_token)
+board1_id  = my_boards$id[1]
+my_actions = get_board_actions(board1_id, my_token, paging = TRUE)
+```
+
+## The format of results
+The data is returned as a flat `data.frame` whenever possible, so you do not have to worry about formatting the response (courtesy of the `jsonlite::fromJSON` function). However, sometimes a more complex structure is returned as a `list` which may contain more `list`s and/or `data.frame`s. Ultimately, the finest grain in the hierarchy is always a `data.frame`.
+
+The names of variables will be the same as they are in the incomming JSON. This is not optimal in many contexts. For instance, card ID and member ID are both called "id", which is not very useful if you want to do table joins. In the immediate future, a "facelifting" function will be provided to impose a consistent naming scheme and perhaps dropping some less frequently used variables.
+
+## Calling your own queries
+All the `get_` functions call `trello_get`, which is a wrapper for `httr::GET`. This strips away complexity in the following way:
+
+1. `httr::GET` fetches results for exactly one request; it needs a complete URL, query parameters and a token. It does the heavy lifting but leaves error handling, response formatting and paging to you.
+
+2. `trello_get` makes the process a bit cosier: it handles error messages, formats the response and takes care of paging; but you still have to build a complete URL for the GET request.
+
+3. Finally the `get_` functions contain prepackaged URLs, incl. query parameters, eliminating almost all the effort. If you want to use your own URLs and queries, you can fall back to `trello_get`.
+
+You can find out more about endpoints and query options on [Trello API reference page](https://developers.trello.com/advanced-reference).
