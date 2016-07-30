@@ -1,13 +1,20 @@
-# Retrieve data related to a board
+############################################
+#                                          #
+#    Retrieve data related to a board      #
+#                                          #
+############################################
 
-#' Get Board Cards
+#' Get Board
 #'
-#' Given a board ID, returns a flat \code{data.frame} with card-related data.
-#' @param id board id
-#' @param ... additional arguments passed to \code{\link{trello_get}}
+#' Returns a flat \code{data.frame} with board-related data.
+#' @param id Board ID
+#' @param ... Additional arguments passed to \code{\link{trello_get}}
 #' @seealso \code{\link{trello_get}}
-#' @export
+#' @name get_board
+NULL
 
+#' @export
+#' @rdname get_board
 get_board_cards = function(id, ...) {
 
     fun = trello_req(parent = "board", child = "cards")
@@ -16,14 +23,8 @@ get_board_cards = function(id, ...) {
     return(dat)
 }
 
-#' Get Board Actions
-#'
-#' Given a board ID, returns a flat \code{data.frame} with actions-related data.
-#' @param id board id
-#' @param ... additional arguments passed to \code{\link{trello_get}}
-#' @seealso \code{\link{trello_get}}
 #' @export
-
+#' @rdname get_board
 get_board_actions = function(id, ...) {
 
     fun = trello_req(parent = "board", child = "actions")
@@ -32,14 +33,8 @@ get_board_actions = function(id, ...) {
     return(dat)
 }
 
-#' Get Board Lists
-#'
-#' Given a board ID, returns a flat \code{data.frame} with lists-related data.
-#' @param id board id
-#' @param ... additional arguments passed to \code{\link{trello_get}}
-#' @seealso \code{\link{trello_get}}
 #' @export
-
+#' @rdname get_board
 get_board_lists = function(id, ...) {
 
     fun = trello_req(parent = "board", child = "lists")
@@ -48,14 +43,8 @@ get_board_lists = function(id, ...) {
     return(dat)
 }
 
-#' Get Board Members
-#'
-#' Given a board ID, returns a flat \code{data.frame} with members-related data.
-#' @param id board id
-#' @param ... additional arguments passed to \code{\link{trello_get}}
-#' @seealso \code{\link{trello_get}}
 #' @export
-
+#' @rdname get_board
 get_board_members = function(id, ...) {
 
     fun = trello_req(parent = "board", child = "members")
@@ -64,14 +53,8 @@ get_board_members = function(id, ...) {
     return(dat)
 }
 
-#' Get Board Labels
-#'
-#' Given a board ID, returns a flat \code{data.frame} with labels-related data.
-#' @param id board id
-#' @param ... additional arguments passed to \code{\link{trello_get}}
-#' @seealso \code{\link{trello_get}}
 #' @export
-
+#' @rdname get_board
 get_board_labels = function(id, ...) {
 
     fun = trello_req(parent = "board", child = "labels")
@@ -80,14 +63,8 @@ get_board_labels = function(id, ...) {
     return(dat)
 }
 
-#' Get Board Comments
-#'
-#' Given a board ID, returns a flat \code{data.frame} with labels-related data.
-#' @param id board id
-#' @param ... additional arguments passed to \code{\link{trello_get}}
-#' @seealso \code{\link{trello_get}}
 #' @export
-
+#' @rdname get_board
 get_board_comments = function(id, ...) {
 
     fun = trello_req(parent = "board", child = "actions")
