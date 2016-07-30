@@ -6,7 +6,7 @@
 #' @seealso \code{\link{trello_get_token}}, \code{\link{trello_get}}
 #' @export
 
-trello_req = function(parent, child) {
+trello_req = function(parent, child = NULL) {
 
     # Note: "parent", "child" are used in its body
     trello_fun = function(id,
@@ -31,6 +31,7 @@ trello_req = function(parent, child) {
                          bind.rows = bind.rows)
 
         # Assign a class depending on what has been returned
+        if (is.null(child)) child == parent
         class(res) = c(child, "trello_api", class(res))
 
         # Simplify the response

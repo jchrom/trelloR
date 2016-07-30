@@ -4,7 +4,7 @@
 \alias{trello_req}
 \title{Build Requests For Trello API}
 \usage{
-trello_req(parent, child)
+trello_req(parent, child = NULL)
 }
 \arguments{
 \item{parent}{e.g. \code{"board"}, \code{"card"}, \code{"member"}}
