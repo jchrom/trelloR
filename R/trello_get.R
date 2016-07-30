@@ -6,9 +6,9 @@
 #'
 #' Only JSON responses are accepted. \code{\link[jsonlite]{fromJSON}} converts them into flat \code{data.frame}s. Non-JSON type of response throws an error.
 #'
-#' When \code{paging = TRUE}), then every batch of results is searched and the ID of the earliest result is retrieved. This is used as the \code{before} parameter to the next url request. This way Trello knows where to start fetching the next batch of results. Paging keeps going until there is nothing more to fetch (i.e., the number of results is smaller then 1000 which is the server response limit).
+#' When \code{paging = TRUE}, then every batch of results is searched and the ID of the earliest result is retrieved. This is then supplied to the next request as the value of the \code{before} parameter, so that Trello knows where to start fetching the next batch of results. \code{\link{trello_get}} will keep paging until there is nothing more to fetch (i.e., the number of results per page is smaller then 1000 which is the server response limit).
 #'
-#' \code{filter} and \code{limit} are query parameters that can be set individually; you could achieve the same result by using \code{query = list(filter = "filter_value", limit = "limit_value")}
+#' \code{filter} and \code{limit} are query parameters and can be set individually; you could achieve the same result by using \code{query = list(filter = "filter_value", limit = "limit_value")}
 #' @param url url for the GET request, see \code{\link[httr]{GET}} for details
 #' @param filter url parameter
 #' @param limit url parameter (defaults to 1000; if reached, paging is suggested)
@@ -20,32 +20,34 @@
 #' @importFrom dplyr bind_rows
 #' @export
 #' @examples
-#' # For accessing public boards you don't need authorization; this example uses
-#' # the publicly available Trello Development Roadmap board (notice the .json
-#' # suffix):
+#' # For accessing public boards, no authorization is required. This example
+#' # uses publicly available Trello Development Roadmap board. Let's start by
+#' # getting the board ID from its url (notice the .json suffix):
 #' url = "https://trello.com/b/nC8QJJoZ/trello-development-roadmap.json"
-#' tdr = trello_get(url)
+#' bid = get_id_board(url)
 #'
-#' # This gives you some useful content already, but you may want to do more
-#' # specific queries. Let's start by getting the ID of the board:
-#' bid = tdr$id
+#' # Once we have the ID, we can use it to make specific queries using dedicated
+#' # functions:
+#' lists  = get_board_lists(bid)            # Get all lists
+#' labels = get_board_labels(bid)           # Get all labels
+#' cards  = get_board_cards(bid, limit = 5) # Get 5 cards
 #'
-#' # We can now use this ID to make specific queries using dedicated functions:
-#' tdr_lists  = get_board_lists(bid)            # Get all lists
-#' tdr_labels = get_board_labels(bid)           # Get all labels
-#' tdr_cards  = get_board_cards(bid, limit = 5) # Get 5 cards
-#'
-#' # Having acquired card-related data, we can now make queries about specific
-#' # cards. As before, we start by getting the ID of the first card:
-#' card1_id   = tdr_cards$id[1]
-#' card1_comm = get_card_comments(card1_id) # Get comments from the card
+#' # We can extract card ID from card-related data. As with boards, an ID allows
+#' # us to to query specific cards for particular resources:
+#' card1_id   = cards$id[1]
+#' card1_comm = get_card_comments(card1_id) # Get all comments from the card
 #'
 #' # To retrieve large results, paging might be necessary:
 #'
 #' \dontrun{
+#'
 #' tdr_actions = get_board_actions(bid, filter = "commentCard", paging = TRUE)
+#' }
 #'
 #' # For private boards, you need a secure token to communicate with Trello API
+#'
+#' \dontrun{
+#'
 #' token = get_token("your_key", "your_secret")
 #'
 #' # Get all cards that are not archived
