@@ -17,7 +17,7 @@ trello_get_token(key, secret, app = "trello")
 Authorize access to Trello API
 }
 \details{
-In order to access private data, a secure token is required. In order to create it, you will need your developer 'key' and 'secret' - these can be obtained here: \url{https://trello.com/app-key}. \code{\link{trello_get_token}} takes these credentials, adds Trello API endpoints and feeds it all to authentication functions from \code{\link{httr}}.
+To access private data, a secure token is required. In order to create it, you will need your developer credentials, 'key' and 'secret' - these can be obtained here after login: \url{https://developers.trello.com/get-started/start-building#connect}. \code{\link{trello_get_token}} takes these credentials, adds Trello API endpoints and feeds it all to authentication functions from \code{\link{httr}}.
 
 First time you create a token, you will be prompted to confirm the authorization in a browser (you only need to do this once). You will also be offered an option to store the authentication data in your working directory. Keep in mind you have to store your credentials in a secure, non-shared location.
 }
@@ -25,7 +25,7 @@ First time you create a token, you will be prompted to confirm the authorization
 \dontrun{
 # Source credentials from non-shared location (important!)
 source("mykeys.R")
-token = get_token(key, secret)
+token = trello_get_token(key, secret)
 }
 }
 \seealso{
