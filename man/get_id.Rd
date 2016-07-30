@@ -19,10 +19,10 @@ Get ID of a resource.
 \examples{
 # Get Trello Development Roadmap board ID
 url    = "https://trello.com/b/nC8QJJoZ/trello-development-roadmap"
-tdr_id = get_board_id(url)
+tdr_id = get_id_board(url)
 
 # Also works:
 url    = "nC8QJJoZ"
-tdr_id = get_board_id(url)
+tdr_id = get_id_board(url)
 }
 
