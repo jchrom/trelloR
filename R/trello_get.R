@@ -1,6 +1,6 @@
 #' Get Data From Trello API
 #'
-#' Issues \code{\link[httr]{GET}} requests for Trello API endpoints. Functions such as \code{\link{get_board_cards}} or \code{\link{get_card_comments}} are convenience wrappers for this function.
+#' Issues \code{\link[httr]{GET}} requests for Trello API endpoints. \code{\link{get_board}} and \code{\link{get_card}} are convenience wrappers for this function.
 #'
 #' If the request fails, server error messages are extracted from the response header and reprinted on the console.
 #'
@@ -20,38 +20,34 @@
 #' @importFrom dplyr bind_rows
 #' @export
 #' @examples
-#' # For accessing public boards, no authorization is required. This example
-#' # uses publicly available Trello Development Roadmap board. Let's start by
-#' # getting the board ID from its url (notice the .json suffix):
+#' # No authorization is required to access public boards. Let's get the ID of
+#' # Trello Development Roadmap board (notice the .json suffix):
 #' url = "https://trello.com/b/nC8QJJoZ/trello-development-roadmap.json"
 #' bid = get_id_board(url)
 #'
-#' # Once we have the ID, we can use it to make specific queries using dedicated
-#' # functions:
+#' # Once we have the ID, we can use it to make specific queries:
 #' lists  = get_board_lists(bid)            # Get all lists
 #' labels = get_board_labels(bid)           # Get all labels
 #' cards  = get_board_cards(bid, limit = 5) # Get 5 cards
 #'
-#' # We can extract card ID from card-related data. As with boards, an ID allows
-#' # us to to query specific cards for particular resources:
+#' # Now we can extract card ID. As with boards, this allows us to to query
+#' # cards for particular resources:
 #' card1_id   = cards$id[1]
-#' card1_comm = get_card_comments(card1_id) # Get all comments from the card
+#' card1_comm = get_card_comments(card1_id) # Get all comments
 #'
 #' # To retrieve large results, paging might be necessary:
 #'
 #' \dontrun{
 #'
-#' tdr_actions = get_board_actions(bid, filter = "commentCard", paging = TRUE)
+#' tdr_actions = get_board_actions(bid, paging = TRUE)
 #' }
 #'
-#' # For private boards, you need a secure token to communicate with Trello API
+#' # For private boards, you need a secure token:
 #'
 #' \dontrun{
 #'
 #' token = get_token("your_key", "your_secret")
-#'
-#' # Get all cards that are not archived
-#' all_open = get_request(url, token, query)
+#' all_open_cards = get_board_cards(board_id, token, filter = "open")
 #' }
 
 trello_get = function(url,
@@ -63,8 +59,6 @@ trello_get = function(url,
                       bind.rows = TRUE) {
 
     cat("Sending request...\n")
-
-    # In case of large results, server only returns 50; change to 1000 instead
 
     # Build query
     if (is.null(query)) query = build_query(filter = filter, limit = limit)
@@ -178,13 +172,13 @@ get_flat = function(url,
         flat = fromJSON(json, flatten = TRUE)
     } else {
         req_trim = paste0(strtrim(content(req, as = "text"), 50), "...")
-        stop(http_type(req), " is not JSON : ", req_trim)
+        stop(http_type(req), " is not JSON : \n", req_trim)
     }
 
     # If the result is an empty list, convert into an empty data.frame
     if (length(flat) == 0) {
         flat = data.frame()
-        message("The response is empty")
+        message("Response was empty")
     }
 
     # Return the result
