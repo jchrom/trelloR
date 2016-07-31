@@ -75,7 +75,7 @@ You can supply a
 ## Authorization
 Access to private boards requires authorization. This process includes creation of an "app" which uses a secure token to communicate with Trello API, and will allow you to retrieve data from private boards (provided you have the right to access them).
 
-To create a token, **login** to Trello and visit the [Developer Start Page](https://developers.trello.com/get-started/start-building#connect). There you can get your developer credentials, i.e. your "key" and "secret". Then, call the `trello_get_token` function to create a token for your project. This will also trigger first-time authorization in the browser (you only have to do it once):
+To create a token, **login** to Trello and visit the [Developer Start Page](https://developers.trello.com/get-started/start-building#connect). There you can get your developer credentials, i.e. your "key" and "secret". Then, call the `trello_get_token()` function to create a token for your project. This will also trigger first-time authorization in the browser (you only have to do it once):
 
 ```r
 my_token = trellor::trello_get_token(your_key, your_secret)
