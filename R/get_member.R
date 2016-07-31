@@ -4,35 +4,30 @@
 #'
 #' Returns a flat \code{data.frame} with all your boards.
 #' @param token previously generated token, see \code{\link{trello_get_token}} for info on how to obtain it
-#' @param paging whether paging should be used (necessary for requests returning more than 1000 rows). Defaults to \code{FALSE}
-#' @param fix drop and rename some columns or return it as is. Defaults to \code{TRUE}
+#' @param ... Additional arguments passed to \code{\link{trello_get}}
+#' @seealso \code{\link{trello_get}}
 #' @export
 
-get_my_boards = function(token, paging = FALSE, fix = TRUE) {
+get_my_boards = function(token, ...) {
 
     fun = trello_req(parent = "member", child = "boards")
-    dat = fun(id = "me", token = token,
-              query = NULL,
-              paging = paging, fix = fix)
+    dat = fun(id = "me", token = token, ...)
 
     return(dat)
 }
 
 #' Get Member's Boards
 #'
-#' Returns a flat \code{data.frame} with all your boards.
+#' Returns a flat \code{data.frame} with all boards associated with a member.
 #' @param id member ID
-#' @param token previously generated token, see \code{\link{trello_get_token}} for info on how to obtain it
-#' @param paging whether paging should be used (necessary for requests returning more than 1000 rows). Defaults to \code{FALSE}
-#' @param fix drop and rename some columns or return it as is. Defaults to \code{TRUE}
+#' @param ... Additional arguments passed to \code{\link{trello_get}}
+#' @seealso \code{\link{trello_get}}
 #' @export
 
-get_member_boards = function(id, token = NULL, paging = FALSE, fix = TRUE) {
+get_member_boards = function(id, ...) {
 
     fun = trello_req(parent = "member", child = "boards")
-    dat = fun(id, token = token,
-              query = NULL,
-              paging = paging, fix = fix)
+    dat = fun(id, ...)
 
     return(dat)
 }
