@@ -12,7 +12,7 @@
 
 <meta name="author" content="Jakub Chromec" />
 
-<meta name="date" content="2016-07-30" />
+<meta name="date" content="2016-07-31" />
 
 <title>R API for Trello</title>
 
@@ -70,78 +70,87 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">R API for Trello</h1>
 <h4 class="author"><em>Jakub Chromec</em></h4>
-<h4 class="date"><em>2016-07-30</em></h4>
+<h4 class="date"><em>2016-07-31</em></h4>
 
 
 
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<p><code>trellor</code> offers a set of consistent functions that retrieve data from specific levels of the JSON hierarchy. Examples are <code>get_board_cards(id)</code> which gets cards from a particular board or <code>get_card_members(id)</code> which gets members assigned to a particular card. You need an ID of the parent structure, which you can obtain from <em>its</em> parent and/or its URL (in case of boards and cards).</p>
-<p>You can also set optional arguments such as <code>filter=&quot;value&quot;</code> to further specify the URL query. Query can also be specified in detail as <code>query = list(key1 = &quot;value1&quot;, key2 = &quot;value2&quot;)</code>. Read <code>httr::GET</code> for details.</p>
-<p>For private boards, you need to obtain a secure token. Use <code>trello_get_token</code> to do that, and then supply the token to the <code>get_</code> functions.</p>
-<p>To get your own URLs, use <code>trello_get</code>. To make your own data retrieval functions, use the function-maker <code>trello_req</code>, like so: <code>get_card_labels = get_req(parent = &quot;card&quot;, child = &quot;labels&quot;)</code>, and then call <code>get_card_labels(id)</code>.</p>
-<p>For large results, set <code>paging = TRUE</code>.</p>
-<p>More details on each point of this process bellow.</p>
+<p><code>trellor</code> offers a set of functions to get data from specific levels of Trello’s JSON hierarchy. No other requests (such as POST or PUT) are implemented right now, so you can only GET data out of Trello. Getting data from private boards requires a secure token, which you can read about in the Authorization section.</p>
+<p>In order to get data from a specific endpoint (like a board or card), you need to have either its ID or the ID of its parent structure. Here is an example of getting ID of Trello Development Roadmap (public board) and using it to fetch a list of cards:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">url   =<span class="st"> &quot;https://trello.com/b/nC8QJJoZ/trello-development-roadmap&quot;</span>
+bid   =<span class="st"> </span>trellor::<span class="kw">get_id_board</span>(url)
+cards =<span class="st"> </span>trellor::<span class="kw">get_board_cards</span>(bid)</code></pre></div>
+<p>The incomming JSON data is by default formatted into a <em>flat</em> <code>data.frame</code>, so you don’t have to worry about formatting the response. It will have multiple columns including card ID, name, description and more. Card ID can be used for further queries, such as getting all the members from a particular card:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">card_id =<span class="st"> </span>cards$id[<span class="dv">1</span>]
+cards   =<span class="st"> </span>trellor::<span class="kw">get_card_members</span>(card_id)</code></pre></div>
+<p>The naming scheme is pretty consistent. The prefix <code>get_</code> is followed by parent level, e.g. <code>board_</code> which is followed by child level, e.g. <code>card</code>. Thus it is easy to guess a function name. For complete list of available function see <code>?get_board</code> and <code>?get_card</code>.</p>
 </div>
-<div id="getting-data" class="section level2">
-<h2>Getting data</h2>
-<p>There are three families of functions that retrieve data from Trello API. The <code>get_id</code> family returns an ID of a specified resource, e.g. <code>get_id_board(url)</code>. Having obtained that, you can start retrieving its child elements, such as lists, cards, labels etc. by calling the <code>get_board</code> family, e.g. <code>get_board_members(id)</code>. You can dig deeper with the <code>get_card</code> family, e.g. <code>get_card_comments(id)</code>.</p>
-<p>The following example uses publicly available Trello Development Roadmap board. Let’s start by getting the board ID from its url (notice the .json suffix):</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(trellor)
-url =<span class="st"> &quot;https://trello.com/b/nC8QJJoZ/trello-development-roadmap.json&quot;</span>
-bid =<span class="st"> </span><span class="kw">get_id_board</span>(url)</code></pre></div>
-<p>Once we have the ID, we can use it to make specific queries using dedicated functions:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lists  =<span class="st"> </span><span class="kw">get_board_lists</span>(bid)            <span class="co"># Get board lists</span>
-labels =<span class="st"> </span><span class="kw">get_board_labels</span>(bid)           <span class="co"># Get all labels</span>
-cards  =<span class="st"> </span><span class="kw">get_board_cards</span>(bid, <span class="dt">limit =</span> <span class="dv">5</span>) <span class="co"># Get 5 cards</span></code></pre></div>
-<p>We can extract card ID from card-related data. As with boards, an ID allows us to query specific cards for particular resources:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">card1_id   =<span class="st"> </span>cards$id[<span class="dv">1</span>]
-card1_comm =<span class="st"> </span><span class="kw">get_card_comments</span>(card1_id) <span class="co"># Get all comments from the card</span></code></pre></div>
-<div id="function-naming-scheme" class="section level3">
-<h3>Function naming scheme</h3>
-<p>Every function name refers to a parent structure (the thing after the first underscore, such as <code>_board_</code>) and the child structure (such as <code>_actions</code>). This makes it easy to guess function names. If you need, say, a list of members assigned to a card, simply call <code>get_card_members()</code>.</p>
+<div id="get_-function-builder" class="section level2">
+<h2><code>get_</code> function builder</h2>
+<p>If you lack a particular <code>get_</code> function, you can create one using the function builder <code>trello_req</code>. Just decide which parent and child levels you want to fetch. Optionally set a filter value. You can then build your own data fetching function like this:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fetch_card_updates =<span class="st"> </span>trellor::<span class="kw">trello_req</span>(<span class="dt">parent =</span> <span class="st">&quot;card&quot;</span>, <span class="dt">child  =</span> <span class="st">&quot;actions&quot;</span>, 
+                                         <span class="dt">filter =</span> <span class="st">&quot;updateCard&quot;</span>)</code></pre></div>
+<p>Since we want to get data from a card, the <code>&quot;card&quot;</code> is the <code>parent</code>. Card updates are a type of action, so <code>&quot;actions&quot;</code> is the <code>child</code>. Without the <code>filter</code> specification, all the actions would be returned, not only card updates (indeed, that is what the existing <code>get_card_actions</code> does).</p>
+<p>You can then call your custom function the regular way, supplying card ID:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">card_updates =<span class="st"> </span><span class="kw">fetch_card_updates</span>(card_id)</code></pre></div>
 </div>
-<div id="list-your-boards" class="section level3">
-<h3>List your boards</h3>
-<p>If you need an overview of all your boards, a good starting point is the <code>get_my_boards()</code> function, which returns a <code>data.frame</code> with board names and IDs related to a particular user. Since this data is related to a user credentials, you need to provide a secure token (see how below).</p>
+<div id="specifying-url-requests-directly" class="section level2">
+<h2>Specifying URL requests directly</h2>
+<p>The <code>get_</code> functions are designed to eliminate the effort when building and reusing URL requests. Typically, you just specify resource ID in the function call, and that’s it.</p>
+<p>However, you have multiple other arguments at your disposal. Let’s look at the function we created in the previous section:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fetch_card_updates
+<span class="co">#&gt; function(id,</span>
+<span class="co">#&gt;                           filter = filter,</span>
+<span class="co">#&gt;                           limit = NULL,</span>
+<span class="co">#&gt;                           token = NULL,</span>
+<span class="co">#&gt;                           query = NULL,</span>
+<span class="co">#&gt;                           paging = FALSE,</span>
+<span class="co">#&gt;                           fix = TRUE,</span>
+<span class="co">#&gt;                           bind.rows = TRUE) {</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;         # Build url</span>
+<span class="co">#&gt;         url = paste0(&quot;https://api.trello.com/1/&quot;, parent, &quot;/&quot;, id, &quot;/&quot;, child)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;         # Send request</span>
+<span class="co">#&gt;         res = trello_get(url = url,</span>
+<span class="co">#&gt;                          token = token,</span>
+<span class="co">#&gt;                          filter = filter,</span>
+<span class="co">#&gt;                          limit = limit,</span>
+<span class="co">#&gt;                          query = query,</span>
+<span class="co">#&gt;                          paging = paging,</span>
+<span class="co">#&gt;                          bind.rows = bind.rows)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;         # Assign a class depending on what has been returned</span>
+<span class="co">#&gt;         if (is.null(child)) child == parent</span>
+<span class="co">#&gt;         class(res) = c(child, &quot;trello_api&quot;, class(res))</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;         # Simplify the response</span>
+<span class="co">#&gt;         if (fix) trello_fix(res)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;         # Return result</span>
+<span class="co">#&gt;         return(res)</span>
+<span class="co">#&gt;     }</span>
+<span class="co">#&gt; &lt;environment: 0x354ed78&gt;</span></code></pre></div>
+<p>As you can see, there is a handful of optional arguments. They’ll be passed to the <code>trello_get</code> function which is called after the URL is build and handles all the GET requests.</p>
+<p>You can supply a</p>
+<ul>
+<li><code>token</code> (see the Auhtorization section),</li>
+<li><code>filter</code> (but you set that before so there is no need in this case),</li>
+<li><code>limit</code> in case you are not happy with the default limit of 1000 results, which is also the maximum value.</li>
+<li>You can also specify custom <code>query</code> by providing a list of key-value pairs, such as <code>query = list(key1 = &quot;value1&quot;, key2 = &quot;value2&quot;)</code>. Read <code>?httr::GET</code> for details. Setting <code>filter = &quot;updateCard</code> and <code>limit=10</code> is the equivalent of <code>query = list(filter = &quot;updateCard&quot;, limit = 10)</code>. If you need more info about what keys and values are available for the query prameters, visit the <a href="https://developers.trello.com/advanced-reference">Trello API reference page</a>.</li>
+<li>You can also activate <code>paging</code> which is useful for requests returning more than 1000 results. It basically breaks the request down into smaller pieces, each returning no more than 1000 results.</li>
+<li><code>bind.rows</code> can be quite useful as it binds all the results into single <code>data.frame</code>. If <code>bind.rows = FALSE</code>, the result will be a list with as many elements as there were pages. The latter can also come handy on the rare occasion when the responses are not perfectly formatted and make <code>dplyr::bind_rows</code> fail.</li>
+</ul>
 </div>
-</div>
-<div id="authorizing-your-api-access" class="section level2">
-<h2>Authorizing your API access</h2>
-<p>Access to private boards requires authorization. This process includes creation of an “app” which uses a secure token to communicate with Trello API and will allow you to retrieve data from private boards (provided you have the right to access them).</p>
-<p>To create a token, visit <a href="https://trello.com/app-key" class="uri">https://trello.com/app-key</a> and get your developer credentials, i.e. your “key” and “secret”. Then, call the <code>trello_get_token()</code> function to create a token for your project. This will also trigger first-time authorization in the browser (you only have to do it once):</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(trellor)
-my_token =<span class="st"> </span><span class="kw">trello_get_token</span>(your_key, your_secret)</code></pre></div>
+<div id="authorization" class="section level2">
+<h2>Authorization</h2>
+<p>Access to private boards requires authorization. This process includes creation of an “app” which uses a secure token to communicate with Trello API, and will allow you to retrieve data from private boards (provided you have the right to access them).</p>
+<p>To create a token, <strong>login</strong> to Trello and visit the <a href="https://developers.trello.com/get-started/start-building#connect">Developer Start Page</a>. There you can get your developer credentials, i.e. your “key” and “secret”. Then, call the <code>trello_get_token</code> function to create a token for your project. This will also trigger first-time authorization in the browser (you only have to do it once):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_token =<span class="st"> </span>trellor::<span class="kw">trello_get_token</span>(your_key, your_secret)</code></pre></div>
 <p>You will also be offered an option to store the authentication data in your working directory, in a hidden <code>'.httr-oauth'</code> file.</p>
 <p><strong>NOTE.</strong> Make sure you keep your credentials in a <strong>safe, non-shared</strong> location.</p>
-</div>
-<div id="things-to-be-aware-of" class="section level2">
-<h2>Things to be aware of</h2>
-<p>There are several issues you should know about. They include <strong>handling large requests, choosing the response format</strong> and <strong>building custom queries.</strong></p>
-</div>
-<div id="handling-large-requests-a.k.a.-paging" class="section level2">
-<h2>Handling large requests a.k.a. <em>paging</em></h2>
-<p>No request can return more than 1000 results. This may not be sufficient when requesting larger amounts of data, e.g. all the actions related to a board ID.</p>
-<p>To get more than 1000 results, you need to break down your request into several separate requests, each retrieving no more than 1000 results. This is called “paging”.</p>
-<p>Paging with <code>trellor</code> is hassle-free. Set <code>paging = TRUE</code> and <code>trellor</code> will retrieve as many pages as needed, i.e. all the results for given request. Pages can be retrieved as a single combined <code>data.frame</code> (default) or list. The latter might be useful as a workaround in the rare case <code>jsonlite::fromJSON</code> produces a botched <code>data.frame</code> that makes <code>httr::bind_rows</code> fail. You can then look up the misfit column and correct it manually, and proceed with <code>dplyr::bind_rows</code> yourself.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_boards  =<span class="st"> </span><span class="kw">get_my_boards</span>(my_token)
-board1_id  =<span class="st"> </span>my_boards$id[<span class="dv">1</span>]
-my_actions =<span class="st"> </span><span class="kw">get_board_actions</span>(board1_id, my_token, <span class="dt">paging =</span> <span class="ot">TRUE</span>)</code></pre></div>
-</div>
-<div id="the-format-of-results" class="section level2">
-<h2>The format of results</h2>
-<p>The data is returned as a flat <code>data.frame</code> whenever possible, so you do not have to worry about formatting the response (courtesy of the <code>jsonlite::fromJSON</code> function). However, sometimes a more complex structure is returned as a <code>list</code> which may contain more <code>list</code>s and/or <code>data.frame</code>s. Ultimately, the finest grain in the hierarchy is always a <code>data.frame</code>.</p>
-<p>The names of variables will be the same as they are in the incomming JSON. This is not optimal in many contexts. For instance, card ID and member ID are both called “id”, which is not very useful if you want to do table joins. In the immediate future, a “facelifting” function will be provided to impose a consistent naming scheme and perhaps dropping some less frequently used variables.</p>
-</div>
-<div id="calling-your-own-queries" class="section level2">
-<h2>Calling your own queries</h2>
-<p>All the <code>get_</code> functions call <code>trello_get</code>, which is a wrapper for <code>httr::GET</code>. This strips away complexity in the following way:</p>
-<ol style="list-style-type: decimal">
-<li><p><code>httr::GET</code> fetches results for exactly one request; it needs a complete URL, query parameters and a token. It does the heavy lifting but leaves error handling, response formatting and paging to you.</p></li>
-<li><p><code>trello_get</code> makes the process a bit cosier: it handles error messages, formats the response and takes care of paging; but you still have to build a complete URL for the GET request.</p></li>
-<li><p>Finally the <code>get_</code> functions contain prepackaged URLs, incl. query parameters, eliminating almost all the effort. If you want to use your own URLs and queries, you can fall back to <code>trello_get</code>.</p></li>
-</ol>
-<p>You can find out more about endpoints and query options on <a href="https://developers.trello.com/advanced-reference">Trello API reference page</a>.</p>
+<p>If you need an overview of all your boards, a good starting point is the <code>get_my_boards()</code> function, which returns a <code>data.frame</code> with board names and IDs related to a particular user.</p>
 </div>
 
 
