@@ -14,9 +14,9 @@ library(httr)
 knitr::opts_chunk$set(comment = "#>", collapse = TRUE)
 ```
 
-`trellor` offers a set of functions to get data from specific levels of Trello's JSON hierarchy. No other requests (such as POST or PUT) are implemented right now, so you can only GET data out of Trello. Getting data from private boards requires a secure token, which you can read about in the Authorization section.
+`trellor` offers a set of functions to get data from specific levels of Trello's JSON hierarchy. No other requests (such as POST or PUT) are implemented right now, so you can only GET data out of Trello. Getting data from private boards requires a secure token, which you can read about in the **Authorization** section.
 
-## Getting public data
+# Getting public data
 
 In order to get data from a specific endpoint (like a board or card), you need to have either its ID or the ID of its parent structure. Here is an example of getting ID of Trello Development Roadmap (public board) and using it to fetch a list of cards:
 
@@ -35,7 +35,7 @@ cards   = trellor::get_card_members(card_id)
 
 The naming scheme is pretty consistent. The prefix `get_` is followed by parent level, e.g. `board_` which is followed by child level, e.g. `card`. Thus it is easy to guess a function name. For complete list of available functions see `?get_board` and `?get_card`.
 
-### `get_` function builder
+## `get_` function builder
 If you lack a particular `get_` function, you can create one using the function builder `trello_req()`. Just decide which parent and child levels you want to fetch. Optionally set a filter value. You can then build your own data fetching function like this:
 
 ```{r}
@@ -51,7 +51,7 @@ You can then call your custom function in a usual way, supplying card ID:
 card_updates = fetch_card_updates(card_id)
 ```
 
-###Specifying URL requests directly
+##Additional arguments
 The `get_` functions are designed to eliminate the effort when building and reusing URL requests. Typically, you just specify resource ID in the function call, and that's it.
 
 However, you have multiple other arguments at your disposal. Let's look at the function we created in the previous section:
@@ -59,8 +59,6 @@ However, you have multiple other arguments at your disposal. Let's look at the f
 ```{r}
 fetch_card_updates
 ```
-
-###Additional arguments
 
 As you can see, there is a handful of optional arguments. They'll be passed to the `trello_get()` function which is called after the URL is build and handles all the GET requests.
 
@@ -72,7 +70,9 @@ You can supply a
 * You can also activate `paging` which is useful for requests returning more than 1000 results. It basically breaks the request down into smaller pieces, each returning no more than 1000 results.
 * `bind.rows` can be quite useful as it binds all the results into single `data.frame`. If `bind.rows = FALSE`, the result will be a list with as many elements as there were pages. The latter can also come handy on the rare occasion when the responses are not perfectly formatted and make `dplyr::bind_rows` fail.
 
-## Authorization
+When calling `trello_get()` you can also specify `filter` directly (without the need to set it in the `trello_req()` call). But you have to specify the whole request URL by hand.
+
+# Authorization
 Access to private boards requires authorization. This process includes creation of an "app" which uses a secure token to communicate with Trello API, and will allow you to retrieve data from private boards (provided you have the right to access them).
 
 To create a token, **login** to Trello and visit the [Developer Start Page](https://developers.trello.com/get-started/start-building#connect). There you can get your developer credentials, i.e. your "key" and "secret". Then, call the `trello_get_token()` function to create a token for your project. This will also trigger first-time authorization in the browser (you only have to do it once):
