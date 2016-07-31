@@ -4,12 +4,14 @@
 \alias{trello_req}
 \title{Build Requests For Trello API}
 \usage{
-trello_req(parent, child = NULL)
+trello_req(parent, child = NULL, filter = NULL)
 }
 \arguments{
 \item{parent}{e.g. \code{"board"}, \code{"card"}, \code{"member"}}
 
 \item{child}{e.g. \code{"cards"}, \code{"actions"}}
+
+\item{filter}{character vector of length 1}
 }
 \description{
 Creates a function that retrieves data from Trello API.
