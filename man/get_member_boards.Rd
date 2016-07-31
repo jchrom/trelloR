@@ -12,7 +12,7 @@ get_member_boards(id, ...)
 \item{...}{Additional arguments passed to \code{\link{trello_get}}}
 }
 \description{
-Returns a flat \code{data.frame} with all boards associated with a member.
+Returns a flat \code{data.frame} with member-related data.
 }
 \seealso{
 \code{\link{trello_get}}

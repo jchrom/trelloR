@@ -14,7 +14,7 @@ trello_req(parent, child = NULL, filter = NULL)
 \item{filter}{character vector of length 1}
 }
 \description{
-Creates a function that retrieves data from Trello API.
+GET request function builder.
 }
 \seealso{
 \code{\link{trello_get_token}}, \code{\link{trello_get}}

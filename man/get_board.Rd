@@ -10,17 +10,17 @@
 \alias{get_board_members}
 \title{Get Board}
 \usage{
+get_board_actions(id, ...)
+
 get_board_cards(id, ...)
 
-get_board_actions(id, ...)
+get_board_comments(id, ...)
+
+get_board_labels(id, ...)
 
 get_board_lists(id, ...)
 
 get_board_members(id, ...)
-
-get_board_labels(id, ...)
-
-get_board_comments(id, ...)
 }
 \arguments{
 \item{id}{Board ID}
