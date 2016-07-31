@@ -87,9 +87,8 @@ cards =<span class="st"> </span>trellor::<span class="kw">get_board_cards</span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">card_id =<span class="st"> </span>cards$id[<span class="dv">1</span>]
 cards   =<span class="st"> </span>trellor::<span class="kw">get_card_members</span>(card_id)</code></pre></div>
 <p>The naming scheme is pretty consistent. The prefix <code>get_</code> is followed by parent level, e.g. <code>board_</code> which is followed by child level, e.g. <code>card</code>. Thus it is easy to guess a function name. For complete list of available functions see <code>?get_board</code> and <code>?get_card</code>.</p>
-</div>
-<div id="get_-function-builder" class="section level2">
-<h2><code>get_</code> function builder</h2>
+<div id="get_-function-builder" class="section level3">
+<h3><code>get_</code> function builder</h3>
 <p>If you lack a particular <code>get_</code> function, you can create one using the function builder <code>trello_req()</code>. Just decide which parent and child levels you want to fetch. Optionally set a filter value. You can then build your own data fetching function like this:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fetch_card_updates =<span class="st"> </span>trellor::<span class="kw">trello_req</span>(<span class="dt">parent =</span> <span class="st">&quot;card&quot;</span>, <span class="dt">child  =</span> <span class="st">&quot;actions&quot;</span>, 
                                          <span class="dt">filter =</span> <span class="st">&quot;updateCard&quot;</span>)</code></pre></div>
@@ -97,15 +96,15 @@ cards   =<span class="st"> </span>trellor::<span class="kw">get_card_members</sp
 <p>You can then call your custom function in a usual way, supplying card ID:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">card_updates =<span class="st"> </span><span class="kw">fetch_card_updates</span>(card_id)</code></pre></div>
 </div>
-<div id="additional-arguments" class="section level2">
-<h2>Additional arguments</h2>
+<div id="additional-arguments" class="section level3">
+<h3>Additional arguments</h3>
 <p>The <code>get_</code> functions are designed to eliminate the effort when building and reusing URL requests. Typically, you just specify resource ID in the function call, and that’s it.</p>
 <p>However, you have multiple other arguments at your disposal. Let’s look at the function we created in the previous section:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fetch_card_updates
 <span class="co">#&gt; function(id,</span>
+<span class="co">#&gt;                           token = NULL,</span>
 <span class="co">#&gt;                           # filter = NULL,</span>
 <span class="co">#&gt;                           limit = NULL,</span>
-<span class="co">#&gt;                           token = NULL,</span>
 <span class="co">#&gt;                           query = NULL,</span>
 <span class="co">#&gt;                           paging = FALSE,</span>
 <span class="co">#&gt;                           fix = TRUE,</span>
@@ -133,7 +132,7 @@ cards   =<span class="st"> </span>trellor::<span class="kw">get_card_members</sp
 <span class="co">#&gt;         # Return result</span>
 <span class="co">#&gt;         return(res)</span>
 <span class="co">#&gt;     }</span>
-<span class="co">#&gt; &lt;environment: 0x4972cc0&gt;</span></code></pre></div>
+<span class="co">#&gt; &lt;environment: 0x394f720&gt;</span></code></pre></div>
 <p>As you can see, there is a handful of optional arguments. They’ll be passed to the <code>trello_get()</code> function which is called after the URL is build and handles all the GET requests.</p>
 <p>You can supply a</p>
 <ul>
@@ -145,15 +144,20 @@ cards   =<span class="st"> </span>trellor::<span class="kw">get_card_members</sp
 </ul>
 <p>When calling <code>trello_get()</code> you can also specify <code>filter</code> directly (without the need to set it in the <code>trello_req()</code> call). But you have to specify the whole request URL by hand.</p>
 </div>
+</div>
 <div id="getting-private-data" class="section level2">
-<h2># Getting private data</h2>
+<h2>Getting private data</h2>
 <p>Access to private boards requires authorization. This process includes creation of an “app” which uses a secure token to communicate with Trello API, and will allow you to retrieve data from private boards (provided you have the right to access them).</p>
 <p>To create a token, <strong>login</strong> to Trello and visit the <a href="https://developers.trello.com/get-started/start-building#connect">Developer Start Page</a>. There you can get your developer credentials, i.e. your “key” and “secret”. Then, call the <code>trello_get_token()</code> function to create a token for your project. This will also trigger first-time authorization in the browser (you only have to do it once):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_token =<span class="st"> </span>trellor::<span class="kw">trello_get_token</span>(your_key, your_secret)</code></pre></div>
 <p>You will also be offered an option to store the authentication data in your working directory, in a hidden <code>'.httr-oauth'</code> file.</p>
 <p><strong>NOTE.</strong> Make sure you keep your credentials in a <strong>safe, non-shared</strong> location.</p>
+<div id="using-the-token-to-retrieve-private-data" class="section level3">
+<h3>Using the token to retrieve private data</h3>
 <p>One thing you can do immediately after obtaining a token is to get an overview of all your boards, by the <code>get_my_boards()</code> function. It accepts the token as its only argument and returns a <code>data.frame</code> with board names and IDs related to the user who authorize the app.</p>
-<p><strong>Build with</strong></p>
+<p>Next, you can just use the <code>get_</code> functions to retrieve data as before, supplying the token as the named argument (<code>token = your_token</code>).</p>
+<div id="build-with" class="section level5">
+<h5>Build with</h5>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sessionInfo</span>()
 <span class="co">#&gt; R version 3.3.1 (2016-06-21)</span>
 <span class="co">#&gt; Platform: x86_64-pc-linux-gnu (64-bit)</span>
@@ -181,6 +185,8 @@ cards   =<span class="st"> </span>trellor::<span class="kw">get_card_members</sp
 <span class="co">#&gt; [13] rmarkdown_0.9.6    tools_3.3.1        stringr_1.0.0     </span>
 <span class="co">#&gt; [16] yaml_2.1.13        htmltools_0.3.5    knitr_1.13        </span>
 <span class="co">#&gt; [19] tibble_1.0</span></code></pre></div>
+</div>
+</div>
 </div>
 
 

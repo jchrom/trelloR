@@ -40,7 +40,7 @@ cards   = trellor::get_card_members(card_id)
 
 The naming scheme is pretty consistent. The prefix `get_` is followed by parent level, e.g. `board_` which is followed by child level, e.g. `card`. Thus it is easy to guess a function name. For complete list of available functions see `?get_board` and `?get_card`.
 
-## `get_` function builder
+###`get_` function builder
 If you lack a particular `get_` function, you can create one using the function builder `trello_req()`. Just decide which parent and child levels you want to fetch. Optionally set a filter value. You can then build your own data fetching function like this:
 
 ```{r}
@@ -56,7 +56,7 @@ You can then call your custom function in a usual way, supplying card ID:
 card_updates = fetch_card_updates(card_id)
 ```
 
-##Additional arguments
+###Additional arguments
 The `get_` functions are designed to eliminate the effort when building and reusing URL requests. Typically, you just specify resource ID in the function call, and that's it.
 
 However, you have multiple other arguments at your disposal. Let's look at the function we created in the previous section:
@@ -92,9 +92,13 @@ You will also be offered an option to store the authentication data in your work
 
 **NOTE.** Make sure you keep your credentials in a **safe, non-shared** location.
 
+###Using the token to retrieve private data
+
 One thing you can do immediately after obtaining a token is to get an overview of all your boards, by the `get_my_boards()` function. It accepts the token as its only argument and returns a `data.frame` with board names and IDs related to the user who authorize the app.
 
-**Build with**
+Next, you can just use the `get_` functions to retrieve data as before, supplying the token as the named argument (`token = your_token`).
+
+#####Build with
 
 ```{r}
 sessionInfo()
