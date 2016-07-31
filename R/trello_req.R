@@ -3,14 +3,15 @@
 #' Creates a function that retrieves data from Trello API.
 #' @param parent e.g. \code{"board"}, \code{"card"}, \code{"member"}
 #' @param child e.g. \code{"cards"}, \code{"actions"}
+#' @param filter character vector of length 1
 #' @seealso \code{\link{trello_get_token}}, \code{\link{trello_get}}
 #' @export
 
-trello_req = function(parent, child = NULL) {
+trello_req = function(parent, child = NULL, filter = NULL) {
 
     # Note: "parent", "child" are used in its body
     trello_fun = function(id,
-                          filter = NULL,
+                          # filter = NULL,
                           limit = NULL,
                           token = NULL,
                           query = NULL,
@@ -47,7 +48,6 @@ build_query = function(filter, limit) {
     query = list()
     if (!is.null(filter)) query$filter = filter
     if (!is.null(limit))  query$limit  = limit
-    print(query)
     return(query)
 }
 
