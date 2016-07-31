@@ -15,6 +15,16 @@ NULL
 
 #' @export
 #' @rdname get_board
+get_board_actions = function(id, ...) {
+
+    fun = trello_req(parent = "board", child = "actions")
+    dat = fun(id, ...)
+
+    return(dat)
+}
+
+#' @export
+#' @rdname get_board
 get_board_cards = function(id, ...) {
 
     fun = trello_req(parent = "board", child = "cards")
@@ -25,9 +35,19 @@ get_board_cards = function(id, ...) {
 
 #' @export
 #' @rdname get_board
-get_board_actions = function(id, ...) {
+get_board_comments = function(id, ...) {
 
-    fun = trello_req(parent = "board", child = "actions")
+    fun = trello_req(parent = "board", child = "actions", filter = "commentCard")
+    dat = fun(id, ...)
+
+    return(dat)
+}
+
+#' @export
+#' @rdname get_board
+get_board_labels = function(id, ...) {
+
+    fun = trello_req(parent = "board", child = "labels")
     dat = fun(id, ...)
 
     return(dat)
@@ -48,26 +68,6 @@ get_board_lists = function(id, ...) {
 get_board_members = function(id, ...) {
 
     fun = trello_req(parent = "board", child = "members")
-    dat = fun(id, ...)
-
-    return(dat)
-}
-
-#' @export
-#' @rdname get_board
-get_board_labels = function(id, ...) {
-
-    fun = trello_req(parent = "board", child = "labels")
-    dat = fun(id, ...)
-
-    return(dat)
-}
-
-#' @export
-#' @rdname get_board
-get_board_comments = function(id, ...) {
-
-    fun = trello_req(parent = "board", child = "actions", filter = "commentCard")
     dat = fun(id, ...)
 
     return(dat)
