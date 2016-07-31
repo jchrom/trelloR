@@ -1,6 +1,6 @@
 #' Build Requests For Trello API
 #'
-#' Creates a function that retrieves data from Trello API.
+#' GET request function builder.
 #' @param parent e.g. \code{"board"}, \code{"card"}, \code{"member"}
 #' @param child e.g. \code{"cards"}, \code{"actions"}
 #' @param filter character vector of length 1
@@ -11,9 +11,9 @@ trello_req = function(parent, child = NULL, filter = NULL) {
 
     # Note: "parent", "child" are used in its body
     trello_fun = function(id,
+                          token = NULL,
                           # filter = NULL,
                           limit = NULL,
-                          token = NULL,
                           query = NULL,
                           paging = FALSE,
                           fix = TRUE,
