@@ -18,7 +18,7 @@ get_my_boards = function(token, ...) {
 
 #' Get Member's Boards
 #'
-#' Returns a flat \code{data.frame} with all boards associated with a member.
+#' Returns a flat \code{data.frame} with member-related data.
 #' @param id member ID
 #' @param ... Additional arguments passed to \code{\link{trello_get}}
 #' @seealso \code{\link{trello_get}}
