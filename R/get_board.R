@@ -67,8 +67,8 @@ get_board_labels = function(id, ...) {
 #' @rdname get_board
 get_board_comments = function(id, ...) {
 
-    fun = trello_req(parent = "board", child = "actions")
-    dat = fun(id, filter = "commentCard", ...)
+    fun = trello_req(parent = "board", child = "actions", filter = "commentCard")
+    dat = fun(id, ...)
 
     return(dat)
 }
