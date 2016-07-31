@@ -64,7 +64,6 @@ As you can see, there is a handful of optional arguments. They'll be passed to t
 You can supply a 
 
 * `token` (see the Auhtorization section), 
-* `filter` (but you set that before so there is no need in this case), 
 * `limit` in case you are not happy with the default limit of 1000 results, which is also the maximum value. 
 * You can also specify custom `query` by providing a list of key-value pairs, such as `query = list(key1 = "value1", key2 = "value2")`. Read `?httr::GET` for details. Setting `filter = "updateCard` and `limit=10` is the equivalent of `query = list(filter = "updateCard", limit = 10)`. If you need more info about what keys and values are available for the query prameters, visit the [Trello API reference page](https://developers.trello.com/advanced-reference).
 * You can also activate `paging` which is useful for requests returning more than 1000 results. It basically breaks the request down into smaller pieces, each returning no more than 1000 results.
