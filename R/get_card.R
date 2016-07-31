@@ -27,8 +27,8 @@ get_card_actions = function(id, ...) {
 #' @rdname get_card
 get_card_comments = function(id, ...) {
 
-    fun = trello_req(parent = "card", child = "actions")
-    dat = fun(id, filter = "commentCard", ...)
+    fun = trello_req(parent = "card", child = "actions", filter = "commentCard")
+    dat = fun(id, ...)
 
     return(dat)
 }
