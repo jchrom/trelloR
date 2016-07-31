@@ -35,6 +35,16 @@ get_card_comments = function(id, ...) {
 
 #' @export
 #' @rdname get_card
+get_card_labels = function(id, ...) {
+
+    fun = trello_req(parent = "card", child = "labels")
+    dat = fun(id, ...)
+
+    return(dat)
+}
+
+#' @export
+#' @rdname get_card
 get_card_members = function(id, ...) {
 
     fun = trello_req(parent = "card", child = "members")
