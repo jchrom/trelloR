@@ -14,11 +14,16 @@ library(httr)
 knitr::opts_chunk$set(comment = "#>", collapse = TRUE)
 ```
 
-`trellor` offers a set of functions to get data from specific levels of Trello's JSON hierarchy. No other requests (such as POST or PUT) are implemented right now, so you can only GET data out of Trello. Getting data from private boards requires a secure token, which you can read about in the **Authorization** section.
+This document explains how to GET public and private data from Trello boards using `trellor`.
 
-# Getting public data
+Disclaimer: `trellor` is not affiliated, associated, authorized, endorsed by or in any way officially connected to Trello, Inc. (www.trello.com).
 
-In order to get data from a specific endpoint (like a board or card), you need to have either its ID or the ID of its parent structure. Here is an example of getting ID of Trello Development Roadmap (public board) and using it to fetch a list of cards:
+Getting public data
+-------------------
+
+`trellor` allows you to GET data from specific levels of Trello's JSON hierarchy. Other requests (such as POST or PUT) are not implemented right now. Getting data from private boards requires a secure token, which you can read about in the **Getting private data** section.
+
+In order to get data from a specific endpoint (like "board" or "card"), you need to have either its ID or the ID of its parent structure. Here is an example of getting ID of Trello Development Roadmap (public board) and using it to fetch a list of cards:
 
 ```r
 url   = "https://trello.com/b/nC8QJJoZ/trello-development-roadmap"
@@ -68,11 +73,13 @@ You can supply a
 * `limit` in case you are not happy with the default limit of 1000 results, which is also the maximum value. 
 * You can also specify custom `query` by providing a list of key-value pairs, such as `query = list(key1 = "value1", key2 = "value2")`. Read `?httr::GET` for details. Setting `filter = "updateCard` and `limit=10` is the equivalent of `query = list(filter = "updateCard", limit = 10)`. If you need more info about what keys and values are available for the query prameters, visit the [Trello API reference page](https://developers.trello.com/advanced-reference).
 * You can also activate `paging` which is useful for requests returning more than 1000 results. It basically breaks the request down into smaller pieces, each returning no more than 1000 results.
-* `bind.rows` can be quite useful as it binds all the results into single `data.frame`. If `bind.rows = FALSE`, the result will be a list with as many elements as there were pages. The latter can also come handy on the rare occasion when the responses are not perfectly formatted and make `dplyr::bind_rows` fail.
+* `bind.rows` can be quite useful as it binds all the results into single `data.frame`. If `bind.rows = FALSE`, the result will be a `list` with as many elements as there were pages. This can also come handy on the rare occasion when the responses are not perfectly formatted and make `dplyr::bind_rows` fail.
 
 When calling `trello_get()` you can also specify `filter` directly (without the need to set it in the `trello_req()` call). But you have to specify the whole request URL by hand.
 
-# Authorization
+Getting private data
+----------------------
+
 Access to private boards requires authorization. This process includes creation of an "app" which uses a secure token to communicate with Trello API, and will allow you to retrieve data from private boards (provided you have the right to access them).
 
 To create a token, **login** to Trello and visit the [Developer Start Page](https://developers.trello.com/get-started/start-building#connect). There you can get your developer credentials, i.e. your "key" and "secret". Then, call the `trello_get_token()` function to create a token for your project. This will also trigger first-time authorization in the browser (you only have to do it once):
@@ -86,3 +93,9 @@ You will also be offered an option to store the authentication data in your work
 **NOTE.** Make sure you keep your credentials in a **safe, non-shared** location.
 
 One thing you can do immediately after obtaining a token is to get an overview of all your boards, by the `get_my_boards()` function. It accepts the token as its only argument and returns a `data.frame` with board names and IDs related to the user who authorize the app.
+
+**Build with**
+
+```{r}
+sessionInfo()
+```

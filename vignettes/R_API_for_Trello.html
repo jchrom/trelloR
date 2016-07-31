@@ -74,10 +74,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 
-<p><code>trellor</code> offers a set of functions to get data from specific levels of Trello’s JSON hierarchy. No other requests (such as POST or PUT) are implemented right now, so you can only GET data out of Trello. Getting data from private boards requires a secure token, which you can read about in the <strong>Authorization</strong> section.</p>
-<div id="getting-public-data" class="section level1">
-<h1>Getting public data</h1>
-<p>In order to get data from a specific endpoint (like a board or card), you need to have either its ID or the ID of its parent structure. Here is an example of getting ID of Trello Development Roadmap (public board) and using it to fetch a list of cards:</p>
+<p>This document explains how to GET public and private data from Trello boards using <code>trellor</code>.</p>
+<p>Disclaimer: <code>trellor</code> is not affiliated, associated, authorized, endorsed by or in any way officially connected to Trello, Inc. (www.trello.com).</p>
+<div id="getting-public-data" class="section level2">
+<h2>Getting public data</h2>
+<p><code>trellor</code> allows you to GET data from specific levels of Trello’s JSON hierarchy. Other requests (such as POST or PUT) are not implemented right now. Getting data from private boards requires a secure token, which you can read about in the <strong>Getting private data</strong> section.</p>
+<p>In order to get data from a specific endpoint (like “board” or “card”), you need to have either its ID or the ID of its parent structure. Here is an example of getting ID of Trello Development Roadmap (public board) and using it to fetch a list of cards:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">url   =<span class="st"> &quot;https://trello.com/b/nC8QJJoZ/trello-development-roadmap&quot;</span>
 bid   =<span class="st"> </span>trellor::<span class="kw">get_id_board</span>(url)
 cards =<span class="st"> </span>trellor::<span class="kw">get_board_cards</span>(bid)</code></pre></div>
@@ -85,6 +87,7 @@ cards =<span class="st"> </span>trellor::<span class="kw">get_board_cards</span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">card_id =<span class="st"> </span>cards$id[<span class="dv">1</span>]
 cards   =<span class="st"> </span>trellor::<span class="kw">get_card_members</span>(card_id)</code></pre></div>
 <p>The naming scheme is pretty consistent. The prefix <code>get_</code> is followed by parent level, e.g. <code>board_</code> which is followed by child level, e.g. <code>card</code>. Thus it is easy to guess a function name. For complete list of available functions see <code>?get_board</code> and <code>?get_card</code>.</p>
+</div>
 <div id="get_-function-builder" class="section level2">
 <h2><code>get_</code> function builder</h2>
 <p>If you lack a particular <code>get_</code> function, you can create one using the function builder <code>trello_req()</code>. Just decide which parent and child levels you want to fetch. Optionally set a filter value. You can then build your own data fetching function like this:</p>
@@ -130,7 +133,7 @@ cards   =<span class="st"> </span>trellor::<span class="kw">get_card_members</sp
 <span class="co">#&gt;         # Return result</span>
 <span class="co">#&gt;         return(res)</span>
 <span class="co">#&gt;     }</span>
-<span class="co">#&gt; &lt;environment: 0x2aa04c0&gt;</span></code></pre></div>
+<span class="co">#&gt; &lt;environment: 0x4972cc0&gt;</span></code></pre></div>
 <p>As you can see, there is a handful of optional arguments. They’ll be passed to the <code>trello_get()</code> function which is called after the URL is build and handles all the GET requests.</p>
 <p>You can supply a</p>
 <ul>
@@ -138,19 +141,46 @@ cards   =<span class="st"> </span>trellor::<span class="kw">get_card_members</sp
 <li><code>limit</code> in case you are not happy with the default limit of 1000 results, which is also the maximum value.</li>
 <li>You can also specify custom <code>query</code> by providing a list of key-value pairs, such as <code>query = list(key1 = &quot;value1&quot;, key2 = &quot;value2&quot;)</code>. Read <code>?httr::GET</code> for details. Setting <code>filter = &quot;updateCard</code> and <code>limit=10</code> is the equivalent of <code>query = list(filter = &quot;updateCard&quot;, limit = 10)</code>. If you need more info about what keys and values are available for the query prameters, visit the <a href="https://developers.trello.com/advanced-reference">Trello API reference page</a>.</li>
 <li>You can also activate <code>paging</code> which is useful for requests returning more than 1000 results. It basically breaks the request down into smaller pieces, each returning no more than 1000 results.</li>
-<li><code>bind.rows</code> can be quite useful as it binds all the results into single <code>data.frame</code>. If <code>bind.rows = FALSE</code>, the result will be a list with as many elements as there were pages. The latter can also come handy on the rare occasion when the responses are not perfectly formatted and make <code>dplyr::bind_rows</code> fail.</li>
+<li><code>bind.rows</code> can be quite useful as it binds all the results into single <code>data.frame</code>. If <code>bind.rows = FALSE</code>, the result will be a <code>list</code> with as many elements as there were pages. This can also come handy on the rare occasion when the responses are not perfectly formatted and make <code>dplyr::bind_rows</code> fail.</li>
 </ul>
 <p>When calling <code>trello_get()</code> you can also specify <code>filter</code> directly (without the need to set it in the <code>trello_req()</code> call). But you have to specify the whole request URL by hand.</p>
 </div>
-</div>
-<div id="authorization" class="section level1">
-<h1>Authorization</h1>
+<div id="getting-private-data" class="section level2">
+<h2># Getting private data</h2>
 <p>Access to private boards requires authorization. This process includes creation of an “app” which uses a secure token to communicate with Trello API, and will allow you to retrieve data from private boards (provided you have the right to access them).</p>
 <p>To create a token, <strong>login</strong> to Trello and visit the <a href="https://developers.trello.com/get-started/start-building#connect">Developer Start Page</a>. There you can get your developer credentials, i.e. your “key” and “secret”. Then, call the <code>trello_get_token()</code> function to create a token for your project. This will also trigger first-time authorization in the browser (you only have to do it once):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_token =<span class="st"> </span>trellor::<span class="kw">trello_get_token</span>(your_key, your_secret)</code></pre></div>
 <p>You will also be offered an option to store the authentication data in your working directory, in a hidden <code>'.httr-oauth'</code> file.</p>
 <p><strong>NOTE.</strong> Make sure you keep your credentials in a <strong>safe, non-shared</strong> location.</p>
 <p>One thing you can do immediately after obtaining a token is to get an overview of all your boards, by the <code>get_my_boards()</code> function. It accepts the token as its only argument and returns a <code>data.frame</code> with board names and IDs related to the user who authorize the app.</p>
+<p><strong>Build with</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sessionInfo</span>()
+<span class="co">#&gt; R version 3.3.1 (2016-06-21)</span>
+<span class="co">#&gt; Platform: x86_64-pc-linux-gnu (64-bit)</span>
+<span class="co">#&gt; Running under: elementary OS Freya</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; locale:</span>
+<span class="co">#&gt;  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span>
+<span class="co">#&gt;  [3] LC_TIME=cs_CZ.UTF-8        LC_COLLATE=en_US.UTF-8    </span>
+<span class="co">#&gt;  [5] LC_MONETARY=cs_CZ.UTF-8    LC_MESSAGES=en_US.UTF-8   </span>
+<span class="co">#&gt;  [7] LC_PAPER=cs_CZ.UTF-8       LC_NAME=C                 </span>
+<span class="co">#&gt;  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span>
+<span class="co">#&gt; [11] LC_MEASUREMENT=cs_CZ.UTF-8 LC_IDENTIFICATION=C       </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; attached base packages:</span>
+<span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; other attached packages:</span>
+<span class="co">#&gt; [1] httr_1.2.1</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; loaded via a namespace (and not attached):</span>
+<span class="co">#&gt;  [1] Rcpp_0.12.4        digest_0.6.9       dplyr_0.5.0       </span>
+<span class="co">#&gt;  [4] assertthat_0.1     R6_2.1.2           jsonlite_1.0      </span>
+<span class="co">#&gt;  [7] DBI_0.4-1          formatR_1.4        magrittr_1.5      </span>
+<span class="co">#&gt; [10] evaluate_0.9       stringi_1.0-1      trellor_0.0.0.9000</span>
+<span class="co">#&gt; [13] rmarkdown_0.9.6    tools_3.3.1        stringr_1.0.0     </span>
+<span class="co">#&gt; [16] yaml_2.1.13        htmltools_0.3.5    knitr_1.13        </span>
+<span class="co">#&gt; [19] tibble_1.0</span></code></pre></div>
 </div>
 
 
