@@ -4,16 +4,17 @@
 \alias{get_my_boards}
 \title{Get Own Boards}
 \usage{
-get_my_boards(token, paging = FALSE, fix = TRUE)
+get_my_boards(token, ...)
 }
 \arguments{
 \item{token}{previously generated token, see \code{\link{trello_get_token}} for info on how to obtain it}
 
-\item{paging}{whether paging should be used (necessary for requests returning more than 1000 rows). Defaults to \code{FALSE}}
-
-\item{fix}{drop and rename some columns or return it as is. Defaults to \code{TRUE}}
+\item{...}{Additional arguments passed to \code{\link{trello_get}}}
 }
 \description{
 Returns a flat \code{data.frame} with all your boards.
+}
+\seealso{
+\code{\link{trello_get}}
 }
 

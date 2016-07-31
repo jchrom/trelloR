@@ -4,18 +4,17 @@
 \alias{get_member_boards}
 \title{Get Member's Boards}
 \usage{
-get_member_boards(id, token = NULL, paging = FALSE, fix = TRUE)
+get_member_boards(id, ...)
 }
 \arguments{
 \item{id}{member ID}
 
-\item{token}{previously generated token, see \code{\link{trello_get_token}} for info on how to obtain it}
-
-\item{paging}{whether paging should be used (necessary for requests returning more than 1000 rows). Defaults to \code{FALSE}}
-
-\item{fix}{drop and rename some columns or return it as is. Defaults to \code{TRUE}}
+\item{...}{Additional arguments passed to \code{\link{trello_get}}}
 }
 \description{
-Returns a flat \code{data.frame} with all your boards.
+Returns a flat \code{data.frame} with all boards associated with a member.
+}
+\seealso{
+\code{\link{trello_get}}
 }
 
