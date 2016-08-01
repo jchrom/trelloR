@@ -7,7 +7,7 @@
 get_my_boards(token, ...)
 }
 \arguments{
-\item{token}{previously generated token, see \code{\link{trello_get_token}} for info on how to obtain it}
+\item{token}{Secure token - get it with \code{\link{trello_get_token}}}
 
 \item{...}{Additional arguments passed to \code{\link{trello_get}}}
 }

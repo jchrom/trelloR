@@ -6,12 +6,14 @@
 \alias{get_id_card}
 \title{Get ID}
 \usage{
-get_id_board(url)
+get_id_board(url, token = NULL)
 
-get_id_card(url)
+get_id_card(url, token = NULL)
 }
 \arguments{
 \item{url}{Complete url, short url or just the url ID part of a Trello board}
+
+\item{token}{Secure token - get it with \code{\link{trello_get_token}}}
 }
 \description{
 Get ID of a resource.

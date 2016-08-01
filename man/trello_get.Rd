@@ -4,10 +4,19 @@
 \alias{trello_get}
 \title{Get Data From Trello API}
 \usage{
-trello_get(url, token = NULL, filter = NULL, limit = NULL, query = NULL,
-  paging = FALSE, bind.rows = TRUE)
+trello_get(parent = NULL, child = NULL, id = NULL, query = NULL,
+  url = NULL, token = NULL, filter = NULL, limit = 1000,
+  paging = FALSE, bind.rows = TRUE, fix = TRUE)
 }
 \arguments{
+\item{parent}{Parent structure (e.g. \code{"board"})}
+
+\item{child}{Child structure (e.g. \code{"card"})}
+
+\item{id}{resource id}
+
+\item{query}{url parameters that form the query, see \code{\link[httr]{GET}} for details}
+
 \item{url}{url for the GET request, see \code{\link[httr]{GET}} for details}
 
 \item{token}{previously generated token, see \code{\link{trello_get_token}} for how to obtain it}
@@ -15,8 +24,6 @@ trello_get(url, token = NULL, filter = NULL, limit = NULL, query = NULL,
 \item{filter}{url parameter}
 
 \item{limit}{url parameter (defaults to 1000; if reached, paging is suggested)}
-
-\item{query}{url parameters that form the query, see \code{\link[httr]{GET}} for details}
 
 \item{paging}{logical whether paging should be used}
 
@@ -36,8 +43,8 @@ When \code{paging = TRUE}, then every batch of results is searched and the ID of
 }
 \examples{
 # No authorization is required to access public boards. Let's get the ID of
-# Trello Development Roadmap board (notice the .json suffix):
-url = "https://trello.com/b/nC8QJJoZ/trello-development-roadmap.json"
+# Trello Development Roadmap board:
+url = "https://trello.com/b/nC8QJJoZ/trello-development-roadmap"
 bid = get_id_board(url)
 
 # Once we have the ID, we can use it to make specific queries:
@@ -66,6 +73,6 @@ all_open_cards = get_board_cards(board_id, token, filter = "open")
 }
 }
 \seealso{
-\code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}}, \code{\link{trello_get_token}}
+\code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}}, \code{\link{trello_get_token}}, \code{\link{get_id}}
 }
 
