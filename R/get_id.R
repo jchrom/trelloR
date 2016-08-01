@@ -8,8 +8,8 @@
 #'
 #' Get ID of a resource.
 #' @param url Complete url, short url or just the url ID part of a Trello board
+#' @param token Secure token - get it with \code{\link{trello_get_token}}
 #' @name get_id
-#' @export
 #' @examples
 #' # Get Trello Development Roadmap board ID
 #' url    = "https://trello.com/b/nC8QJJoZ/trello-development-roadmap"
@@ -19,36 +19,31 @@
 #' url    = "nC8QJJoZ"
 #' tdr_id = get_id_board(url)
 
+#' @export
 #' @rdname get_id
-get_id_board = function(url) {
+get_id_board = function(url, token = NULL) {
 
-    # Parse URL
-    parsed = parse_url(url)
+    url = parse_url(url)
+    dat = trello_get(parent = "board", id = url, token = token,
+                     query = list(fields = "name"))
 
-    # Define closure and call
-    fun = trello_req(parent = "board")
-    dat = fun(parsed, query = list(fields = "name"))
-
-    # Format vector
     id = dat$id
     names(id) = dat$name
     class(id) = c("character")
 
-    # Comment on results
-    cat("Converted into character vector of length 1 with name")
+    cat('Converted into character vector of length 1 with name "',
+        names(id), '"\n', sep = "")
 
     return(id)
 }
 
+#' @export
 #' @rdname get_id
-get_id_card = function(url) {
+get_id_card = function(url, token = NULL) {
 
-    # Parse URL
-    parsed = parse_url(url)
-
-    # Define closure and call
-    fun = trello_req(parent = "card")
-    dat = fun(parsed, query = list(fields = "name"))
+    url = parse_url(url)
+    dat = trello_get(parent = "card", id = url, token = token,
+                     query = list(fields = "name"))
 
     # Format vector
     id = dat$id
@@ -56,7 +51,8 @@ get_id_card = function(url) {
     class(id) = c("character")
 
     # Comment on results
-    cat("Converted into character vector of length 1 with name")
+    cat('Converted into character vector of length 1 with name "',
+        names(id), '"', sep = "")
 
     return(id)
 }
