@@ -4,9 +4,9 @@
 #'
 #' If the request fails, server error messages are extracted from the response header and reprinted on the console.
 #'
-#' Only JSON responses are accepted. \code{\link[jsonlite]{fromJSON}} converts them into flat \code{data.frame}s. Non-JSON type of response throws an error.
+#' Only JSON responses are accepted. \code{\link[jsonlite]{fromJSON}} converts them into flat \code{data.frame}s, while non-JSON type of response throws an error.
 #'
-#' When \code{paging = TRUE}, then every batch of results is searched and the ID of the earliest result is retrieved. This is then supplied to the next request as the value of the \code{before} parameter, so that Trello knows where to start fetching the next batch of results. \code{\link{trello_get}} will keep paging until there is nothing more to fetch (i.e., the number of results per page is smaller then 1000 which is the server response limit).
+#' When \code{paging = TRUE}, the ID of the earliest result is retrieved from every page and supplied to the next request as the value of the \code{"before"} parameter. Paging will continue until the number of results per page is smaller then 1000, indicating no more pages to get.?
 #'
 #' \code{filter} and \code{limit} are query parameters and can be set individually; you could achieve the same result by using \code{query = list(filter = "filter_value", limit = "limit_value")}
 #' @param parent Parent structure (e.g. \code{"board"})
