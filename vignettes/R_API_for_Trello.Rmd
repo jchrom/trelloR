@@ -76,12 +76,11 @@ args(trello_get)
 
 You can supply a 
 
-* `token` (see the **Getting private data**)
+* `token` (see the __Getting private data__)
 * `limit` in case you are not happy with the default limit of 1000 results, which is also the maximum value
 * custom `query` by providing a list of key-value pairs, such as `query = list(key1 = "value1", key2 = "value2")`. Read `?httr::GET` for details. Setting `filter = "updateCard` and `limit=10` is the equivalent of `query = list(filter = "updateCard", limit = 10)`; if you need more info about what keys and values are available for the query prameters, visit the [Trello API reference page](https://developers.trello.com/advanced-reference)
 * `paging` - this is useful for requests returning more than 1000 results; it breaks the request down into smaller pieces, each returning no more than 1000 results
 * `bind.rows` binds all the results into single `data.frame`
-* `fix` does not do much now but in the future it's meant to drop some infrequently used columns from the response and impose a consistent naming scheme that would make table joins easier
 
 If `bind.rows = FALSE`, the result will be a `list` with as many elements as there were pages. This can be useful on the rare occasion when the responses are not perfectly formatted and make `dplyr::bind_rows` fail.
 
