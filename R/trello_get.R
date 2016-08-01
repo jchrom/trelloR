@@ -62,10 +62,11 @@ trello_get = function(parent = NULL,
                       filter = NULL,
                       limit = 1000,
                       paging = FALSE,
-                      bind.rows = TRUE,
-                      fix = TRUE) {
+                      bind.rows = TRUE
+                      # , fix = TRUE
+                      ) {
 
-    if (is.null(url)) url = build_url(parent = parent, child = child, id = id)
+    url   = build_url(parent = parent, child = child, id = id)
     query = build_query(query = query, filter = filter, limit = limit)
 
     cat("Sending request...\n")
@@ -78,7 +79,7 @@ trello_get = function(parent = NULL,
                           query = query)
     }
 
-    if (fix) result = trello_fix(result)
+    # if (fix) result = trello_fix(result)
     return(result)
 }
 
@@ -132,12 +133,12 @@ get_pages = function(url, token, query, bind.rows) {
     return(result)
 }
 
-build_url = function(parent, child = NULL, id) {
-    url = paste0("https://api.trello.com/1/",
-                 parent, "/",
-                 id, "/",
-                 child)
-    return(url)
+build_url = function(url, parent, id, child) {
+    if (is.null(url))  {
+        url = paste0("https://api.trello.com/1/", parent, "/", id, "/", child)
+    } else {
+        url
+    }
 }
 
 build_query = function(query = NULL, filter = NULL, limit = 1000) {
