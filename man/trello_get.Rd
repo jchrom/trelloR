@@ -6,7 +6,7 @@
 \usage{
 trello_get(parent = NULL, child = NULL, id = NULL, query = NULL,
   url = NULL, token = NULL, filter = NULL, limit = 1000,
-  paging = FALSE, bind.rows = TRUE, fix = TRUE)
+  paging = FALSE, bind.rows = TRUE)
 }
 \arguments{
 \item{parent}{Parent structure (e.g. \code{"board"})}
