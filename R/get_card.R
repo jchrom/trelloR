@@ -17,9 +17,7 @@ NULL
 #' @rdname get_card
 get_card_actions = function(id, ...) {
 
-    fun = trello_req(parent = "card", child = "actions")
-    dat = fun(id, ...)
-
+    dat = trello_get(parent = "card", child = "actions", id = id, ...)
     return(dat)
 }
 
@@ -27,9 +25,8 @@ get_card_actions = function(id, ...) {
 #' @rdname get_card
 get_card_comments = function(id, ...) {
 
-    fun = trello_req(parent = "card", child = "actions", filter = "commentCard")
-    dat = fun(id, ...)
-
+    dat = trello_get(parent = "card", child = "actions", id = id,
+                     filter = "commentCard", ...)
     return(dat)
 }
 
@@ -37,9 +34,7 @@ get_card_comments = function(id, ...) {
 #' @rdname get_card
 get_card_labels = function(id, ...) {
 
-    fun = trello_req(parent = "card", child = "labels")
-    dat = fun(id, ...)
-
+    dat = trello_get(parent = "card", child = "labels", id = id, ...)
     return(dat)
 }
 
@@ -47,8 +42,6 @@ get_card_labels = function(id, ...) {
 #' @rdname get_card
 get_card_members = function(id, ...) {
 
-    fun = trello_req(parent = "card", child = "members")
-    dat = fun(id, ...)
-
+    dat = trello_get(parent = "card", child = "members", id = id, ...)
     return(dat)
 }
