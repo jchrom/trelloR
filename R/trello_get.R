@@ -9,20 +9,23 @@
 #' When \code{paging = TRUE}, then every batch of results is searched and the ID of the earliest result is retrieved. This is then supplied to the next request as the value of the \code{before} parameter, so that Trello knows where to start fetching the next batch of results. \code{\link{trello_get}} will keep paging until there is nothing more to fetch (i.e., the number of results per page is smaller then 1000 which is the server response limit).
 #'
 #' \code{filter} and \code{limit} are query parameters and can be set individually; you could achieve the same result by using \code{query = list(filter = "filter_value", limit = "limit_value")}
+#' @param parent Parent structure (e.g. \code{"board"})
+#' @param child Child structure (e.g. \code{"card"})
+#' @param id resource id
+#' @param query url parameters that form the query, see \code{\link[httr]{GET}} for details
 #' @param url url for the GET request, see \code{\link[httr]{GET}} for details
 #' @param filter url parameter
 #' @param limit url parameter (defaults to 1000; if reached, paging is suggested)
-#' @param query url parameters that form the query, see \code{\link[httr]{GET}} for details
 #' @param token previously generated token, see \code{\link{trello_get_token}} for how to obtain it
 #' @param paging logical whether paging should be used
 #' @param bind.rows by default, pages will be combined into one \code{data.frame} by \code{\link[dplyr]{bind_rows}}. Set to \code{FALSE} if you want \code{list} instead. This is useful on the rare occasion that the JSON response is not formatted correctly and makes \code{\link[dplyr]{bind_rows}} fail
-#' @seealso \code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}}, \code{\link{trello_get_token}}
+#' @seealso \code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}}, \code{\link{trello_get_token}}, \code{\link{get_id}}
 #' @importFrom dplyr bind_rows
 #' @export
 #' @examples
 #' # No authorization is required to access public boards. Let's get the ID of
-#' # Trello Development Roadmap board (notice the .json suffix):
-#' url = "https://trello.com/b/nC8QJJoZ/trello-development-roadmap.json"
+#' # Trello Development Roadmap board:
+#' url = "https://trello.com/b/nC8QJJoZ/trello-development-roadmap"
 #' bid = get_id_board(url)
 #'
 #' # Once we have the ID, we can use it to make specific queries:
@@ -62,7 +65,7 @@ trello_get = function(parent = NULL,
                       bind.rows = TRUE,
                       fix = TRUE) {
 
-    url   = paste0("https://api.trello.com/1/", parent, "/", id, "/", child)
+    if (is.null(url)) url = build_url(parent = parent, child = child, id = id)
     query = build_query(query = query, filter = filter, limit = limit)
 
     cat("Sending request...\n")
@@ -129,6 +132,14 @@ get_pages = function(url, token, query, bind.rows) {
     return(result)
 }
 
+build_url = function(parent, child = NULL, id) {
+    url = paste0("https://api.trello.com/1/",
+                 parent, "/",
+                 id, "/",
+                 child)
+    return(url)
+}
+
 build_query = function(query = NULL, filter = NULL, limit = 1000) {
 
     if (is.null(query)) query = list()
@@ -148,9 +159,7 @@ build_query = function(query = NULL, filter = NULL, limit = 1000) {
 #' @importFrom httr GET content config http_status headers http_type http_error user_agent
 #' @importFrom jsonlite fromJSON
 
-get_flat = function(url,
-                    token = NULL,
-                    query = NULL) {
+get_flat = function(url, token = NULL, query = NULL) {
 
     # Issue request
     req  = GET(url = url,
