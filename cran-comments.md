@@ -18,4 +18,5 @@ Possibly mis-spelled words in DESCRIPTION:
   API (2:10, 5:35)
   Trello (2:18, 5:28, 7:43)
   trellor (6:17)
-They are all correct.
+Not sure if Trello (see www.trello.com) counts as software
+and should thus be single-quoted? As of now it is not.
