@@ -26,7 +26,7 @@ You can make requests for specific resources from endpoints like "board", "card"
 ```{r}
 library(trellor)
 url = "https://trello.com/b/nC8QJJoZ/trello-development-roadmap"
-board_id = get_id_board(url)
+board_id = get_id_board(url = url)
 
 # Having obtained a board ID, we can now make a query:
 cards = get_board_cards(board_id, limit = 5)
