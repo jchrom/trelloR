@@ -50,95 +50,93 @@
 #' all_open_cards = get_board_cards(board_id, token, filter = "open")
 #' }
 
-trello_get = function(url,
+trello_get = function(parent = NULL,
+                      child = NULL,
+                      id = NULL,
+                      query = NULL,
+                      url = NULL,
                       token = NULL,
                       filter = NULL,
-                      limit = NULL,
-                      query = NULL,
+                      limit = 1000,
                       paging = FALSE,
-                      bind.rows = TRUE) {
+                      bind.rows = TRUE,
+                      fix = TRUE) {
+
+    url   = paste0("https://api.trello.com/1/", parent, "/", id, "/", child)
+    query = build_query(query = query, filter = filter, limit = limit)
 
     cat("Sending request...\n")
 
-    # Build query
-    if (is.null(query)) query = build_query(filter = filter, limit = limit)
-    if (is.null(query$limit)) query$limit = "1000"
-
     if (paging) {
-
-        # Set placeholder for results and a result counter
-        result = list()
-        n_res  = 0
-
-        repeat {
-
-            # Get a batch of data
-            batch = get_flat(url = url,
-                             token = token,
-                             query = query)
-            n_res = n_res + nrow(batch)
-
-            # Append to the previous results
-            result[[length(result) + 1]] = batch
-
-            # If paging is needed, set 'before'; otherwise abort
-            if (keep_going(batch)) {
-                query$before = set_before(batch)
-                message("Received 1000 results, keep paging...")
-            } else {
-                message("Received last page, ", n_res," results in total")
-                break
-            }
-        }
-
-        if (bind.rows) {
-            result = tryCatch(
-                expr  = bind_rows(result),
-                error = function(e) {
-                    message("Binding failed, returning list")
-                    message(length(result), " elements")
-                    result
-                })
-        }
+        result = get_pages(url = url, token = token,
+                           query = query, bind.rows = bind.rows)
     } else {
+        result = get_page(url = url, token = token,
+                          query = query)
+    }
 
-        # Build url and get flattened data
-        result = get_flat(url = url, token = token, query = query)
-        message("Returning ", class(result))
+    if (fix) result = trello_fix(result)
+    return(result)
+}
 
-        # Show out
-        if (is.data.frame(result)) {
-            if (nrow(result) >= 1000) {
-                message("Reached 1000 results; use 'paging = TRUE' to get more")
-            } else {
-                message("Received ", nrow(result), " results")
-            }
+get_page = function(url, token, query) {
+
+    result = get_flat(url = url, token = token, query = query)
+    message("Returning ", class(result))
+
+    if (is.data.frame(result)) {
+        if (nrow(result) >= 1000) {
+            message("Reached 1000 results. Set 'paging = TRUE' to get more")
         } else {
-            message(length(result), " elements")
+            message("Received ", nrow(result), " results")}
+    } else {
+        message(length(result), " elements")}
+
+    return(result)
+}
+
+get_pages = function(url, token, query, bind.rows) {
+
+    result = list()
+
+    repeat {
+
+        batch  = get_flat(url = url, token = token, query = query)
+        result = append(result, list(batch))
+
+        if (!is.data.frame(batch)) {
+            message("Cannot determine number of results - paging aborted")
+            break
+        } else if (nrow(batch) < 1000) {
+            total = ((length(result) - 1) * 1000) + nrow(batch)
+            message("Received last page, ", total," results in total")
+            break
+        } else {
+            query$before = batch$id[1000]
+            message("Received 1000 results, keep paging...")
         }
+    }
+
+    if (bind.rows) {
+        result = tryCatch(
+            expr  = bind_rows(result),
+            error = function(e) {
+                cat("Binding failed:", e$message)
+                message("Returning list (", length(result), " elements)")
+                result
+            })
     }
     return(result)
 }
 
-set_before = function(batch) {
-    # Get ID that corresponds with the earliest date
-    before = batch$id[batch$date == min(batch$date)]
-    return(before)
-}
+build_query = function(query = NULL, filter = NULL, limit = 1000) {
 
-keep_going = function(flat) {
+    if (is.null(query)) query = list()
 
-    # Only data.frames can be bound by bind_rows; if it isn't one, abort paging
-    if (!is.data.frame(flat)) {
-        message("Response format is not suitable for paging - finished.")
-        go_on = FALSE
-    } else go_on = TRUE
+    query$filter = filter
+    query$limit  = limit
 
-    # If the result is shorter than 1000, it is the last page; abort paging
-    if (nrow(flat) < 1000) go_on = FALSE
-
-    # My heart must
-    return(go_on)
+    return(query)
 }
 
 #' GET url and return data.frame
@@ -184,5 +182,3 @@ get_flat = function(url,
     # Return the result
     return(flat)
 }
-
-
