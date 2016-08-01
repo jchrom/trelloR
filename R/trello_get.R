@@ -66,7 +66,7 @@ trello_get = function(parent = NULL,
                       # , fix = TRUE
                       ) {
 
-    url   = build_url(parent = parent, child = child, id = id)
+    url   = build_url(url = url, parent = parent, child = child, id = id)
     query = build_query(query = query, filter = filter, limit = limit)
 
     cat("Sending request...\n")
