@@ -74,7 +74,7 @@ However, you have multiple other arguments at your disposal. Let's look at the `
 args(trello_get)
 ```
 
-You can supply a 
+You can supply a:
 
 * `token` (see the __Getting private data__)
 * `limit` in case you are not happy with the default limit of 1000 results, which is also the maximum value
