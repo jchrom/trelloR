@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 [![Build Status](https://travis-ci.org/jchrom/trellor.svg?branch=master)](https://travis-ci.org/jchrom/trellor)
 
-The purpose of `trellor` is to provide easy access to the [Trello API](https://developers.trello.com/) from R. It can retrieve data from various levels of JSON hierarchy (e.g. cards that belong to a particular board or members assigned to a particular card).
+The purpose of `trellor` is to easily access [Trello API](https://developers.trello.com/) from R. It can retrieve data from various levels of JSON hierarchy (e.g. cards that belong to a particular board or members assigned to a particular card).
 
 Requests are carried out by a set of simple functions with meaningful names. For instance, getting all cards from a particular board is as easy as:
 
