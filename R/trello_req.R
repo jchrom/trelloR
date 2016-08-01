@@ -43,15 +43,3 @@ trello_req = function(parent, child = NULL, filter = NULL) {
     }
     return(trello_fun)
 }
-
-build_query = function(filter, limit) {
-    query = list()
-    if (!is.null(filter)) query$filter = filter
-    if (!is.null(limit))  query$limit  = limit
-    return(query)
-}
-
-# For now just a placeholder; later a wrapper for the fix_ family
-trello_fix = function(res) {
-    return(res)
-}
