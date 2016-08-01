@@ -17,9 +17,7 @@ NULL
 #' @rdname get_board
 get_board_actions = function(id, ...) {
 
-    fun = trello_req(parent = "board", child = "actions")
-    dat = fun(id, ...)
-
+    dat = trello_get(parent = "board", child = "actions", id = id, ...)
     return(dat)
 }
 
@@ -27,9 +25,7 @@ get_board_actions = function(id, ...) {
 #' @rdname get_board
 get_board_cards = function(id, ...) {
 
-    fun = trello_req(parent = "board", child = "cards")
-    dat = fun(id, ...)
-
+    dat = trello_get(parent = "board", child = "cards", id = id, ...)
     return(dat)
 }
 
@@ -37,9 +33,8 @@ get_board_cards = function(id, ...) {
 #' @rdname get_board
 get_board_comments = function(id, ...) {
 
-    fun = trello_req(parent = "board", child = "actions", filter = "commentCard")
-    dat = fun(id, ...)
-
+    dat = trello_get(parent = "board", child = "comments", id = id,
+                     filter = "commentCard", ...)
     return(dat)
 }
 
@@ -47,9 +42,7 @@ get_board_comments = function(id, ...) {
 #' @rdname get_board
 get_board_labels = function(id, ...) {
 
-    fun = trello_req(parent = "board", child = "labels")
-    dat = fun(id, ...)
-
+    dat = trello_get(parent = "board", child = "labels", id = id, ...)
     return(dat)
 }
 
@@ -57,9 +50,7 @@ get_board_labels = function(id, ...) {
 #' @rdname get_board
 get_board_lists = function(id, ...) {
 
-    fun = trello_req(parent = "board", child = "lists")
-    dat = fun(id, ...)
-
+    dat = trello_get(parent = "board", child = "lists", id = id, ...)
     return(dat)
 }
 
@@ -67,8 +58,6 @@ get_board_lists = function(id, ...) {
 #' @rdname get_board
 get_board_members = function(id, ...) {
 
-    fun = trello_req(parent = "board", child = "members")
-    dat = fun(id, ...)
-
+    dat = trello_get(parent = "board", child = "members", id = id, ...)
     return(dat)
 }
