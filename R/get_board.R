@@ -33,7 +33,7 @@ get_board_cards = function(id, ...) {
 #' @rdname get_board
 get_board_comments = function(id, ...) {
 
-    dat = trello_get(parent = "board", child = "comments", id = id,
+    dat = trello_get(parent = "board", child = "actions", id = id,
                      filter = "commentCard", ...)
     return(dat)
 }
