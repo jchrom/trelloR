@@ -42,18 +42,19 @@ When \code{paging = TRUE}, the ID of the earliest result is retrieved from every
 \code{filter} and \code{limit} are query parameters and can be set individually; you could achieve the same result by using \code{query = list(filter = "filter_value", limit = "limit_value")}
 }
 \examples{
-# No authorization is required to access public boards. Let's get the ID of
-# Trello Development Roadmap board:
+# No authorization is required to access public boards. Let's get
+# the ID of Trello Development Roadmap board:
 url = "https://trello.com/b/nC8QJJoZ/trello-development-roadmap"
 bid = get_id_board(url)
 
 # Once we have the ID, we can use it to make specific queries:
-lists  = get_board_lists(bid)            # Get all lists
 labels = get_board_labels(bid)           # Get all labels
-cards  = get_board_cards(bid, limit = 5) # Get 5 cards
+cards = get_board_cards(bid, limit = 5)  # Get 5 cards
 
-# Now we can extract card ID. As with boards, this allows us to to query
-# cards for particular resources:
+# We can also call trello_get() directly:
+lists = trello_get(parent = "board", child = "lists", id = bid)
+
+# As with boards, cards can be queried for particular resources:
 card1_id   = cards$id[1]
 card1_comm = get_card_comments(card1_id) # Get all comments
 
