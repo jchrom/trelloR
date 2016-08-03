@@ -29,12 +29,13 @@
 #' bid = get_id_board(url)
 #'
 #' # Once we have the ID, we can use it to make specific queries:
-#' lists  = get_board_lists(bid)            # Get all lists
 #' labels = get_board_labels(bid)           # Get all labels
-#' cards  = get_board_cards(bid, limit = 5) # Get 5 cards
+#' cards = get_board_cards(bid, limit = 5)  # Get 5 cards
 #'
-#' # Now we can extract card ID. As with boards, this allows us
-#' # to query cards for particular resources:
+#' # We can also call trello_get() directly:
+#' lists = trello_get(parent = "board", child = "lists", id = bid)
+#'
+#' # As with boards, cards can be queried for particular resources:
 #' card1_id   = cards$id[1]
 #' card1_comm = get_card_comments(card1_id) # Get all comments
 #'
@@ -63,7 +64,6 @@ trello_get = function(parent = NULL,
                       limit = 1000,
                       paging = FALSE,
                       bind.rows = TRUE
-                      # , fix = TRUE
                       ) {
 
     url   = build_url(url = url, parent = parent, child = child, id = id)
@@ -79,7 +79,6 @@ trello_get = function(parent = NULL,
                           query = query)
     }
 
-    # if (fix) result = trello_fix(result)
     return(result)
 }
 
