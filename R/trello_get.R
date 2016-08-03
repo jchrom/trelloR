@@ -23,8 +23,8 @@
 #' @importFrom dplyr bind_rows
 #' @export
 #' @examples
-#' # No authorization is required to access public boards. Let's get the ID of
-#' # Trello Development Roadmap board:
+#' # No authorization is required to access public boards. Let's get
+#' # the ID of Trello Development Roadmap board:
 #' url = "https://trello.com/b/nC8QJJoZ/trello-development-roadmap"
 #' bid = get_id_board(url)
 #'
@@ -33,8 +33,8 @@
 #' labels = get_board_labels(bid)           # Get all labels
 #' cards  = get_board_cards(bid, limit = 5) # Get 5 cards
 #'
-#' # Now we can extract card ID. As with boards, this allows us to to query
-#' # cards for particular resources:
+#' # Now we can extract card ID. As with boards, this allows us
+#' # to query cards for particular resources:
 #' card1_id   = cards$id[1]
 #' card1_comm = get_card_comments(card1_id) # Get all comments
 #'
@@ -86,9 +86,11 @@ trello_get = function(parent = NULL,
 get_page = function(url, token, query) {
 
     result = get_flat(url = url, token = token, query = query)
-    message("Returning ", class(result))
 
-    if (is.data.frame(result)) {
+    if (is.null(result)) {
+        message("Returning NULL")
+        return(result)
+    } else if (is.data.frame(result)) {
         if (nrow(result) >= 1000) {
             message("Reached 1000 results. Set 'paging = TRUE' to get more")
         } else {
@@ -96,6 +98,7 @@ get_page = function(url, token, query) {
     } else {
         message(length(result), " elements")}
 
+    message("Returning ", class(result))
     return(result)
 }
 
@@ -166,7 +169,7 @@ get_flat = function(url, token = NULL, query = NULL) {
     req  = GET(url = url,
                config(token = token),
                query = query,
-               user_agent("https://github.com/jchrom/trellor"))
+               user_agent("https://github.com/jchrom/trelloR"))
 
     # Print out the complete url
     cat("Request URL:\n", req$url, "\n", sep = "")
@@ -183,9 +186,9 @@ get_flat = function(url, token = NULL, query = NULL) {
         stop(http_type(req), " is not JSON : \n", req_trim)
     }
 
-    # If the result is an empty list, convert into an empty data.frame
+    # If the result is an empty list, convert into NULL
     if (length(flat) == 0) {
-        flat = data.frame()
+        flat = NULL
         message("Response was empty")
     }
 
