@@ -14,17 +14,17 @@ library(httr)
 knitr::opts_chunk$set(comment = "#>", collapse = TRUE)
 ```
 
-This document explains how to GET public and private data from Trello boards using `trellor`.
+This document explains how to GET public and private data from Trello boards using `trelloR`.
 
 Getting public data
 -------------------
 
-Right now, `trellor` can only GET data from Trello API. Other requests (such as POST or PUT) are not implemented yet. Furthermore, accessing data in private boards requires authorization, which you can read about in the **Getting private data** section.
+Right now, `trelloR` can only GET data from Trello API. Other requests (such as POST or PUT) are not implemented yet. Furthermore, accessing data in private boards requires authorization, which you can read about in the **Getting private data** section.
 
 You can make requests for specific resources from endpoints like "board", "card" and so on. In order to do this, you will need resource ID (or the ID of its parent structure). Here is an example of getting a bunch of cards from the [Trello Development Roadmap](https://trello.com/b/nC8QJJoZ/trello-development-roadmap) (public board):
 
 ```{r}
-library(trellor)
+library(trelloR)
 url = "https://trello.com/b/nC8QJJoZ/trello-development-roadmap"
 board_id = get_id_board(url = url)
 
@@ -113,7 +113,7 @@ One thing you can do immediately after obtaining a token is to get an overview o
 Next, you can just use the `get_` functions to retrieve data as before, supplying the token as the named argument (`token = your_token`).
 
 #####Disclaimer
-`trellor` is not affiliated, associated, authorized, endorsed by or in any way officially connected to Trello, Inc. (www.trello.com).
+`trelloR` is not affiliated, associated, authorized, endorsed by or in any way officially connected to Trello, Inc. (www.trello.com).
 
 #####Build with
 
