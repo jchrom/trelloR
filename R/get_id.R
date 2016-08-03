@@ -57,12 +57,12 @@ get_id_card = function(url, token = NULL) {
     return(id)
 }
 
-parse_url = function(url) {
+parse_url = function(url, pos = 5) {
 
     path = unlist(strsplit(url, "/"))
 
-    if (length(path) >= 5) {
-        id = path[5]
+    if (length(path) >= pos) {
+        id = path[pos]
     } else if (length(path) != 1) {
         stop("This is probably not a valid Trello board URL")
     } else {
