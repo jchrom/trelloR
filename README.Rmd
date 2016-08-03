@@ -13,7 +13,6 @@ knitr::opts_chunk$set(
 ```
 
 # R API for Trello
-
 [![Build Status](https://travis-ci.org/jchrom/trelloR.svg?branch=master)](https://travis-ci.org/jchrom/trelloR)
 
 The purpose of `trelloR` is to easily access [Trello API](https://developers.trello.com/) from R. It can retrieve data from various levels of JSON hierarchy (e.g. cards that belong to a particular board or members assigned to a particular card).
