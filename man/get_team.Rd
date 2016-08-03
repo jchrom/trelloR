@@ -19,7 +19,7 @@ get_team_boards(id, ...)
 Returns a flat \code{data.frame} with team/organization-related data
 }
 \details{
-Previously, teams were called "organizations", and the correct parent/child name in API calls remains "organization", "organizations"
+Previously, teams were called "organizations", and the correct parent/child name in API calls remains "organization", "organizations".
 }
 \seealso{
 \code{\link{trello_get}}
