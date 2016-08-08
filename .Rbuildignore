@@ -8,3 +8,4 @@
 ^README-.*\.png$
 ^dev$
 ^vignettes/R_API_for_Trello\.html$
+^av_asist$
