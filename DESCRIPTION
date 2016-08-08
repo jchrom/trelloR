@@ -2,9 +2,10 @@ Package: trelloR
 Title: R API for Trello
 Version: 0.1.0
 Authors@R: person("Jakub", "Chromec", , "chromec.jakub@gmail.com", role = c("aut", "cre"))
-Description: Get data from Trello API easily and in a friendly format.
-    Disclaimer: trelloR is not affiliated, associated, authorized, endorsed by
-    or in any way officially connected to Trello, Inc. (www.trello.com).
+Description: Provides access to Trello API. A family of GET functions make it
+    easy to retrieve cards, labels, members, teams and other data from both
+    public and private boards. Server responses are formatted upon retrieval.
+    Automated paging allows for large requests that exceed server limit.
 Depends:
     R (>= 3.2.3)
 Imports:
