@@ -12,11 +12,11 @@
 #' @param parent Parent structure (e.g. \code{"board"})
 #' @param child Child structure (e.g. \code{"card"})
 #' @param id resource id
+#' @param token previously generated token, see \code{\link{trello_get_token}} for how to obtain it
 #' @param query url parameters that form the query, see \code{\link[httr]{GET}} for details
 #' @param url url for the GET request, see \code{\link[httr]{GET}} for details
 #' @param filter url parameter
 #' @param limit url parameter (defaults to 1000; if reached, paging is suggested)
-#' @param token previously generated token, see \code{\link{trello_get_token}} for how to obtain it
 #' @param paging logical whether paging should be used
 #' @param bind.rows by default, pages will be combined into one \code{data.frame} by \code{\link[dplyr]{bind_rows}}. Set to \code{FALSE} if you want \code{list} instead. This is useful on the rare occasion that the JSON response is not formatted correctly and makes \code{\link[dplyr]{bind_rows}} fail
 #' @seealso \code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}}, \code{\link{trello_get_token}}, \code{\link{get_id}}
@@ -57,9 +57,9 @@
 trello_get = function(parent = NULL,
                       child = NULL,
                       id = NULL,
+                      token = NULL,
                       query = NULL,
                       url = NULL,
-                      token = NULL,
                       filter = NULL,
                       limit = 1000,
                       paging = FALSE,
