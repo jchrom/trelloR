@@ -12,7 +12,7 @@
 
 <meta name="author" content="Jakub Chromec" />
 
-<meta name="date" content="2016-08-03" />
+<meta name="date" content="2016-08-10" />
 
 <title>R API for Trello</title>
 
@@ -70,16 +70,17 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">R API for Trello</h1>
 <h4 class="author"><em>Jakub Chromec</em></h4>
-<h4 class="date"><em>2016-08-03</em></h4>
+<h4 class="date"><em>2016-08-10</em></h4>
 
 
 
 <p>This document explains how to retrieve data from public and private Trello boards using <code>trelloR</code>.</p>
+<p><em>NOTE. Right now, <code>trelloR</code> can only GET data from Trello API. Other requests (such as POST or PUT) are not implemented yet. Accessing data in private boards requires authorization, which you can read about in the <strong>Getting private data</strong> section.</em></p>
 <div id="getting-public-data" class="section level2">
 <h2>Getting public data</h2>
-<p><em>NOTE. Right now, <code>trelloR</code> can only GET data from Trello API. Other requests (such as POST or PUT) are not implemented yet. Accessing data in private boards requires authorization, which you can read about in the <strong>Getting private data</strong> section.</em></p>
-<p>The basic building block of Trello workflow is the board. It encapsulates a hierarchy of parent and child structures (or “resources”), such as teams, cards, labels, members and actions. Every resource in this hierarchy (including actions) has its unique ID. Some, like boards or cards have a URL which can be used as ID.</p>
-<p>In order to obtain data related to a particular resource you need its ID or the ID of its parent structure. If you have it, you can call a function which performs a GET request and retrieves data. Here is an example of getting a card-related data from <a href="https://trello.com/b/nC8QJJoZ/trello-development-roadmap">Trello Development Roadmap</a> (public board). Knowing its URL, we can acquire its ID and use it to retrieve 5 cards from it:</p>
+<p>The basic building block of Trello workflow is the board. It encapsulates a hierarchy of “models”, such as teams, cards, labels, members and actions. A model typically has a parent model (e.g., for a card, a parent model is its board) and child models (a card has comments as child models). Models are nested, so that card can be a parent for its comments, while board is a parent for comments on all cards within that board.</p>
+<p>Every model has its unique ID. If you want to obtain data from that model, having its ID (or the ID of its parent model) is a necessity. In some cases (e.g. boards), you can also use a URL. This is important because URL are easy to obtain directly from your browser’s address bar, unlike IDs.</p>
+<p>Here is an example of getting data from <a href="https://trello.com/b/nC8QJJoZ/trello-development-roadmap">Trello Development Roadmap</a> (public board):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(trelloR)
 <span class="co">#&gt; R API for Trello</span>
 <span class="co">#&gt; Disclaimer: trelloR is not affiliated, associated, authorized, endorsed by or in any way officially connected to Trello, Inc. (www.trello.com).</span>
@@ -97,18 +98,45 @@ cards =<span class="st"> </span><span class="kw">get_board_cards</span>(idb, <sp
 <span class="co">#&gt; https://api.trello.com/1/board/4d5ea62fd76aa1136000000c/cards?limit=5</span>
 <span class="co">#&gt; Received 5 results</span>
 <span class="co">#&gt; Returning data.frame</span></code></pre></div>
-<p>If the request is processed without errors, the server will send a batch of JSON data. JSON is not very comfortable to work with, but in most cases, it can be converted to a <code>data.frame</code>. <code>trelloR</code> always tries to return a <code>data.frame</code> and only if it fails to do so, it returns a <code>list</code>. This is quite unlikely when using the available functions. (There is also an option to make your own data-fetching function, as you’ll see later on.)</p>
-<p>Typically, the response will contain multiple columns including resource ID, name and some resource-specific data, such as attachments on cards, preferences related to a board, notifications for a particular member and so on. Since the child elements included in the response have their ID listed as well, you can work your down the hierarchy to the desired level (e.g. from board to card to member to his user name or list of teams he is part of).</p>
-<p>When making a request, it is useful to know which level of the hierarchy you want to get data from. It makes it easy to guess the name of the function you need: If you want cards from a particular board, call <code>get_board_cards</code>. If you need list of people assigned to a card, call <code>get_card_members</code>. The parent level is always followed by the child level, and the <code>get_</code> prefix comes in the front. For an overview of available functions, call <code>?get_board</code>, <code>?get_card</code>, <code>?get_team</code>, <code>?get_member</code> and <code>?get_id</code>.</p>
+<p>The above example uses <code>get_id_board()</code> to get board ID based on the URL. Board ID is then supplied to <code>get_board_cards()</code> which fetches card-related data. The <code>limit = 5</code> parameter just means that only the 5 newest cards will be returned.</p>
+<p>If there are no complaints from the server, a JSON response is received and converted into a <code>data.frame</code>. It will look something like this:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dplyr::<span class="kw">as_data_frame</span>(cards)
+<span class="co">#&gt; Source: local data frame [5 x 32]</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;                         id checkItemStates closed         dateLastActivity</span>
+<span class="co">#&gt;                      &lt;chr&gt;           &lt;lgl&gt;  &lt;lgl&gt;                    &lt;chr&gt;</span>
+<span class="co">#&gt; 1 566eed18df89a9f84b99df00              NA  FALSE 2015-12-14T16:24:18.175Z</span>
+<span class="co">#&gt; 2 576afe49c8854e12d1279e32              NA  FALSE 2016-06-22T21:23:28.941Z</span>
+<span class="co">#&gt; 3 56bcee2b0d4598bed8802a47              NA  FALSE 2016-06-22T22:28:45.051Z</span>
+<span class="co">#&gt; 4 56b0d3c6c9d2cfbd1eeb79a6              NA  FALSE 2016-02-02T16:58:54.118Z</span>
+<span class="co">#&gt; 5 5684403fe503c2a5bd802433              NA  FALSE 2016-02-04T01:04:35.347Z</span>
+<span class="co">#&gt; Variables not shown: desc &lt;chr&gt;, idBoard &lt;chr&gt;, idList &lt;chr&gt;,</span>
+<span class="co">#&gt;   idMembersVoted &lt;list&gt;, idShort &lt;int&gt;, idAttachmentCover &lt;chr&gt;,</span>
+<span class="co">#&gt;   manualCoverAttachment &lt;lgl&gt;, idLabels &lt;list&gt;, name &lt;chr&gt;, pos &lt;dbl&gt;,</span>
+<span class="co">#&gt;   shortLink &lt;chr&gt;, due &lt;lgl&gt;, idChecklists &lt;list&gt;, idMembers &lt;list&gt;,</span>
+<span class="co">#&gt;   labels &lt;list&gt;, shortUrl &lt;chr&gt;, subscribed &lt;lgl&gt;, url &lt;chr&gt;, badges.votes</span>
+<span class="co">#&gt;   &lt;int&gt;, badges.viewingMemberVoted &lt;lgl&gt;, badges.subscribed &lt;lgl&gt;,</span>
+<span class="co">#&gt;   badges.fogbugz &lt;chr&gt;, badges.checkItems &lt;int&gt;, badges.checkItemsChecked</span>
+<span class="co">#&gt;   &lt;int&gt;, badges.comments &lt;int&gt;, badges.attachments &lt;int&gt;,</span>
+<span class="co">#&gt;   badges.description &lt;lgl&gt;, badges.due &lt;lgl&gt;.</span></code></pre></div>
+<p>Typically, the response will contain multiple columns including model ID, name and other data, such as attachments or preferences. Since the ID of child elements is included in the response, you can use that to work your way down the hierarchy until you reach the desired model.</p>
+<div id="fetching-specific-models" class="section level3">
+<h3>Fetching specific models</h3>
+<p><code>trelloR</code> includes a number of data-fetching functions, each of which targets one single model. This puts certain limits on what you can ask for, but it eliminates most of the effort (and makes the code easier to read). It also means that the functions can have predictable names which are easy to guess. For example:</p>
+<ul>
+<li>call <code>get_board_cards()</code> if you want cards from a particular board</li>
+<li>call <code>get_card_members()</code> if you want list of people assigned to a card</li>
+</ul>
+<p>Basically, the parent model is always followed by the child model, and the <code>get_</code> prefix comes in the front. For an overview of available functions, call <code>?get_board</code>, <code>?get_card</code>, <code>?get_team</code>, <code>?get_member</code> and <code>?get_id</code>.</p>
+</div>
 <div id="custom-requests-with-trello_get" class="section level3">
-<h3>Custom requests with <code>trello_get</code></h3>
-<p>Every function in this package (except for <code>trello_get_token</code>) is just a wrapper around <code>trello_get</code>. If you lack a particular data-fetching option, you can call it directly, or you can define a new function by providing some default values.</p>
-<p>This example creates a function that fetches all updates made in a given card (it uses a filter value because updates are a type of action, and we don’t want to retrieve all actions):</p>
+<h3>Custom requests with <code>trello_get()</code></h3>
+<p>Most of functions in this package are wrappers for <code>trello_get()</code>. If you lack a particular data-fetching option, you can call it directly, or you can define a new function by providing some default values.</p>
+<p>The following example creates a function that fetches all updates made in a given card (it uses a filter because updates are a type of action, and we don’t want to retrieve <em>all</em> actions):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">get_card_updates =<span class="st"> </span>function(id, ...) {
-    <span class="kw">trello_get</span>(<span class="dt">parent =</span> <span class="st">&quot;card&quot;</span>, <span class="dt">child  =</span> <span class="st">&quot;actions&quot;</span>, <span class="dt">id =</span> id, 
-                        <span class="dt">filter =</span> <span class="st">&quot;updateCard&quot;</span>, ...)
+    <span class="kw">trello_get</span>(<span class="dt">parent =</span> <span class="st">&quot;card&quot;</span>, <span class="dt">child  =</span> <span class="st">&quot;actions&quot;</span>, <span class="dt">id =</span> id, <span class="dt">filter =</span> <span class="st">&quot;updateCard&quot;</span>, ...)
 }</code></pre></div>
-<p>This function fetches updates related to a given card ID. It can be called the usual way, supplying a card ID:</p>
+<p>Such function can be called the usual way, supplying a card ID:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">idc =<span class="st"> </span>cards$id[<span class="dv">1</span>]
 card_updates =<span class="st"> </span><span class="kw">get_card_updates</span>(idc, <span class="dt">limit =</span> <span class="dv">5</span>)
 <span class="co">#&gt; Sending request...</span>
@@ -116,25 +144,18 @@ card_updates =<span class="st"> </span><span class="kw">get_card_updates</span>(
 <span class="co">#&gt; https://api.trello.com/1/card/566eed18df89a9f84b99df00/actions?filter=updateCard&amp;limit=5</span>
 <span class="co">#&gt; Received 1 results</span>
 <span class="co">#&gt; Returning data.frame</span></code></pre></div>
-<p>For very simple queries, you can only provide a parent. In most cases, this is not enough as you need to specify child and filter values as well. For detailed list of all possible queries, consult the <a href="https://developers.trello.com/advanced-reference">Trello API reference</a>.</p>
+<p>For detailed list of all possible queries, consult the <a href="https://developers.trello.com/advanced-reference">Trello API reference</a>.</p>
 </div>
-<div id="additional-arguments" class="section level3">
-<h3>Additional arguments</h3>
-<p>We have already seen an additional argument in the previous example: a <code>filter</code>. However, there are more arguments that <code>trello_get</code> accepts:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">args</span>(trello_get)
-<span class="co">#&gt; function (parent = NULL, child = NULL, id = NULL, query = NULL, </span>
-<span class="co">#&gt;     url = NULL, token = NULL, filter = NULL, limit = 1000, paging = FALSE, </span>
-<span class="co">#&gt;     bind.rows = TRUE) </span>
-<span class="co">#&gt; NULL</span></code></pre></div>
-<p>You can supply a:</p>
+<div id="additional-arguments-for-trello_get" class="section level3">
+<h3>Additional arguments for <code>trello_get()</code></h3>
 <ul>
-<li><code>token</code> (see the <strong>Getting private data</strong>)</li>
-<li><code>limit</code> in case you are not happy with the default limit of 1000 results, which is also the maximum value</li>
-<li>custom <code>query</code> by providing a list of key-value pairs, such as <code>query = list(key1 = &quot;value1&quot;, key2 = &quot;value2&quot;)</code>. Read <code>?httr::GET</code> for details. Setting <code>filter = &quot;updateCard</code> and <code>limit=10</code> is the equivalent of <code>query = list(filter = &quot;updateCard&quot;, limit = 10)</code>; if you need more info about what keys and values are available for the query prameters, visit the <a href="https://developers.trello.com/advanced-reference">Trello API reference</a></li>
-<li><code>paging</code> - this is useful for requests returning more than 1000 results; it breaks the request down into smaller pieces, each returning no more than 1000 results</li>
-<li><code>bind.rows</code> binds all the pages into a single <code>data.frame</code></li>
+<li><code>token</code> is necessary for accessing private boards (see <strong>Getting private data</strong>); defaults to <code>NULL</code></li>
+<li><code>limit</code> defaults to 1000 results; this is also the maximum number of results for single request</li>
+<li><code>query</code> is useful if you need to provide a list of key-value pairs, such as <code>query = list(key1 = &quot;value1&quot;, key2 = &quot;value2&quot;)</code>; these will get appended to the URL request. Setting <code>filter = &quot;updateCard&quot;</code> and <code>limit=10</code> is equivalent to <code>query = list(filter = &quot;updateCard&quot;, limit = 10)</code>; if you need more info about what keys and values are available, check out <a href="https://developers.trello.com/advanced-reference">Trello API reference</a></li>
+<li><code>paging</code> is useful for requests returning more than 1000 results; it breaks the request down into smaller pieces, each returning no more than 1000 results. Defaults to <code>FALSE</code> but if a result reaches 1000 results, paging is suggested by a message on the console</li>
+<li><code>bind.rows</code> binds all the pages into a single <code>data.frame</code>; defaults to <code>TRUE</code></li>
 </ul>
-<p>If <code>bind.rows = FALSE</code>, the result will be a <code>list</code> with as many elements as there were pages. This can be a useful workaround in situations when the responses are not perfectly formatted and make <code>dplyr::bind_rows</code> fail.</p>
+<p>If <code>bind.rows = FALSE</code>, the result will be a <code>list</code> with as many elements as there were pages. This is also a fallback option for the rare case when the responses are not perfectly formatted and make <code>dplyr::bind_rows</code> fail.</p>
 <p>When calling <code>trello_get()</code> directly, you have an option to either specify <code>parent</code> and <code>child</code> or you can provide the whole URL as a character vector of length 1.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">board_comments =<span class="st"> </span><span class="kw">trello_get</span>(<span class="dt">parent =</span> <span class="st">&quot;board&quot;</span>, <span class="dt">child =</span> <span class="st">&quot;actions&quot;</span>, <span class="dt">id =</span> idb,
                             <span class="dt">filter =</span> <span class="st">&quot;commentCard&quot;</span>, <span class="dt">limit =</span> <span class="dv">5</span>)
@@ -146,14 +167,14 @@ card_updates =<span class="st"> </span><span class="kw">get_card_updates</span>(
 </div>
 <div id="error-handling" class="section level3">
 <h3>Error handling</h3>
-<p>When a request fails because of client-side or server-side error, the error code and message is reprinted in the console. Additional server messages are also included to make debugging your requests easier.</p>
+<p>If request fails because of client-side or server-side error, the error code is reprinted in the console. Additional server messages are also included to make debugging easier.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tryCatch</span>(
-    <span class="dt">expr  =</span> <span class="kw">get_card_actions</span>(<span class="dt">id =</span> <span class="st">&quot;123&quot;</span>),
+    <span class="dt">expr  =</span> <span class="kw">get_card_actions</span>(<span class="dt">id =</span> <span class="st">&quot;I_have_a_bad_feeling_about_this&quot;</span>),
     <span class="dt">error =</span> function(e) {
         <span class="kw">print</span>(e$message)})
 <span class="co">#&gt; Sending request...</span>
 <span class="co">#&gt; Request URL:</span>
-<span class="co">#&gt; https://api.trello.com/1/card/123/actions?limit=1000</span>
+<span class="co">#&gt; https://api.trello.com/1/card/I_have_a_bad_feeling_about_this/actions?limit=1000</span>
 <span class="co">#&gt; [1] &quot;Client error: (400) Bad Request : invalid id&quot;</span></code></pre></div>
 </div>
 </div>
@@ -166,8 +187,7 @@ card_updates =<span class="st"> </span><span class="kw">get_card_updates</span>(
 <p><strong>NOTE.</strong> Make sure you keep your credentials in a <strong>safe, non-shared</strong> location.</p>
 <div id="using-the-token-to-retrieve-private-data" class="section level3">
 <h3>Using the token to retrieve private data</h3>
-<p>One thing you can do immediately after obtaining a token is to get an overview of all your boards, by the <code>get_my_boards()</code> function. It accepts the token as its only argument and returns a <code>data.frame</code> with board names and IDs related to the user who authorize the app.</p>
-<p>Next, you can just use the <code>get_</code> functions to retrieve data as before, supplying the token as the named argument (<code>token = your_token</code>).</p>
+<p>One thing you can do immediately after obtaining a token is to call <code>get_my_boards()</code> to get an overview of your boards. It accepts the token as its only argument and returns a <code>data.frame</code> with board names and IDs related to the user who authorized the app.</p>
 <div id="disclaimer" class="section level5">
 <h5>Disclaimer</h5>
 <p><code>trelloR</code> is not affiliated, associated, authorized, endorsed by or in any way officially connected to Trello, Inc. (www.trello.com).</p>
