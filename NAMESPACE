@@ -2,11 +2,13 @@
 
 export(get_board_actions)
 export(get_board_cards)
+export(get_board_checklists)
 export(get_board_comments)
 export(get_board_labels)
 export(get_board_lists)
 export(get_board_members)
 export(get_card_actions)
+export(get_card_checklists)
 export(get_card_comments)
 export(get_card_labels)
 export(get_card_members)

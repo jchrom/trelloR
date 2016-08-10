@@ -22,6 +22,14 @@ get_card_actions = function(id, ...) {
 }
 
 #' @export
+#' @rdname get_board
+get_card_checklists = function(id, ...) {
+
+    dat = trello_get(parent = "card", child = "checklists", id = id, ...)
+    return(dat)
+}
+
+#' @export
 #' @rdname get_card
 get_card_comments = function(id, ...) {
 

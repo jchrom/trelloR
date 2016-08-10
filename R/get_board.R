@@ -31,6 +31,14 @@ get_board_cards = function(id, ...) {
 
 #' @export
 #' @rdname get_board
+get_board_checklists = function(id, ...) {
+
+    dat = trello_get(parent = "board", child = "checklists", id = id, ...)
+    return(dat)
+}
+
+#' @export
+#' @rdname get_board
 get_board_comments = function(id, ...) {
 
     dat = trello_get(parent = "board", child = "actions", id = id,
