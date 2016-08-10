@@ -4,8 +4,8 @@
 \alias{trello_get}
 \title{Get Data From Trello API}
 \usage{
-trello_get(parent = NULL, child = NULL, id = NULL, query = NULL,
-  url = NULL, token = NULL, filter = NULL, limit = 1000,
+trello_get(parent = NULL, child = NULL, id = NULL, token = NULL,
+  query = NULL, url = NULL, filter = NULL, limit = 1000,
   paging = FALSE, bind.rows = TRUE)
 }
 \arguments{
@@ -15,11 +15,11 @@ trello_get(parent = NULL, child = NULL, id = NULL, query = NULL,
 
 \item{id}{resource id}
 
+\item{token}{previously generated token, see \code{\link{trello_get_token}} for how to obtain it}
+
 \item{query}{url parameters that form the query, see \code{\link[httr]{GET}} for details}
 
 \item{url}{url for the GET request, see \code{\link[httr]{GET}} for details}
-
-\item{token}{previously generated token, see \code{\link{trello_get_token}} for how to obtain it}
 
 \item{filter}{url parameter}
 
