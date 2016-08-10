@@ -19,7 +19,7 @@ idpub = get_id_board(tdr)
 
 # 2. Get cards
 cav  = get_board_cards(idav, t, limit = 5)
-cemp = get_board_cards(idemp, token = token, limit = 5) # returns NULL
+cemp = get_board_cards(idemp, t, limit = 5) # returns NULL
 cpub = get_board_cards(idpub, limit = 5)
 
 # 3. Get cards by long call
