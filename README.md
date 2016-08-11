@@ -5,7 +5,7 @@ R API for Trello
 
 [![Build Status](https://travis-ci.org/jchrom/trelloR.svg?branch=master)](https://travis-ci.org/jchrom/trelloR)
 
-The purpose of `trelloR` is to easily access [Trello API](https://developers.trello.com/) from R. It can retrieve cards, labels, checklists and other data from Trello boards. Requests are carried out by a set of simple functions with meaningful names. For instance, getting all cards from a particular board is as easy as:
+The purpose of `trelloR` is to easily access [Trello API](https://developers.trello.com/) from R. It can retrieve cards, labels, checklists and other data from Trello boards, using functions with predictable names. Getting cards from a particular board is as easy as:
 
 ``` r
 library(trelloR)
@@ -13,7 +13,7 @@ board = get_board_id("https://trello.com/b/nC8QJJoZ/trello-development-roadmap")
 cards = get_board_cards(board)
 ```
 
-Automated paging makes sure that all the results will be acquired. Access to private boards is achieved by obtaining a secure token using [Trello developer keys](https://developers.trello.com/get-started/start-building#connect).
+Automated paging makes sure that all results will be acquired. Access to private boards is achieved by obtaining a secure token using [Trello developer keys](https://developers.trello.com/get-started/start-building#connect).
 
 You can install the development version from Github:
 
