@@ -16,16 +16,16 @@ knitr::opts_chunk$set(comment = "#>", collapse = TRUE)
 
 This document explains how to retrieve data from public and private Trello boards using `trelloR`.
 
-_NOTE. Right now, `trelloR` can only GET data from Trello API. Other requests (such as POST or PUT) are not implemented yet. Accessing data in private boards requires authorization, which you can read about in the **Getting private data** section._
+_NOTE. Right now, only GET requests are implemented. Support for POST and PUT is planned for later versions. Accessing data in private boards requires authorization, which you can read about in the **Getting private data** section._
 
 Getting public data
 -------------------
 
-The basic building block of Trello workflow is the board. It encapsulates a hierarchy of "models", such as teams, cards, labels, members and actions. A model typically has a parent model (e.g., for a card, a parent model is its board) and child models (a card has comments as child models). Models are nested, so that card can be a parent for its comments, while board is a parent for comments on all cards within that board.
+The basic building block of Trello workflow is the board. It encapsulates a hierarchy of "models", such as teams, cards, labels, members and actions. A model typically has a parent model (e.g. a board is a parent model for its cards) and child models (a card has comments as child models). Models can be accessed recursively, which means that you can get comments from all cards by addressing the board, i.e. without going through specific cards one by one.
 
-Every model has its unique ID. If you want to obtain data from that model, having its ID (or the ID of its parent model) is a necessity. In some cases (e.g. boards), you can also use a URL. This is important because URL are easy to obtain directly from your browser's address bar, unlike IDs.
+Every model has its unique ID. If you want to obtain data from that model, having its ID (or the ID of its parent model) is a necessity. In some cases (e.g. boards), you can also use its URL. This is important because URLs are easy to obtain directly from your browser's address bar, unlike IDs.
 
-Here is an example of getting data from [Trello Development Roadmap](https://trello.com/b/nC8QJJoZ/trello-development-roadmap) (public board):
+Here is an example of getting data from [Trello Development Roadmap](https://trello.com/b/nC8QJJoZ/trello-development-roadmap). It is a public board, so no authentication is required:
 
 ```{r}
 library(trelloR)
@@ -39,10 +39,10 @@ The above example uses `get_id_board()` to get board ID based on the URL. Board 
 If there are no complaints from the server, a JSON response is received and converted into a `data.frame`. It will look something like this:
 
 ``` {r}
-dplyr::as_data_frame(cards)
+cards
 ```
 
-Typically, the response will contain multiple columns including model ID, name and other data, such as attachments or preferences. Since the ID of child elements is included in the response, you can use that to work your way down the hierarchy until you reach the desired model.
+Typically, the response will contain multiple columns including model ID, name and other data, such as attachments or preferences. Bcause the ID of child elements is included in the response, you can use that to work your way down the hierarchy until you reach the desired model.
 
 ###Fetching specific models
 `trelloR` includes a number of data-fetching functions, each of which targets one single model. This puts certain limits on what you can ask for, but it eliminates most of the effort (and makes the code easier to read). It also means that the functions can have predictable names which are easy to guess. For example:
@@ -50,10 +50,10 @@ Typically, the response will contain multiple columns including model ID, name a
 - call `get_board_cards()` if you want cards from a particular board
 - call `get_card_members()` if you want list of people assigned to a card
 
-Basically, the parent model is always followed by the child model, and the `get_` prefix comes in the front. For an overview of available functions, call `?get_board`, `?get_card`, `?get_team`, `?get_member` and `?get_id`.
+Basically, the parent model is always followed by the child model, and the `get_` prefix comes in the front. For an overview of available functions, call `?get_board`, `?get_card`, `?get_team`, `?get_member`, `get_list` and `?get_id`.
 
 ###Custom requests with `trello_get()`
-Most of functions in this package are wrappers for `trello_get()`. If you lack a particular data-fetching option, you can call it directly, or you can define a new function by providing some default values. 
+Most of the functions in this package are wrappers for `trello_get()`. If you lack a particular data-fetching option, you can call it directly, or you can define a new function by providing some default values. 
 
 The following example creates a function that fetches all updates made in a given card (it uses a filter because updates are a type of action, and we don't want to retrieve *all* actions):
 
@@ -90,7 +90,7 @@ board_comments = trello_get(parent = "board", child = "actions", id = idb,
 ```
 
 ###Error handling
-If request fails because of client-side or server-side error, the error code is reprinted in the console. Additional server messages are also included to make debugging easier.
+If a request fails because of client-side or server-side error, the error code is reprinted in the console. Additional server messages are also included to make debugging easier. See this example with invalid card ID:
 
 ```{r}
 tryCatch(
@@ -98,6 +98,8 @@ tryCatch(
     error = function(e) {
         print(e$message)})
 ```
+
+In case of server-side error, the request will be re-send two more times, with 1.5 s delay before each attempt. After it fails for the 3rd time, the error message is printed on the console.
 
 Getting private data
 ----------------------
@@ -117,6 +119,10 @@ You will also be offered an option to store the authentication data in your work
 ###Using the token to retrieve private data
 
 One thing you can do immediately after obtaining a token is to call `get_my_boards()` to get an overview of your boards. It accepts the token as its only argument and returns a `data.frame` with board names and IDs related to the user who authorized the app.
+
+```r
+my_boards = get_my_boards(my_token)
+```
 
 #####Disclaimer
 `trelloR` is not affiliated, associated, authorized, endorsed by or in any way officially connected to Trello, Inc. (www.trello.com).
