@@ -16,14 +16,14 @@ knitr::opts_chunk$set(comment = "#>", collapse = TRUE)
 
 This document explains how to retrieve data from public and private Trello boards using `trelloR`.
 
-_NOTE. Right now, only GET requests are implemented. Support for POST and PUT is planned for later versions. Accessing data in private boards requires authorization, which you can read about in the **Getting private data** section._
+_NOTE. Right now, only GET requests are implemented. Support for POST and PUT may be added in later versions. Accessing data in private boards requires authorization which you can read about in the **Getting private data** section._
 
 Getting public data
 -------------------
 
-The basic building block of Trello workflow is the board. It encapsulates a hierarchy of "models", such as teams, cards, labels, members and actions. A model typically has a parent model (e.g. a board is a parent model for its cards) and child models (a card has comments as child models). Models can be accessed recursively, which means that you can get comments from all cards by addressing the board, i.e. without going through specific cards one by one.
+The basic building block of Trello workflow is a __Board__. It encapsulates a hierarchy of "models", i.e. __Members, Teams, Lists, Cards, Labels, Checklists__ and __Actions__. Each model has a parent model (e.g. a board is a parent model for its cards) and child models (a card has comments as child models). Models can be accessed recursively. This means that you can obtain actions from all cards by addressing the whole board without going through specific cards one by one.
 
-Every model has its unique ID. If you want to obtain data from that model, having its ID (or the ID of its parent model) is a necessity. In some cases (e.g. boards), you can also use its URL. This is important because URLs are easy to obtain directly from your browser's address bar, unlike IDs.
+To access a particular model, you need to know its unique ID, or the ID of its parent model. In some cases (e.g. boards, cards), you can use model URL instead. This is useful, because URL is easy to obtain from your browser's address bar (unlike ID). You can also obtain model ID by "searching", which you can read more about later.
 
 Here is an example of getting data from [Trello Development Roadmap](https://trello.com/b/nC8QJJoZ/trello-development-roadmap). It is a public board, so no authentication is required:
 
@@ -52,8 +52,17 @@ Typically, the response will contain multiple columns including model ID, name a
 
 Basically, the parent model is always followed by the child model, and the `get_` prefix comes in the front. For an overview of available functions, call `?get_board`, `?get_card`, `?get_team`, `?get_member`, `get_list` and `?get_id`.
 
+###Searching for model ID
+Sometimes you don't know model ID but you have other information, such as name, description or other text. In such case, you can call `trello_search()`, which is equivalent to the search field in Trello web app. To limit your search to specific models (e.g. only members), call the appropriately named version of the search function:
+
+```r
+captain = trello_search_members("Captain America", token = my_token)
+```
+
+Searches need to be authorized, hence the token argument (see __Getting private data__).
+
 ###Custom requests with `trello_get()`
-Most of the functions in this package are wrappers for `trello_get()`. If you lack a particular data-fetching option, you can call it directly, or you can define a new function by providing some default values. 
+Most of the functions in this package are wrappers for `trello_get()`. You can call it directly if you lack a particular data-fetching option, or you can define a new function by wrapping `trello_get()` and providing some default values. 
 
 The following example creates a function that fetches all updates made in a given card (it uses a filter because updates are a type of action, and we don't want to retrieve *all* actions):
 

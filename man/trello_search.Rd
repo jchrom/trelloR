@@ -30,13 +30,16 @@ trello_search_teams(string, ...)
 Returns a \code{list} with search results.
 }
 \examples{
+# Searches are only possible if authorized - a token is required:
+
 \dontrun{
 
+trello_search("Anything with this text", my_token)
 trello_search_cards("A card with this text", my_token)
 
 }
 }
 \seealso{
-\code{\link{trello_get}}
+\code{\link{trello_get}} \code{\link{trello_get_token}}
 }
 

@@ -75,11 +75,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 <p>This document explains how to retrieve data from public and private Trello boards using <code>trelloR</code>.</p>
-<p><em>NOTE. Right now, only GET requests are implemented. Support for POST and PUT is planned for later versions. Accessing data in private boards requires authorization, which you can read about in the <strong>Getting private data</strong> section.</em></p>
+<p><em>NOTE. Right now, only GET requests are implemented. Support for POST and PUT may be added in later versions. Accessing data in private boards requires authorization which you can read about in the <strong>Getting private data</strong> section.</em></p>
 <div id="getting-public-data" class="section level2">
 <h2>Getting public data</h2>
-<p>The basic building block of Trello workflow is the board. It encapsulates a hierarchy of “models”, such as teams, cards, labels, members and actions. A model typically has a parent model (e.g. a board is a parent model for its cards) and child models (a card has comments as child models). Models can be accessed recursively, which means that you can get comments from all cards by addressing the board, i.e. without going through specific cards one by one.</p>
-<p>Every model has its unique ID. If you want to obtain data from that model, having its ID (or the ID of its parent model) is a necessity. In some cases (e.g. boards), you can also use its URL. This is important because URLs are easy to obtain directly from your browser’s address bar, unlike IDs.</p>
+<p>The basic building block of Trello workflow is a <strong>Board</strong>. It encapsulates a hierarchy of “models”, i.e. <strong>Members, Teams, Lists, Cards, Labels, Checklists</strong> and <strong>Actions</strong>. Each model has a parent model (e.g. a board is a parent model for its cards) and child models (a card has comments as child models). Models can be accessed recursively. This means that you can obtain actions from all cards by addressing the whole board without going through specific cards one by one.</p>
+<p>To access a particular model, you need to know its unique ID, or the ID of its parent model. In some cases (e.g. boards, cards), you can use model URL instead. This is useful, because URL is easy to obtain from your browser’s address bar (unlike ID). You can also obtain model ID by “searching”, which you can read more about later.</p>
 <p>Here is an example of getting data from <a href="https://trello.com/b/nC8QJJoZ/trello-development-roadmap">Trello Development Roadmap</a>. It is a public board, so no authentication is required:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(trelloR)
 <span class="co">#&gt; R API for Trello</span>
@@ -88,7 +88,7 @@ url =<span class="st"> &quot;https://trello.com/b/nC8QJJoZ/trello-development-ro
 idb =<span class="st"> </span><span class="kw">get_id_board</span>(<span class="dt">url =</span> url)
 <span class="co">#&gt; Sending request...</span>
 <span class="co">#&gt; Request URL:</span>
-<span class="co">#&gt; https://api.trello.com/1/board/nC8QJJoZ/?fields=name&amp;limit=1000</span>
+<span class="co">#&gt; https://api.trello.com/1/board/nC8QJJoZ?fields=name&amp;limit=1000</span>
 <span class="co">#&gt; Received 1 results</span>
 <span class="co">#&gt; Returning tbl_dftbldata.frame</span>
 <span class="co">#&gt; Converted into character vector of length 1 with name &quot;Trello Development Roadmap&quot;</span>
@@ -129,9 +129,15 @@ cards =<span class="st"> </span><span class="kw">get_board_cards</span>(idb, <sp
 </ul>
 <p>Basically, the parent model is always followed by the child model, and the <code>get_</code> prefix comes in the front. For an overview of available functions, call <code>?get_board</code>, <code>?get_card</code>, <code>?get_team</code>, <code>?get_member</code>, <code>get_list</code> and <code>?get_id</code>.</p>
 </div>
+<div id="searching-for-model-id" class="section level3">
+<h3>Searching for model ID</h3>
+<p>Sometimes you don’t know model ID but you have other information, such as name, description or other text. In such case, you can call <code>trello_search()</code>, which is equivalent to the search field in Trello web app. To limit your search to specific models (e.g. only members), call the appropriately named version of the search function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">captain =<span class="st"> </span><span class="kw">trello_search_members</span>(<span class="st">&quot;Captain America&quot;</span>, <span class="dt">token =</span> my_token)</code></pre></div>
+<p>Searches need to be authorized, hence the token argument (see <strong>Getting private data</strong>).</p>
+</div>
 <div id="custom-requests-with-trello_get" class="section level3">
 <h3>Custom requests with <code>trello_get()</code></h3>
-<p>Most of the functions in this package are wrappers for <code>trello_get()</code>. If you lack a particular data-fetching option, you can call it directly, or you can define a new function by providing some default values.</p>
+<p>Most of the functions in this package are wrappers for <code>trello_get()</code>. You can call it directly if you lack a particular data-fetching option, or you can define a new function by wrapping <code>trello_get()</code> and providing some default values.</p>
 <p>The following example creates a function that fetches all updates made in a given card (it uses a filter because updates are a type of action, and we don’t want to retrieve <em>all</em> actions):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">get_card_updates =<span class="st"> </span>function(id, ...) {
     <span class="kw">trello_get</span>(<span class="dt">parent =</span> <span class="st">&quot;card&quot;</span>, <span class="dt">child  =</span> <span class="st">&quot;actions&quot;</span>, <span class="dt">id =</span> id, <span class="dt">filter =</span> <span class="st">&quot;updateCard&quot;</span>, ...)
