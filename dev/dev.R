@@ -43,5 +43,32 @@ fix_checklist = function(checklist) {
 
 chl_fixed = fix_checklist(chl)
 
+# Delay fun ----
+library(trelloR)
+library(httr)
+url = "https://trello.com/b/nC8QJJoZ/trello-development-roadmap"
+idb = get_id_board(url)
 
+
+delay_by = function(delay, f) {
+    function(...) {
+        Sys.sleep(delay)
+        f(...)
+    }
+}
+
+r = GET(url = "https://api.trello.com/1/card/123/labels?limit=1000")
+try_times = 1
+
+a = 4
+while (a <= 3) { print(a); a = a + 1}
+
+# Search
+url = "https://api.trello.com/1/search?query=idOrganizations:56d73a36ec5c714fc5ee7eb9 label:green"
+url = "https://api.trello.com/1/search/members?query=chromeC"
+url = "https://api.trello.com/1/search?query=trelloR"
+x = httr::GET(url = url, httr::config(token = t)); httr::http_status(x)
+jsonlite::fromJSON(httr::content(x, as = "text"))
+
+string = "trelloR"
 
