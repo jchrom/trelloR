@@ -20,7 +20,7 @@
 #' @param paging logical whether paging should be used
 #' @param bind.rows by default, pages will be combined into one \code{data.frame} by \code{\link[dplyr]{bind_rows}}. Set to \code{FALSE} if you want \code{list} instead. This is useful on the rare occasion that the JSON response is not formatted correctly and makes \code{\link[dplyr]{bind_rows}} fail
 #' @seealso \code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}}, \code{\link{trello_get_token}}, \code{\link{get_id}}
-#' @importFrom dplyr bind_rows
+#' @importFrom dplyr bind_rows as_data_frame
 #' @export
 #' @examples
 #' # No authorization is required to access public boards. Let's get
@@ -107,7 +107,14 @@ get_pages = function(url, token, query, bind.rows) {
 
     repeat {
 
-        batch  = get_flat(url = url, token = token, query = query)
+        batch = tryCatch(
+            expr = get_flat(url = url, token = token, query = query),
+            error = function(e) {
+                message("Filed batch: ", e$message)
+                data.frame()
+            }
+        )
+
         result = append(result, list(batch))
 
         if (!is.data.frame(batch)) {
@@ -159,7 +166,7 @@ build_query = function(query = NULL, filter = NULL, limit = 1000) {
 #' @param url url to get
 #' @param token a secure token
 #' @param query additional url parameters (defaults to NULL)
-#' @importFrom httr GET content config http_status headers http_type http_error user_agent
+#' @importFrom httr GET content config http_status headers http_type http_error user_agent status_code
 #' @importFrom jsonlite fromJSON
 
 get_flat = function(url, token = NULL, query = NULL) {
@@ -174,12 +181,30 @@ get_flat = function(url, token = NULL, query = NULL) {
     cat("Request URL:\n", req$url, "\n", sep = "")
 
     # Handle errors
-    if (http_error(req)) stop(http_status(req)$message, " : ", req)
+    attempts = 1
+    while (http_error(req)) {
+        if (status_code(req) < 500) {
+            stop(http_status(req)$message, " : ", req)
+        } else if (status_code(req) >= 500 & attempts < 3) {
+            message(http_status(req)$message,
+                    "\n", 3 - attempts, " attempt(s) left")
+            Sys.sleep(1.5)
+            attempts = attempts + 1
+            req  = GET(url = url,
+                       config(token = token),
+                       query = query,
+                       user_agent("https://github.com/jchrom/trelloR"))
+        } else {
+                stop(http_status(req)$message,
+                     "; stopping after ", attempts, " attempts")
+        }
+    }
 
     # Handle response (only JSON is accepted)
     if (http_type(req) == "application/json") {
         json = content(req, as = "text")
         flat = fromJSON(json, flatten = TRUE)
+        flat = as_data_frame(flat)
     } else {
         req_trim = paste0(strtrim(content(req, as = "text"), 50), "...")
         stop(http_type(req), " is not JSON : \n", req_trim)
