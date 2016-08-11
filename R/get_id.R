@@ -4,7 +4,7 @@
 #                                          #
 ############################################
 
-#' Get ID
+#' Get model ID
 #'
 #' Get ID of a resource.
 #' @param url Complete url, short url or just the url ID part of a Trello board

@@ -4,7 +4,7 @@
 \alias{get_id}
 \alias{get_id_board}
 \alias{get_id_card}
-\title{Get ID}
+\title{Get model ID}
 \usage{
 get_id_board(url, token = NULL)
 
