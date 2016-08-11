@@ -1,24 +1,24 @@
 #' Get Data From Trello API
 #'
-#' Issues \code{\link[httr]{GET}} requests for Trello API endpoints. \code{\link{get_board}} and \code{\link{get_card}} are convenience wrappers for this function.
+#' Issues \code{\link[httr]{GET}} requests for Trello API endpoints.
 #'
-#' If the request fails, server error messages are extracted from the response header and reprinted on the console.
+#' If the request fails, server error messages are reprinted on the console.
 #'
-#' Only JSON responses are accepted. \code{\link[jsonlite]{fromJSON}} converts them into flat \code{data.frame}s, while non-JSON type of response throws an error.
+#' Only JSON responses are accepted. \code{\link[jsonlite]{fromJSON}} converts them into flat \code{data.frame}s or \code{list}s, while non-JSON type of response throws an error.
 #'
-#' When \code{paging = TRUE}, the ID of the earliest result is retrieved from every page and supplied to the next request as the value of the \code{"before"} parameter. Paging will continue until the number of results per page is smaller then 1000, indicating no more pages to get.?
+#' When \code{paging = TRUE}, the ID of the earliest result is retrieved from every page and supplied to the next request as the value of the \code{"before"} parameter. Paging will continue until the number of results per page is smaller then 1000, indicating no more pages to get.
 #'
 #' \code{filter} and \code{limit} are query parameters and can be set individually; you could achieve the same result by using \code{query = list(filter = "filter_value", limit = "limit_value")}
 #' @param parent Parent structure (e.g. \code{"board"})
 #' @param child Child structure (e.g. \code{"card"})
-#' @param id resource id
-#' @param token previously generated token, see \code{\link{trello_get_token}} for how to obtain it
-#' @param query url parameters that form the query, see \code{\link[httr]{GET}} for details
-#' @param url url for the GET request, see \code{\link[httr]{GET}} for details
-#' @param filter url parameter
-#' @param limit url parameter (defaults to 1000; if reached, paging is suggested)
-#' @param paging logical whether paging should be used
-#' @param bind.rows by default, pages will be combined into one \code{data.frame} by \code{\link[dplyr]{bind_rows}}. Set to \code{FALSE} if you want \code{list} instead. This is useful on the rare occasion that the JSON response is not formatted correctly and makes \code{\link[dplyr]{bind_rows}} fail
+#' @param id Model ID
+#' @param token Peviously generated secure token, see \code{\link{trello_get_token}} for how to obtain it
+#' @param query key-value pairs which form the query, see \code{\link[httr]{GET}} for details
+#' @param url Url for the GET request, use instead of specifying see \code{parent}, see \code{id} and see \code{child}; see \code{\link[httr]{GET}} for details
+#' @param filter Query value
+#' @param limit Query value (defaults to 1000; if reached, paging is suggested)
+#' @param paging Logical whether paging should be used
+#' @param bind.rows By default, pages will be combined into one \code{data.frame} by \code{\link[dplyr]{bind_rows}}. Set to \code{FALSE} if you want \code{list} instead. This is useful on the rare occasion that the JSON response is not formatted correctly and makes \code{\link[dplyr]{bind_rows}} fail
 #' @seealso \code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}}, \code{\link{trello_get_token}}, \code{\link{get_id}}
 #' @importFrom dplyr bind_rows as_data_frame
 #' @export
@@ -144,7 +144,8 @@ get_pages = function(url, token, query, bind.rows) {
 
 build_url = function(url, parent, id, child) {
     if (is.null(url))  {
-        url = paste0("https://api.trello.com/1/", parent, "/", id, "/", child)
+        url = paste("https://api.trello.com/1", parent, id, child, sep = "/")
+        url = gsub("[/]+$", "", url) #remove trailing /
     } else {
         url
     }
@@ -204,7 +205,12 @@ get_flat = function(url, token = NULL, query = NULL) {
     if (http_type(req) == "application/json") {
         json = content(req, as = "text")
         flat = fromJSON(json, flatten = TRUE)
-        flat = as_data_frame(flat)
+        flat = tryCatch(
+            expr = as_data_frame(flat),
+            error = function(e) {
+                flat
+            }
+        )
     } else {
         req_trim = paste0(strtrim(content(req, as = "text"), 50), "...")
         stop(http_type(req), " is not JSON : \n", req_trim)
