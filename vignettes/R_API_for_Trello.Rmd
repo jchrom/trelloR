@@ -16,16 +16,16 @@ knitr::opts_chunk$set(comment = "#>", collapse = TRUE)
 
 This document explains how to retrieve data from public and private Trello boards using `trelloR`.
 
-_NOTE. Right now, only GET requests are implemented. Support for POST and PUT may be added in later versions. Accessing data in private boards requires authorization which you can read about in the **Getting private data** section._
+_NOTE. Right now, only GET requests are implemented. Support for POST and PUT may be added in later versions. Accessing the data in private boards requires authorization which you can read about in the **Getting private data** section._
 
 Getting public data
 -------------------
 
-The basic building block of Trello workflow is a __Board__. It encapsulates a hierarchy of "models", i.e. __Members, Teams, Lists, Cards, Labels, Checklists__ and __Actions__. Each model has a parent model (e.g. a board is a parent model for its cards) and child models (a card has comments as child models). Models can be accessed recursively. This means that you can obtain actions from all cards by addressing the whole board without going through specific cards one by one.
+The basic building block of the Trello workflow is a __Board__. It encapsulates a hierarchy of "models", i.e. __Members, Teams, Lists, Cards, Labels, Checklists__ and __Actions__. Each model has a parent model (e.g. a board is a parent model for cards on it) and child models (a card can include comments as child models). The models can be accessed recursively. This means that you can obtain the actions from all cards by addressing the whole board without going through specific cards one by one.
 
-To access a particular model, you need to know its unique ID, or the ID of its parent model. In some cases (e.g. boards, cards), you can use model URL instead. This is useful, because URL is easy to obtain from your browser's address bar (unlike ID). You can also obtain model ID by "searching", which you can read more about later.
+To access a particular model, you need to know its unique ID, or the ID of its parent model. In some cases (e.g. with boards or cards), you can use the model URL instead. This is useful because a URL can be found in your browser address bar (unlike ID). You can also obtain model ID by "searching", which you can read more about later.
 
-Here is an example of getting data from [Trello Development Roadmap](https://trello.com/b/nC8QJJoZ/trello-development-roadmap). It is a public board, so no authentication is required:
+Here is an example how to get the data from [Trello Development Roadmap](https://trello.com/b/nC8QJJoZ/trello-development-roadmap). Since it's a public board, no authentication is required:
 
 ```{r}
 library(trelloR)
@@ -34,7 +34,7 @@ idb = get_id_board(url = url)
 cards = get_board_cards(idb, limit = 5)
 ```
 
-The above example uses `get_id_board()` to get board ID based on the URL. Board ID is then supplied to `get_board_cards()` which fetches card-related data. The `limit = 5` parameter just means that only the 5 newest cards will be returned.
+The above example uses `get_id_board()` to get the board ID based on its URL. Board ID is then supplied to `get_board_cards()` which fetches card-related data. The `limit = 5` parameter just means that only the 5 newest cards will be returned.
 
 If there are no complaints from the server, a JSON response is received and converted into a `data.frame`. It will look something like this:
 
@@ -42,29 +42,29 @@ If there are no complaints from the server, a JSON response is received and conv
 cards
 ```
 
-Typically, the response will contain multiple columns including model ID, name and other data, such as attachments or preferences. Bcause the ID of child elements is included in the response, you can use that to work your way down the hierarchy until you reach the desired model.
+Typically, the response will contain multiple columns including model ID, name and other data, such as attachments or preferences. Because the ID of child elements is included in the response, you can use it to work your way down the hierarchy until you reach the desired model.
 
 ###Fetching specific models
-`trelloR` includes a number of data-fetching functions, each of which targets one single model. This puts certain limits on what you can ask for, but it eliminates most of the effort (and makes the code easier to read). It also means that the functions can have predictable names which are easy to guess. For example:
+`trelloR` includes a number of data-fetching functions each of which targets one single model. This puts certain limits on what you can ask for; on the other hand, it eliminates most of the effort (and makes the code easier to read). It also means that the functions can have predictable names which are easy to guess. For example:
 
-- call `get_board_cards()` if you want cards from a particular board
-- call `get_card_members()` if you want list of people assigned to a card
+- call `get_board_cards()` to obtain cards from a particular board
+- call `get_card_members()` to obtain the list of people assigned to a card
 
-Basically, the parent model is always followed by the child model, and the `get_` prefix comes in the front. For an overview of available functions, call `?get_board`, `?get_card`, `?get_team`, `?get_member`, `get_list` and `?get_id`.
+Basically, the parent model is always followed by the child model with the `get_` prefix in the beginning. For an overview of the available functions, call `?get_board`, `?get_card`, `?get_team`, `?get_member`, `get_list` or `?get_id`.
 
 ###Searching for model ID
-Sometimes you don't know model ID but you have other information, such as name, description or other text. In such case, you can call `trello_search()`, which is equivalent to the search field in Trello web app. To limit your search to specific models (e.g. only members), call the appropriately named version of the search function:
+Sometimes you don't know the model ID but you have other information, such as name, description or other text. In such cases, you can call `trello_search()`, which is equivalent to the search field in Trello web app. To limit your search to specific models (e.g. only members), call the appropriately named version of the search function:
 
 ```r
 captain = trello_search_members("Captain America", token = my_token)
 ```
 
-Searches need to be authorized, hence the token argument (see __Getting private data__).
+Searches need to be authorized; hence, the token argument is needed (see __Getting private data__).
 
 ###Custom requests with `trello_get()`
 Most of the functions in this package are wrappers for `trello_get()`. You can call it directly if you lack a particular data-fetching option, or you can define a new function by wrapping `trello_get()` and providing some default values. 
 
-The following example creates a function that fetches all updates made in a given card (it uses a filter because updates are a type of action, and we don't want to retrieve *all* actions):
+The following example creates a function that fetches all updates made in a given card (it uses a filter because updates are a type of action, and there's no need to retrieve *all* actions):
 
 ```{r}
 get_card_updates = function(id, ...) {
@@ -72,26 +72,26 @@ get_card_updates = function(id, ...) {
 }
 ```
 
-Such function can be called the usual way, supplying a card ID:
+Such functions can be called the usual way by supplying a card ID:
 
 ```{r}
 idc = cards$id[1]
 card_updates = get_card_updates(idc, limit = 5)
 ```
 
-For detailed list of all possible queries, consult the [Trello API reference](https://developers.trello.com/advanced-reference).
+For a detailed list of all possible queries, consult the [Trello API reference](https://developers.trello.com/advanced-reference).
 
 ###Additional arguments for `trello_get()`
 
 * `token` is necessary for accessing private boards (see __Getting private data__); defaults to `NULL`
-* `limit` defaults to 1000 results; this is also the maximum number of results for single request
-* `query` is useful if you need to provide a list of key-value pairs, such as `query = list(key1 = "value1", key2 = "value2")`; these will get appended to the URL request. Setting `filter = "updateCard"` and `limit=10` is equivalent to `query = list(filter = "updateCard", limit = 10)`; if you need more info about what keys and values are available, check out [Trello API reference](https://developers.trello.com/advanced-reference)
-* `paging` is useful for requests returning more than 1000 results; it breaks the request down into smaller pieces, each returning no more than 1000 results. Defaults to `FALSE` but if a result reaches 1000 results, paging is suggested by a message on the console
-* `bind.rows` binds all the pages into a single `data.frame`; defaults to `TRUE`
+* `limit` defaults to 1000 results; this is also the maximum number of results for a single request
+* `query` is useful if you need to provide a list of key-value pairs, such as `query = list(key1 = "value1", key2 = "value2")`; these will get appended to the URL request. Setting `filter = "updateCard"` and `limit=10` is equivalent to `query = list(filter = "updateCard", limit = 10)`; if you need more information about keys and values are available, refer to [Trello API reference](https://developers.trello.com/advanced-reference)
+* `paging` is useful for requests that return more than 1000 results; it breaks the request down into smaller pieces, each of which returns no more than 1000 results. Defaults to `FALSE`, but if the request returns 1000 results, paging is suggested by a message in the console
+* `bind.rows` binds all pages into a single `data.frame`; defaults to `TRUE`
 
-If `bind.rows = FALSE`, the result will be a `list` with as many elements as there were pages. This is also a fallback option for the rare case when the responses are not perfectly formatted and make `dplyr::bind_rows` fail.
+If `bind.rows = FALSE`, the result will be a `list` with as many elements as there are pages. This is also a fallback option for the rare occasion when the responses are not perfectly formatted and make `dplyr::bind_rows` fail.
 
-When calling `trello_get()` directly, you have an option to either specify `parent` and `child` or you can provide the whole URL as a character vector of length 1.
+When calling `trello_get()` directly, you have an option to either specify `parent` and `child` or provide the whole URL as a character vector of length 1.
 
 ```{r}
 board_comments = trello_get(parent = "board", child = "actions", id = idb,
@@ -99,7 +99,7 @@ board_comments = trello_get(parent = "board", child = "actions", id = idb,
 ```
 
 ###Error handling
-If a request fails because of client-side or server-side error, the error code is reprinted in the console. Additional server messages are also included to make debugging easier. See this example with invalid card ID:
+If a request fails because of the client-side or server-side error, the error code is reprinted in the console. Additional server messages are also included to make debugging easier. See the example with invalid card ID below:
 
 ```{r}
 tryCatch(
@@ -108,12 +108,12 @@ tryCatch(
         print(e$message)})
 ```
 
-In case of server-side error, the request will be re-send two more times, with 1.5 s delay before each attempt. After it fails for the 3rd time, the error message is printed on the console.
+In case of a server-side error, the request will be re-send two more times, with 1.5s delay before each attempt. If it fails for the 3rd time, the error message is printed in the console.
 
 Getting private data
 ----------------------
 
-Access to private boards requires authorization. This is done by registering an "app" that uses a secure token to communicate with Trello API. Supplying the token to data-fetching functions will allow you to retrieve data from private boards - on the condition that the user who authorized the app has the right to access them.
+Access to private boards requires authorization. This is done by registering an "app" that uses a secure token to communicate with the Trello API. Supplying the token to data-fetching functions will allow you to retrieve data from private boards under the condition that the user who authorized the app has the right to access them.
 
 To create a token, **login** to Trello and visit the [Developer Start Page](https://developers.trello.com/get-started/start-building#connect). There you can get your developer credentials, i.e. your "key" and "secret". Then, call the `trello_get_token()` function to create a token for your project. This will also trigger first-time authorization in the browser (you only have to do it once):
 
@@ -127,7 +127,7 @@ You will also be offered an option to store the authentication data in your work
 
 ###Using the token to retrieve private data
 
-One thing you can do immediately after obtaining a token is to call `get_my_boards()` to get an overview of your boards. It accepts the token as its only argument and returns a `data.frame` with board names and IDs related to the user who authorized the app.
+One thing you can do immediately after obtaining the token is call `get_my_boards()` to get an overview of your boards. It accepts the token as its only argument and returns a `data.frame` with the board names and IDs related to the user who authorized the app.
 
 ```r
 my_boards = get_my_boards(my_token)
@@ -136,7 +136,7 @@ my_boards = get_my_boards(my_token)
 #####Disclaimer
 `trelloR` is not affiliated, associated, authorized, endorsed by or in any way officially connected to Trello, Inc. (www.trello.com).
 
-#####Build with
+#####Built with
 
 ```{r}
 sessionInfo()
