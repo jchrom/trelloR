@@ -5,7 +5,7 @@ Authors@R: c(
     person("Jakub", "Chromec", , "chromec.jakub@gmail.com", role = c("aut", "cre")),
     person("Irina", "Matusevich", role = "ctb")
     )
-Description: Provides access to Trello API <https://developers.trello.com/>.
+Description: Provides access to Trello API (<https://developers.trello.com/>).
     A family of GET functions make it easy to retrieve cards, labels, members,
     teams and other data from both public and private boards. Server responses
     are formatted upon retrieval. Automated paging allows for large requests
