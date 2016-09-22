@@ -6,6 +6,7 @@
 
 0 errors | 0 warnings | 0 notes
 
+* First submission
 * This is a new release.
 * It connects to Trello API, contains some \dontrun examples where user credentials would be necessary
 * Examples with no need for credentials cover basic functionality
