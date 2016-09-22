@@ -4,7 +4,7 @@
 
 ## R CMD check results
 
-0 errors | 0 warnings | 1 note
+0 errors | 0 warnings | 0 notes
 
 * This is a new release.
 * It connects to Trello API, contains some \dontrun examples where user credentials would be necessary
