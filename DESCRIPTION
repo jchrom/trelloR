@@ -8,7 +8,8 @@ Authors@R: c(
 Description: Provides access to Trello API. A family of GET functions make it
     easy to retrieve cards, labels, members, teams and other data from both
     public and private boards. Server responses are formatted upon retrieval.
-    Automated paging allows for large requests that exceed server limit.
+    Automated paging allows for large requests that exceed server limit. See
+    https://github.com/jchrom/trelloR for more information.
 Depends:
     R (>= 3.2.3)
 Imports:
@@ -18,6 +19,7 @@ Imports:
 License: GPL-3
 LazyData: true
 URL: https://github.com/jchrom/trelloR
+BugReports: https://github.com/jchrom/trelloR/issues
 Date: 2016-09-22
 RoxygenNote: 5.0.1
 Suggests: knitr,
