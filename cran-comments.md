@@ -9,7 +9,7 @@ I have added GitHub URL directly to Description field. I also added BugReports U
 
 0 errors | 0 warnings | 0 notes
 
-* First submission
+* First submission (second try)
 * This is a new release.
 * It connects to Trello API, contains some \dontrun examples where user credentials would be necessary
 * Examples with no need for credentials cover basic functionality
