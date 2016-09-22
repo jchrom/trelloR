@@ -17,6 +17,7 @@ Imports:
     jsonlite (>= 1.0)
 License: GPL-3
 LazyData: true
+URL: https://github.com/jchrom/trelloR
 RoxygenNote: 5.0.1
 Suggests: knitr,
     rmarkdown
