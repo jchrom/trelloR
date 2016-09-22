@@ -97,7 +97,7 @@ get_page = function(url, token, query) {
     } else {
         message(length(result), " elements")}
 
-    message("Returning", class(result), sep = " ")
+    message(paste("Returning", paste(class(result), collapse = " "), sep = " "))
     return(result)
 }
 
