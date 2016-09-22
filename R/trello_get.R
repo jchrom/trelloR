@@ -36,8 +36,8 @@
 #' lists = trello_get(parent = "board", child = "lists", id = bid)
 #'
 #' # As with boards, cards can be queried for particular resources:
-#' card1_id   = cards$id[1]
-#' card1_comm = get_card_comments(card1_id) # Get all comments
+#' card1id = cards$id[1]
+#' card1act = get_card_actions(card1id) # Get all comments
 #'
 #' # To retrieve large results, paging might be necessary:
 #'
