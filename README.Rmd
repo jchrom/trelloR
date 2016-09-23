@@ -26,7 +26,13 @@ cards = get_board_cards(board)
 
 Paging for large requests is automatic. Private boards are accessed by obtaining a secure token using [Trello developer keys](https://developers.trello.com/get-started/start-building#connect).
 
-You can install the development version from Github:
+You can get it on CRAN:
+
+```r
+install.packages("trelloR")
+```
+
+or can install the development version from Github:
 
 ```r
 devtools::install_github("jchrom/trelloR")
