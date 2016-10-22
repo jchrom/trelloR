@@ -8,8 +8,8 @@
 #'
 #' Returns a flat \code{data.frame} with card-related data.
 #' @param id Card ID
-#' @param ... Additional arguments passed to \code{\link{trello_get}}
-#' @seealso \code{\link{trello_get}}
+#' @param ... Additional arguments passed to \code{\link{get_model}}
+#' @seealso \code{\link{get_model}}
 #' @name get_card
 NULL
 
@@ -17,7 +17,7 @@ NULL
 #' @rdname get_card
 get_card_actions = function(id, ...) {
 
-    dat = trello_get(parent = "card", child = "actions", id = id, ...)
+    dat = get_model(parent = "card", child = "actions", id = id, ...)
     return(dat)
 }
 
@@ -25,7 +25,7 @@ get_card_actions = function(id, ...) {
 #' @rdname get_board
 get_card_checklists = function(id, ...) {
 
-    dat = trello_get(parent = "card", child = "checklists", id = id, ...)
+    dat = get_model(parent = "card", child = "checklists", id = id, ...)
     return(dat)
 }
 
@@ -33,7 +33,7 @@ get_card_checklists = function(id, ...) {
 #' @rdname get_card
 get_card_comments = function(id, ...) {
 
-    dat = trello_get(parent = "card", child = "actions", id = id,
+    dat = get_model(parent = "card", child = "actions", id = id,
                      filter = "commentCard", ...)
     return(dat)
 }
@@ -42,7 +42,7 @@ get_card_comments = function(id, ...) {
 #' @rdname get_card
 get_card_labels = function(id, ...) {
 
-    dat = trello_get(parent = "card", child = "labels", id = id, ...)
+    dat = get_model(parent = "card", child = "labels", id = id, ...)
     return(dat)
 }
 
@@ -50,6 +50,6 @@ get_card_labels = function(id, ...) {
 #' @rdname get_card
 get_card_members = function(id, ...) {
 
-    dat = trello_get(parent = "card", child = "members", id = id, ...)
+    dat = get_model(parent = "card", child = "members", id = id, ...)
     return(dat)
 }

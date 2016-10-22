@@ -11,8 +11,8 @@
 #' Previously, teams were called "organizations", and the correct parent/child name in API calls remains "organization", "organizations".
 #'
 #' @param id team ID, short name or URL
-#' @param ... Additional arguments passed to \code{\link{trello_get}}
-#' @seealso \code{\link{trello_get}}
+#' @param ... Additional arguments passed to \code{\link{get_model}}
+#' @seealso \code{\link{get_model}}
 #' @name get_team
 NULL
 
@@ -21,7 +21,7 @@ NULL
 get_team_members = function(id, ...) {
 
     id = parse_url(id, pos = 4)
-    dat = trello_get(parent = "organization", child = "members", id = id, ...)
+    dat = get_model(parent = "organization", child = "members", id = id, ...)
     return(dat)
 }
 
@@ -30,6 +30,6 @@ get_team_members = function(id, ...) {
 get_team_boards = function(id, ...) {
 
     id = parse_url(id, pos = 4)
-    dat = trello_get(parent = "organization", child = "boards", id = id, ...)
+    dat = get_model(parent = "organization", child = "boards", id = id, ...)
     return(dat)
 }

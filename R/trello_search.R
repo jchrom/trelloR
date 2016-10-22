@@ -26,7 +26,7 @@ NULL
 #' @rdname trello_search
 trello_search = function(string, ...) {
 
-    dat = trello_get(parent = "search", id = NULL, child = NULL,
+    dat = get_model(parent = "search", id = NULL, child = NULL,
                      query = list(query = string), ...)
     return(dat)
 }
@@ -36,7 +36,7 @@ trello_search = function(string, ...) {
 trello_search_actions = function(string, ...) {
 
     string = paste0(string, "?modelTypes:actions")
-    dat = trello_get(parent = "search", id = NULL, child = NULL,
+    dat = get_model(parent = "search", id = NULL, child = NULL,
                      query = list(query = string), ...)
     return(dat)
 }
@@ -46,7 +46,7 @@ trello_search_actions = function(string, ...) {
 trello_search_cards = function(string, ...) {
 
     string = paste0(string, "?modelTypes:cards")
-    dat = trello_get(parent = "search", id = NULL, child = NULL,
+    dat = get_model(parent = "search", id = NULL, child = NULL,
                      query = list(query = string), ...)
     return(dat)
 }
@@ -56,7 +56,7 @@ trello_search_cards = function(string, ...) {
 trello_search_boards = function(string, ...) {
 
     string = paste0(string, "?modelTypes:boards")
-    dat = trello_get(parent = "search", id = NULL, child = NULL,
+    dat = get_model(parent = "search", id = NULL, child = NULL,
                      query = list(query = string), ...)
     return(dat)
 }
@@ -66,7 +66,7 @@ trello_search_boards = function(string, ...) {
 trello_search_members = function(string, ...) {
 
     string = paste0(string, "?modelTypes:members")
-    dat = trello_get(parent = "search", id = NULL, child = NULL,
+    dat = get_model(parent = "search", id = NULL, child = NULL,
                      query = list(query = string), ...)
     return(dat)
 }
@@ -76,7 +76,7 @@ trello_search_members = function(string, ...) {
 trello_search_teams = function(string, ...) {
 
     string = paste0(string, "?modelTypes:organizations")
-    dat = trello_get(parent = "search", id = NULL, child = NULL,
+    dat = get_model(parent = "search", id = NULL, child = NULL,
                      query = list(query = string), ...)
     return(dat)
 }

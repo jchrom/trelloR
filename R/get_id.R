@@ -24,7 +24,7 @@
 get_id_board = function(url, token = NULL) {
 
     url = parse_url(url)
-    dat = trello_get(parent = "board", id = url, token = token,
+    dat = get_model(parent = "board", id = url, token = token,
                      query = list(fields = "name"))
 
     id = dat$id
@@ -42,7 +42,7 @@ get_id_board = function(url, token = NULL) {
 get_id_card = function(url, token = NULL) {
 
     url = parse_url(url)
-    dat = trello_get(parent = "card", id = url, token = token,
+    dat = get_model(parent = "card", id = url, token = token,
                      query = list(fields = "name"))
 
     # Format vector
