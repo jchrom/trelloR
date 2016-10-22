@@ -66,6 +66,8 @@ trello_get = function(parent = NULL,
                       bind.rows = TRUE
                       ) {
 
+    .Deprecated("get_model")
+
     url   = build_url(url = url, parent = parent, child = child, id = id)
     query = build_query(query = query, filter = filter, limit = limit)
 
