@@ -9,12 +9,12 @@ get_my_boards(token, ...)
 \arguments{
 \item{token}{Secure token - get it with \code{\link{trello_get_token}}}
 
-\item{...}{Additional arguments passed to \code{\link{trello_get}}}
+\item{...}{Additional arguments passed to \code{\link{get_model}}}
 }
 \description{
 Returns a flat \code{data.frame} with all your boards.
 }
 \seealso{
-\code{\link{trello_get}}
+\code{\link{get_model}}
 }
 
