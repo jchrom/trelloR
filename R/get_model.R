@@ -53,3 +53,175 @@
 #' token = get_token("your_key", "your_secret")
 #' all_open_cards = get_board_cards(board_id, token, filter = "open")
 #' }
+
+get_model = function(parent = NULL,
+                     child = NULL,
+                     id = NULL,
+                     token = NULL,
+                     query = NULL,
+                     url = NULL,
+                     filter = NULL,
+                     limit = 1000,
+                     paging = FALSE,
+                     bind.rows = TRUE
+) {
+
+    url   = build_url(url = url, parent = parent, child = child, id = id)
+    query = build_query(query = query, filter = filter, limit = limit)
+
+    cat("Sending request...\n")
+
+    if (paging) {
+        result = get_pages(url = url, token = token,
+                           query = query, bind.rows = bind.rows)
+    } else {
+        result = get_page(url = url, token = token,
+                          query = query)
+    }
+
+    return(result)
+}
+
+get_page = function(url, token, query) {
+
+    result = get_flat(url = url, token = token, query = query)
+
+    if (is.null(result)) {
+        message("Returning NULL")
+        return(result)
+    } else if (is.data.frame(result)) {
+        if (nrow(result) >= 1000) {
+            message("Reached 1000 results. Set 'paging = TRUE' to get more")
+        } else {
+            message("Received ", nrow(result), " results")}
+    } else {
+        message(length(result), " elements")}
+
+    message(paste("Returning", paste(class(result), collapse = " "), sep = " "))
+    return(result)
+}
+
+get_pages = function(url, token, query, bind.rows) {
+
+    result = list()
+
+    repeat {
+
+        batch = tryCatch(
+            expr = get_flat(url = url, token = token, query = query),
+            error = function(e) {
+                message("Filed batch: ", e$message)
+                data.frame()
+            }
+        )
+
+        result = append(result, list(batch))
+
+        if (!is.data.frame(batch)) {
+            message("Cannot determine number of results - paging aborted")
+            break
+        } else if (nrow(batch) < 1000) {
+            total = ((length(result) - 1) * 1000) + nrow(batch)
+            message("Received last page, ", total," results in total")
+            break
+        } else {
+            query$before = batch$id[1000]
+            message("Received 1000 results, keep paging...")
+        }
+    }
+
+    if (bind.rows) {
+        result = tryCatch(
+            expr  = bind_rows(result),
+            error = function(e) {
+                cat("Binding failed:", e$message)
+                message("Returning list (", length(result), " elements)")
+                result
+            })
+    }
+    return(result)
+}
+
+build_url = function(url, parent, id, child) {
+    if (is.null(url))  {
+        url = paste("https://api.trello.com/1", parent, id, child, sep = "/")
+        url = gsub("[/]+$", "", url) #remove trailing /
+    } else {
+        url
+    }
+}
+
+build_query = function(query = NULL, filter = NULL, limit = 1000) {
+
+    if (is.null(query)) query = list()
+
+    query$filter = filter
+    query$limit  = limit
+
+    return(query)
+}
+
+#' GET url and return data.frame
+#'
+#' GET url and return data.frame
+#' @param url Url to get
+#' @param token Secure token
+#' @param query Additional url parameters (defaults to NULL)
+#' @importFrom httr GET content config http_status headers http_type http_error user_agent status_code
+#' @importFrom jsonlite fromJSON
+
+get_flat = function(url, token = NULL, query = NULL) {
+
+    # Issue request
+    req  = GET(url = url,
+               config(token = token),
+               query = query,
+               user_agent("https://github.com/jchrom/trelloR"))
+
+    # Print out the complete url
+    cat("Request URL:\n", req$url, "\n", sep = "")
+
+    # Handle errors
+    attempts = 1
+    while (http_error(req)) {
+        if (status_code(req) < 500) {
+            stop(http_status(req)$message, " : ", req)
+        } else if (status_code(req) >= 500 & attempts < 3) {
+            message(http_status(req)$message,
+                    "\n", 3 - attempts, " attempt(s) left")
+            Sys.sleep(1.5)
+            attempts = attempts + 1
+            req  = GET(url = url,
+                       config(token = token),
+                       query = query,
+                       user_agent("https://github.com/jchrom/trelloR"))
+        } else {
+            stop(http_status(req)$message,
+                 "; stopping after ", attempts, " attempts")
+        }
+    }
+
+    # Handle response (only JSON is accepted)
+    if (http_type(req) == "application/json") {
+        json = content(req, as = "text")
+        flat = fromJSON(json, flatten = TRUE)
+        flat = tryCatch(
+            expr = as_data_frame(flat),
+            error = function(e) {
+                flat
+            }
+        )
+    } else {
+        req_trim = paste0(strtrim(content(req, as = "text"), 50), "...")
+        stop(http_type(req), " is not JSON : \n", req_trim)
+    }
+
+    # If the result is an empty list, convert into NULL
+    if (length(flat) == 0) {
+        flat = NULL
+        message("Response was empty")
+    }
+
+    # Return the result
+    return(flat)
+}
