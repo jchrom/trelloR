@@ -7,9 +7,9 @@ vignette: >
   %\VignetteIndexEntry{R API for Trello}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
----
-
-```{r setup, include = FALSE}
+  ---
+  
+  ```{r setup, include = FALSE}
 library(httr)
 knitr::opts_chunk$set(comment = "#>", collapse = TRUE)
 ```
@@ -61,14 +61,14 @@ captain = trello_search_members("Captain America", token = my_token)
 
 Searches need to be authorized; hence, the token argument is needed (see __Getting private data__).
 
-###Custom requests with `trello_get()`
-Most of the functions in this package are wrappers for `trello_get()`. You can call it directly if you lack a particular data-fetching option, or you can define a new function by wrapping `trello_get()` and providing some default values. 
+###Custom requests with `get_model()`
+Most of the functions in this package are wrappers for `get_model()`. You can call it directly if you lack a particular data-fetching option, or you can define a new function by wrapping `get_model()` and providing some default values. 
 
 The following example creates a function that fetches all updates made in a given card (it uses a filter because updates are a type of action, and there's no need to retrieve *all* actions):
 
 ```{r}
 get_card_updates = function(id, ...) {
-    trello_get(parent = "card", child  = "actions", id = id, filter = "updateCard", ...)
+    get_model(parent = "card", child  = "actions", id = id, filter = "updateCard", ...)
 }
 ```
 
@@ -81,7 +81,7 @@ card_updates = get_card_updates(idc, limit = 5)
 
 For a detailed list of all possible queries, consult the [Trello API reference](https://developers.trello.com/advanced-reference).
 
-###Additional arguments for `trello_get()`
+###Additional arguments for `get_model()`
 
 * `token` is necessary for accessing private boards (see __Getting private data__); defaults to `NULL`
 * `limit` defaults to 1000 results; this is also the maximum number of results for a single request
@@ -91,11 +91,11 @@ For a detailed list of all possible queries, consult the [Trello API reference](
 
 If `bind.rows = FALSE`, the result will be a `list` with as many elements as there are pages. This is also a fallback option for the rare occasion when the responses are not perfectly formatted and make `dplyr::bind_rows` fail.
 
-When calling `trello_get()` directly, you have an option to either specify `parent` and `child` or provide the whole URL as a character vector of length 1.
+When calling `get_model()` directly, you have an option to either specify `parent` and `child` or provide the whole URL as a character vector of length 1.
 
 ```{r}
-board_comments = trello_get(parent = "board", child = "actions", id = idb,
-                            filter = "commentCard", limit = 5)
+board_comments = get_model(parent = "board", child = "actions", id = idb,
+                           filter = "commentCard", limit = 5)
 ```
 
 ###Error handling
