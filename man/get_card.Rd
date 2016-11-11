@@ -19,12 +19,12 @@ get_card_members(id, ...)
 \arguments{
 \item{id}{Card ID}
 
-\item{...}{Additional arguments passed to \code{\link{trello_get}}}
+\item{...}{Additional arguments passed to \code{\link{get_model}}}
 }
 \description{
 Returns a flat \code{data.frame} with card-related data.
 }
 \seealso{
-\code{\link{trello_get}}
+\code{\link{get_model}}
 }
 
