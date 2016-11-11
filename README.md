@@ -9,7 +9,7 @@ The purpose of `trelloR` is to easily access [Trello API](https://developers.tre
 
 ``` r
 library(trelloR)
-board = get_board_id("https://trello.com/b/nC8QJJoZ/trello-development-roadmap")
+board = get_id_board("https://trello.com/b/nC8QJJoZ/trello-development-roadmap")
 cards = get_board_cards(board)
 ```
 
