@@ -32,7 +32,7 @@ trello_get = function(parent = NULL,
     url   = build_url(url = url, parent = parent, child = child, id = id)
     query = build_query(query = query, filter = filter, limit = limit)
 
-    cat("Sending request...\n")
+    message("Sending request...\n")
 
     if (paging) {
         result = get_pages(url = url, token = token,

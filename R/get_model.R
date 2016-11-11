@@ -69,7 +69,7 @@ get_model = function(parent = NULL,
     url   = build_url(url = url, parent = parent, child = child, id = id)
     query = build_query(query = query, filter = filter, limit = limit)
 
-    cat("Sending request...\n")
+    message("Sending request...\n")
 
     if (paging) {
         result = get_pages(url = url, token = token,
@@ -134,7 +134,7 @@ get_pages = function(url, token, query, bind.rows) {
         result = tryCatch(
             expr  = bind_rows(result),
             error = function(e) {
-                cat("Binding failed:", e$message)
+                message("Binding failed: ", e$message)
                 message("Returning list (", length(result), " elements)")
                 result
             })
@@ -179,7 +179,7 @@ get_flat = function(url, token = NULL, query = NULL) {
                user_agent("https://github.com/jchrom/trelloR"))
 
     # Print out the complete url
-    cat("Request URL:\n", req$url, "\n", sep = "")
+    message("Request URL:\n", req$url, "\n")
 
     # Handle errors
     attempts = 1
