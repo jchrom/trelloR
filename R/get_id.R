@@ -31,8 +31,8 @@ get_id_board = function(url, token = NULL) {
     names(id) = dat$name
     class(id) = c("character")
 
-    cat('Converted into character vector of length 1 with name "',
-        names(id), '"\n', sep = "")
+    message('Converted into character vector of length 1 with name "',
+            names(id), '"\n', sep = "")
 
     return(id)
 }
@@ -51,8 +51,8 @@ get_id_card = function(url, token = NULL) {
     class(id) = c("character")
 
     # Comment on results
-    cat('Converted into character vector of length 1 with name "',
-        names(id), '"', sep = "")
+    message('Converted into character vector of length 1 with name "',
+            names(id), '"', sep = "")
 
     return(id)
 }
