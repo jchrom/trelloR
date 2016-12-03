@@ -66,68 +66,27 @@ get_model = function(parent = NULL,
                      bind.rows = TRUE
 ) {
 
+    if (!missing("paging")) {
+        warning("paging is deprecated - set filter to 0 to fetch all",
+                call. = FALSE)
+        if (missing(limit) & paging) limit = 0
+    }
+
     url   = build_url(url = url, parent = parent, child = child, id = id)
     query = build_query(query = query, filter = filter, limit = limit)
 
     message("Sending request...\n")
 
-    if (paging) {
-        result = get_pages(url = url, token = token,
-                           query = query, bind.rows = bind.rows)
-    } else {
-        result = get_page(url = url, token = token,
-                          query = query)
-    }
+    result = get_pages(url = url, token = token, query = query)
 
-    return(result)
-}
-
-get_page = function(url, token, query) {
-
-    result = get_flat(url = url, token = token, query = query)
-
-    if (is.null(result)) {
-        message("Returning NULL")
-        return(result)
-    } else if (is.data.frame(result)) {
-        if (nrow(result) >= 1000) {
-            message("Reached 1000 results. Set 'paging = TRUE' to get more")
-        } else {
-            message("Received ", nrow(result), " results")}
-    } else {
-        message(length(result), " elements")}
-
-    message(paste("Returning", paste(class(result), collapse = " "), sep = " "))
-    return(result)
-}
-
-get_pages = function(url, token, query, bind.rows) {
-
-    result = list()
-
-    repeat {
-
-        batch = tryCatch(
-            expr = get_flat(url = url, token = token, query = query),
+    for (i in seq_along(result)) {
+        result[[i]] = tryCatch(
+            expr = add_class(result[[i]], child),
             error = function(e) {
-                message("Filed batch: ", e$message)
-                data.frame()
+                warning("Could not assign additional S3 class.", call. = FALSE)
+                result[[i]]
             }
         )
-
-        result = append(result, list(batch))
-
-        if (!is.data.frame(batch)) {
-            message("Cannot determine number of results - paging aborted")
-            break
-        } else if (nrow(batch) < 1000) {
-            total = ((length(result) - 1) * 1000) + nrow(batch)
-            message("Received last page, ", total," results in total")
-            break
-        } else {
-            query$before = batch$id[1000]
-            message("Received 1000 results, keep paging...")
-        }
     }
 
     if (bind.rows) {
@@ -137,7 +96,8 @@ get_pages = function(url, token, query, bind.rows) {
                 message("Binding failed: ", e$message)
                 message("Returning list (", length(result), " elements)")
                 result
-            })
+            }
+        )
     }
     return(result)
 }
@@ -146,18 +106,14 @@ build_url = function(url, parent, id, child) {
     if (is.null(url))  {
         url = paste("https://api.trello.com/1", parent, id, child, sep = "/")
         url = gsub("[/]+$", "", url) #remove trailing /
-    } else {
-        url
     }
+    url
 }
 
 build_query = function(query = NULL, filter = NULL, limit = 1000) {
-
     if (is.null(query)) query = list()
-
     query$filter = filter
     query$limit  = limit
-
     return(query)
 }
 
