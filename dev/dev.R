@@ -32,8 +32,8 @@ cav = trello_get(parent = "board", child = "cards", id = idav,
                  token = t, limit = 5)
 
 # 4. Get checklists
-chl = get_board_checklists(idav, t)
-chl = get_card_checklists(cav$id[5], t)
+chl = get_board_checklists(idpri, t)
+chl = get_card_checklists(cemi$id[5], t)
 
 fix_checklist = function(checklist) {
     chl = checklist %>%
