@@ -29,18 +29,7 @@ trello_get = function(parent = NULL,
 
     .Deprecated("get_model")
 
-    url   = build_url(url = url, parent = parent, child = child, id = id)
-    query = build_query(query = query, filter = filter, limit = limit)
-
-    message("Sending request...\n")
-
-    if (paging) {
-        result = get_pages(url = url, token = token,
-                           query = query, bind.rows = bind.rows)
-    } else {
-        result = get_page(url = url, token = token,
-                          query = query)
-    }
-
-    return(result)
+    get_model(parent = parent, child =child, id = id, token = token,
+              query = query, url = url, filter = filter, limit = limit,
+              paging = paging, bind.rows = bind.rows)
 }
