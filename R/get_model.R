@@ -89,16 +89,6 @@ get_model = function(parent = NULL,
         )
     }
 
-    for (i in seq_along(result)) {
-        result[[i]] = tryCatch(
-            expr = add_attr(result[[i]], parent = parent, name = name, id = id),
-            error = function(e) {
-                warning("Could not assign additional S3 class.", call. = FALSE)
-                result[[i]]
-            }
-        )
-    }
-
     if (bind.rows) {
         result = tryCatch(
             expr  = bind_rows(result),

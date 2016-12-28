@@ -24,7 +24,7 @@ idpri = get_id_board(emi, t)
 # cav  = get_board_cards(idav, t, limit = 5)
 # cemp = get_board_cards(idemp, t, limit = 5) # returns NULL
 # cpub = get_board_cards(idpub, limit = 5)
-cemi = get_board_cards(idpri, token = t, filter = "all", limit = 0)
+cemi = get_board_cards(idpri, token = t, filter = "all", limit = 200)
 
 
 # 3. Get cards by long call

@@ -24,7 +24,7 @@ trello_search_teams(string, ...)
 \arguments{
 \item{string}{Text to search for}
 
-\item{...}{Additional arguments passed to \code{\link{trello_get}}}
+\item{...}{Additional arguments passed to \code{\link{get_model}}}
 }
 \description{
 Returns a \code{list} with search results.
@@ -40,6 +40,6 @@ trello_search_cards("A card with this text", my_token)
 }
 }
 \seealso{
-\code{\link{trello_get}} \code{\link{trello_get_token}}
+\code{\link{get_model}} \code{\link{trello_get_token}}
 }
 
