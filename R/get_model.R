@@ -81,7 +81,7 @@ get_model = function(parent = NULL,
 
     for (i in seq_along(result)) {
         result[[i]] = tryCatch(
-            expr = add_class(result[[i]], child),
+            expr = add_class(result[[i]], child = child),
             error = function(e) {
                 warning("Could not assign additional S3 class.", call. = FALSE)
                 result[[i]]

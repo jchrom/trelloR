@@ -8,8 +8,8 @@
 #'
 #' Returns a \code{list} with search results.
 #' @param string Text to search for
-#' @param ... Additional arguments passed to \code{\link{trello_get}}
-#' @seealso \code{\link{trello_get}} \code{\link{trello_get_token}}
+#' @param ... Additional arguments passed to \code{\link{get_model}}
+#' @seealso \code{\link{get_model}} \code{\link{trello_get_token}}
 #' @name trello_search
 #' @examples
 #' # Searches are only possible if authorized - a token is required:
