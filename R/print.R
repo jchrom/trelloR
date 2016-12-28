@@ -3,7 +3,7 @@
 #' Printing Trello API objects
 #'
 #' Print data.frame containing cards.
-#' @param x object of class cards_df, members_df etc
+#' @param x object of class cards_df, actions_df etc
 #' @name print.trello_api
 NULL
 
@@ -47,5 +47,23 @@ print.labels_df = function(x) {
   stopifnot(is.labels_df(x))
   print(
     x %>% select(name, color, uses)
+  )
+}
+
+#' @export
+#' @importFrom dplyr %>% group_by select summarise mutate
+#' @importFrom tidyr unnest spread
+#' @rdname print.trello_api
+
+print.checklists_df = function(x) {
+  stopifnot(is.checklists_df(x))
+  print(
+    x %>%
+      unnest(.sep = "_") %>%
+      group_by(checkItems_state) %>%
+      summarise(n = n()) %>%
+      spread(checkItems_state, n) %>%
+      mutate(n_items = sum(complete, incomplete)) %>%
+      select(n_items, complete, incomplete)
   )
 }

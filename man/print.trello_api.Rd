@@ -3,6 +3,7 @@
 \name{print.trello_api}
 \alias{print.actions_df}
 \alias{print.cards_df}
+\alias{print.checklists_df}
 \alias{print.labels_df}
 \alias{print.trello_api}
 \title{Printing Trello API objects}
@@ -12,9 +13,11 @@
 \method{print}{actions_df}(x)
 
 \method{print}{labels_df}(x)
+
+\method{print}{checklists_df}(x)
 }
 \arguments{
-\item{x}{object of class cards_df, members_df etc}
+\item{x}{object of class cards_df, actions_df etc}
 }
 \description{
 Print data.frame containing cards.

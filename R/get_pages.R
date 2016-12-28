@@ -14,7 +14,8 @@
 
 get_pages = function(url, token, query = NULL) {
 
-    if (!is.null(query[["limit"]])) limit = query[["limit"]] else limit = 1000
+    if (!is.null(query[["limit"]]))
+      limit = query[["limit"]] else limit = 1000
 
     # If 0 is supplied for the limit, the value is always set to 1000,
     # effectively paginating until everything is downloaded.
