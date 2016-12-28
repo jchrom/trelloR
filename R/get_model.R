@@ -66,55 +66,54 @@ get_model = function(parent = NULL,
                      bind.rows = TRUE
 ) {
 
-    if (!missing("paging")) {
-        warning("paging is deprecated - set filter to 0 to fetch all",
-                call. = FALSE)
-        if (missing(limit) & paging) limit = 0
-    }
+  if (!missing("paging")) {
+    warning("paging is deprecated - set filter to 0 to fetch all", call. = FALSE)
+    if (missing(limit) & paging) limit = 0
+  }
 
-    url   = build_url(url = url, parent = parent, child = child, id = id)
-    query = build_query(query = query, filter = filter, limit = limit)
+  url   = build_url(url = url, parent = parent, child = child, id = id)
+  query = build_query(query = query, filter = filter, limit = limit)
 
-    message("Sending request...\n")
+  message("Sending request...\n")
 
-    result = get_pages(url = url, token = token, query = query)
+  result = get_pages(url = url, token = token, query = query)
 
-    for (i in seq_along(result)) {
-        result[[i]] = tryCatch(
-            expr = add_class(result[[i]], child = child),
-            error = function(e) {
-                warning("Could not assign additional S3 class.", call. = FALSE)
-                result[[i]]
-            }
-        )
-    }
+  for (i in seq_along(result)) {
+    result[[i]] = tryCatch(
+      expr = add_class(result[[i]], child = child),
+      error = function(e) {
+        warning("Could not assign additional S3 class.", call. = FALSE)
+        result[[i]]
+      }
+    )
+  }
 
-    if (bind.rows) {
-        result = tryCatch(
-            expr  = bind_rows(result),
-            error = function(e) {
-                message("Binding failed: ", e$message)
-                message("Returning list (", length(result), " elements)")
-                result
-            }
-        )
-    }
-    return(result)
+  if (bind.rows) {
+    result = tryCatch(
+      expr  = bind_rows(result),
+      error = function(e) {
+        message("Binding failed: ", e$message)
+        message("Returning list (", length(result), " elements)")
+        result
+      }
+    )
+  }
+  result
 }
 
 build_url = function(url, parent, id, child) {
-    if (is.null(url))  {
-        url = paste("https://api.trello.com/1", parent, id, child, sep = "/")
-        url = gsub("[/]+$", "", url) #remove trailing /
-    }
-    url
+  if (is.null(url))  {
+    url = paste("https://api.trello.com/1", parent, id, child, sep = "/")
+    url = gsub("[/]+$", "", url) #remove trailing /
+  }
+  url
 }
 
 build_query = function(query = NULL, filter = NULL, limit = 1000) {
-    if (is.null(query)) query = list()
-    query$filter = filter
-    query$limit  = limit
-    return(query)
+  if (is.null(query)) query = list()
+  query$filter = filter
+  query$limit  = limit
+  return(query)
 }
 
 #' GET url and return data.frame
@@ -124,60 +123,64 @@ build_query = function(query = NULL, filter = NULL, limit = 1000) {
 #' @param token Secure token
 #' @param query Additional url parameters (defaults to NULL)
 #' @importFrom httr GET content config http_status headers http_type http_error user_agent status_code
+#' @importFrom dplyr as.tbl
 #' @importFrom jsonlite fromJSON
 
 get_flat = function(url, token = NULL, query = NULL) {
 
-    # Issue request
-    req  = GET(url = url,
-               config(token = token),
-               query = query,
-               user_agent("https://github.com/jchrom/trelloR"))
+  # Issue request
+  req  = GET(url = url,
+             config(token = token),
+             query = query,
+             user_agent("https://github.com/jchrom/trelloR"))
 
-    # Print out the complete url
-    message("Request URL:\n", req$url, "\n")
+  # Print out the complete url
+  message("Request URL:\n", req$url, "\n")
 
-    # Handle errors
-    attempts = 1
-    while (http_error(req)) {
-        if (status_code(req) < 500) {
-            stop(http_status(req)$message, " : ", req)
-        } else if (status_code(req) >= 500 & attempts < 3) {
-            message(http_status(req)$message,
-                    "\n", 3 - attempts, " attempt(s) left")
-            Sys.sleep(1.5)
-            attempts = attempts + 1
-            req  = GET(url = url,
-                       config(token = token),
-                       query = query,
-                       user_agent("https://github.com/jchrom/trelloR"))
-        } else {
-            stop(http_status(req)$message,
-                 "; stopping after ", attempts, " attempts")
-        }
-    }
+  # Client-side errors should make it crash immediately
+  if (http_error(req) && status_code(req) < 500)
+    stop(http_status(req)$message, " : ", req, call. = FALSE)
 
-    # Handle response (only JSON is accepted)
-    if (http_type(req) == "application/json") {
-        json = content(req, as = "text")
-        flat = fromJSON(json, flatten = TRUE)
-        flat = tryCatch(
-            expr = as_data_frame(flat),
-            error = function(e) {
-                flat
-            }
-        )
+  # # Server-side error means we should try couple more times
+  attempts = 1
+  while (http_error(req)) {
+
+    if (status_code(req) >= 500 & attempts < 3) {
+      message(http_status(req)$message,
+              "\n", 3 - attempts, " attempt(s) left")
+      Sys.sleep(1.5)
+      attempts = attempts + 1
+      req  = GET(url = url,
+                 config(token = token),
+                 query = query,
+                 user_agent("https://github.com/jchrom/trelloR"))
     } else {
-        req_trim = paste0(strtrim(content(req, as = "text"), 50), "...")
-        stop(http_type(req), " is not JSON : \n", req_trim)
+      stop(http_status(req)$message,
+           "; stopping after ", attempts, " attempts")
     }
+  }
 
-    # If the result is an empty list, convert into NULL
-    if (length(flat) == 0) {
-        flat = NULL
-        message("Response was empty")
-    }
+  # Handle response (only JSON is accepted)
+  if (http_type(req) == "application/json") {
+    json = content(req, as = "text")
+    flat = fromJSON(json, flatten = TRUE)
+    flat = tryCatch(
+      expr = as.tbl(flat),
+      error = function(e) {
+        flat
+      }
+    )
+  } else {
+    req_trim = paste0(strtrim(content(req, as = "text"), 50), "...")
+    stop(http_type(req), " is not JSON : \n", req_trim)
+  }
 
-    # Return the result
-    return(flat)
+  # If the result is an empty list, convert into NULL
+  if (length(flat) == 0) {
+    flat = NULL
+    message("Response was empty")
+  }
+
+  # Return the result
+  flat
 }

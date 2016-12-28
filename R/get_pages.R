@@ -54,7 +54,7 @@ get_pages = function(url, token, query = NULL) {
             expr = get_flat(url = url, token = token, query = query),
             error = function(e) {
                 message("Failed batch: ", e$message)
-                data.frame()
+                NULL
             }
         )
 
@@ -81,5 +81,3 @@ get_pages = function(url, token, query = NULL) {
 # d = get_pages(url, token = t, query = list(limit = 5, filter = "all"))
 # d = get_pages(url, token = t, query = list(limit = 1000, filter = "all"))
 # d = get_pages(url, token = t, query = list(limit = 1750, filter = "all"))
-# d = get_pages(url, token = t, query = list(filter = "all"), paging = T)
-

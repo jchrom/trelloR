@@ -27,8 +27,7 @@ board_comments = get_model(parent = "board", child = "actions", id = idb,
 ## ------------------------------------------------------------------------
 tryCatch(
     expr  = get_card_actions(id = "I_have_a_bad_feeling_about_this"),
-    error = function(e) {
-        print(e$message)})
+    error = function(e) message(e$message))
 
 ## ------------------------------------------------------------------------
 sessionInfo()

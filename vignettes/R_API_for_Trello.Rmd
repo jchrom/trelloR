@@ -104,8 +104,7 @@ If a request fails because of the client-side or server-side error, the error co
 ```{r}
 tryCatch(
     expr  = get_card_actions(id = "I_have_a_bad_feeling_about_this"),
-    error = function(e) {
-        print(e$message)})
+    error = function(e) message(e$message))
 ```
 
 In case of a server-side error, the request will be re-send two more times, with 1.5s delay before each attempt. If it fails for the 3rd time, the error message is printed in the console.

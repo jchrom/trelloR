@@ -8,6 +8,7 @@
 NULL
 
 #' @export
+#' @importFrom dplyr data_frame
 #' @rdname print.trello_api
 
 print.cards_df = function(x) {
@@ -28,7 +29,6 @@ print.cards_df = function(x) {
 
 print.actions_df = function(x) {
   stopifnot(is.actions_df(x))
-  x =
   print(
     x %>%
       group_by(type) %>%
