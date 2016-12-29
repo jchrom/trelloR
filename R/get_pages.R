@@ -33,12 +33,12 @@ get_pages = function(url, token, query = NULL) {
       result = append(result, list(batch))
 
       if (!is.data.frame(batch)) {
-        message("Result is not a data.frame - stopping...")
+        # message("Result is not a data.frame - stopping...")
         break
       } else if (nrow(batch) < 1000) {
         break
       } else {
-        query$before = batch$id[1000]
+        query$before = min(batch$id)
         message("Received 1000 results\n")
       }
     }
@@ -55,22 +55,25 @@ get_pages = function(url, token, query = NULL) {
       result = append(result, list(batch))
 
       if (!is.data.frame(batch)) {
-        message("Result is not a data.frame - stopping...")
+        # message("Result is not a data.frame - stopping...")
         break
       } else if (nrow(batch) < 1000) {
         break
       } else {
-        query$before = batch$id[1000]
+        query$before = min(batch$id)
         message("Received 1000 results\n")
       }
     }
   }
 
-  total = ((length(result) - 1) * 1000) + nrow(batch)
-  message("Received ", nrow(batch), " results")
-  message("Request complete: ", total," results")
-
-  return(result)
+  if (is.data.frame(result[[1]])) {
+    total = ((length(result) - 1) * 1000) + nrow(batch)
+    message("Received ", nrow(batch), " results")
+    message("Request complete: ", total," results")
+  } else {
+    message("Request complete")
+  }
+  result
 }
 
 # url = "https://api.trello.com/1/board/54212b5181d0b59cfbff6de0/cards"
