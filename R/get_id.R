@@ -25,16 +25,8 @@ get_id_board = function(url, token = NULL) {
 
     url = parse_url(url)
     dat = get_model(parent = "board", id = url, token = token,
-                     query = list(fields = "name"))
-
-    id = dat$id
-    names(id) = dat$name
-    class(id) = c("character")
-
-    message('Converted into character vector of length 1 with name "',
-            names(id), '"\n', sep = "")
-
-    return(id)
+                    query = list(fields = "name"), add.class = FALSE)
+    parse_id(dat)
 }
 
 #' @export
@@ -43,18 +35,15 @@ get_id_card = function(url, token = NULL) {
 
     url = parse_url(url)
     dat = get_model(parent = "card", id = url, token = token,
-                     query = list(fields = "name"))
+                     query = list(fields = "name"), add.class = FALSE)
+    parse_id(dat)
+}
 
-    # Format vector
-    id = dat$id
-    names(id) = dat$name
-    class(id) = c("character")
-
-    # Comment on results
-    message('Converted into character vector of length 1 with name "',
-            names(id), '"', sep = "")
-
-    return(id)
+parse_id = function(x) {
+  id = structure(x[["id"]], names = x[["name"]])
+  message('Converted into character vector of length 1 with name "',
+          names(id), '"\n', sep = "")
+  id
 }
 
 parse_url = function(url, pos = 5) {
