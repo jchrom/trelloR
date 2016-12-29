@@ -24,7 +24,7 @@ idpri = get_id_board(emi, t)
 # cav  = get_board_cards(idav, t, limit = 5)
 # cemp = get_board_cards(idemp, t, limit = 5) # returns NULL
 # cpub = get_board_cards(idpub, limit = 5)
-cemi = get_board_cards(idpri, token = t, filter = "all", limit = 200)
+cemi = get_board_cards(idpri, token = t, filter = "all", limit = 1005)
 comi = get_board_comments(idpri, token = t, limit = 200)
 chmi = get_board_checklists(idpri, token = t, filter = "all", limit = 200)
 aemi = get_board_actions(idpri, token = t, filter = "all", limit = 200)

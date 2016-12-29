@@ -38,7 +38,7 @@ get_pages = function(url, token, query = NULL) {
       } else if (nrow(batch) < 1000) {
         break
       } else {
-        query$before = min(batch$id)
+        query[["before"]] = min(batch$id)
         message("Received 1000 results\n")
       }
     }
@@ -46,9 +46,8 @@ get_pages = function(url, token, query = NULL) {
   } else {
 
     limits = c(rep(1000, trunc(limit/1000)), limit %% 1000)
-    limits = limits[limits > 0]
 
-    for (lim in limits) {
+    for (lim in limits[limits > 0]) {
 
       query[["limit"]] = lim
       batch = get_flat(url = url, token = token, query = query)
@@ -60,7 +59,7 @@ get_pages = function(url, token, query = NULL) {
       } else if (nrow(batch) < 1000) {
         break
       } else {
-        query$before = min(batch$id)
+        query[["before"]] = min(batch$id)
         message("Received 1000 results\n")
       }
     }
