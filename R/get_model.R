@@ -19,6 +19,7 @@
 #' @param limit Defaults to 1000; if reached, paging is suggested
 #' @param paging Whether paging should be used (defaults to \code{FALSE})
 #' @param bind.rows By default, pages will be combined into one \code{data.frame} by \code{\link[dplyr]{bind_rows}}. Set to \code{FALSE} if you want \code{list} instead. This is useful on the rare occasion that the JSON response is not formatted correctly and makes \code{\link[dplyr]{bind_rows}} fail
+#' @param add.class Assign additional S3 class (defaults to \code{TRUE})
 #' @seealso \code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}}, \code{\link{trello_get_token}}, \code{\link{get_id}}
 #' @importFrom dplyr bind_rows as_data_frame
 #' @export
@@ -63,7 +64,8 @@ get_model = function(parent = NULL,
                      filter = NULL,
                      limit = 1000,
                      paging = FALSE,
-                     bind.rows = TRUE
+                     bind.rows = TRUE,
+                     add.class = TRUE
 ) {
 
   if (!missing("paging")) {
@@ -78,26 +80,24 @@ get_model = function(parent = NULL,
 
   result = get_pages(url = url, token = token, query = query)
 
-  for (i in seq_along(result)) {
-    result[[i]] = tryCatch(
-      expr = add_class(result[[i]], child = child),
-      error = function(e) {
-        warning("Could not assign additional S3 class.", call. = FALSE)
-        result[[i]]
-      }
-    )
-  }
+  if (add.class)
+    for (i in seq_along(result)) {
+      result[[i]] = tryCatch(
+        expr = add_class(result[[i]], child = child),
+        error = function(e) {
+          warning("Could not assign additional S3 class.", call. = FALSE)
+          result[[i]]
+        })
+    }
 
-  if (bind.rows) {
+  if (bind.rows)
     result = tryCatch(
       expr  = bind_rows(result),
       error = function(e) {
         message("Binding failed: ", e$message)
         message("Returning list (", length(result), " elements)")
         result
-      }
-    )
-  }
+      })
   result
 }
 
@@ -167,6 +167,7 @@ get_flat = function(url, token = NULL, query = NULL) {
     flat = tryCatch(
       expr = as.tbl(flat),
       error = function(e) {
+        message(e$message)
         flat
       }
     )
