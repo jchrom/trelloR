@@ -8,16 +8,18 @@
 \alias{print.trello_api}
 \title{Printing Trello API objects}
 \usage{
-\method{print}{cards_df}(x)
+\method{print}{cards_df}(x, ...)
 
-\method{print}{actions_df}(x)
+\method{print}{actions_df}(x, ...)
 
-\method{print}{labels_df}(x)
+\method{print}{labels_df}(x, ...)
 
-\method{print}{checklists_df}(x)
+\method{print}{checklists_df}(x, ...)
 }
 \arguments{
-\item{x}{object of class cards_df, actions_df etc}
+\item{x}{Object of class \code{cards_df}, \code{actions_df} etc}
+
+\item{...}{Further arguments passed to \code{\link[base]{print}}}
 }
 \description{
 Print data.frame containing cards.

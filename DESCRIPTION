@@ -15,6 +15,7 @@ Depends:
     R (>= 3.2.3)
 Imports:
     dplyr (>= 0.5),
+    tidyr (>= 0.6),
     httr (>= 1.2),
     jsonlite (>= 1.0)
 License: GPL-3

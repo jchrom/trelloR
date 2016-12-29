@@ -3,67 +3,61 @@
 #' Printing Trello API objects
 #'
 #' Print data.frame containing cards.
-#' @param x object of class cards_df, actions_df etc
+#' @param x Object of class \code{cards_df}, \code{actions_df} etc
+#' @param ... Further arguments passed to \code{\link[base]{print}}
 #' @name print.trello_api
 NULL
 
 #' @export
-#' @importFrom dplyr data_frame
+#' @importFrom dplyr as_data_frame
 #' @rdname print.trello_api
-
-print.cards_df = function(x) {
+print.cards_df = function(x, ...) {
   stopifnot(is.cards_df(x))
-  print(
-    data_frame(
+  x = as_data_frame(
+    list(
       n_cards = length(unique(x[["id"]])),
       closed = sum(x[["closed"]]),
       oldest = as_POSIXct_hex(strtrim(min(x[["id"]]), 8)),
       newest = as_POSIXct_hex(strtrim(max(x[["id"]]), 8))
     )
   )
+  NextMethod("print")
 }
 
 #' @export
-#' @importFrom dplyr %>% group_by summarise
+#' @importFrom dplyr %>% group_by_ summarise
 #' @rdname print.trello_api
-
-print.actions_df = function(x) {
+print.actions_df = function(x, ...) {
   stopifnot(is.actions_df(x))
-  print(
-    x %>%
-      group_by(type) %>%
-      summarise(
-        n_actions = length(unique(id)),
-        n_cards = length(unique(data.card.id)),
-        n_members = length(unique(memberCreator.id)))
+  x = structure(
+    as_data_frame(table(x[["type"]])),
+    names = c("type", "n_actions")
   )
+  NextMethod("print")
 }
 
 #' @export
-#' @importFrom dplyr %>% select
+#' @importFrom dplyr %>% select_
 #' @rdname print.trello_api
-
-print.labels_df = function(x) {
+print.labels_df = function(x, ...) {
   stopifnot(is.labels_df(x))
-  print(
-    x %>% select(name, color, uses)
-  )
+  x = select_(x, .dots =c("name", "color", "uses"))
+  NextMethod("print")
 }
 
 #' @export
-#' @importFrom dplyr %>% group_by select summarise mutate
-#' @importFrom tidyr unnest spread
+#' @importFrom tidyr unnest
+#' @importFrom dplyr as_data_frame
 #' @rdname print.trello_api
-
-print.checklists_df = function(x) {
+print.checklists_df = function(x, ...) {
   stopifnot(is.checklists_df(x))
-  print(
-    x %>%
-      unnest(.sep = "_") %>%
-      group_by(checkItems_state) %>%
-      summarise(n = n()) %>%
-      spread(checkItems_state, n) %>%
-      mutate(n_items = sum(complete, incomplete)) %>%
-      select(n_items, complete, incomplete)
-  )
+  x = unnest(x, .sep = "_")
+  x = as_data_frame(
+      list(
+        n_items = length(unique(x[["id"]])),
+        complete = sum(x[["checkItems_state"]] == "complete"),
+        incomplete = sum(x[["checkItems_state"]] == "incomplete")
+      )
+    )
+  NextMethod("print")
 }
