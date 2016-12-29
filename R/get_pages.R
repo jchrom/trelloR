@@ -14,60 +14,42 @@
 
 get_pages = function(url, token, query = NULL) {
 
+  # Prefer user-set limit even-though it may provoke an error
   if (!is.null(query[["limit"]]))
     limit = query[["limit"]]
   else
     limit = 1000
 
+  # Make a series of limit values (or throw an error)
   if (limit < 0)
     stop("'limit' cannot be negative", call. = FALSE)
+  else if (limit > 0)
+    lims = c(rep(1000, trunc(limit/1000)), limit %% 1000)
+  else
+    lims = rep(1000, 10000) #let's say 10,000 iterations for an "endless" loop
 
   result = list()
 
-  if (limit == 0) {
+  for (lim in lims[lims>0]) {
 
-    repeat {
+    query[["limit"]] = lim
+    batch = get_flat(url = url, token = token, query = query)
+    result = append(result, list(batch))
 
-      query[["limit"]] = 1000
-      batch = get_flat(url = url, token = token, query = query)
-      result = append(result, list(batch))
+    if (!is.data.frame(batch))
+      break
 
-      if (!is.data.frame(batch)) {
-        # message("Result is not a data.frame - stopping...")
-        break
-      } else if (nrow(batch) < 1000) {
-        break
-      } else {
-        query[["before"]] = min(batch$id)
-        message("Received 1000 results\n")
-      }
+    if (nrow(batch) < 1000) {
+      message("Received ", nrow(batch), " results")
+      break
     }
 
-  } else {
-
-    limits = c(rep(1000, trunc(limit/1000)), limit %% 1000)
-
-    for (lim in limits[limits > 0]) {
-
-      query[["limit"]] = lim
-      batch = get_flat(url = url, token = token, query = query)
-      result = append(result, list(batch))
-
-      if (!is.data.frame(batch)) {
-        # message("Result is not a data.frame - stopping...")
-        break
-      } else if (nrow(batch) < 1000) {
-        break
-      } else {
-        query[["before"]] = min(batch$id)
-        message("Received 1000 results\n")
-      }
-    }
+    query[["before"]] = min(batch$id)
+    message("Received 1000 results\n")
   }
 
   if (is.data.frame(result[[1]])) {
     total = ((length(result) - 1) * 1000) + nrow(batch)
-    message("Received ", nrow(batch), " results")
     message("Request complete: ", total," results")
   } else {
     message("Request complete")
