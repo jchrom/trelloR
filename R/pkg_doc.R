@@ -5,5 +5,5 @@
 #' implemented in the future (watch \url{https://github.com/jchrom/trelloR}).
 #'
 #' @docType package
-#' @name foo
+#' @name trelloR
 NULL
