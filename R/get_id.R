@@ -26,7 +26,7 @@ get_id_board = function(url, token = NULL) {
     url = parse_url(url)
     dat = get_model(parent = "board", id = url, token = token,
                     query = list(fields = "name"), add.class = FALSE)
-    parse_id(dat)
+    structure(dat[["id"]], names = dat[["name"]])
 }
 
 #' @export
@@ -36,14 +36,7 @@ get_id_card = function(url, token = NULL) {
     url = parse_url(url)
     dat = get_model(parent = "card", id = url, token = token,
                      query = list(fields = "name"), add.class = FALSE)
-    parse_id(dat)
-}
-
-parse_id = function(x) {
-  id = structure(x[["id"]], names = x[["name"]])
-  message('Converted into character vector of length 1 with name "',
-          names(id), '"\n', sep = "")
-  id
+    structure(dat[["id"]], names = dat[["name"]])
 }
 
 parse_url = function(url, pos = 5) {
@@ -53,7 +46,7 @@ parse_url = function(url, pos = 5) {
     if (length(path) >= pos) {
         id = path[pos]
     } else if (length(path) != 1) {
-        stop("This is probably not a valid Trello board URL")
+        stop("This is probably not a valid Trello URL")
     } else {
         id = path
     }
