@@ -36,10 +36,16 @@ cards = get_board_cards(idb, limit = 5)
 
 The above example uses `get_id_board()` to get the board ID based on its URL. Board ID is then supplied to `get_board_cards()` which fetches card-related data. The `limit = 5` parameter just means that only the 5 newest cards will be returned.
 
-If there are no complaints from the server, a JSON response is received and converted into a `data.frame`. It will look something like this:
+If there are no complaints from the server, a JSON response is received and converted into a `data.frame`. It will pretty-print like this:
 
 ``` {r}
 cards
+```
+
+...but it is a `data.frame`, so you can work with it as usual:
+
+```{r}
+head(dplyr::as.tbl(cards))
 ```
 
 Typically, the response will contain multiple columns including model ID, name and other data, such as attachments or preferences. Because the ID of child elements is included in the response, you can use it to work your way down the hierarchy until you reach the desired model.
@@ -104,7 +110,8 @@ If a request fails because of the client-side or server-side error, the error co
 ```{r}
 tryCatch(
     expr  = get_card_actions(id = "I_have_a_bad_feeling_about_this"),
-    error = function(e) message(e$message))
+    error = function(e) message(e$message)
+)
 ```
 
 In case of a server-side error, the request will be re-send two more times, with 1.5s delay before each attempt. If it fails for the 3rd time, the error message is printed in the console.

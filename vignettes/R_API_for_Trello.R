@@ -12,6 +12,9 @@ cards = get_board_cards(idb, limit = 5)
 cards
 
 ## ------------------------------------------------------------------------
+head(dplyr::as.tbl(cards))
+
+## ------------------------------------------------------------------------
 get_card_updates = function(id, ...) {
     get_model(parent = "card", child  = "actions", id = id, filter = "updateCard", ...)
 }
@@ -27,7 +30,8 @@ board_comments = get_model(parent = "board", child = "actions", id = idb,
 ## ------------------------------------------------------------------------
 tryCatch(
     expr  = get_card_actions(id = "I_have_a_bad_feeling_about_this"),
-    error = function(e) message(e$message))
+    error = function(e) message(e$message)
+)
 
 ## ------------------------------------------------------------------------
 sessionInfo()
