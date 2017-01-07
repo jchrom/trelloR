@@ -6,18 +6,18 @@
 #'
 #' Only JSON responses are accepted. \code{\link[jsonlite]{fromJSON}} converts them into flat \code{data.frame}s or \code{list}s, while non-JSON type of response throws an error.
 #'
-#' When \code{paging = TRUE}, the ID of the earliest result is retrieved from every page and supplied to the next request as the value of the \code{"before"} parameter. Paging will continue until the number of results per page is smaller then 1000, indicating no more pages to get.
+#' When \code{limit > 1000}, paging is used. The ID of the earliest result is retrieved from every page and supplied to the next request as the value of the \code{"before"} parameter. PAging will stop after reaching the number of results specified by \code{limit}, or when there are no more data to get.
 #'
-#' \code{filter} and \code{limit} are query parameters and can be set individually; you could achieve the same result by using \code{query = list(filter = "filter_value", limit = "limit_value")}
+#' \code{filter} and \code{limit} are query parameters that can be set individually; you could achieve the same result by using \code{query = list(filter = "filter_value", limit = "limit_value")}
 #' @param parent Parent structure (e.g. \code{"board"})
 #' @param child Child structure (e.g. \code{"card"})
 #' @param id Model ID
-#' @param token Peviously generated secure token, see \code{\link{trello_get_token}} for how to obtain it
+#' @param token Secure token, see \code{\link{trello_get_token}} for how to obtain it
 #' @param query Key-value pairs which form the query, see \code{\link[httr]{GET}} for details
 #' @param url Url for the GET request, use instead of specifying \code{parent}, \code{id} and \code{child}; see \code{\link[httr]{GET}} for details
 #' @param filter Filter results by this string
-#' @param limit Defaults to 1000; if reached, paging is suggested
-#' @param paging Whether paging should be used (defaults to \code{FALSE})
+#' @param limit Defaults to \code{1000}; set to \code{0} to get everything
+#' @param paging Deprecated, use \code{limit = 0} instead
 #' @param bind.rows By default, pages will be combined into one \code{data.frame} by \code{\link[dplyr]{bind_rows}}. Set to \code{FALSE} if you want \code{list} instead. This is useful on the rare occasion that the JSON response is not formatted correctly and makes \code{\link[dplyr]{bind_rows}} fail
 #' @param add.class Assign additional S3 class (defaults to \code{TRUE})
 #' @seealso \code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}}, \code{\link{trello_get_token}}, \code{\link{get_id}}
@@ -38,7 +38,7 @@
 #'
 #' # As with boards, cards can be queried for particular resources:
 #' card1id = cards$id[1]
-#' card1act = get_card_actions(card1id) # Get all comments
+#' card1act = get_card_actions(card1id) # Get all actions performed on that card
 #'
 #' # To retrieve large results, paging might be necessary:
 #'
@@ -55,17 +55,10 @@
 #' all_open_cards = get_board_cards(board_id, token, filter = "open")
 #' }
 
-get_model = function(parent = NULL,
-                     child = NULL,
-                     id = NULL,
-                     token = NULL,
-                     query = NULL,
-                     url = NULL,
-                     filter = NULL,
-                     limit = 1000,
-                     paging = FALSE,
-                     bind.rows = TRUE,
-                     add.class = TRUE
+get_model = function(parent = NULL, child = NULL, id = NULL,
+                     token = NULL, query = NULL,
+                     url = NULL, filter = NULL, limit = 1000, paging = FALSE,
+                     bind.rows = TRUE, add.class = TRUE
 ) {
 
   if (!missing("paging")) {
@@ -75,12 +68,9 @@ get_model = function(parent = NULL,
 
   url   = build_url(url = url, parent = parent, child = child, id = id)
   query = build_query(query = query, filter = filter, limit = limit)
-
-  message("Sending request...\n")
-
   result = get_pages(url = url, token = token, query = query)
 
-  if (add.class)
+  if (all(add.class, !is.null(child), !is.null(parent)))
     for (i in seq_along(result)) {
       result[[i]] = tryCatch(
         expr = add_class(result[[i]], child = child),
@@ -114,74 +104,4 @@ build_query = function(query = NULL, filter = NULL, limit = 1000) {
   query$filter = filter
   query$limit  = limit
   return(query)
-}
-
-#' GET url and return data.frame
-#'
-#' GET url and return data.frame
-#' @param url Url to get
-#' @param token Secure token
-#' @param query Additional url parameters (defaults to NULL)
-#' @importFrom httr GET content config http_status headers http_type http_error user_agent status_code
-#' @importFrom dplyr as.tbl
-#' @importFrom jsonlite fromJSON
-
-get_flat = function(url, token = NULL, query = NULL) {
-
-  # Issue request
-  req  = GET(url = url,
-             config(token = token),
-             query = query,
-             user_agent("https://github.com/jchrom/trelloR"))
-
-  # Print out the complete url
-  message("Request URL:\n", req$url, "\n")
-
-  # Client-side errors should make it crash immediately
-  if (http_error(req) && status_code(req) < 500)
-    stop(http_status(req)$message, " : ", req, call. = FALSE)
-
-  # # Server-side error means we should try couple more times
-  attempts = 1
-  while (http_error(req)) {
-
-    if (status_code(req) >= 500 & attempts < 3) {
-      message(http_status(req)$message,
-              "\n", 3 - attempts, " attempt(s) left")
-      Sys.sleep(1.5)
-      attempts = attempts + 1
-      req  = GET(url = url,
-                 config(token = token),
-                 query = query,
-                 user_agent("https://github.com/jchrom/trelloR"))
-    } else {
-      stop(http_status(req)$message,
-           "; stopping after ", attempts, " attempts")
-    }
-  }
-
-  # Handle response (only JSON is accepted)
-  if (http_type(req) == "application/json") {
-    json = content(req, as = "text")
-    flat = fromJSON(json, flatten = TRUE)
-    flat = tryCatch(
-      expr = as.tbl(flat),
-      error = function(e) {
-        message(e$message)
-        flat
-      }
-    )
-  } else {
-    req_trim = paste0(strtrim(content(req, as = "text"), 50), "...")
-    stop(http_type(req), " is not JSON : \n", req_trim)
-  }
-
-  # If the result is an empty list, convert into NULL
-  if (length(flat) == 0) {
-    flat = NULL
-    message("Response was empty")
-  }
-
-  # Return the result
-  flat
 }
