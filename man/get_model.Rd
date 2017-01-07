@@ -15,7 +15,7 @@ get_model(parent = NULL, child = NULL, id = NULL, token = NULL,
 
 \item{id}{Model ID}
 
-\item{token}{Peviously generated secure token, see \code{\link{trello_get_token}} for how to obtain it}
+\item{token}{Secure token, see \code{\link{trello_get_token}} for how to obtain it}
 
 \item{query}{Key-value pairs which form the query, see \code{\link[httr]{GET}} for details}
 
@@ -23,9 +23,9 @@ get_model(parent = NULL, child = NULL, id = NULL, token = NULL,
 
 \item{filter}{Filter results by this string}
 
-\item{limit}{Defaults to 1000; if reached, paging is suggested}
+\item{limit}{Defaults to \code{1000}; set to \code{0} to get everything}
 
-\item{paging}{Whether paging should be used (defaults to \code{FALSE})}
+\item{paging}{Deprecated, use \code{limit = 0} instead}
 
 \item{bind.rows}{By default, pages will be combined into one \code{data.frame} by \code{\link[dplyr]{bind_rows}}. Set to \code{FALSE} if you want \code{list} instead. This is useful on the rare occasion that the JSON response is not formatted correctly and makes \code{\link[dplyr]{bind_rows}} fail}
 
@@ -39,9 +39,9 @@ If the request fails, server error messages are reprinted on the console.
 
 Only JSON responses are accepted. \code{\link[jsonlite]{fromJSON}} converts them into flat \code{data.frame}s or \code{list}s, while non-JSON type of response throws an error.
 
-When \code{paging = TRUE}, the ID of the earliest result is retrieved from every page and supplied to the next request as the value of the \code{"before"} parameter. Paging will continue until the number of results per page is smaller then 1000, indicating no more pages to get.
+When \code{limit > 1000}, paging is used. The ID of the earliest result is retrieved from every page and supplied to the next request as the value of the \code{"before"} parameter. PAging will stop after reaching the number of results specified by \code{limit}, or when there are no more data to get.
 
-\code{filter} and \code{limit} are query parameters and can be set individually; you could achieve the same result by using \code{query = list(filter = "filter_value", limit = "limit_value")}
+\code{filter} and \code{limit} are query parameters that can be set individually; you could achieve the same result by using \code{query = list(filter = "filter_value", limit = "limit_value")}
 }
 \examples{
 # No authorization is required to access public boards. Let's get
@@ -58,7 +58,7 @@ lists = get_model(parent = "board", child = "lists", id = bid)
 
 # As with boards, cards can be queried for particular resources:
 card1id = cards$id[1]
-card1act = get_card_actions(card1id) # Get all comments
+card1act = get_card_actions(card1id) # Get all actions performed on that card
 
 # To retrieve large results, paging might be necessary:
 
