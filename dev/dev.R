@@ -9,7 +9,9 @@ t = trello_get_token(.key, .secret, "trelloR-dev")
 
 # Tests ----
 
-# 1. Get board ID
+# 1. Get board ID ----
+# ----
+
 # empty = "https://trello.com/b/DOFs1cap/empty-board"
 # av    = "https://trello.com/b/QnY5i1l7/av-asistence"
 # tdr   = "https://trello.com/b/nC8QJJoZ/trello-development-roadmap"
@@ -20,7 +22,9 @@ emi   = "https://trello.com/b/9bSB10VT/emaily"
 # idpub = get_id_board(tdr)
 idpri = get_id_board(emi, t)
 
-# 2. Get cards
+# 2. Get cards ----
+# ----
+
 # cav  = get_board_cards(idav, t, limit = 5)
 # cemp = get_board_cards(idemp, t, limit = 5) # returns NULL
 # cpub = get_board_cards(idpub, limit = 5)
@@ -29,3 +33,14 @@ comi = get_board_comments(idpri, token = t, limit = 200)
 chmi = get_board_checklists(idpri, token = t, filter = "all", limit = 200)
 aemi = get_board_actions(idpri, token = t, filter = "all", limit = 200)
 lemi = get_board_labels(idpri, token = t, filter = "all", limit = 200)
+
+# 3. Trello dev. rodmap ----
+# ----
+
+tdr_u = "https://trello.com/b/nC8QJJoZ/trello-development-roadmap"
+tdr_id = get_id_board(tdr_u)
+tdr_ls = get_board_lists(tdr_id)
+info = tdr_ls$id[tdr_ls$name == "Info"]
+lst_id = "53f4c48a94f780435b611ce9"
+
+get_list
