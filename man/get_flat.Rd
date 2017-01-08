@@ -15,7 +15,7 @@ get_flat(url, token = NULL, query = NULL, retry = 3, wait = 1.5)
 
 \item{retry}{How many tries in case of server-side error}
 
-\item{sleep}{How long to sleep between retries (sec)}
+\item{wait}{How long to sleep between retries (sec)}
 }
 \description{
 GET url and return data.frame

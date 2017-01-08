@@ -5,7 +5,7 @@
 #' @param token Secure token
 #' @param query Additional url parameters (defaults to NULL)
 #' @param retry How many tries in case of server-side error
-#' @param sleep How long to sleep between retries (sec)
+#' @param wait How long to sleep between retries (sec)
 #' @importFrom httr GET content config http_status headers http_type http_error user_agent status_code
 #' @importFrom dplyr as.tbl
 #' @importFrom jsonlite fromJSON
