@@ -56,7 +56,7 @@ Typically, the response will contain multiple columns including model ID, name a
 - call `get_board_cards()` to obtain cards from a particular board
 - call `get_card_members()` to obtain the list of people assigned to a card
 
-Basically, the parent model is always followed by the child model with the `get_` prefix in the beginning. For an overview of the available functions, call `?get_board`, `?get_card`, `?get_team`, `?get_member`, `get_list` or `?get_id`.
+Basically, the parent model is always followed by the child model with the `get_` prefix in the beginning. For an overview of the available functions, call `?get_board`, `?get_card`, `?get_team`, `?get_member`, `?get_list` or `?get_id`.
 
 ###Searching for model ID
 Sometimes you don't know the model ID but you have other information, such as name, description or other text. In such cases, you can call `trello_search()`, which is equivalent to the search field in Trello web app. To limit your search to specific models (e.g. only members), call the appropriately named version of the search function:
