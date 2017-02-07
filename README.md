@@ -3,7 +3,7 @@
 R API for Trello
 ================
 
-[![Build Status](https://travis-ci.org/jchrom/trelloR.svg?branch=master)](https://travis-ci.org/jchrom/trelloR) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/trelloR)](https://cran.r-project.org/package=trelloR)
+[![Build Status](https://travis-ci.org/jchrom/trelloR.svg?branch=master)](https://travis-ci.org/jchrom/trelloR) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/trelloR)](https://cran.r-project.org/package=trelloR) [![Rdoc](http://www.rdocumentation.org/badges/version/trelloR)](http://www.rdocumentation.org/packages/trelloR)
 
 The purpose of `trelloR` is to easily access [Trello API](https://developers.trello.com/) from R. It can retrieve cards, labels, checklists and other data from Trello boards, using functions with predictable names. The following snippet fetches cards from a public board:
 
