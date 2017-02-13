@@ -24,4 +24,3 @@ are not allowed.
 \seealso{
 \code{\link{get_model}}
 }
-

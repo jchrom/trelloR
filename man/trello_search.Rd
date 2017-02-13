@@ -2,9 +2,10 @@
 % Please edit documentation in R/trello_search.R
 \name{trello_search}
 \alias{trello_search}
+\alias{trello_search}
 \alias{trello_search_actions}
-\alias{trello_search_boards}
 \alias{trello_search_cards}
+\alias{trello_search_boards}
 \alias{trello_search_members}
 \alias{trello_search_teams}
 \title{Search models}
@@ -42,4 +43,3 @@ trello_search_cards("A card with this text", my_token)
 \seealso{
 \code{\link{get_model}} \code{\link{trello_get_token}}
 }
-

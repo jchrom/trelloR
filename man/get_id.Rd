@@ -27,4 +27,3 @@ tdr_id = get_id_board(url)
 url    = "nC8QJJoZ"
 tdr_id = get_id_board(url)
 }
-

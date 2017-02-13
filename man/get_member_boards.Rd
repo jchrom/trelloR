@@ -17,4 +17,3 @@ Returns a flat \code{data.frame} with member-related data.
 \seealso{
 \code{\link{get_model}}
 }
-

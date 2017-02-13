@@ -39,4 +39,3 @@ Returns a flat \code{data.frame} with board-related data.
 \seealso{
 \code{\link{get_model}}
 }
-

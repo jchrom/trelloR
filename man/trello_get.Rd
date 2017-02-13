@@ -35,4 +35,3 @@ Deprecated. Use \code{\link{get_model}} instead.
 \seealso{
 \code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}}, \code{\link{trello_get_token}}, \code{\link{get_id}}
 }
-

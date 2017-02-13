@@ -17,4 +17,3 @@ Returns a flat \code{data.frame} with all your boards.
 \seealso{
 \code{\link{get_model}}
 }
-

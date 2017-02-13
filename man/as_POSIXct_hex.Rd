@@ -12,4 +12,3 @@ as_POSIXct_hex(x)
 \description{
 Convert hex string into POSIXct
 }
-

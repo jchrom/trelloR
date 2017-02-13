@@ -7,9 +7,9 @@ vignette: >
   %\VignetteIndexEntry{R API for Trello}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-  ---
+---
   
-  ```{r setup, include = FALSE}
+```{r setup, include = FALSE}
 library(httr)
 knitr::opts_chunk$set(comment = "#>", collapse = TRUE)
 ```

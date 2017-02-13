@@ -20,4 +20,3 @@ get_flat(url, token = NULL, query = NULL, retry = 3, wait = 1.5)
 \description{
 GET url and return data.frame
 }
-

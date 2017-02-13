@@ -78,4 +78,3 @@ all_open_cards = get_board_cards(board_id, token, filter = "open")
 \seealso{
 \code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}}, \code{\link{trello_get_token}}, \code{\link{get_id}}
 }
-

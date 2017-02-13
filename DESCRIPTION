@@ -23,7 +23,7 @@ LazyData: true
 URL: https://github.com/jchrom/trelloR
 BugReports: https://github.com/jchrom/trelloR/issues
 Date: 2016-01-01
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 Suggests: knitr,
     rmarkdown
 VignetteBuilder: knitr

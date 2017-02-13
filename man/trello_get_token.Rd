@@ -35,4 +35,3 @@ token = trello_get_token(key, secret)
 \seealso{
 \code{\link[httr]{oauth_app}}, \code{\link[httr]{oauth_endpoint}}, \code{\link[httr]{oauth1.0_token}}
 }
-

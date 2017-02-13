@@ -2,8 +2,8 @@
 % Please edit documentation in R/get_org.R
 \name{get_team}
 \alias{get_team}
-\alias{get_team_boards}
 \alias{get_team_members}
+\alias{get_team_boards}
 \title{Get Team}
 \usage{
 get_team_members(id, ...)
@@ -24,4 +24,3 @@ Previously, teams were called "organizations", and the correct parent/child name
 \seealso{
 \code{\link{get_model}}
 }
-

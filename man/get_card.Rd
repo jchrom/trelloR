@@ -27,4 +27,3 @@ Returns a flat \code{data.frame} with card-related data.
 \seealso{
 \code{\link{get_model}}
 }
-
