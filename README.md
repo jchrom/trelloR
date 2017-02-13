@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 R API for Trello
-================
+----------------
 
 [![Build Status](https://travis-ci.org/jchrom/trelloR.svg?branch=master)](https://travis-ci.org/jchrom/trelloR) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/trelloR)](https://cran.r-project.org/package=trelloR) [![Rdoc](http://www.rdocumentation.org/badges/version/trelloR)](http://www.rdocumentation.org/packages/trelloR)
 
@@ -15,19 +15,21 @@ cards = get_board_cards(board)
 
 Paging for large requests is automatic. Private boards are accessed with secure token (see [Trello developer keys](https://developers.trello.com/get-started/start-building#connect)).
 
+### Get it from CRAN
+
 Install `trelloR` the usual way:
 
 ``` r
 install.packages("trelloR")
 ```
 
-or get the development version from Github:
+### Or from GitHub
 
 ``` r
 devtools::install_github("jchrom/trelloR")
 ```
 
-For more information, read the vignette.
+For more information, check the [docs](https://jchrom.github.io/trelloR/) or the [vignette](https://jchrom.github.io/trelloR/articles/R_API_for_Trello.html).
 
 **Note.** `trelloR` is built on top of the Hadley Wickham's [httr](https://cran.r-project.org/package=httr) and Jeroen Ooms' [jsonlite](https://cran.r-project.org/package=jsonlite).
 
