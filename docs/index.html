@@ -62,22 +62,29 @@
     
 <div class="contents">
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-<div id="r-api-for-trello" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#r-api-for-trello" class="anchor"> </a>R API for Trello</h1></div>
+<div id="r-api-for-trello" class="section level2">
+<h2 class="hasAnchor">
+<a href="#r-api-for-trello" class="anchor"> </a>R API for Trello</h2>
 
 <p>The purpose of <code>trelloR</code> is to easily access <a href="https://developers.trello.com/">Trello API</a> from R. It can retrieve cards, labels, checklists and other data from Trello boards, using functions with predictable names. The following snippet fetches cards from a public board:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(trelloR)
 board =<span class="st"> </span><span class="kw"><a href="reference/get_id.html">get_id_board</a></span>(<span class="st">"https://trello.com/b/nC8QJJoZ/trello-development-roadmap"</span>)
 cards =<span class="st"> </span><span class="kw"><a href="reference/get_board.html">get_board_cards</a></span>(board)</code></pre></div>
 <p>Paging for large requests is automatic. Private boards are accessed with secure token (see <a href="https://developers.trello.com/get-started/start-building#connect">Trello developer keys</a>).</p>
+<div id="get-it-from-cran" class="section level3">
+<h3 class="hasAnchor">
+<a href="#get-it-from-cran" class="anchor"> </a>Get it from CRAN</h3>
 <p>Install <code>trelloR</code> the usual way:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"trelloR"</span>)</code></pre></div>
-<p>or get the development version from Github:</p>
+</div>
+<div id="or-from-github" class="section level3">
+<h3 class="hasAnchor">
+<a href="#or-from-github" class="anchor"> </a>Or from GitHub</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools::<span class="kw">install_github</span>(<span class="st">"jchrom/trelloR"</span>)</code></pre></div>
-<p>For more information, read the vignette.</p>
+<p>For more information, check the <a href="https://jchrom.github.io/trelloR/">docs</a> or the <a href="https://jchrom.github.io/trelloR/articles/R_API_for_Trello.html">vignette</a>.</p>
 <p><strong>Note.</strong> <code>trelloR</code> is built on top of the Hadley Wickham’s <a href="https://cran.r-project.org/package=httr">httr</a> and Jeroen Ooms’ <a href="https://cran.r-project.org/package=jsonlite">jsonlite</a>.</p>
 <p><strong>Disclaimer:</strong> <code>trelloR</code> is not affiliated, associated, authorized, endorsed by or in any way officially connected to Trello, Inc. (<a href="http://www.trello.com" class="uri">http://www.trello.com</a>).</p>
+</div>
 </div>
 </div>
   </div>
