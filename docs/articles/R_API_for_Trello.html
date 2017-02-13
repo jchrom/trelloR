@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title> • trelloR</title>
+<title>R API for Trello • trelloR</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
@@ -57,39 +57,15 @@
       </header><div class="row">
   <div class="col-md-9">
     <div class="page-header toc-ignore">
-      <h1></h1>
+      <h1>R API for Trello</h1>
+                        <h4 class="author">Jakub Chromec</h4>
             
+            <h4 class="date">2017-02-13</h4>
           </div>
 
     
     
 <div class="contents">
-<table class="table"><tbody>
-<tr class="odd">
-<td>title: “R API for Trello”</td>
-</tr>
-<tr class="even">
-<td>author: “Jakub Chromec”</td>
-</tr>
-<tr class="odd">
-<td>date: “2017-02-13”</td>
-</tr>
-<tr class="even">
-<td>output: rmarkdown::html_vignette</td>
-</tr>
-<tr class="odd">
-<td>vignette: &gt;</td>
-</tr>
-<tr class="even">
-<td>%</td>
-</tr>
-<tr class="odd">
-<td>%</td>
-</tr>
-<tr class="even">
-<td>%</td>
-</tr>
-</tbody></table>
 <p>This document explains how to retrieve data from public and private Trello boards using <code>trelloR</code>.</p>
 <p><em>NOTE. Right now, only GET requests are implemented. Support for POST and PUT may be added in later versions. Accessing the data in private boards requires authorization which you can read about in the <strong>Getting private data</strong> section.</em></p>
 <div id="getting-public-data" class="section level2">
@@ -253,15 +229,15 @@ card_updates =<span class="st"> </span><span class="kw">get_card_updates</span>(
 <span class="co">#&gt; [1] trelloR_0.2.0 httr_1.2.1   </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; loaded via a namespace (and not attached):</span>
-<span class="co">#&gt;  [1] Rcpp_0.12.9          knitr_1.15.1         xml2_1.1.1          </span>
-<span class="co">#&gt;  [4] whisker_0.3-2        magrittr_1.5         roxygen2_6.0.1      </span>
+<span class="co">#&gt;  [1] Rcpp_0.12.9          whisker_0.3-2        knitr_1.15.1        </span>
+<span class="co">#&gt;  [4] xml2_1.1.1           magrittr_1.5         roxygen2_6.0.1      </span>
 <span class="co">#&gt;  [7] devtools_1.12.0.9000 pkgload_0.0.0.9000   R6_2.2.0            </span>
-<span class="co">#&gt; [10] dplyr_0.5.0          stringr_1.1.0        tools_3.3.2         </span>
+<span class="co">#&gt; [10] stringr_1.1.0        dplyr_0.5.0          tools_3.3.2         </span>
 <span class="co">#&gt; [13] pkgbuild_0.0.0.9000  DBI_0.5-1            withr_1.0.2         </span>
 <span class="co">#&gt; [16] htmltools_0.3.5      commonmark_1.1       yaml_2.1.14         </span>
-<span class="co">#&gt; [19] lazyeval_0.2.0       assertthat_0.1       rprojroot_1.2       </span>
-<span class="co">#&gt; [22] digest_0.6.12        tibble_1.2           pkgdown_0.1.0.9000  </span>
-<span class="co">#&gt; [25] crayon_1.3.2         tidyr_0.6.0          purrr_0.2.2         </span>
+<span class="co">#&gt; [19] digest_0.6.12        lazyeval_0.2.0       assertthat_0.1      </span>
+<span class="co">#&gt; [22] rprojroot_1.2        tibble_1.2           pkgdown_0.1.0.9000  </span>
+<span class="co">#&gt; [25] crayon_1.3.2         purrr_0.2.2          tidyr_0.6.0         </span>
 <span class="co">#&gt; [28] curl_2.3             memoise_1.0.0        evaluate_0.10       </span>
 <span class="co">#&gt; [31] rmarkdown_1.3.9002   stringi_1.1.2        desc_1.1.0          </span>
 <span class="co">#&gt; [34] backports_1.0.5      highlight_0.4.7      jsonlite_1.2</span></code></pre></div>
