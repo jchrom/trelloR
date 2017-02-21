@@ -12,7 +12,7 @@
 
 <meta name="author" content="Jakub Chromec" />
 
-<meta name="date" content="2017-02-13" />
+<meta name="date" content="2017-02-16" />
 
 <title>R API for Trello</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">R API for Trello</h1>
 <h4 class="author"><em>Jakub Chromec</em></h4>
-<h4 class="date"><em>2017-02-13</em></h4>
+<h4 class="date"><em>2017-02-16</em></h4>
 
 
 
@@ -82,8 +82,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>To access a particular model, you need to know its unique ID, or the ID of its parent model. In some cases (e.g. with boards or cards), you can use the model URL instead. This is useful because a URL can be found in your browser address bar (unlike ID). You can also obtain model ID by “searching”, which you can read more about later.</p>
 <p>Here is an example how to get the data from <a href="https://trello.com/b/nC8QJJoZ/trello-development-roadmap">Trello Development Roadmap</a>. Since it’s a public board, no authentication is required:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(trelloR)
-<span class="co">#&gt; R API for Trello</span>
-<span class="co">#&gt; Disclaimer: trelloR is not affiliated, associated, authorized, endorsed by or in any way officially connected to Trello, Inc. (www.trello.com).</span>
 url =<span class="st"> &quot;https://trello.com/b/nC8QJJoZ/trello-development-roadmap&quot;</span>
 idb =<span class="st"> </span><span class="kw">get_id_board</span>(<span class="dt">url =</span> url)
 <span class="co">#&gt; Request URL:</span>
@@ -101,7 +99,7 @@ cards =<span class="st"> </span><span class="kw">get_board_cards</span>(idb, <sp
 <span class="co">#&gt; 1       5      0 2016-08-23 20:44:57 2016-10-19 20:42:44</span></code></pre></div>
 <p>…but it is a <code>data.frame</code>, so you can work with it as usual:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(dplyr::<span class="kw">as.tbl</span>(cards))
-<span class="co">#&gt; # A tibble: 5 × 34</span>
+<span class="co">#&gt; # A tibble: 5 x 34</span>
 <span class="co">#&gt;                         id checkItemStates closed         dateLastActivity</span>
 <span class="co">#&gt;                      &lt;chr&gt;           &lt;lgl&gt;  &lt;lgl&gt;                    &lt;chr&gt;</span>
 <span class="co">#&gt; 1 5807bea41ccb24595bcdf08d              NA  FALSE 2016-10-19T18:44:24.210Z</span>
@@ -155,7 +153,7 @@ card_updates =<span class="st"> </span><span class="kw">get_card_updates</span>(
 <h3>Additional arguments for <code>get_model()</code></h3>
 <ul>
 <li><code>token</code> is necessary for accessing private boards (see <strong>Getting private data</strong>); defaults to <code>NULL</code></li>
-<li><code>limit</code> defaults to 1000 results; this is also the maximum number of results for a single request</li>
+<li><code>limit</code> defaults to 1000 results; set to 0 to obtain <em>all</em> results that match the request</li>
 <li><code>query</code> is useful if you need to provide a list of key-value pairs, such as <code>query = list(key1 = &quot;value1&quot;, key2 = &quot;value2&quot;)</code>; these will get appended to the URL request. Setting <code>filter = &quot;updateCard&quot;</code> and <code>limit=10</code> is equivalent to <code>query = list(filter = &quot;updateCard&quot;, limit = 10)</code>; if you need more information about keys and values are available, refer to <a href="https://developers.trello.com/advanced-reference">Trello API reference</a></li>
 <li><code>paging</code> is useful for requests that return more than 1000 results; it breaks the request down into smaller pieces, each of which returns no more than 1000 results. Defaults to <code>FALSE</code>, but if the request returns 1000 results, paging is suggested by a message in the console</li>
 <li><code>bind.rows</code> binds all pages into a single <code>data.frame</code>; defaults to <code>TRUE</code></li>
@@ -171,7 +169,7 @@ card_updates =<span class="st"> </span><span class="kw">get_card_updates</span>(
 </div>
 <div id="error-handling" class="section level3">
 <h3>Error handling</h3>
-<p>If a request fails because of the client-side or server-side error, the error code is reprinted in the console. Additional server messages are also included to make debugging easier. See the example with invalid card ID below:</p>
+<p>If a request fails because of a client-side or server-side error, the error code is reprinted in the console. Additional server messages are also included to make debugging easier. See the example with invalid card ID below:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tryCatch</span>(
     <span class="dt">expr  =</span> <span class="kw">get_card_actions</span>(<span class="dt">id =</span> <span class="st">&quot;I_have_a_bad_feeling_about_this&quot;</span>),
     <span class="dt">error =</span> function(e) <span class="kw">message</span>(e$message)
@@ -200,32 +198,31 @@ card_updates =<span class="st"> </span><span class="kw">get_card_updates</span>(
 <div id="built-with" class="section level5">
 <h5>Built with</h5>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sessionInfo</span>()
-<span class="co">#&gt; R version 3.3.2 (2016-10-31)</span>
-<span class="co">#&gt; Platform: x86_64-pc-linux-gnu (64-bit)</span>
-<span class="co">#&gt; Running under: elementary OS Freya</span>
+<span class="co">#&gt; R version 3.3.1 (2016-06-21)</span>
+<span class="co">#&gt; Platform: x86_64-w64-mingw32/x64 (64-bit)</span>
+<span class="co">#&gt; Running under: Windows 10 x64 (build 14393)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; locale:</span>
-<span class="co">#&gt;  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span>
-<span class="co">#&gt;  [3] LC_TIME=cs_CZ.UTF-8        LC_COLLATE=en_US.UTF-8    </span>
-<span class="co">#&gt;  [5] LC_MONETARY=cs_CZ.UTF-8    LC_MESSAGES=en_US.UTF-8   </span>
-<span class="co">#&gt;  [7] LC_PAPER=cs_CZ.UTF-8       LC_NAME=C                 </span>
-<span class="co">#&gt;  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span>
-<span class="co">#&gt; [11] LC_MEASUREMENT=cs_CZ.UTF-8 LC_IDENTIFICATION=C       </span>
+<span class="co">#&gt; [1] LC_COLLATE=C                         </span>
+<span class="co">#&gt; [2] LC_CTYPE=Czech_Czech Republic.1250   </span>
+<span class="co">#&gt; [3] LC_MONETARY=Czech_Czech Republic.1250</span>
+<span class="co">#&gt; [4] LC_NUMERIC=C                         </span>
+<span class="co">#&gt; [5] LC_TIME=Czech_Czech Republic.1250    </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; attached base packages:</span>
 <span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; other attached packages:</span>
-<span class="co">#&gt; [1] trelloR_0.2.0 httr_1.2.1   </span>
+<span class="co">#&gt; [1] httr_1.2.1    trelloR_0.2.0</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; loaded via a namespace (and not attached):</span>
-<span class="co">#&gt;  [1] Rcpp_0.12.9        tidyr_0.6.0        assertthat_0.1    </span>
-<span class="co">#&gt;  [4] digest_0.6.12      dplyr_0.5.0        rprojroot_1.2     </span>
-<span class="co">#&gt;  [7] R6_2.2.0           jsonlite_1.2       DBI_0.5-1         </span>
-<span class="co">#&gt; [10] backports_1.0.5    magrittr_1.5       evaluate_0.10     </span>
-<span class="co">#&gt; [13] stringi_1.1.2      curl_2.3           rmarkdown_1.3.9002</span>
-<span class="co">#&gt; [16] tools_3.3.2        stringr_1.1.0      yaml_2.1.14       </span>
-<span class="co">#&gt; [19] htmltools_0.3.5    knitr_1.15.1       tibble_1.2</span></code></pre></div>
+<span class="co">#&gt;  [1] Rcpp_0.12.8     roxygen2_5.0.1  tidyr_0.5.1     rprojroot_1.1  </span>
+<span class="co">#&gt;  [5] digest_0.6.10   dplyr_0.5.0     withr_1.0.2     assertthat_0.1 </span>
+<span class="co">#&gt;  [9] R6_2.1.2        backports_1.0.4 jsonlite_1.0    DBI_0.4-1      </span>
+<span class="co">#&gt; [13] magrittr_1.5    evaluate_0.10   stringi_1.1.1   curl_1.1       </span>
+<span class="co">#&gt; [17] rmarkdown_1.3   devtools_1.12.0 tools_3.3.1     stringr_1.0.0  </span>
+<span class="co">#&gt; [21] yaml_2.1.13     htmltools_0.3.5 memoise_1.0.0   knitr_1.15.1   </span>
+<span class="co">#&gt; [25] tibble_1.1</span></code></pre></div>
 </div>
 </div>
 </div>

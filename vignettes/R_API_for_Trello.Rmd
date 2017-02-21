@@ -90,7 +90,7 @@ For a detailed list of all possible queries, consult the [Trello API reference](
 ###Additional arguments for `get_model()`
 
 * `token` is necessary for accessing private boards (see __Getting private data__); defaults to `NULL`
-* `limit` defaults to 1000 results; this is also the maximum number of results for a single request
+* `limit` defaults to 1000 results; set to 0 to obtain *all* results that match the request
 * `query` is useful if you need to provide a list of key-value pairs, such as `query = list(key1 = "value1", key2 = "value2")`; these will get appended to the URL request. Setting `filter = "updateCard"` and `limit=10` is equivalent to `query = list(filter = "updateCard", limit = 10)`; if you need more information about keys and values are available, refer to [Trello API reference](https://developers.trello.com/advanced-reference)
 * `paging` is useful for requests that return more than 1000 results; it breaks the request down into smaller pieces, each of which returns no more than 1000 results. Defaults to `FALSE`, but if the request returns 1000 results, paging is suggested by a message in the console
 * `bind.rows` binds all pages into a single `data.frame`; defaults to `TRUE`
@@ -105,7 +105,7 @@ board_comments = get_model(parent = "board", child = "actions", id = idb,
 ```
 
 ###Error handling
-If a request fails because of the client-side or server-side error, the error code is reprinted in the console. Additional server messages are also included to make debugging easier. See the example with invalid card ID below:
+If a request fails because of a client-side or server-side error, the error code is reprinted in the console. Additional server messages are also included to make debugging easier. See the example with invalid card ID below:
 
 ```{r}
 tryCatch(

@@ -13,23 +13,19 @@ board = get_id_board("https://trello.com/b/nC8QJJoZ/trello-development-roadmap")
 cards = get_board_cards(board)
 ```
 
-Paging for large requests is automatic. Private boards are accessed with secure token (see [Trello developer keys](https://developers.trello.com/get-started/start-building#connect)).
+Paging for large requests is automatic. Private boards are accessed with secure token (see [Trello developer keys](https://developers.trello.com/get-started/start-building#connect)). For more information, check the [docs](https://jchrom.github.io/trelloR/) or the [vignette](https://jchrom.github.io/trelloR/articles/R_API_for_Trello.html).
 
 ### Get it from CRAN
-
-Install `trelloR` the usual way:
 
 ``` r
 install.packages("trelloR")
 ```
 
-### Or from GitHub
+### ...or from GitHub
 
 ``` r
 devtools::install_github("jchrom/trelloR")
 ```
-
-For more information, check the [docs](https://jchrom.github.io/trelloR/) or the [vignette](https://jchrom.github.io/trelloR/articles/R_API_for_Trello.html).
 
 **Note.** `trelloR` is built on top of the Hadley Wickham's [httr](https://cran.r-project.org/package=httr) and Jeroen Ooms' [jsonlite](https://cran.r-project.org/package=jsonlite).
 
