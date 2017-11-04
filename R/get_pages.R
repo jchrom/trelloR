@@ -14,51 +14,75 @@
 
 get_pages = function(url, token, query = NULL) {
 
-  # Prefer user-set limit even-though it may provoke an error
+  # Prefer user-set limit even though it may provoke an error
   if (!is.null(query[["limit"]]))
-    limit = query[["limit"]]
+    user_limit = query[["limit"]]
   else
-    limit = 1000
+    user_limit = 0
 
-  # Make a series of limit values (or throw an error)
-  if (limit < 0)
+  # We could also make limit=0 if negative value is supplied by the user, but
+  # I think error is better
+  if (user_limit < 0)
     stop("'limit' cannot be negative", call. = FALSE)
-  else if (limit > 0)
-    lims = c(rep(1000, trunc(limit/1000)), limit %% 1000)
-  else
-    lims = rep(1000, 10000) #let's say 10,000 iterations for an "endless" loop
+
+  # Let's assume that Trello's API will keep 1000 as the maximum request length
+  if (user_limit > 0) {
+    limit_vec = c(rep(1000, trunc(user_limit/1000)), user_limit %% 1000)
+    limit_vec = limit_vec[limit_vec > 0]
+  } else {
+    limit_vec = 1000 #because user_limit=0 means "keep using highest limit"
+  }
 
   result = list()
 
-  for (lim in lims[lims>0]) {
+  # use [for] when the limit over 1000, use [while] when its < 1000 (incl. 0)
+  if (limit_vec[1] > 0) {
 
-    query[["limit"]] = lim
-    batch = get_flat(url = url, token = token, query = query)
-    result = append(result, list(batch))
+    for (i in seq_along(limit_vec)) {
 
-    if (!is.data.frame(batch))
-      break
+      query[["limit"]] = limit_vec[i]
+      batch = get_flat(url = url, token = token, query = query)
+      result = append(result, list(batch))
 
-    if (nrow(batch) < 1000) {
-      message("Received ", nrow(batch), " results")
-      break
+      if (!is.data.frame(batch))
+        break
+
+      message("Received ", nrow(batch), " results\n")
+      query[["before"]] = min(batch$id)
+
+      if (nrow(batch) < 1000)
+        break
     }
-
-    query[["before"]] = min(batch$id)
-    message("Received 1000 results\n")
-  }
-
-  if (is.data.frame(result[[1]])) {
-    total = ((length(result) - 1) * 1000) + nrow(batch)
-    message("Request complete: ", total," results")
   } else {
-    message("Request complete")
+
+    query[["limit"]] = 1000
+
+    repeat {
+
+      batch = get_flat(url = url, token = token, query = query)
+      result = append(result, list(batch))
+
+      if (!is.data.frame(batch))
+        break
+
+      message("Received ", nrow(batch), " results\n")
+      query[["before"]] = min(batch$id)
+
+      if (nrow(batch) < 1000)
+        break
+
+    }
   }
+
+  # Check result
+  classes = unlist(lapply(result, class))
+  dframes = sum(classes == "data.frame")
+  allrows = sum(unlist(sapply(result, nrow)))
+
+  if (dframes > 0)
+    message("Request complete: ", allrows, " results in ", dframes, " data.frame(s)")
+  else
+    message("Request complete")
+
   result
 }
-
-# url = "https://api.trello.com/1/board/54212b5181d0b59cfbff6de0/cards"
-# d = get_pages(url, token = t, query = list(limit = -5, filter = "all"))
-# d = get_pages(url, token = t, query = list(limit = 5, filter = "all"))
-# d = get_pages(url, token = t, query = list(limit = 1000, filter = "all"))
-# d = get_pages(url, token = t, query = list(limit = 1750, filter = "all"))
