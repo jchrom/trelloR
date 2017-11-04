@@ -43,10 +43,10 @@ get_pages = function(url, token, query = NULL) {
   if (!is.null(query[["limit"]]))
     user_limit = query[["limit"]]
   else
-    user_limit = 1000
+    user_limit = 0
 
-  # We could also make limit=0 if negative value is supplied by the user,
-  # but I think error is better
+  # We could also make limit=0 if negative value is supplied by the user, but
+  # I think error is better
   if (user_limit < 0)
     stop("'limit' cannot be negative", call. = FALSE)
 
@@ -61,11 +61,29 @@ get_pages = function(url, token, query = NULL) {
   result = list()
 
   # use [for] when the limit over 1000, use [while] when its < 1000 (incl. 0)
-  if (length(user_vec) > 1) {
+  if (limit_vec[1] > 0) {
 
-    for (i in seq_along(user_vec)) {
+    for (i in seq_along(limit_vec)) {
 
-      query[["limit"]] = user_vec[i]
+      query[["limit"]] = limit_vec[i]
+      batch = get_flat(url = url, token = token, query = query)
+      result = append(result, list(batch))
+
+      if (!is.data.frame(batch))
+        break
+
+      message("Received ", nrow(batch), " results")
+      query[["before"]] = min(batch$id)
+
+      if (nrow(batch) < 1000)
+        break
+    }
+  } else {
+
+    query[["limit"]] = 1000
+
+    repeat {
+
       batch = get_flat(url = url, token = token, query = query)
       result = append(result, list(batch))
 
@@ -78,26 +96,15 @@ get_pages = function(url, token, query = NULL) {
       if (nrow(batch) < 1000)
         break
 
-    } else {
-
-      query[["limit"]] = limit_vec
-
-      repeat {
-
-        batch = get_flat(url = url, token = token, query = query)
-        result = append(result, list(batch))
-
-        if (!is.data.frame(batch))
-          break
-
-        message("Received ", nrow(batch), " results")
-        query[["before"]] = min(batch$id)
-
-        if (nrow(batch) < 1000)
-          break
-
-      }
     }
   }
+
+  # if (is.data.frame(result[[1]])) {
+  #   total = ((length(result) - 1) * 1000) + nrow(batch)
+  #   message("Request complete: ", total," results")
+  # } else {
+  #   message("Request complete")
+  # }
+  result
 }
 
