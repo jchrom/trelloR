@@ -62,7 +62,7 @@ get_model = function(parent = NULL, child = NULL, id = NULL,
 ) {
 
   if (!missing("paging")) {
-    warning("paging is deprecated - set filter to 0 to fetch all", call. = FALSE)
+    warning("paging is deprecated - set limit to 0 to fetch all", call. = FALSE)
     if (missing(limit) & paging) limit = 0
   }
 
