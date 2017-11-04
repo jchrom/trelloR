@@ -35,7 +35,7 @@ aemi = get_board_actions(idpri, token = t, filter = "all", limit = 200)
 lemi = get_board_labels(idpri, token = t, filter = "all", limit = 200)
 
 # 3. Trello dev. rodmap ----
-# ----
+# --------------------------
 
 tdr_u = "https://trello.com/b/nC8QJJoZ/trello-development-roadmap"
 tdr_id = get_id_board(tdr_u)
@@ -44,3 +44,12 @@ info = tdr_ls$id[tdr_ls$name == "Info"]
 lst_id = "53f4c48a94f780435b611ce9"
 
 get_list
+
+# 4. unit tests ----
+# ------------------
+
+# url = "https://api.trello.com/1/board/54212b5181d0b59cfbff6de0/cards"
+# d = get_pages(url, token = t, query = list(limit = -5, filter = "all"))
+# d = get_pages(url, token = t, query = list(limit = 5, filter = "all"))
+# d = get_pages(url, token = t, query = list(limit = 1000, filter = "all"))
+# d = get_pages(url, token = t, query = list(limit = 1750, filter = "all"))

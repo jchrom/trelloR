@@ -1,16 +1,41 @@
-#' Get Url With Paging
-#'
-#' Issue a GET request for Trello API with automated paging.
-#'
-#' Setting \code{limit = 0} or \code{limit > 1000} will activate paging. In the
-#' former case, all available results will be fetched. Filter values bellow 0
-#' are not allowed.
-#'
-#' @param url Url to get
-#' @param token Peviously generated secure token, see \code{\link{trello_get_token}} for how to obtain it
-#' @param query Key-value pairs which form the query, see \code{\link[httr]{GET}} for details
-#' @seealso \code{\link{get_model}}
-#' @export
+# Playground
+# Cases: a vector with given length
+#        condition
+
+user_vec = c(1000, 1000, 1000, 450)
+user_vec = 0
+user_vec = 250
+
+real_vec = c(1000, 1000, 1000, 1000, 750)
+real_vec = c(1000, 1000, 450)
+real_ind = 1
+
+# There is probably no way around using two kinds of loop...
+
+if (length(user_vec) > 1) {
+
+  for (i in seq_along(user_vec)) {
+    result = real_vec[i]
+    print(paste0(i, " user vector: ", user_vec[i], ", real vector: ", result))
+    if (result < 1000)
+      break
+  }
+
+} else {
+
+  less_1000 = FALSE
+  i = 1
+
+  while (!less_1000) {
+
+    result = real_vec[i]
+    i = i + 1
+    less_1000 = result < 1000
+    print(paste0(i, " user vector: ", user_vec[i], ", real vector: ", result))
+  }
+
+}
+
 
 get_pages = function(url, token, query = NULL) {
 
@@ -47,7 +72,7 @@ get_pages = function(url, token, query = NULL) {
       if (!is.data.frame(batch))
         break
 
-      message("Received ", nrow(batch), " results\n")
+      message("Received ", nrow(batch), " results")
       query[["before"]] = min(batch$id)
 
       if (nrow(batch) < 1000)
@@ -65,7 +90,7 @@ get_pages = function(url, token, query = NULL) {
       if (!is.data.frame(batch))
         break
 
-      message("Received ", nrow(batch), " results\n")
+      message("Received ", nrow(batch), " results")
       query[["before"]] = min(batch$id)
 
       if (nrow(batch) < 1000)
@@ -74,15 +99,12 @@ get_pages = function(url, token, query = NULL) {
     }
   }
 
-  # Check result
-  classes = unlist(lapply(result, class))
-  dframes = sum(classes == "data.frame")
-  allrows = sum(unlist(sapply(result, nrow)))
-
-  if (dframes > 0)
-    message("Request complete: ", allrows, " results in ", dframes, " data.frame(s)")
-  else
-    message("Request complete")
-
+  # if (is.data.frame(result[[1]])) {
+  #   total = ((length(result) - 1) * 1000) + nrow(batch)
+  #   message("Request complete: ", total," results")
+  # } else {
+  #   message("Request complete")
+  # }
   result
 }
+
