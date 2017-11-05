@@ -30,7 +30,7 @@ get_pages = function(url, token, query = NULL) {
     limit_vec = c(rep(1000, trunc(user_limit/1000)), user_limit %% 1000)
     limit_vec = limit_vec[limit_vec > 0]
   } else {
-    limit_vec = 1000 #because user_limit=0 means "keep using highest limit"
+    limit_vec = 0 #because user_limit=0 means "keep using highest limit"
   }
 
   result = list()
@@ -53,6 +53,7 @@ get_pages = function(url, token, query = NULL) {
       if (nrow(batch) < 1000)
         break
     }
+
   } else {
 
     query[["limit"]] = 1000
@@ -80,7 +81,7 @@ get_pages = function(url, token, query = NULL) {
   allrows = sum(unlist(sapply(result, nrow)))
 
   if (dframes > 0)
-    message("Request complete: ", allrows, " results in ", dframes, " data.frame(s)")
+    message("Request complete: ", allrows, " results")
   else
     message("Request complete")
 
