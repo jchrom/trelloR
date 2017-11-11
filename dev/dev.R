@@ -6,6 +6,7 @@ library(trelloR)
 # Get token
 source(file.choose())
 t = trello_get_token(.key, .secret, "trelloR-dev")
+t = get_token(.key, .secret, "trelloR-dev", "read,write")
 
 # Tests ----
 
