@@ -5,8 +5,12 @@ library(trelloR)
 
 # Get token
 source(file.choose())
-t = trello_get_token(.key, .secret, "trelloR-dev")
-t = get_token(.key, .secret, "trelloR-dev", "read,write")
+t = trello_get_token(.key, .secret, "deprecated")
+t = get_token(
+  key = .key, secret = .secret,
+  appname = "trelloR-dev",
+  scope = "read,write",
+  expiration = "never")
 
 # Tests ----
 
