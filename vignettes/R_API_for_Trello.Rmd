@@ -91,8 +91,8 @@ For a detailed list of all possible queries, consult the [Trello API reference](
 
 * `token` is necessary for accessing private boards (see __Getting private data__); defaults to `NULL`
 * `limit` defaults to 1000 results; set to 0 to obtain *all* results that match the request
-* `query` is useful if you need to provide a list of key-value pairs, such as `query = list(key1 = "value1", key2 = "value2")`; these will get appended to the URL request. Setting `filter = "updateCard"` and `limit=10` is equivalent to `query = list(filter = "updateCard", limit = 10)`; if you need more information about keys and values are available, refer to [Trello API reference](https://developers.trello.com/advanced-reference)
-* `paging` is useful for requests that return more than 1000 results; it breaks the request down into smaller pieces, each of which returns no more than 1000 results. Defaults to `FALSE`, but if the request returns 1000 results, paging is suggested by a message in the console
+* `query` is useful if you need to provide a list of key-value pairs, such as `query = list(key1 = "value1", key2 = "value2")`; these will get appended to the URL request. Setting `filter = "updateCard"` and `limit=10` is equivalent to `query = list(filter = "updateCard", limit = 10)`; if you need more information about query parameters, see [Trello API reference](https://developers.trello.com/advanced-reference)
+* `paging` is deprecated - use `limit` instead
 * `bind.rows` binds all pages into a single `data.frame`; defaults to `TRUE`
 
 If `bind.rows = FALSE`, the result will be a `list` with as many elements as there are pages. This is also a fallback option for the rare occasion when the responses are not perfectly formatted and make `dplyr::bind_rows` fail.
@@ -121,15 +121,19 @@ Getting private data
 
 Access to private boards requires authorization. This is done by registering an "app" that uses a secure token to communicate with the Trello API. Supplying the token to data-fetching functions will allow you to retrieve data from private boards under the condition that the user who authorized the app has the right to access them.
 
-To create a token, **login** to Trello and visit the [Developer Start Page](https://developers.trello.com/get-started/start-building#connect). There you can get your developer credentials, i.e. your "key" and "secret". Then, call the `trello_get_token()` function to create a token for your project. This will also trigger first-time authorization in the browser (you only have to do it once):
+To create a token, **login** to Trello and visit the [Developer Start Page](https://developers.trello.com/get-started/start-building#connect). There you can get your developer credentials, i.e. your "key" and "secret". Then, call the `get_token()` function to create a token for your project. This will also trigger first-time authorization in the browser (you only have to do it once):
 
 ```r
-my_token = trello_get_token(your_key, your_secret)
+my_token = get_token(key = your_key, secret = your_secret)
 ```
 
-You will also be offered an option to store the authentication data in your working directory, in a hidden `'.httr-oauth'` file.
+You will also be offered an option to store the authentication data in your working directory, in a hidden `'.httr-oauth'` file. Make sure you keep it in a **safe, non-shared** location.
 
-**NOTE.** Make sure you keep your credentials in a **safe, non-shared** location.
+Other arguments to `get_token()` include:
+
+* `appname` is used by R to store and manage your authenticated app; it is also appended to the authorization request, so you will see your app in the list of connected apps on the settings page in Trello (where you can manually disconnect it before it expires)
+* `scope` defaults to `"read"`, but you can add `"write"` and `"account"` permission too
+* `expiration` defaults to 30 days, but you can increase it to `"never"` or decrease to `"1day"` or `"1hour"`
 
 ###Using the token to retrieve private data
 

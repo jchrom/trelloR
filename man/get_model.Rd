@@ -15,7 +15,7 @@ get_model(parent = NULL, child = NULL, id = NULL, token = NULL,
 
 \item{id}{Model ID}
 
-\item{token}{Secure token, see \code{\link{trello_get_token}} for how to obtain it}
+\item{token}{Secure token, see \code{\link{get_token}} for how to obtain it}
 
 \item{query}{Key-value pairs which form the query, see \code{\link[httr]{GET}} for details}
 
@@ -76,5 +76,5 @@ all_open_cards = get_board_cards(board_id, token, filter = "open")
 }
 }
 \seealso{
-\code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}}, \code{\link{trello_get_token}}, \code{\link{get_id}}
+\code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}}, \code{\link{get_token}}, \code{\link{get_id}}
 }
