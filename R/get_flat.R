@@ -2,7 +2,7 @@
 #'
 #' GET url and return data.frame
 #' @param url Url to get
-#' @param token Secure token
+#' @param token Secure token, see \code{\link{get_token}} for how to obtain it
 #' @param query Additional url parameters (defaults to NULL)
 #' @param retry How many tries in case of server-side error
 #' @param wait How long to sleep between retries (sec)

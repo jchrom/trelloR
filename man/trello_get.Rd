@@ -15,7 +15,7 @@ trello_get(parent = NULL, child = NULL, id = NULL, token = NULL,
 
 \item{id}{Model ID}
 
-\item{token}{Peviously generated secure token, see \code{\link{trello_get_token}} for how to obtain it}
+\item{token}{Peviously generated secure token, see \code{\link{get_token}} for how to obtain it}
 
 \item{query}{key-value pairs which form the query, see \code{\link[httr]{GET}} for details}
 
@@ -33,5 +33,5 @@ trello_get(parent = NULL, child = NULL, id = NULL, token = NULL,
 Deprecated. Use \code{\link{get_model}} instead.
 }
 \seealso{
-\code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}}, \code{\link{trello_get_token}}, \code{\link{get_id}}
+\code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}}, \code{\link{get_token}}, \code{\link{get_id}}
 }

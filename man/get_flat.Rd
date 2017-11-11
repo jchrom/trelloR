@@ -9,7 +9,7 @@ get_flat(url, token = NULL, query = NULL, retry = 3, wait = 1.5)
 \arguments{
 \item{url}{Url to get}
 
-\item{token}{Secure token}
+\item{token}{Secure token, see \code{\link{get_token}} for how to obtain it}
 
 \item{query}{Additional url parameters (defaults to NULL)}
 

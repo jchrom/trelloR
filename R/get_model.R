@@ -12,7 +12,7 @@
 #' @param parent Parent structure (e.g. \code{"board"})
 #' @param child Child structure (e.g. \code{"card"})
 #' @param id Model ID
-#' @param token Secure token, see \code{\link{trello_get_token}} for how to obtain it
+#' @param token Secure token, see \code{\link{get_token}} for how to obtain it
 #' @param query Key-value pairs which form the query, see \code{\link[httr]{GET}} for details
 #' @param url Url for the GET request, use instead of specifying \code{parent}, \code{id} and \code{child}; see \code{\link[httr]{GET}} for details
 #' @param filter Filter results by this string
@@ -20,7 +20,7 @@
 #' @param paging Deprecated, use \code{limit = 0} instead
 #' @param bind.rows By default, pages will be combined into one \code{data.frame} by \code{\link[dplyr]{bind_rows}}. Set to \code{FALSE} if you want \code{list} instead. This is useful on the rare occasion that the JSON response is not formatted correctly and makes \code{\link[dplyr]{bind_rows}} fail
 #' @param add.class Assign additional S3 class (defaults to \code{TRUE})
-#' @seealso \code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}}, \code{\link{trello_get_token}}, \code{\link{get_id}}
+#' @seealso \code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}}, \code{\link{get_token}}, \code{\link{get_id}}
 #' @importFrom dplyr bind_rows as_data_frame
 #' @export
 #' @examples
