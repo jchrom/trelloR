@@ -36,7 +36,8 @@ get_token = function(key, secret, appname = "trello-app", scope = "read",
 
   url.params = paste0(
     "?scope=", paste(scope, collapse = ","),
-    "&expiration=", expiration
+    "&expiration=", expiration,
+    "&name=", appname
     )
 
   trello.app = oauth_app(
