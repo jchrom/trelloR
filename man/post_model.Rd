@@ -5,7 +5,7 @@
 \title{POST data to Trello API}
 \usage{
 post_model(model, id = NULL, path = NULL, body = list(name = "New Card"),
-  token, verbose = FALSE, ...)
+  token, verbose = FALSE, response = "content", on.error = "warning", ...)
 }
 \arguments{
 \item{model}{Model}
@@ -18,7 +18,11 @@ post_model(model, id = NULL, path = NULL, body = list(name = "New Card"),
 
 \item{token}{Secure token, see \code{\link{get_token}} (scope must include write permissions)}
 
-\item{verbose}{Wether to pass \code{verbose()} to \code{\link[httr]{POST}}}
+\item{verbose}{Whether to pass \code{verbose()} to \code{\link[httr]{POST}}}
+
+\item{response}{Can return \code{"content"} (default), \code{"headers"} or the complete \code{"response"}}
+
+\item{on.error}{Issues either \code{\link[base]{warning}} (default), \code{\link[base]{message}} or \code{\link[base]{stop}}s}
 
 \item{...}{Additional arguments passed to \code{\link[httr]{POST}}}
 }

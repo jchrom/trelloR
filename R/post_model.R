@@ -9,14 +9,17 @@
 #' @param path Path
 #' @param body A named list of query paramters (will be passed as body)
 #' @param token Secure token, see \code{\link{get_token}} (scope must include write permissions)
-#' @param verbose Wether to pass \code{verbose()} to \code{\link[httr]{POST}}
+#' @param verbose Whether to pass \code{verbose()} to \code{\link[httr]{POST}}
+#' @param response Can return \code{"content"} (default), \code{"headers"} or the complete \code{"response"}
+#' @param on.error Issues either \code{\link[base]{warning}} (default), \code{\link[base]{message}} or \code{\link[base]{stop}}s
 #' @param ... Additional arguments passed to \code{\link[httr]{POST}}
-#' @importFrom httr modify_url POST
+#' @importFrom httr modify_url POST content status_code headers message_for_status warn_for_status stop_for_status
 #' @export
 
 post_model = function(model, id = NULL, path = NULL,
                       body = list(name = "New Card"), token,
-                      verbose = FALSE, ...) {
+                      verbose = FALSE, response = "content",
+                      on.error = "warning", ...) {
 
   url = modify_url(
     url = "https://api.trello.com",
@@ -24,12 +27,27 @@ post_model = function(model, id = NULL, path = NULL,
   )
 
   if (verbose)
-    POST(
+    req = POST(
       url = url, body = body, config = config(token = token),
       verbose(),
       ...)
   else
-    POST(
+    req = POST(
       url = url, body = body, config = config(token = token),
       ...)
+
+  switch(
+    on.error,
+    message = message_for_status(req),
+    error = stop_for_status(req),
+    warn_for_status(req)
+  )
+
+  switch(
+    response,
+    content = content(req),
+    headers = headers(req),
+    status = status_code(req),
+    req
+  )
 }
