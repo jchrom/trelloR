@@ -20,9 +20,9 @@ post_model(model, id = NULL, path = NULL, body = list(name = "New Card"),
 
 \item{verbose}{Whether to pass \code{verbose()} to \code{\link[httr]{POST}}}
 
-\item{response}{Can return \code{"content"} (default), \code{"headers"} or the complete \code{"response"}}
+\item{response}{Can return \code{"content"} (default), \code{"headers"}, \code{"status"} code or the complete \code{"response"}}
 
-\item{on.error}{Issues either \code{\link[base]{warning}} (default), \code{\link[base]{message}} or \code{\link[base]{stop}}s}
+\item{on.error}{Issues either \code{\link[base]{warning}} (default), \code{\link[base]{message}} or error (and \code{\link[base]{stop}}s)}
 
 \item{...}{Additional arguments passed to \code{\link[httr]{POST}}}
 }
