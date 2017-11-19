@@ -3,7 +3,7 @@
 #' Issues \code{\link[httr]{PUT}} requests for Trello API endpoints.
 #'
 #' See \href{https://developers.trello.com/v1.0/reference}{Trello API reference}
-#' for more info about what arguments can be passed to post models.
+#' for more info about what arguments can be passed to PUT requests.
 #' @param model Model
 #' @param id Model id
 #' @param path Path

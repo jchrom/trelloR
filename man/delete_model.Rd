@@ -29,5 +29,5 @@ Issues \code{\link[httr]{DELETE}} requests for Trello API endpoints.
 }
 \details{
 See \href{https://developers.trello.com/v1.0/reference}{Trello API reference}
-for more info about what arguments can be passed to delete models.
+for more info about what arguments can be passed to DELETE requests.
 }
