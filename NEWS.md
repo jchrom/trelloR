@@ -1,19 +1,18 @@
-# trelloR 0.2.0
-
-* Added a `NEWS.md` file to track changes to the package.
+# trelloR 0.3.0
 
 **New features**
 
-* you can now specify values for `limit` larger than 1000
-* added S3 classes for results
-* some classes (`cards_df`, `actions_df`, `labels_df`, `checklists_df`) now pretty-print on the console
+* you can now get a token with write and account permissions
+* and you can specify its expiration (incl. never for never expiring tokens)
+* you can now issue POST requests to add cards, comments, members to cards etc.
+* you can use the add_ family of functions, which are wrappers for post_model()
 
-**Deprecated arguments**
+** Deprecated functions **
 
-* `paging` has been deprecated, use `filter = 0` instead
+* trello_get_token() has been deprecated, use get_token() instead
+* trello_get_model() has been deprecated, use get_model() instead
 
-**Bugfixes**
+** Other stuff**
 
-* `before` parameter is now set correctly (preventing duplicates in results)
-* all messages can now be suppressed (replaced `cat` with `message` everywhere)
-
+* greater reliance on httr - eg. when building URLs or convert status codes to messages/warnings/errors in R (this is true only for the newly added code, but in time I will rewrite the older code too)
+* updated vignette
