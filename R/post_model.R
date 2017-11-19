@@ -13,7 +13,7 @@
 #' @param response Can return \code{"content"} (default), \code{"headers"}, \code{"status"} code or the complete \code{"response"}
 #' @param on.error Issues either \code{\link[base]{warning}} (default), \code{\link[base]{message}} or error (and \code{\link[base]{stop}}s)
 #' @param ... Additional arguments passed to \code{\link[httr]{POST}}
-#' @importFrom httr modify_url POST content status_code headers message_for_status warn_for_status stop_for_status
+#' @importFrom httr modify_url POST content status_code headers message_for_status warn_for_status stop_for_status verbose
 #' @export
 
 post_model = function(model, id = NULL, path = NULL,
