@@ -25,6 +25,16 @@ put_model = function(model, id = NULL, path = NULL, body = NULL, token,
     path = c(1, paste0(model, "s"), id, path)
   )
 
+  message(
+    "Request URL:\n", url, "\n"
+  )
+
+  message(
+    "Request body: ",
+    paste(names(body), collapse = ", "),
+    "\n"
+  )
+
   if (verbose)
     req = PUT(
       url = url, body = body, config = config(token = token), encode = "json",
@@ -41,6 +51,9 @@ put_model = function(model, id = NULL, path = NULL, body = NULL, token,
     error = stop_for_status(req),
     warn_for_status(req)
   )
+
+  if (!on.error == "message" && !status_code(req) >= 300)
+    message_for_status(req)
 
   switch(
     response,
