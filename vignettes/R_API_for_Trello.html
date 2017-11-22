@@ -139,7 +139,7 @@ cards =<span class="st"> </span><span class="kw">get_board_cards</span>(idb, <sp
 </div>
 <div id="custom-requests-with-get_model" class="section level3">
 <h3>Custom requests with <code>get_model()</code></h3>
-<p>Most of the functions in this package are wrappers for <code>get_model()</code>. You can call it directly if you lack a particular data-fetching option, or you can define a new function by wrapping <code>get_model()</code> and providing some default values.</p>
+<p>All the <code>get_</code> functions in this package are wrappers for <code>get_model()</code>. You can call it directly if you lack a particular data-fetching option, or you can define a new function by wrapping <code>get_model()</code> and providing some default values.</p>
 <p>The following example creates a function that fetches all updates made in a given card (it uses a filter because updates are a type of action, and there’s no need to retrieve <em>all</em> actions):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">get_card_updates =<span class="st"> </span><span class="cf">function</span>(id, ...) {
     <span class="kw">get_model</span>(<span class="dt">parent =</span> <span class="st">&quot;card&quot;</span>, <span class="dt">child  =</span> <span class="st">&quot;actions&quot;</span>, <span class="dt">id =</span> id, <span class="dt">filter =</span> <span class="st">&quot;updateCard&quot;</span>, ...)
@@ -204,7 +204,7 @@ card_updates =<span class="st"> </span><span class="kw">get_card_updates</span>(
 </div>
 <div id="write-access" class="section level2">
 <h2>Write access</h2>
-<p>The write access token (see the previous section) allows for adding, updating and deleting models. This is achieved by POST, PUT and DELETE http requests. Recursion for these requests is not implemented, so you can only process one model at a time.</p>
+<p>The write access token allows for adding, updating and deleting models. This is achieved by POST, PUT and DELETE http requests. Recursion for these requests is not implemented, so you can only process one model at a time.</p>
 <div id="adding-models" class="section level3">
 <h3>Adding models</h3>
 <p>The <code>post_model()</code> function allows you to create new models. At the very least, you have to specify a <code>model</code> (eg. “card”), its <code>id</code> and a <code>token</code> with permissions to write. To further specify the model to be added, you may have to use the <code>path</code> argument. The actual content of the new model (such as <em>name</em>, <em>decription</em> or <em>labels</em> in the case of a new card) has to be passed as a named list to the <code>body</code> argument.</p>
@@ -218,7 +218,7 @@ new_card = post_model(model = &quot;card&quot;, body = payload, token = token)</
 <p>Consult the <a href="https://developers.trello.com/v1.0/reference">Trello API reference</a> for element names. Some of the most frequently used POST requests have been implemented as wrappers for this function. Use <code>add_board()</code>, <code>add_card()</code>, <code>add_checklist()</code>, <code>add_comment()</code>, <code>add_label()</code> and <code>add_list()</code> to create these models in Trello.</p>
 <p>Additional arguments to <code>post_model()</code> include:</p>
 <ul>
-<li><code>verbose</code>, which if set to <code>TRUE</code> provides verbose output for POST requests (as opposed to the default message which only includes request URL and a status code). This is implemented by callin <code>httr::verbose()</code></li>
+<li><code>verbose</code>, which if set to <code>TRUE</code> provides verbose output for POST requests (as opposed to the default message which only includes request URL and a status code); this is implemented by calling <code>httr::verbose()</code></li>
 <li><code>reponse</code>, which specifies the type of response returned; it defaults to <code>&quot;content&quot;</code> (a named list containing the content of the newly created model), <code>&quot;status_code&quot;</code>, <code>&quot;headers&quot;</code> or a complete response, as returned by <code>httr::POST</code>.</li>
 <li><code>on.error</code>, which specifies what to do when the requests results in an error: issue a message, a warning or stop</li>
 <li><code>...</code> to pass additional arguments to <code>httr::POST</code></li>

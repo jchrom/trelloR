@@ -146,7 +146,7 @@ my_boards = get_my_boards(my_token)
 Write access
 ------------
 
-The write access token (see the previous section) allows for adding, updating and deleting models. This is achieved by POST, PUT and DELETE http requests. Recursion for these requests is not implemented, so you can only process one model at a time.
+The write access token allows for adding, updating and deleting models. This is achieved by POST, PUT and DELETE http requests. Recursion for these requests is not implemented, so you can only process one model at a time.
 
 ###Adding models
 
@@ -166,7 +166,7 @@ Consult the [Trello API reference](https://developers.trello.com/v1.0/reference)
 
 Additional arguments to `post_model()` include:
 
-* `verbose`, which if set to `TRUE` provides verbose output for POST requests (as opposed to the default message which only includes request URL and a status code). This is implemented by calling `httr::verbose()`
+* `verbose`, which if set to `TRUE` provides verbose output for POST requests (as opposed to the default message which only includes request URL and a status code); this is implemented by calling `httr::verbose()`
 * `reponse`, which specifies the type of response returned; it defaults to `"content"` (a named list containing the content of the newly created model), `"status_code"`, `"headers"` or a complete response, as returned by `httr::POST`.
 * `on.error`, which specifies what to do when the requests results in an error: issue a message, a warning or stop
 * `...` to pass additional arguments to `httr::POST`
