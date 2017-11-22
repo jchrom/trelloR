@@ -13,15 +13,15 @@ board = get_id_board("https://trello.com/b/nC8QJJoZ/trello-development-roadmap")
 cards = get_board_cards(board)
 ```
 
-Paging for large requests is automatic. Private boards are accessed with secure token (see [Trello developer keys](https://developers.trello.com/get-started/start-building#connect)). For more information, check the [docs](https://jchrom.github.io/trelloR/) or the [vignette](https://jchrom.github.io/trelloR/articles/R_API_for_Trello.html).
+Support for PUT, POST and DELETE requests is also implemented. Private boards are accessed with secure token (see [Trello developer keys](https://developers.trello.com/get-started/start-building#connect)). For more information, check the [docs](https://jchrom.github.io/trelloR/) or the [vignette](https://jchrom.github.io/trelloR/articles/R_API_for_Trello.html).
 
-### Get it from CRAN
+### Get it from CRAN (version 0.1)
 
 ``` r
 install.packages("trelloR")
 ```
 
-### ...or from GitHub
+### ...or from GitHub (current)
 
 ``` r
 devtools::install_github("jchrom/trelloR")

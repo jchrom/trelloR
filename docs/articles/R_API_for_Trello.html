@@ -9,7 +9,7 @@
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><!-- mathjax --><script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
@@ -29,10 +29,25 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="../articles/R_API_for_Trello.html">R API for Trello</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -60,21 +75,23 @@
       <h1>R API for Trello</h1>
                         <h4 class="author">Jakub Chromec</h4>
             
-            <h4 class="date">2017-02-13</h4>
+            <h4 class="date">2017-11-22</h4>
           </div>
 
     
     
 <div class="contents">
-<p>This document explains how to retrieve data from public and private Trello boards using <code>trelloR</code>.</p>
-<p><em>NOTE. Right now, only GET requests are implemented. Support for POST and PUT may be added in later versions. Accessing the data in private boards requires authorization which you can read about in the <strong>Getting private data</strong> section.</em></p>
+<p>This document explains how to use <code>trelloR</code> to add, update, remove or retrieve data from Trello via Trello API.</p>
+<p><em>NOTE. Accessing the data in private boards requires authorization which you can read about in the <strong>Accessing private data</strong> section.</em></p>
 <div id="getting-public-data" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#getting-public-data" class="anchor"> </a></body></html>Getting public data</h2>
+<a href="#getting-public-data" class="anchor"></a>Getting public data</h2>
 <p>The basic building block of the Trello workflow is a <strong>Board</strong>. It encapsulates a hierarchy of “models”, i.e. <strong>Members, Teams, Lists, Cards, Labels, Checklists</strong> and <strong>Actions</strong>. Each model has a parent model (e.g. a board is a parent model for cards on it) and child models (a card can include comments as child models). The models can be accessed recursively. This means that you can obtain the actions from all cards by addressing the whole board without going through specific cards one by one.</p>
 <p>To access a particular model, you need to know its unique ID, or the ID of its parent model. In some cases (e.g. with boards or cards), you can use the model URL instead. This is useful because a URL can be found in your browser address bar (unlike ID). You can also obtain model ID by “searching”, which you can read more about later.</p>
 <p>Here is an example how to get the data from <a href="https://trello.com/b/nC8QJJoZ/trello-development-roadmap">Trello Development Roadmap</a>. Since it’s a public board, no authentication is required:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(trelloR)
+<span class="co">#&gt; R API for Trello</span>
+<span class="co">#&gt; Disclaimer: trelloR is not affiliated, associated, authorized, endorsed by or in any way officially connected to Trello, Inc. (www.trello.com).</span>
 url =<span class="st"> "https://trello.com/b/nC8QJJoZ/trello-development-roadmap"</span>
 idb =<span class="st"> </span><span class="kw"><a href="../reference/get_id.html">get_id_board</a></span>(<span class="dt">url =</span> url)
 <span class="co">#&gt; Request URL:</span>
@@ -89,31 +106,33 @@ cards =<span class="st"> </span><span class="kw"><a href="../reference/get_board
 <p>If there are no complaints from the server, a JSON response is received and converted into a <code>data.frame</code>. It will pretty-print like this:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cards
 <span class="co">#&gt;   n_cards closed              oldest              newest</span>
-<span class="co">#&gt; 1       5      0 2016-08-23 20:44:57 2016-10-19 20:42:44</span></code></pre></div>
+<span class="co">#&gt; 1       5      0 2017-09-12 19:08:19 2017-09-18 22:02:14</span></code></pre></div>
 <p>…but it is a <code>data.frame</code>, so you can work with it as usual:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(dplyr::<span class="kw">as.tbl</span>(cards))
-<span class="co">#&gt; # A tibble: 5 × 34</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/tbl.html">as.tbl</a></span>(cards))
+<span class="co">#&gt; # A tibble: 5 x 36</span>
 <span class="co">#&gt;                         id checkItemStates closed         dateLastActivity</span>
 <span class="co">#&gt;                      &lt;chr&gt;           &lt;lgl&gt;  &lt;lgl&gt;                    &lt;chr&gt;</span>
-<span class="co">#&gt; 1 5807bea41ccb24595bcdf08d              NA  FALSE 2016-10-19T18:44:24.210Z</span>
-<span class="co">#&gt; 2 57bc9cdff5ceb056e765b915              NA  FALSE 2016-10-18T13:47:05.470Z</span>
-<span class="co">#&gt; 3 57ebf70a276f6acb6a0c007a              NA  FALSE 2016-09-28T17:00:49.343Z</span>
-<span class="co">#&gt; 4 57bc99a9f265c7c5f76ca4dc              NA  FALSE 2016-08-23T18:51:10.636Z</span>
-<span class="co">#&gt; 5 57bc9a601c9a74dc1d63cdf4              NA  FALSE 2016-08-23T18:51:04.104Z</span>
-<span class="co">#&gt; # ... with 30 more variables: desc &lt;chr&gt;, idBoard &lt;chr&gt;, idList &lt;chr&gt;,</span>
+<span class="co">#&gt; 1 59c03456e1ea9ffc086f1ca3              NA  FALSE 2017-09-18T21:05:25.991Z</span>
+<span class="co">#&gt; 2 59b822937bb6d5653997fe04              NA  FALSE 2017-09-12T18:26:23.306Z</span>
+<span class="co">#&gt; 3 59b824f490a560fd9b877e5a              NA  FALSE 2017-09-12T18:26:27.180Z</span>
+<span class="co">#&gt; 4 59b8237c9e2de7f608eb67fa              NA  FALSE 2017-09-12T18:26:30.566Z</span>
+<span class="co">#&gt; 5 59b823d9a04109178295ec39              NA  FALSE 2017-09-12T18:26:34.893Z</span>
+<span class="co">#&gt; # ... with 32 more variables: desc &lt;chr&gt;, idBoard &lt;chr&gt;, idList &lt;chr&gt;,</span>
 <span class="co">#&gt; #   idMembersVoted &lt;list&gt;, idShort &lt;int&gt;, idAttachmentCover &lt;chr&gt;,</span>
-<span class="co">#&gt; #   manualCoverAttachment &lt;lgl&gt;, idLabels &lt;list&gt;, name &lt;chr&gt;, pos &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   idLabels &lt;list&gt;, manualCoverAttachment &lt;lgl&gt;, name &lt;chr&gt;, pos &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   shortLink &lt;chr&gt;, dueComplete &lt;lgl&gt;, due &lt;lgl&gt;, idChecklists &lt;list&gt;,</span>
 <span class="co">#&gt; #   idMembers &lt;list&gt;, labels &lt;list&gt;, shortUrl &lt;chr&gt;, subscribed &lt;lgl&gt;,</span>
 <span class="co">#&gt; #   url &lt;chr&gt;, badges.votes &lt;int&gt;, badges.viewingMemberVoted &lt;lgl&gt;,</span>
 <span class="co">#&gt; #   badges.subscribed &lt;lgl&gt;, badges.fogbugz &lt;chr&gt;,</span>
 <span class="co">#&gt; #   badges.checkItems &lt;int&gt;, badges.checkItemsChecked &lt;int&gt;,</span>
 <span class="co">#&gt; #   badges.comments &lt;int&gt;, badges.attachments &lt;int&gt;,</span>
-<span class="co">#&gt; #   badges.description &lt;lgl&gt;, badges.due &lt;lgl&gt;, badges.dueComplete &lt;lgl&gt;</span></code></pre></div>
+<span class="co">#&gt; #   badges.description &lt;lgl&gt;, badges.due &lt;lgl&gt;, badges.dueComplete &lt;lgl&gt;,</span>
+<span class="co">#&gt; #   badges.attachmentsByType.trello.board &lt;int&gt;,</span>
+<span class="co">#&gt; #   badges.attachmentsByType.trello.card &lt;int&gt;</span></code></pre></div>
 <p>Typically, the response will contain multiple columns including model ID, name and other data, such as attachments or preferences. Because the ID of child elements is included in the response, you can use it to work your way down the hierarchy until you reach the desired model.</p>
 <div id="fetching-specific-models" class="section level3">
 <h3 class="hasAnchor">
-<html><body><a href="#fetching-specific-models" class="anchor"> </a></body></html>Fetching specific models</h3>
+<a href="#fetching-specific-models" class="anchor"></a>Fetching specific models</h3>
 <p><code>trelloR</code> includes a number of data-fetching functions each of which targets one single model. This puts certain limits on what you can ask for; on the other hand, it eliminates most of the effort (and makes the code easier to read). It also means that the functions can have predictable names which are easy to guess. For example:</p>
 <ul>
 <li>call <code><a href="../reference/get_board.html">get_board_cards()</a></code> to obtain cards from a particular board</li>
@@ -123,49 +142,49 @@ cards =<span class="st"> </span><span class="kw"><a href="../reference/get_board
 </div>
 <div id="searching-for-model-id" class="section level3">
 <h3 class="hasAnchor">
-<html><body><a href="#searching-for-model-id" class="anchor"> </a></body></html>Searching for model ID</h3>
-<p>Sometimes you don’t know the model ID but you have other information, such as name, description or other text. In such cases, you can call <code><a href="../reference/trello_search.html">trello_search()</a></code>, which is equivalent to the search field in Trello web app. To limit your search to specific models (e.g. only members), call the appropriately named version of the search function:</p>
+<a href="#searching-for-model-id" class="anchor"></a>Searching for model ID</h3>
+<p>Sometimes you don’t know the model ID but you have other information, such as name, description or other text. In such cases, you can call <code>trello_search()</code>, which is equivalent to the search field in Trello web app. To limit your search to specific models (e.g. only members), call the appropriately named version of the search function:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">captain =<span class="st"> </span><span class="kw"><a href="../reference/trello_search.html">trello_search_members</a></span>(<span class="st">"Captain America"</span>, <span class="dt">token =</span> my_token)</code></pre></div>
 <p>Searches need to be authorized; hence, the token argument is needed (see <strong>Getting private data</strong>).</p>
 </div>
 <div id="custom-requests-with-get_model" class="section level3">
 <h3 class="hasAnchor">
-<html><body><a href="#custom-requests-with-get_model" class="anchor"> </a></body></html>Custom requests with <code><a href="../reference/get_model.html">get_model()</a></code>
+<a href="#custom-requests-with-get_model" class="anchor"></a>Custom requests with <code><a href="../reference/get_model.html">get_model()</a></code>
 </h3>
-<p>Most of the functions in this package are wrappers for <code><a href="../reference/get_model.html">get_model()</a></code>. You can call it directly if you lack a particular data-fetching option, or you can define a new function by wrapping <code><a href="../reference/get_model.html">get_model()</a></code> and providing some default values.</p>
+<p>All the <code>get_</code> functions in this package are wrappers for <code><a href="../reference/get_model.html">get_model()</a></code>. You can call it directly if you lack a particular data-fetching option, or you can define a new function by wrapping <code><a href="../reference/get_model.html">get_model()</a></code> and providing some default values.</p>
 <p>The following example creates a function that fetches all updates made in a given card (it uses a filter because updates are a type of action, and there’s no need to retrieve <em>all</em> actions):</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">get_card_updates =<span class="st"> </span>function(id, ...) {
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">get_card_updates =<span class="st"> </span><span class="cf">function</span>(id, ...) {
     <span class="kw"><a href="../reference/get_model.html">get_model</a></span>(<span class="dt">parent =</span> <span class="st">"card"</span>, <span class="dt">child  =</span> <span class="st">"actions"</span>, <span class="dt">id =</span> id, <span class="dt">filter =</span> <span class="st">"updateCard"</span>, ...)
 }</code></pre></div>
 <p>Such functions can be called the usual way by supplying a card ID:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">idc =<span class="st"> </span>cards$id[<span class="dv">1</span>]
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">idc =<span class="st"> </span>cards<span class="op">$</span>id[<span class="dv">1</span>]
 card_updates =<span class="st"> </span><span class="kw">get_card_updates</span>(idc, <span class="dt">limit =</span> <span class="dv">5</span>)
 <span class="co">#&gt; Request URL:</span>
-<span class="co">#&gt; https://api.trello.com/1/card/5807bea41ccb24595bcdf08d/actions</span>
-<span class="co">#&gt; Received 3 results</span>
-<span class="co">#&gt; Request complete: 3 results</span></code></pre></div>
+<span class="co">#&gt; https://api.trello.com/1/card/59c03456e1ea9ffc086f1ca3/actions</span>
+<span class="co">#&gt; Received 2 results</span>
+<span class="co">#&gt; Request complete: 2 results</span></code></pre></div>
 <p>For a detailed list of all possible queries, consult the <a href="https://developers.trello.com/advanced-reference">Trello API reference</a>.</p>
 </div>
 <div id="additional-arguments-for-get_model" class="section level3">
 <h3 class="hasAnchor">
-<html><body><a href="#additional-arguments-for-get_model" class="anchor"> </a></body></html>Additional arguments for <code><a href="../reference/get_model.html">get_model()</a></code>
+<a href="#additional-arguments-for-get_model" class="anchor"></a>Additional arguments for <code><a href="../reference/get_model.html">get_model()</a></code>
 </h3>
 <ul>
 <li>
 <code>token</code> is necessary for accessing private boards (see <strong>Getting private data</strong>); defaults to <code>NULL</code>
 </li>
 <li>
-<code>limit</code> defaults to 1000 results; this is also the maximum number of results for a single request</li>
+<code>limit</code> defaults to 1000 results; set to 0 to obtain <em>all</em> results that match the request</li>
 <li>
-<code>query</code> is useful if you need to provide a list of key-value pairs, such as <code>query = list(key1 = "value1", key2 = "value2")</code>; these will get appended to the URL request. Setting <code>filter = "updateCard"</code> and <code>limit=10</code> is equivalent to <code>query = list(filter = "updateCard", limit = 10)</code>; if you need more information about keys and values are available, refer to <a href="https://developers.trello.com/advanced-reference">Trello API reference</a>
+<code>query</code> is useful if you need to provide a list of key-value pairs, such as <code>query = list(key1 = "value1", key2 = "value2")</code>; these will get appended to the URL request. Setting <code>filter = "updateCard"</code> and <code>limit=10</code> is equivalent to <code>query = list(filter = "updateCard", limit = 10)</code>; if you need more information about query parameters, see <a href="https://developers.trello.com/advanced-reference">Trello API reference</a>
 </li>
 <li>
-<code>paging</code> is useful for requests that return more than 1000 results; it breaks the request down into smaller pieces, each of which returns no more than 1000 results. Defaults to <code>FALSE</code>, but if the request returns 1000 results, paging is suggested by a message in the console</li>
+<code>paging</code> is deprecated - use <code>limit</code> instead</li>
 <li>
 <code>bind.rows</code> binds all pages into a single <code>data.frame</code>; defaults to <code>TRUE</code>
 </li>
 </ul>
-<p>If <code>bind.rows = FALSE</code>, the result will be a <code>list</code> with as many elements as there are pages. This is also a fallback option for the rare occasion when the responses are not perfectly formatted and make <code>dplyr::bind_rows</code> fail.</p>
+<p>If <code>bind.rows = FALSE</code>, the result will be a <code>list</code> with as many elements as there are pages. This is also a fallback option for the rare occasion when the responses are not perfectly formatted and make <code><a href="http://dplyr.tidyverse.org/reference/bind.html">dplyr::bind_rows</a></code> fail.</p>
 <p>When calling <code><a href="../reference/get_model.html">get_model()</a></code> directly, you have an option to either specify <code>parent</code> and <code>child</code> or provide the whole URL as a character vector of length 1.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">board_comments =<span class="st"> </span><span class="kw"><a href="../reference/get_model.html">get_model</a></span>(<span class="dt">parent =</span> <span class="st">"board"</span>, <span class="dt">child =</span> <span class="st">"actions"</span>, <span class="dt">id =</span> idb,
                            <span class="dt">filter =</span> <span class="st">"commentCard"</span>, <span class="dt">limit =</span> <span class="dv">5</span>)
@@ -176,11 +195,11 @@ card_updates =<span class="st"> </span><span class="kw">get_card_updates</span>(
 </div>
 <div id="error-handling" class="section level3">
 <h3 class="hasAnchor">
-<html><body><a href="#error-handling" class="anchor"> </a></body></html>Error handling</h3>
-<p>If a request fails because of the client-side or server-side error, the error code is reprinted in the console. Additional server messages are also included to make debugging easier. See the example with invalid card ID below:</p>
+<a href="#error-handling" class="anchor"></a>Error handling</h3>
+<p>If a request fails because of a client-side or server-side error, the error code is reprinted in the console. Additional server messages are also included to make debugging easier. See the example with invalid card ID below:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tryCatch</span>(
     <span class="dt">expr  =</span> <span class="kw"><a href="../reference/get_card.html">get_card_actions</a></span>(<span class="dt">id =</span> <span class="st">"I_have_a_bad_feeling_about_this"</span>),
-    <span class="dt">error =</span> function(e) <span class="kw">message</span>(e$message)
+    <span class="dt">error =</span> <span class="cf">function</span>(e) <span class="kw">message</span>(e<span class="op">$</span>message)
 )
 <span class="co">#&gt; Request URL:</span>
 <span class="co">#&gt; https://api.trello.com/1/card/I_have_a_bad_feeling_about_this/actions</span>
@@ -190,57 +209,106 @@ card_updates =<span class="st"> </span><span class="kw">get_card_updates</span>(
 </div>
 <div id="getting-private-data" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#getting-private-data" class="anchor"> </a></body></html>Getting private data</h2>
+<a href="#getting-private-data" class="anchor"></a>Getting private data</h2>
 <p>Access to private boards requires authorization. This is done by registering an “app” that uses a secure token to communicate with the Trello API. Supplying the token to data-fetching functions will allow you to retrieve data from private boards under the condition that the user who authorized the app has the right to access them.</p>
-<p>To create a token, <strong>login</strong> to Trello and visit the <a href="https://developers.trello.com/get-started/start-building#connect">Developer Start Page</a>. There you can get your developer credentials, i.e. your “key” and “secret”. Then, call the <code><a href="../reference/trello_get_token.html">trello_get_token()</a></code> function to create a token for your project. This will also trigger first-time authorization in the browser (you only have to do it once):</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_token =<span class="st"> </span><span class="kw"><a href="../reference/trello_get_token.html">trello_get_token</a></span>(your_key, your_secret)</code></pre></div>
-<p>You will also be offered an option to store the authentication data in your working directory, in a hidden <code>'.httr-oauth'</code> file.</p>
-<p><strong>NOTE.</strong> Make sure you keep your credentials in a <strong>safe, non-shared</strong> location.</p>
+<p>To create a token, <strong>login</strong> to Trello and visit the <a href="https://developers.trello.com/get-started/start-building#connect">Developer Start Page</a>. There you can get your developer credentials, i.e. your “key” and “secret”. Then, call the <code><a href="../reference/get_token.html">get_token()</a></code> function to create a token for your project. This will also trigger first-time authorization in the browser (you only have to do it once):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_token =<span class="st"> </span><span class="kw"><a href="../reference/get_token.html">get_token</a></span>(<span class="dt">key =</span> your_key, <span class="dt">secret =</span> your_secret)</code></pre></div>
+<p>You will also be offered an option to store the authentication data in your working directory, in a hidden <code>'.httr-oauth'</code> file. Make sure you keep it in a <strong>safe, non-shared</strong> location.</p>
+<p>Other arguments to <code><a href="../reference/get_token.html">get_token()</a></code> include:</p>
+<ul>
+<li>
+<code>appname</code> is used by R to store and manage your authenticated app; it is also appended to the authorization request, so you will see your app in the list of connected apps on the settings page in Trello (where you can manually disconnect it before it expires)</li>
+<li>
+<code>scope</code> defaults to <code>"read"</code>, but you can add <code>"write"</code> and <code>"account"</code> permission too</li>
+<li>
+<code>expiration</code> defaults to 30 days, but you can increase it to <code>"never"</code> or decrease to <code>"1day"</code> or <code>"1hour"</code>
+</li>
+</ul>
 <div id="using-the-token-to-retrieve-private-data" class="section level3">
 <h3 class="hasAnchor">
-<html><body><a href="#using-the-token-to-retrieve-private-data" class="anchor"> </a></body></html>Using the token to retrieve private data</h3>
+<a href="#using-the-token-to-retrieve-private-data" class="anchor"></a>Using the token to retrieve private data</h3>
 <p>One thing you can do immediately after obtaining the token is call <code><a href="../reference/get_my_boards.html">get_my_boards()</a></code> to get an overview of your boards. It accepts the token as its only argument and returns a <code>data.frame</code> with the board names and IDs related to the user who authorized the app.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_boards =<span class="st"> </span><span class="kw"><a href="../reference/get_my_boards.html">get_my_boards</a></span>(my_token)</code></pre></div>
+</div>
+</div>
+<div id="write-access" class="section level2">
+<h2 class="hasAnchor">
+<a href="#write-access" class="anchor"></a>Write access</h2>
+<p>The write access token allows for adding, updating and deleting models. This is achieved by POST, PUT and DELETE http requests. Recursion for these requests is not implemented, so you can only process one model at a time.</p>
+<div id="adding-models" class="section level3">
+<h3 class="hasAnchor">
+<a href="#adding-models" class="anchor"></a>Adding models</h3>
+<p>The <code><a href="../reference/post_model.html">post_model()</a></code> function allows you to create new models. At the very least, you have to specify a <code>model</code> (eg. “card”), its <code>id</code> and a <code>token</code> with permissions to write. To further specify the model to be added, you may have to use the <code>path</code> argument. The actual content of the new model (such as <em>name</em>, <em>decription</em> or <em>labels</em> in the case of a new card) has to be passed as a named list to the <code>body</code> argument.</p>
+<p>The following example creates a new card and places it at the bottom of the list:</p>
+<pre><code>payload = list(
+  name = "My new card!", desc = "An example card.", 
+  pos = "bottom",
+  idList = list_id # get it by calling get_board_lists()
+)
+new_card = post_model(model = "card", body = payload, token = token)</code></pre>
+<p>Consult the <a href="https://developers.trello.com/v1.0/reference">Trello API reference</a> for element names. Some of the most frequently used POST requests have been implemented as wrappers for this function. Use <code><a href="../reference/add_board.html">add_board()</a></code>, <code><a href="../reference/add_card.html">add_card()</a></code>, <code><a href="../reference/add_checklist.html">add_checklist()</a></code>, <code><a href="../reference/add_comment.html">add_comment()</a></code>, <code><a href="../reference/add_label.html">add_label()</a></code> and <code><a href="../reference/add_list.html">add_list()</a></code> to create these models in Trello.</p>
+<p>Additional arguments to <code><a href="../reference/post_model.html">post_model()</a></code> include:</p>
+<ul>
+<li>
+<code>verbose</code>, which if set to <code>TRUE</code> provides verbose output for POST requests (as opposed to the default message which only includes request URL and a status code); this is implemented by calling <code><a href="http://www.rdocumentation.org/packages/httr/topics/verbose">httr::verbose()</a></code>
+</li>
+<li>
+<code>reponse</code>, which specifies the type of response returned; it defaults to <code>"content"</code> (a named list containing the content of the newly created model), <code>"status_code"</code>, <code>"headers"</code> or a complete response, as returned by <code><a href="http://www.rdocumentation.org/packages/httr/topics/POST">httr::POST</a></code>.</li>
+<li>
+<code>on.error</code>, which specifies what to do when the requests results in an error: issue a message, a warning or stop</li>
+<li>
+<code>...</code> to pass additional arguments to <code><a href="http://www.rdocumentation.org/packages/httr/topics/POST">httr::POST</a></code>
+</li>
+</ul>
+</div>
+<div id="updating-models" class="section level3">
+<h3 class="hasAnchor">
+<a href="#updating-models" class="anchor"></a>Updating models</h3>
+<p>The <code><a href="../reference/put_model.html">put_model()</a></code> function follows the same logic as the <code><a href="../reference/post_model.html">post_model()</a></code> function, but can only be called on existing models. Wrappers for this function include: <code><a href="../reference/update_card.html">update_card()</a></code>, <code><a href="../reference/update_card_labels.html">update_card_labels()</a></code>, <code><a href="../reference/update_card_members.html">update_card_members()</a></code> and <code><a href="../reference/update_item.html">update_item()</a></code> (for updating checklist items).</p>
+</div>
+<div id="deleting-models" class="section level3">
+<h3 class="hasAnchor">
+<a href="#deleting-models" class="anchor"></a>Deleting models</h3>
+<p>To delete models, use <code><a href="../reference/delete_model.html">delete_model()</a></code> and its wrappers <code><a href="../reference/delete_card.html">delete_card()</a></code>, <code><a href="../reference/delete_checklist.html">delete_checklist()</a></code> and <code><a href="../reference/delete_item.html">delete_item()</a></code>. <strong>Caution:</strong> Deleting models cannot be undone!</p>
 <div id="disclaimer" class="section level5">
 <h5 class="hasAnchor">
-<html><body><a href="#disclaimer" class="anchor"> </a></body></html>Disclaimer</h5>
+<a href="#disclaimer" class="anchor"></a>Disclaimer</h5>
 <p><code>trelloR</code> is not affiliated, associated, authorized, endorsed by or in any way officially connected to Trello, Inc. (www.trello.com).</p>
 </div>
 <div id="built-with" class="section level5">
 <h5 class="hasAnchor">
-<html><body><a href="#built-with" class="anchor"> </a></body></html>Built with</h5>
+<a href="#built-with" class="anchor"></a>Built with</h5>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sessionInfo</span>()
-<span class="co">#&gt; R version 3.3.2 (2016-10-31)</span>
+<span class="co">#&gt; R version 3.4.2 (2017-09-28)</span>
 <span class="co">#&gt; Platform: x86_64-pc-linux-gnu (64-bit)</span>
-<span class="co">#&gt; Running under: elementary OS Freya</span>
+<span class="co">#&gt; Running under: elementary OS 0.4.1 Loki</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Matrix products: default</span>
+<span class="co">#&gt; BLAS: /usr/lib/libblas/libblas.so.3.6.0</span>
+<span class="co">#&gt; LAPACK: /usr/lib/lapack/liblapack.so.3.6.0</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; locale:</span>
 <span class="co">#&gt;  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span>
-<span class="co">#&gt;  [3] LC_TIME=cs_CZ.UTF-8        LC_COLLATE=en_US.UTF-8    </span>
-<span class="co">#&gt;  [5] LC_MONETARY=cs_CZ.UTF-8    LC_MESSAGES=en_US.UTF-8   </span>
-<span class="co">#&gt;  [7] LC_PAPER=cs_CZ.UTF-8       LC_NAME=C                 </span>
+<span class="co">#&gt;  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    </span>
+<span class="co">#&gt;  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   </span>
+<span class="co">#&gt;  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 </span>
 <span class="co">#&gt;  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span>
-<span class="co">#&gt; [11] LC_MEASUREMENT=cs_CZ.UTF-8 LC_IDENTIFICATION=C       </span>
+<span class="co">#&gt; [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; attached base packages:</span>
 <span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; other attached packages:</span>
-<span class="co">#&gt; [1] trelloR_0.2.0 httr_1.2.1   </span>
+<span class="co">#&gt; [1] trelloR_0.3.0 httr_1.3.1   </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; loaded via a namespace (and not attached):</span>
-<span class="co">#&gt;  [1] Rcpp_0.12.9          whisker_0.3-2        knitr_1.15.1        </span>
-<span class="co">#&gt;  [4] xml2_1.1.1           magrittr_1.5         roxygen2_6.0.1      </span>
-<span class="co">#&gt;  [7] devtools_1.12.0.9000 pkgload_0.0.0.9000   R6_2.2.0            </span>
-<span class="co">#&gt; [10] stringr_1.1.0        dplyr_0.5.0          tools_3.3.2         </span>
-<span class="co">#&gt; [13] pkgbuild_0.0.0.9000  DBI_0.5-1            withr_1.0.2         </span>
-<span class="co">#&gt; [16] htmltools_0.3.5      commonmark_1.1       yaml_2.1.14         </span>
-<span class="co">#&gt; [19] digest_0.6.12        lazyeval_0.2.0       assertthat_0.1      </span>
-<span class="co">#&gt; [22] rprojroot_1.2        tibble_1.2           pkgdown_0.1.0.9000  </span>
-<span class="co">#&gt; [25] crayon_1.3.2         purrr_0.2.2          tidyr_0.6.0         </span>
-<span class="co">#&gt; [28] curl_2.3             memoise_1.0.0        evaluate_0.10       </span>
-<span class="co">#&gt; [31] rmarkdown_1.3.9002   stringi_1.1.2        desc_1.1.0          </span>
-<span class="co">#&gt; [34] backports_1.0.5      highlight_0.4.7      jsonlite_1.2</span></code></pre></div>
+<span class="co">#&gt;  [1] Rcpp_0.12.13     knitr_1.17       bindr_0.1        magrittr_1.5    </span>
+<span class="co">#&gt;  [5] R6_2.2.2         rlang_0.1.4.9000 stringr_1.2.0    dplyr_0.7.4     </span>
+<span class="co">#&gt;  [9] tools_3.4.2      htmltools_0.3.6  yaml_2.1.14      rprojroot_1.2   </span>
+<span class="co">#&gt; [13] digest_0.6.12    assertthat_0.2.0 tibble_1.3.4     bindrcpp_0.2    </span>
+<span class="co">#&gt; [17] purrr_0.2.4      tidyr_0.7.2      curl_2.8.1       glue_1.2.0      </span>
+<span class="co">#&gt; [21] evaluate_0.10.1  rmarkdown_1.8    stringi_1.1.5    compiler_3.4.2  </span>
+<span class="co">#&gt; [25] backports_1.1.0  jsonlite_1.5     pkgconfig_2.0.1</span></code></pre></div>
 </div>
 </div>
 </div>
@@ -249,10 +317,12 @@ card_updates =<span class="st"> </span><span class="kw">get_card_updates</span>(
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
         <div id="tocnav">
-      <h2>Contents</h2>
+      <h2 class="hasAnchor">
+<a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#getting-public-data">Getting public data</a></li>
       <li><a href="#getting-private-data">Getting private data</a></li>
+      <li><a href="#write-access">Write access</a></li>
       </ul>
 </div>
       </div>

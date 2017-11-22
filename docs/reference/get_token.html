@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Search models — trello_search • trelloR</title>
+<title>Get OAuth1.0 Token — get_token • trelloR</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -95,50 +95,58 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Search models</h1>
+    <h1>Get OAuth1.0 Token</h1>
     </div>
 
     
-    <p>Returns a <code>list</code> with search results.</p>
+    <p>Authorize access to Trello API.</p>
     
 
-    <pre class="usage"><span class='fu'>trello_search</span>(<span class='no'>string</span>, <span class='no'>...</span>)
-
-<span class='fu'>trello_search_actions</span>(<span class='no'>string</span>, <span class='no'>...</span>)
-
-<span class='fu'>trello_search_cards</span>(<span class='no'>string</span>, <span class='no'>...</span>)
-
-<span class='fu'>trello_search_boards</span>(<span class='no'>string</span>, <span class='no'>...</span>)
-
-<span class='fu'>trello_search_members</span>(<span class='no'>string</span>, <span class='no'>...</span>)
-
-<span class='fu'>trello_search_teams</span>(<span class='no'>string</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>get_token</span>(<span class='no'>key</span>, <span class='no'>secret</span>, <span class='kw'>appname</span> <span class='kw'>=</span> <span class='st'>"trello-app"</span>, <span class='kw'>scope</span> <span class='kw'>=</span> <span class='st'>"read"</span>,
+  <span class='kw'>expiration</span> <span class='kw'>=</span> <span class='st'>"30days"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>string</th>
-      <td><p>Text to search for</p></td>
+      <th>key</th>
+      <td><p>developer key</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>Additional arguments passed to <code><a href='get_model.html'>get_model</a></code></p></td>
+      <th>secret</th>
+      <td><p>developer secret</p></td>
+    </tr>
+    <tr>
+      <th>appname</th>
+      <td><p>optional app name, defaults to "trello-app"</p></td>
+    </tr>
+    <tr>
+      <th>scope</th>
+      <td><p>defaults to <code>"read"</code>; allowed are <code>c("read", "write", "account")</code> or <code>"read,write,account"</code> if you prefer</p></td>
+    </tr>
+    <tr>
+      <th>expiration</th>
+      <td><p>defaults to <code>"30days"</code>; also allowed <code>"1hour"</code>, <code>"1day"</code> and <code>"never"</code></p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>To access private data, a secure token is required. In order to create it, you will need your developer credentials ('key' and 'secret') - these can be obtained in the <a href='https://trello.com/app-key'>Developer guide</a> after login.</p>
+<p>First time you create a token, you will be prompted to confirm the authorization in a browser (you only need to do this once). You will also be offered an option to store the authentication data in your working directory. Keep in mind you have to store your credentials in a <strong>secure, non-shared</strong> location.
+    <code>get_token</code> uses authentication functions from <code>httr</code>.</p>
+    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='get_model.html'>get_model</a></code> <code><a href='trello_get_token.html'>trello_get_token</a></code></p>
+    <p><code><a href='http://www.rdocumentation.org/packages/httr/topics/oauth_app'>oauth_app</a></code>, <code><a href='http://www.rdocumentation.org/packages/httr/topics/oauth_endpoint'>oauth_endpoint</a></code>, <code><a href='http://www.rdocumentation.org/packages/httr/topics/oauth1.0_token'>oauth1.0_token</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'># Searches are only possible if authorized - a token is required:
+    <pre class="examples"><div class='input'># Source credentials from non-shared location (important!)
 
 </div><span class='co'># NOT RUN {</span>
-<span class='fu'>trello_search</span>(<span class='st'>"Anything with this text"</span>, <span class='no'>my_token</span>)
-<span class='fu'>trello_search_cards</span>(<span class='st'>"A card with this text"</span>, <span class='no'>my_token</span>)
-
+<span class='fu'>source</span>(<span class='st'>"mykeys.R"</span>)
+<span class='no'>token</span> <span class='kw'>=</span> <span class='fu'>get_token</span>(<span class='no'>key</span>, <span class='no'>secret</span>, <span class='kw'>scope</span> <span class='kw'>=</span> <span class='st'>"read,write"</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -146,6 +154,8 @@
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#details">Details</a></li>
+
       <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
