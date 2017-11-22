@@ -14,9 +14,9 @@ library(httr)
 knitr::opts_chunk$set(comment = "#>", collapse = TRUE)
 ```
 
-This document explains how to retrieve data from public and private Trello boards using `trelloR`.
+This document explains how to use `trelloR` to add, update, remove or retrieve data from Trello via Trello API.
 
-_NOTE. Right now, only GET requests are implemented. Support for POST and PUT may be added in later versions. Accessing the data in private boards requires authorization which you can read about in the **Getting private data** section._
+_NOTE. Accessing the data in private boards requires authorization which you can read about in the **Accessing private data** section._
 
 Getting public data
 -------------------
@@ -68,7 +68,7 @@ captain = trello_search_members("Captain America", token = my_token)
 Searches need to be authorized; hence, the token argument is needed (see __Getting private data__).
 
 ###Custom requests with `get_model()`
-Most of the functions in this package are wrappers for `get_model()`. You can call it directly if you lack a particular data-fetching option, or you can define a new function by wrapping `get_model()` and providing some default values. 
+All the `get_` functions in this package are wrappers for `get_model()`. You can call it directly if you lack a particular data-fetching option, or you can define a new function by wrapping `get_model()` and providing some default values. 
 
 The following example creates a function that fetches all updates made in a given card (it uses a filter because updates are a type of action, and there's no need to retrieve *all* actions):
 
@@ -142,6 +142,42 @@ One thing you can do immediately after obtaining the token is call `get_my_board
 ```r
 my_boards = get_my_boards(my_token)
 ```
+
+Write access
+------------
+
+The write access token (see the previous section) allows for adding, updating and deleting models. This is achieved by POST, PUT and DELETE http requests. Recursion for these requests is not implemented, so you can only process one model at a time.
+
+###Adding models
+
+The `post_model()` function allows you to create new models. At the very least, you have to specify a `model` (eg. "card"), its `id` and a `token` with permissions to write. To further specify the model to be added, you may have to use the `path` argument. The actual content of the new model (such as *name*, *decription* or *labels* in the case of a new card) has to be passed as a named list to the `body` argument.
+
+The following example creates a new card and places it at the bottom of the list:
+
+```
+payload = list(
+  name = "My new card!", desc = "An example card.", 
+  pos = "bottom",
+  idList = list_id # get it by calling get_board_lists()
+)
+new_card = post_model(model = "card", body = payload, token = token)
+```
+Consult the [Trello API reference](https://developers.trello.com/v1.0/reference) for element names. Some of the most frequently used POST requests have been implemented as wrappers for this function. Use `add_board()`, `add_card()`, `add_checklist()`, `add_comment()`, `add_label()` and  `add_list()` to create these models in Trello.
+
+Additional arguments to `post_model()` include:
+
+* `verbose`, which if set to `TRUE` provides verbose output for POST requests (as opposed to the default message which only includes request URL and a status code). This is implemented by calling `httr::verbose()`
+* `reponse`, which specifies the type of response returned; it defaults to `"content"` (a named list containing the content of the newly created model), `"status_code"`, `"headers"` or a complete response, as returned by `httr::POST`.
+* `on.error`, which specifies what to do when the requests results in an error: issue a message, a warning or stop
+* `...` to pass additional arguments to `httr::POST`
+
+###Updating models
+
+The `put_model()` function follows the same logic as the `post_model()` function, but can only be called on existing models. Wrappers for this function include: `update_card()`, `update_card_labels()`, `update_card_members()` and `update_item()` (for updating checklist items).
+
+###Deleting models
+
+To delete models, use `delete_model()` and its wrappers `delete_card()`, `delete_checklist()` and `delete_item()`. __Caution:__ Deleting models cannot be undone!
 
 #####Disclaimer
 `trelloR` is not affiliated, associated, authorized, endorsed by or in any way officially connected to Trello, Inc. (www.trello.com).

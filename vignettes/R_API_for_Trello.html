@@ -12,7 +12,7 @@
 
 <meta name="author" content="Jakub Chromec" />
 
-<meta name="date" content="2017-11-11" />
+<meta name="date" content="2017-11-22" />
 
 <title>R API for Trello</title>
 
@@ -70,12 +70,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">R API for Trello</h1>
 <h4 class="author"><em>Jakub Chromec</em></h4>
-<h4 class="date"><em>2017-11-11</em></h4>
+<h4 class="date"><em>2017-11-22</em></h4>
 
 
 
-<p>This document explains how to retrieve data from public and private Trello boards using <code>trelloR</code>.</p>
-<p><em>NOTE. Right now, only GET requests are implemented. Support for POST and PUT may be added in later versions. Accessing the data in private boards requires authorization which you can read about in the <strong>Getting private data</strong> section.</em></p>
+<p>This document explains how to use <code>trelloR</code> to add, update, remove or retrieve data from Trello via Trello API.</p>
+<p><em>NOTE. Accessing the data in private boards requires authorization which you can read about in the <strong>Accessing private data</strong> section.</em></p>
 <div id="getting-public-data" class="section level2">
 <h2>Getting public data</h2>
 <p>The basic building block of the Trello workflow is a <strong>Board</strong>. It encapsulates a hierarchy of “models”, i.e. <strong>Members, Teams, Lists, Cards, Labels, Checklists</strong> and <strong>Actions</strong>. Each model has a parent model (e.g. a board is a parent model for cards on it) and child models (a card can include comments as child models). The models can be accessed recursively. This means that you can obtain the actions from all cards by addressing the whole board without going through specific cards one by one.</p>
@@ -200,6 +200,37 @@ card_updates =<span class="st"> </span><span class="kw">get_card_updates</span>(
 <h3>Using the token to retrieve private data</h3>
 <p>One thing you can do immediately after obtaining the token is call <code>get_my_boards()</code> to get an overview of your boards. It accepts the token as its only argument and returns a <code>data.frame</code> with the board names and IDs related to the user who authorized the app.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_boards =<span class="st"> </span><span class="kw">get_my_boards</span>(my_token)</code></pre></div>
+</div>
+</div>
+<div id="write-access" class="section level2">
+<h2>Write access</h2>
+<p>The write access token (see the previous section) allows for adding, updating and deleting models. This is achieved by POST, PUT and DELETE http requests. Recursion for these requests is not implemented, so you can only process one model at a time.</p>
+<div id="adding-models" class="section level3">
+<h3>Adding models</h3>
+<p>The <code>post_model()</code> function allows you to create new models. At the very least, you have to specify a <code>model</code> (eg. “card”), its <code>id</code> and a <code>token</code> with permissions to write. To further specify the model to be added, you may have to use the <code>path</code> argument. The actual content of the new model (such as <em>name</em>, <em>decription</em> or <em>labels</em> in the case of a new card) has to be passed as a named list to the <code>body</code> argument.</p>
+<p>The following example creates a new card and places it at the bottom of the list:</p>
+<pre><code>payload = list(
+  name = &quot;My new card!&quot;, desc = &quot;An example card.&quot;, 
+  pos = &quot;bottom&quot;,
+  idList = list_id # get it by calling get_board_lists()
+)
+new_card = post_model(model = &quot;card&quot;, body = payload, token = token)</code></pre>
+<p>Consult the <a href="https://developers.trello.com/v1.0/reference">Trello API reference</a> for element names. Some of the most frequently used POST requests have been implemented as wrappers for this function. Use <code>add_board()</code>, <code>add_card()</code>, <code>add_checklist()</code>, <code>add_comment()</code>, <code>add_label()</code> and <code>add_list()</code> to create these models in Trello.</p>
+<p>Additional arguments to <code>post_model()</code> include:</p>
+<ul>
+<li><code>verbose</code>, which if set to <code>TRUE</code> provides verbose output for POST requests (as opposed to the default message which only includes request URL and a status code). This is implemented by callin <code>httr::verbose()</code></li>
+<li><code>reponse</code>, which specifies the type of response returned; it defaults to <code>&quot;content&quot;</code> (a named list containing the content of the newly created model), <code>&quot;status_code&quot;</code>, <code>&quot;headers&quot;</code> or a complete response, as returned by <code>httr::POST</code>.</li>
+<li><code>on.error</code>, which specifies what to do when the requests results in an error: issue a message, a warning or stop</li>
+<li><code>...</code> to pass additional arguments to <code>httr::POST</code></li>
+</ul>
+</div>
+<div id="updating-models" class="section level3">
+<h3>Updating models</h3>
+<p>The <code>put_model()</code> function follows the same logic as the <code>post_model()</code> function, but can only be called on existing models. Wrappers for this function include: <code>update_card()</code>, <code>update_card_labels()</code>, <code>update_card_members()</code> and <code>update_item()</code> (for updating checklist items).</p>
+</div>
+<div id="deleting-models" class="section level3">
+<h3>Deleting models</h3>
+<p>To delete models, use <code>delete_model()</code> and its wrappers <code>delete_card()</code>, <code>delete_checklist()</code> and <code>delete_item()</code>. <strong>Caution:</strong> Deleting models cannot be undone!</p>
 <div id="disclaimer" class="section level5">
 <h5>Disclaimer</h5>
 <p><code>trelloR</code> is not affiliated, associated, authorized, endorsed by or in any way officially connected to Trello, Inc. (www.trello.com).</p>
@@ -227,15 +258,15 @@ card_updates =<span class="st"> </span><span class="kw">get_card_updates</span>(
 <span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; other attached packages:</span>
-<span class="co">#&gt; [1] trelloR_0.2.0 httr_1.3.1   </span>
+<span class="co">#&gt; [1] trelloR_0.3.0 httr_1.3.1   </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; loaded via a namespace (and not attached):</span>
-<span class="co">#&gt;  [1] Rcpp_0.12.12     knitr_1.17       bindr_0.1        magrittr_1.5    </span>
-<span class="co">#&gt;  [5] R6_2.2.2         rlang_0.1.2      stringr_1.2.0    dplyr_0.7.2     </span>
+<span class="co">#&gt;  [1] Rcpp_0.12.13     knitr_1.17       bindr_0.1        magrittr_1.5    </span>
+<span class="co">#&gt;  [5] R6_2.2.2         rlang_0.1.4.9000 stringr_1.2.0    dplyr_0.7.4     </span>
 <span class="co">#&gt;  [9] tools_3.4.2      htmltools_0.3.6  yaml_2.1.14      rprojroot_1.2   </span>
 <span class="co">#&gt; [13] digest_0.6.12    assertthat_0.2.0 tibble_1.3.4     bindrcpp_0.2    </span>
-<span class="co">#&gt; [17] purrr_0.2.3      tidyr_0.7.1      curl_2.8.1       glue_1.1.1      </span>
-<span class="co">#&gt; [21] evaluate_0.10.1  rmarkdown_1.6    stringi_1.1.5    compiler_3.4.2  </span>
+<span class="co">#&gt; [17] purrr_0.2.4      tidyr_0.7.2      curl_2.8.1       glue_1.2.0      </span>
+<span class="co">#&gt; [21] evaluate_0.10.1  rmarkdown_1.8    stringi_1.1.5    compiler_3.4.2  </span>
 <span class="co">#&gt; [25] backports_1.1.0  jsonlite_1.5     pkgconfig_2.0.1</span></code></pre></div>
 </div>
 </div>
