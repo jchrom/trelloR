@@ -4,7 +4,7 @@
 \alias{add_label}
 \title{Add label}
 \usage{
-add_label(card, color, name = NULL, token, verbose = FALSE, ...)
+add_label(card, color, name = NULL, ...)
 }
 \arguments{
 \item{card}{Card id}
@@ -13,11 +13,7 @@ add_label(card, color, name = NULL, token, verbose = FALSE, ...)
 
 \item{name}{Label name; choosing different non-existing name will create new label (defaults to \code{NULL})}
 
-\item{token}{Secure token, see \code{\link{get_token}} (scope must include write permissions)}
-
-\item{verbose}{Whether to pass \code{verbose()} to \code{\link[httr]{POST}} (for verbose output)}
-
-\item{...}{Additional arguments passed to \code{\link[httr]{POST}}}
+\item{...}{Additional arguments passed to \code{\link{post_model}}}
 }
 \description{
 POST label to a card.

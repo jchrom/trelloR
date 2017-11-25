@@ -4,18 +4,14 @@
 \alias{add_member}
 \title{Add member}
 \usage{
-add_member(card, member, token, verbose = FALSE, ...)
+add_member(card, member, ...)
 }
 \arguments{
 \item{card}{Card id}
 
 \item{member}{Member id}
 
-\item{token}{Secure token, see \code{\link{get_token}} (scope must include write permissions)}
-
-\item{verbose}{Whether to pass \code{verbose()} to \code{\link[httr]{POST}} (for verbose output)}
-
-\item{...}{Additional arguments passed to \code{\link[httr]{POST}}}
+\item{...}{Additional arguments passed to \code{\link{post_model}}}
 }
 \description{
 POST member to a card.

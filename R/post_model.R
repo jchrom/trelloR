@@ -9,17 +9,17 @@
 #' @param path Path
 #' @param body A named list of query paramters (will be passed as body)
 #' @param token Secure token, see \code{\link{get_token}} (scope must include write permissions)
-#' @param verbose Whether to pass \code{verbose()} to \code{\link[httr]{POST}}
 #' @param response Can return \code{"content"} (default), \code{"headers"}, \code{"status"} code or the complete \code{"response"}
 #' @param on.error Issues either \code{\link[base]{warning}} (default), \code{\link[base]{message}} or error (and \code{\link[base]{stop}}s)
-#' @param ... Additional arguments passed to \code{\link[httr]{POST}}
+#' @param encode Passed to \code{\link[httr]{POST}}
+#' @param handle Passed to \code{\link[httr]{POST}}
+#' @param verbose Whether to pass \code{verbose()} to \code{\link[httr]{POST}}
 #' @importFrom httr modify_url POST content status_code headers message_for_status warn_for_status stop_for_status verbose
 #' @export
 
-post_model = function(model, id = NULL, path = NULL,
-                      body = list(name = "New Card"), token,
-                      verbose = FALSE, response = "content",
-                      on.error = "warning", ...) {
+post_model = function(model, id = NULL, path = NULL, body = list(name = "New"),
+                      token, response = "content", on.error = "warning",
+                      encode = "json", handle = NULL, verbose = FALSE) {
 
   url = modify_url(
     url = "https://api.trello.com",
@@ -38,13 +38,12 @@ post_model = function(model, id = NULL, path = NULL,
 
   if (verbose)
     req = POST(
-      url = url, body = body, config = config(token = token),
-      verbose(),
-      ...)
+      url = url, body = body, config = config(token = token), encode = encode,
+      handle = handle, verbose())
   else
     req = POST(
-      url = url, body = body, config = config(token = token),
-      ...)
+      url = url, body = body, config = config(token = token), encode = encode,
+      handle = handle)
 
   switch(
     on.error,
