@@ -4,18 +4,14 @@
 \alias{update_card}
 \title{Update card}
 \usage{
-update_card(card, body = NULL, token, verbose = FALSE, ...)
+update_card(card, body = NULL, ...)
 }
 \arguments{
 \item{card}{Card id}
 
 \item{body}{A named list of query parameters (will be passed as body with \code{encoding = "json"})}
 
-\item{token}{Secure token, see \code{\link{get_token}} (scope must include write permissions)}
-
-\item{verbose}{Whether to pass \code{verbose()} to \code{\link[httr]{PUT}}}
-
-\item{...}{Additional arguments passed to \code{\link[httr]{PUT}}}
+\item{...}{Additional arguments passed to \code{\link{put_model}}}
 }
 \description{
 Update name, description, assigned members and other fields.

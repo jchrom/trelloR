@@ -12,13 +12,14 @@
 #' @param verbose Whether to pass \code{verbose()} to \code{\link[httr]{PUT}}
 #' @param response Can return \code{"content"} (default), \code{"headers"}, \code{"status"} code or the complete \code{"response"}
 #' @param on.error Issues either \code{\link[base]{warning}} (default), \code{\link[base]{message}} or error (and \code{\link[base]{stop}}s)
-#' @param ... Additional arguments passed to \code{\link[httr]{PUT}}
+#' @param encode Passed to \code{\link[httr]{PUT}}
+#' @param handle Passed to \code{\link[httr]{PUT}}
 #' @importFrom httr modify_url PUT content status_code headers message_for_status warn_for_status stop_for_status
 #' @export
 
-put_model = function(model, id = NULL, path = NULL, body = NULL, token,
-                     verbose = FALSE, response = "content",
-                     on.error = "warning", ...) {
+put_model = function(model, id = NULL, path = NULL, body = NULL,
+                     token, response = "content", on.error = "warning",
+                     encode = "json", handle = NULL, verbose = FALSE) {
 
   url = modify_url(
     url = "https://api.trello.com",
@@ -37,13 +38,12 @@ put_model = function(model, id = NULL, path = NULL, body = NULL, token,
 
   if (verbose)
     req = PUT(
-      url = url, body = body, config = config(token = token), encode = "json",
-      verbose(),
-      ...)
+      url = url, body = body, config = config(token = token), encode = encode,
+      handle = handle, verbose())
   else
     req = PUT(
-      url = url, body = body, config = config(token = token), encode = "json",
-      ...)
+      url = url, body = body, config = config(token = token), encode = encode,
+      handle = handle)
 
   switch(
     on.error,

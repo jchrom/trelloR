@@ -4,18 +4,14 @@
 \alias{update_card_labels}
 \title{Update card labels}
 \usage{
-update_card_labels(card, labels, token, verbose = FALSE, ...)
+update_card_labels(card, labels, ...)
 }
 \arguments{
 \item{card}{Card id}
 
 \item{labels}{A character vector of one or more label id}
 
-\item{token}{Secure token, see \code{\link{get_token}} (scope must include write permissions)}
-
-\item{verbose}{Whether to pass \code{verbose()} to \code{\link[httr]{PUT}}}
-
-\item{...}{Additional arguments passed to \code{\link[httr]{PUT}}}
+\item{...}{Additional arguments passed to \code{\link{put_model}}}
 }
 \description{
 Replace currently assigned labels.
