@@ -4,18 +4,14 @@
 \alias{add_board}
 \title{Add board}
 \usage{
-add_board(name, body = NULL, token, verbose = FALSE, ...)
+add_board(name, body = NULL, ...)
 }
 \arguments{
 \item{name}{Name of the board}
 
 \item{body}{A named list of query paramters (will be passed as body)}
 
-\item{token}{Secure token, see \code{\link{get_token}} (scope must include write permissions)}
-
-\item{verbose}{Whether to pass \code{verbose()} to \code{\link[httr]{POST}} (for verbose output)}
-
-\item{...}{Additional arguments passed to \code{\link[httr]{POST}}}
+\item{...}{Additional arguments passed to \code{\link{post_model}}}
 }
 \description{
 POST board.

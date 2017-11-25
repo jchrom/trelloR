@@ -4,7 +4,7 @@
 \alias{add_checklist}
 \title{Add checklist}
 \usage{
-add_checklist(card, name, source = NULL, token, verbose = FALSE, ...)
+add_checklist(card, name, source = NULL, ...)
 }
 \arguments{
 \item{card}{Card id}
@@ -13,11 +13,7 @@ add_checklist(card, name, source = NULL, token, verbose = FALSE, ...)
 
 \item{source}{Items from this checklist id will be copied to the new one (defaults to \code{NULL})}
 
-\item{token}{Secure token, see \code{\link{get_token}} (scope must include write permissions)}
-
-\item{verbose}{Whether to pass \code{verbose()} to \code{\link[httr]{POST}} (for verbose output)}
-
-\item{...}{Additional arguments passed to \code{\link[httr]{POST}}}
+\item{...}{Additional arguments passed to \code{\link{post_model}}}
 }
 \description{
 POST checklist to a card.

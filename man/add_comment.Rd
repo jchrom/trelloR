@@ -4,18 +4,14 @@
 \alias{add_comment}
 \title{Add comment}
 \usage{
-add_comment(card, text, token, verbose = FALSE, ...)
+add_comment(card, text, ...)
 }
 \arguments{
 \item{card}{Card id}
 
 \item{text}{Comment text}
 
-\item{token}{Secure token, see \code{\link{get_token}} (scope must include write permissions)}
-
-\item{verbose}{Whether to pass \code{verbose()} to \code{\link[httr]{POST}} (for verbose output)}
-
-\item{...}{Additional arguments passed to \code{\link[httr]{POST}}}
+\item{...}{Additional arguments passed to \code{\link{post_model}}}
 }
 \description{
 POST comment to a card.
