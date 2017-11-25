@@ -23,9 +23,9 @@ put_model(model, id = NULL, path = NULL, body = NULL, token,
 
 \item{on.error}{Issues either \code{\link[base]{warning}} (default), \code{\link[base]{message}} or error (and \code{\link[base]{stop}}s)}
 
-\item{encode}{Passed to \code{\link[httr]{POST}}}
+\item{encode}{Passed to \code{\link[httr]{PUT}}}
 
-\item{handle}{Passed to \code{\link[httr]{POST}}}
+\item{handle}{Passed to \code{\link[httr]{PUT}}}
 
 \item{verbose}{Whether to pass \code{verbose()} to \code{\link[httr]{PUT}}}
 }

@@ -4,16 +4,12 @@
 \alias{delete_card}
 \title{Delete card}
 \usage{
-delete_card(card, token, verbose = FALSE, ...)
+delete_card(card, ...)
 }
 \arguments{
 \item{card}{Card id}
 
-\item{token}{Secure token, see \code{\link{get_token}} (scope must include write permissions)}
-
-\item{verbose}{Whether to pass \code{verbose()} to \code{\link[httr]{DELETE}} (for verbose output)}
-
-\item{...}{Additional arguments passed to \code{\link[httr]{DELETE}}}
+\item{...}{Additional arguments passed to \code{\link{delete_model}}}
 }
 \description{
 DELETE card.
