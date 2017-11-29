@@ -9,17 +9,12 @@ get_pages(url, token, query = NULL)
 \arguments{
 \item{url}{Url to get}
 
-\item{token}{Peviously generated secure token, see \code{\link{trello_get_token}} for how to obtain it}
+\item{token}{Peviously generated secure token, see \code{\link{get_token}} for how to obtain it}
 
 \item{query}{Key-value pairs which form the query, see \code{\link[httr]{GET}} for details}
 }
 \description{
-Issue a GET request for Trello API with automated paging.
-}
-\details{
-Setting \code{limit = 0} or \code{limit > 1000} will activate paging. In the
-former case, all available results will be fetched. Filter values bellow 0
-are not allowed.
+Deprecated. Use \code{\link{paginate}}
 }
 \seealso{
 \code{\link{get_model}}
