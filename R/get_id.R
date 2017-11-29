@@ -23,32 +23,38 @@
 #' @rdname get_id
 get_id_board = function(url, token = NULL) {
 
-    url = parse_url(url)
-    dat = get_model(parent = "board", id = url, token = token,
-                    query = list(fields = "name"), add.class = FALSE)
-    structure(dat[["id"]], names = dat[["name"]])
+  dat = get_model(
+      parent = "board", id = extract_shortname(url), token = token,
+      query = list(fields = "name"), add.class = FALSE
+    )
+
+  structure(dat$id, names = dat$name)
 }
 
 #' @export
 #' @rdname get_id
 get_id_card = function(url, token = NULL) {
 
-    url = parse_url(url)
-    dat = get_model(parent = "card", id = url, token = token,
-                     query = list(fields = "name"), add.class = FALSE)
-    structure(dat[["id"]], names = dat[["name"]])
+    short = extract_shortname(url)
+
+    dat = get_model(
+      parent = "card", id = extract_shortname(url), token = token,
+      query = list(fields = "name"), add.class = FALSE
+    )
+
+    structure(dat$id, names = dat$name)
 }
 
-parse_url = function(url, pos = 5) {
+extract_shortname = function(url, pos = 5) {
 
     path = unlist(strsplit(url, "/"))
 
-    if (length(path) >= pos) {
-        id = path[pos]
-    } else if (length(path) != 1) {
-        stop("This is probably not a valid Trello URL")
-    } else {
-        id = path
-    }
-    return(id)
+    if (length(path) >= pos)
+      path[pos]
+
+    else if (length(path) != 1)
+      stop("This is probably not a valid Trello URL")
+
+    else
+      path
 }
