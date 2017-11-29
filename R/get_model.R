@@ -82,11 +82,15 @@ get_model = function(parent = NULL, child = NULL, id = NULL, token = NULL,
     )
   }
 
-  url = modify_url(
-    url = "https://api.trello.com",
-    path = c(1, parent, id, child), #path overrides url if url includes path
-    query = c(query, list(limit = limit, filter = filter))
-  )
+  if (is.null(url)) {
+
+    url = modify_url(
+      url = "https://api.trello.com",
+      path = c(1, parent, id, child), #path overrides url if url includes path
+      query = c(query, list(limit = limit, filter = filter))
+    )
+
+  }
 
   result = paginate(
     url = url,
