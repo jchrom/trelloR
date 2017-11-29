@@ -14,7 +14,7 @@
 
 update_card = function(card, body = NULL, ...) {
   put_model(
-    model = "card", id = card, token = token, body = body, ...
+    model = "card", id = card, body = body, ...
   )
 }
 
