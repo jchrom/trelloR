@@ -226,7 +226,7 @@ squash_list = function(x) {
   # add non-scalar elements
   for (i in names(vectors))
     df[i] = list(
-      as_char_null(vectors[i])
+      replace_null(vectors[i])
     )
 
   df
