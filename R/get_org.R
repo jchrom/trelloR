@@ -20,7 +20,7 @@ NULL
 #' @rdname get_team
 get_team_members = function(id, ...) {
 
-    id = parse_url(id, pos = 4)
+    id = extract_shortname(id, pos = 4)
     dat = get_model(parent = "organization", child = "members", id = id, ...)
     return(dat)
 }
@@ -29,7 +29,7 @@ get_team_members = function(id, ...) {
 #' @rdname get_team
 get_team_boards = function(id, ...) {
 
-    id = parse_url(id, pos = 4)
+    id = extract_shortname(id, pos = 4)
     dat = get_model(parent = "organization", child = "boards", id = id, ...)
     return(dat)
 }
