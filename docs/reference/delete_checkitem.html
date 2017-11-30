@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Update card — update_card • trelloR</title>
+<title>Delete item — delete_checkitem • trelloR</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -95,29 +95,29 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Update card</h1>
+    <h1>Delete item</h1>
     </div>
 
     
-    <p>Update name, description, assigned members and other fields.</p>
+    <p>DELETE checklist item.</p>
     
 
-    <pre class="usage"><span class='fu'>update_card</span>(<span class='no'>card</span>, <span class='kw'>body</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>delete_checkitem</span>(<span class='no'>checklist</span>, <span class='no'>checkitem</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>card</th>
-      <td><p>Card id</p></td>
+      <th>checklist</th>
+      <td><p>Checklist id</p></td>
     </tr>
     <tr>
-      <th>body</th>
-      <td><p>A named list of query parameters (will be passed as body with <code>encoding = "json"</code>)</p></td>
+      <th>checkitem</th>
+      <td><p>Checklist item id</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Additional arguments passed to <code><a href='put_model.html'>put_model</a></code></p></td>
+      <td><p>Additional arguments passed to <code><a href='delete_model.html'>delete_model</a></code></p></td>
     </tr>
     </table>
     

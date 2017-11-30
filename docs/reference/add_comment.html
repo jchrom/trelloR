@@ -102,7 +102,7 @@
     <p>POST comment to a card.</p>
     
 
-    <pre class="usage"><span class='fu'>add_comment</span>(<span class='no'>card</span>, <span class='no'>text</span>, <span class='no'>token</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>add_comment</span>(<span class='no'>card</span>, <span class='no'>text</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -116,16 +116,8 @@
       <td><p>Comment text</p></td>
     </tr>
     <tr>
-      <th>token</th>
-      <td><p>Secure token, see <code><a href='get_token.html'>get_token</a></code> (scope must include write permissions)</p></td>
-    </tr>
-    <tr>
-      <th>verbose</th>
-      <td><p>Whether to pass <code>verbose()</code> to <code><a href='http://www.rdocumentation.org/packages/httr/topics/POST'>POST</a></code> (for verbose output)</p></td>
-    </tr>
-    <tr>
       <th>...</th>
-      <td><p>Additional arguments passed to <code><a href='http://www.rdocumentation.org/packages/httr/topics/POST'>POST</a></code></p></td>
+      <td><p>Additional arguments passed to <code><a href='post_model.html'>post_model</a></code></p></td>
     </tr>
     </table>
     
