@@ -110,7 +110,12 @@ get_model = function(parent = NULL, child = NULL, id = NULL, token = NULL,
       },
 
       error = function(e) {
-        warning("Binding failed: ", e$message, " returning list")
+
+        warning(
+          "Binding failed: ", e$message, "\nreturning list",
+          call. = FALSE
+        )
+
         result
       }
     )
