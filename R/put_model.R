@@ -39,11 +39,16 @@ put_model = function(model, id = NULL, path = NULL, body = NULL,
   if (verbose)
     req = PUT(
       url = url, body = body, config = config(token = token), encode = encode,
-      handle = handle, verbose())
+      handle = handle, verbose(),
+      user_agent("https://github.com/jchrom/trelloR")
+    )
+
   else
     req = PUT(
       url = url, body = body, config = config(token = token), encode = encode,
-      handle = handle)
+      handle = handle,
+      user_agent("https://github.com/jchrom/trelloR")
+    )
 
   switch(
     on.error,

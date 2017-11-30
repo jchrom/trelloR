@@ -30,9 +30,17 @@ delete_model = function(model, id = NULL, path = NULL, token,
   )
 
   if (verbose)
-    req = DELETE(url = url, config = config(token = token), verbose())
+    req = DELETE(
+      url = url, config = config(token = token),
+      verbose(),
+      user_agent("https://github.com/jchrom/trelloR")
+    )
+
   else
-    req = DELETE(url = url, config = config(token = token))
+    req = DELETE(
+      url = url, config = config(token = token),
+      user_agent("https://github.com/jchrom/trelloR")
+    )
 
   switch(
     on.error,
