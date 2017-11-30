@@ -94,7 +94,13 @@ paginate = function(url, token = NULL, response = "content") {
 
     message("Request complete")
 
-  result
+  if (inherits(result, "list") && length(result) == 1)
+
+    result[[1]]
+
+  else
+
+    result
 }
 
 get_limit = function(url) {
