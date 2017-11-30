@@ -16,7 +16,7 @@ knitr::opts_chunk$set(comment = "#>", collapse = TRUE)
 
 This document explains how to use `trelloR` to add, update, remove or retrieve data from Trello via Trello API.
 
-_NOTE. Accessing the data in private boards requires authorization which you can read about in the **Accessing private data** section._
+_NOTE. Accessing private boards requires authorization; see **Accessing private boards**._
 
 Getting public data
 -------------------
@@ -27,7 +27,7 @@ To access a particular model, you need to know its unique ID, or the ID of its p
 
 Here is an example how to get the data from [Trello Development Roadmap](https://trello.com/b/nC8QJJoZ/trello-development-roadmap). Since it's a public board, no authentication is required:
 
-```{r}
+```{r, results='hide'}
 library(trelloR)
 url = "https://trello.com/b/nC8QJJoZ/trello-development-roadmap"
 idb = get_id_board(url = url)
@@ -45,7 +45,7 @@ cards
 ...but it is a `data.frame`, so you can work with it as usual:
 
 ```{r}
-head(dplyr::as.tbl(cards))
+cards[1:5, c("name", "closed", "shortUrl")]
 ```
 
 Typically, the response will contain multiple columns including model ID, name and other data, such as attachments or preferences. Because the ID of child elements is included in the response, you can use it to work your way down the hierarchy until you reach the desired model.
@@ -80,26 +80,24 @@ get_card_updates = function(id, ...) {
 
 Such functions can be called the usual way by supplying a card ID:
 
-```{r}
+```{r, results='hide'}
 idc = cards$id[1]
 card_updates = get_card_updates(idc, limit = 5)
 ```
 
-For a detailed list of all possible queries, consult the [Trello API reference](https://developers.trello.com/advanced-reference).
+For a detailed list of all possible queries, consult the [Trello API reference](https://developers.trello.com/v1.0/reference).
 
 ###Additional arguments for `get_model()`
 
 * `token` is necessary for accessing private boards (see __Getting private data__); defaults to `NULL`
 * `limit` defaults to 1000 results; set to 0 to obtain *all* results that match the request
-* `query` is useful if you need to provide a list of key-value pairs, such as `query = list(key1 = "value1", key2 = "value2")`; these will get appended to the URL request. Setting `filter = "updateCard"` and `limit=10` is equivalent to `query = list(filter = "updateCard", limit = 10)`; if you need more information about query parameters, see [Trello API reference](https://developers.trello.com/advanced-reference)
+* `query` is useful if you need to provide a list of key-value pairs, such as `query = list(key1 = "value1", key2 = "value2")`; these will get appended to the URL request. Setting `filter = "updateCard"` and `limit=10` is equivalent to `query = list(filter = "updateCard", limit = 10)`; if you need more information about query parameters, see [Trello API reference](https://developers.trello.com/v1.0/reference)
 * `paging` is deprecated - use `limit` instead
-* `bind.rows` binds all pages into a single `data.frame`; defaults to `TRUE`
-
-If `bind.rows = FALSE`, the result will be a `list` with as many elements as there are pages. This is also a fallback option for the rare occasion when the responses are not perfectly formatted and make `dplyr::bind_rows` fail.
+* `bind.rows` is deprecated
 
 When calling `get_model()` directly, you have an option to either specify `parent` and `child` or provide the whole URL as a character vector of length 1.
 
-```{r}
+```{r, results='hide'}
 board_comments = get_model(parent = "board", child = "actions", id = idb,
                            filter = "commentCard", limit = 5)
 ```
@@ -107,17 +105,17 @@ board_comments = get_model(parent = "board", child = "actions", id = idb,
 ###Error handling
 If a request fails because of a client-side or server-side error, the error code is reprinted in the console. Additional server messages are also included to make debugging easier. See the example with invalid card ID below:
 
-```{r}
+```{r, results='hide'}
 tryCatch(
     expr  = get_card_actions(id = "I_have_a_bad_feeling_about_this"),
     error = function(e) message(e$message)
 )
 ```
 
-In case of a server-side error, the request will be re-send two more times, with 1.5s delay before each attempt. If it fails for the 3rd time, the error message is printed in the console.
+In case of a server-side error, the request will be re-send two more times, with random delay before each attempt. If it fails for the 3rd time, the error message is printed in the console.
 
-Getting private data
-----------------------
+Accessing private boards
+------------------------
 
 Access to private boards requires authorization. This is done by registering an "app" that uses a secure token to communicate with the Trello API. Supplying the token to data-fetching functions will allow you to retrieve data from private boards under the condition that the user who authorized the app has the right to access them.
 
@@ -146,13 +144,13 @@ my_boards = get_my_boards(my_token)
 Write access
 ------------
 
-The write access token allows for adding, updating and deleting models. This is achieved by POST, PUT and DELETE http requests. Recursion for these requests is not implemented, so you can only process one model at a time.
+The write access token allows you to add, update and delete models. This is achieved by POST, PUT and DELETE http requests. Recursion for these requests is not implemented, so you can only process one model at a time.
 
 ###Adding models
 
-The `post_model()` function allows you to create new models. At the very least, you have to specify a `model` (eg. "card"), its `id` and a `token` with permissions to write. To further specify the model to be added, you may have to use the `path` argument. The actual content of the new model (such as *name*, *decription* or *labels* in the case of a new card) has to be passed as a named list to the `body` argument.
+The `post_model()` function allows you to create new models. At the very least, you have to specify a `model` (eg. "board"), its `id` and a `token` with permissions to write. To further specify the model to be added, you may have to use the `path` argument. The actual content of the new model (such as *name*, *decription* or *labels*) has to be passed as a named list to the `body` argument.
 
-The following example creates a new card and places it at the bottom of the list:
+The following example creates a new card and places it at the bottom of a list:
 
 ```
 payload = list(
@@ -162,7 +160,7 @@ payload = list(
 )
 new_card = post_model(model = "card", body = payload, token = token)
 ```
-Consult the [Trello API reference](https://developers.trello.com/v1.0/reference) for element names. Some of the most frequently used POST requests have been implemented as wrappers for this function. Use `add_board()`, `add_card()`, `add_checklist()`, `add_comment()`, `add_label()` and  `add_list()` to create these models in Trello.
+Consult the [Trello API reference](https://developers.trello.com/v1.0/reference) for element names. Some of the most frequently used POST requests have been implemented as wrappers for this function. Use `add_board()`, `add_card()`, `add_checklist()`, `add_checkitem()`, `add_comment()`, `add_label()` and  `add_list()` to create these models in Trello.
 
 Additional arguments to `post_model()` include:
 
@@ -173,7 +171,7 @@ Additional arguments to `post_model()` include:
 
 ###Updating models
 
-The `put_model()` function follows the same logic as the `post_model()` function, but can only be called on existing models. Wrappers for this function include: `update_card()`, `update_card_labels()`, `update_card_members()` and `update_item()` (for updating checklist items).
+The `put_model()` function follows the same logic as the `post_model()` function, but can only be called on existing models. Wrappers for this function include: `update_card()`, `update_card_labels()`, `update_card_members()` and `update_checkitem()` (for updating checklist items).
 
 ###Deleting models
 
