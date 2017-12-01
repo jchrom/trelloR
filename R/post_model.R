@@ -16,6 +16,35 @@
 #' @param verbose Whether to pass \code{verbose()} to \code{\link[httr]{POST}}
 #' @importFrom httr modify_url POST content status_code headers message_for_status warn_for_status stop_for_status verbose
 #' @export
+#' @examples
+#'
+#' \dontrun{
+#'
+#' # Get token with write access
+#' token = get_token(yourkey, yoursecret, scope = c("read", "write"))
+#'
+#' # Get board ID
+#' url = "Your board URL"
+#' bid = get_id_board(url, token)
+#'
+#' # Get lists on that board, extract ID of the first one
+#' lid = get_board_lists(bid, token)$id[1]
+#'
+#' # Content for the new card
+#' payload = list(
+#'   idList = lid,
+#'   name = "A new card",
+#'   desc = "#This card has been created by trelloR",
+#'   pos = "bottom"
+#' )
+#'
+#' # Create card and store the response (to capture the ID
+#' # of the newly created model)
+#' r = post_model(model = "card", body = payload, token = token)
+#'
+#' # Get ID of the new card
+#' r$id
+#' }
 
 post_model = function(model, id = NULL, path = NULL, body = list(name = "New"),
                       token, response = "content", on.error = "warning",

@@ -15,6 +15,23 @@
 #' @param handle Passed to \code{\link[httr]{DELETE}}
 #' @importFrom httr modify_url DELETE content status_code headers message_for_status warn_for_status stop_for_status verbose
 #' @export
+#' @examples
+#'
+#' \dontrun{
+#'
+#' # Get token with write access
+#' token = get_token(yourkey, yoursecret, scope = c("read", "write"))
+#'
+#' # Get board ID
+#' url = "Your board URL"
+#' bid = get_id_board(url, token)
+#'
+#' # Get cards and extract ID of the first one
+#' cid = get_board_cards(bid, token)$id[1]
+#'
+#' # Delete it
+#' delete_model(model = "card", id = cid, token = token)
+#' }
 
 delete_model = function(model, id = NULL, path = NULL, token,
                         response = "content", on.error = "warning",
