@@ -100,25 +100,23 @@
     </div>
 
     <div class="contents">
-    <div id="trellor-0-3-0" class="section level1">
+    <div id="trellor-0-4-0" class="section level1">
 <h1 class="hasAnchor">
-<a href="#trellor-0-3-0" class="anchor"></a>trelloR 0.3.0</h1>
+<a href="#trellor-0-4-0" class="anchor"></a>trelloR 0.4.0</h1>
 <p><strong>New features</strong></p>
 <ul>
-<li>you can now get a token with write and account permissions</li>
-<li>and you can specify its expiration (incl. never for never expiring tokens)</li>
-<li>you can now issue POST requests to add cards, comments, members to cards etc.</li>
-<li>you can use the add_ family of functions, which are wrappers for post_model()</li>
+<li>You can now issue PUT and DELETE requests</li>
+<li>Calling wrappers update_ and delete_ is going to make it easier for you</li>
+<li>you can decide whether you want to obtain content of a response (data.frame for get_, list for the others) or a complete response object including headers, statuses etc.</li>
 </ul>
-<p><strong>Deprecated functions</strong></p>
+<p><strong>Deprecated arguments</strong></p>
 <ul>
-<li>trello_get_token() has been deprecated, use get_token() instead</li>
-<li>trello_get_model() has been deprecated, use get_model() instead</li>
+<li>bind.rows in get_token() has been deprecated, will always try to return a single data.frame if content is returned</li>
 </ul>
 <p><strong>Other stuff</strong></p>
 <ul>
-<li>greater reliance on httr - eg. when building URLs or convert status codes to messages/warnings/errors in R (this is true only for the newly added code, but in time I will rewrite the older code too)</li>
-<li>updated vignette</li>
+<li>refactored GET-related code to make use of httr function for repeated requests, stopping/warning/messaging on errors</li>
+<li>updated vignette and pkg docs</li>
 </ul>
 </div>
     </div>
@@ -128,7 +126,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#trellor-0-3-0">0.3.0</a></li>
+        <li><a href="#trellor-0-4-0">0.4.0</a></li>
       </ul>
     </div>
   </div>
