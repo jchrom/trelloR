@@ -9,6 +9,7 @@
 \alias{get_board_labels}
 \alias{get_board_lists}
 \alias{get_board_members}
+\alias{get_board_fields}
 \alias{get_card_checklists}
 \title{Get Board}
 \usage{
@@ -26,6 +27,8 @@ get_board_lists(id, ...)
 
 get_board_members(id, ...)
 
+get_board_fields(id, ...)
+
 get_card_checklists(id, ...)
 }
 \arguments{
@@ -35,6 +38,10 @@ get_card_checklists(id, ...)
 }
 \description{
 Returns a flat \code{data.frame} with board-related data.
+}
+\details{
+As of now, Trello API does not allow recursion for custom fields, so they can
+only be fetched one board at a time.
 }
 \seealso{
 \code{\link{get_model}}
