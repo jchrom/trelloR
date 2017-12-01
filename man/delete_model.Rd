@@ -33,3 +33,21 @@ Issues \code{\link[httr]{DELETE}} requests for Trello API endpoints.
 See \href{https://developers.trello.com/v1.0/reference}{Trello API reference}
 for more info about what arguments can be passed to DELETE requests.
 }
+\examples{
+
+\dontrun{
+
+# Get token with write access
+token = get_token(yourkey, yoursecret, scope = c("read", "write"))
+
+# Get board ID
+url = "Your board URL"
+bid = get_id_board(url, token)
+
+# Get cards and extract ID of the first one
+cid = get_board_cards(bid, token)$id[1]
+
+# Delete it
+delete_model(model = "card", id = cid, token = token)
+}
+}

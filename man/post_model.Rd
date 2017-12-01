@@ -36,3 +36,33 @@ Issues \code{\link[httr]{POST}} requests for Trello API endpoints.
 See \href{https://developers.trello.com/v1.0/reference}{Trello API reference}
 for more info about what arguments can be passed to POST requests.
 }
+\examples{
+
+\dontrun{
+
+# Get token with write access
+token = get_token(yourkey, yoursecret, scope = c("read", "write"))
+
+# Get board ID
+url = "Your board URL"
+bid = get_id_board(url, token)
+
+# Get lists on that board, extract ID of the first one
+lid = get_board_lists(bid, token)$id[1]
+
+# Content for the new card
+payload = list(
+  idList = lid,
+  name = "A new card",
+  desc = "#This card has been created by trelloR",
+  pos = "bottom"
+)
+
+# Create card and store the response (to capture the ID
+# of the newly created model)
+r = post_model(model = "card", body = payload, token = token)
+
+# Get ID of the new card
+r$id
+}
+}

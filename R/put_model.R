@@ -16,6 +16,32 @@
 #' @param handle Passed to \code{\link[httr]{PUT}}
 #' @importFrom httr modify_url PUT content status_code headers message_for_status warn_for_status stop_for_status
 #' @export
+#' @examples
+#'
+#' \dontrun{
+#'
+#' # Get token with write access
+#' token = get_token(yourkey, yoursecret, scope = c("read", "write"))
+#'
+#' # Get board ID
+#' url = "Your board URL"
+#' bid = get_id_board(url, token)
+#'
+#' # Get cards and extract ID of the first one
+#' cid = get_board_cards(bid, token)$id[1]
+#'
+#' # Content for the new card
+#' payload = list(
+#'   id = cid,
+#'   name = "A new card name",
+#'   desc = "Description - updated by trelloR",
+#'   pos = "top" #put card on the top of a list
+#' )
+#'
+#' # Update card's name, descriptionand position
+#' put_model(model = "card", id = cid, body = payload, token = token)
+#' }
+
 
 put_model = function(model, id = NULL, path = NULL, body = NULL,
                      token, response = "content", on.error = "warning",

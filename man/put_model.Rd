@@ -36,3 +36,29 @@ Issues \code{\link[httr]{PUT}} requests for Trello API endpoints.
 See \href{https://developers.trello.com/v1.0/reference}{Trello API reference}
 for more info about what arguments can be passed to PUT requests.
 }
+\examples{
+
+\dontrun{
+
+# Get token with write access
+token = get_token(yourkey, yoursecret, scope = c("read", "write"))
+
+# Get board ID
+url = "Your board URL"
+bid = get_id_board(url, token)
+
+# Get cards and extract ID of the first one
+cid = get_board_cards(bid, token)$id[1]
+
+# Content for the new card
+payload = list(
+  id = cid,
+  name = "A new card name",
+  desc = "Description - updated by trelloR",
+  pos = "top" #put card on the top of a list
+)
+
+# Update card's name, descriptionand position
+put_model(model = "card", id = cid, body = payload, token = token)
+}
+}
