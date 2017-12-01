@@ -5,7 +5,8 @@
 \title{PUT data to Trello API}
 \usage{
 put_model(model, id = NULL, path = NULL, body = NULL, token,
-  verbose = FALSE, response = "content", on.error = "warning", ...)
+  response = "content", on.error = "warning", encode = "json",
+  handle = NULL, verbose = FALSE)
 }
 \arguments{
 \item{model}{Model}
@@ -18,13 +19,15 @@ put_model(model, id = NULL, path = NULL, body = NULL, token,
 
 \item{token}{Secure token, see \code{\link{get_token}} (scope must include write permissions)}
 
-\item{verbose}{Whether to pass \code{verbose()} to \code{\link[httr]{PUT}}}
-
 \item{response}{Can return \code{"content"} (default), \code{"headers"}, \code{"status"} code or the complete \code{"response"}}
 
 \item{on.error}{Issues either \code{\link[base]{warning}} (default), \code{\link[base]{message}} or error (and \code{\link[base]{stop}}s)}
 
-\item{...}{Additional arguments passed to \code{\link[httr]{PUT}}}
+\item{encode}{Passed to \code{\link[httr]{PUT}}}
+
+\item{handle}{Passed to \code{\link[httr]{PUT}}}
+
+\item{verbose}{Whether to pass \code{verbose()} to \code{\link[httr]{PUT}}}
 }
 \description{
 Issues \code{\link[httr]{PUT}} requests for Trello API endpoints.
@@ -32,4 +35,30 @@ Issues \code{\link[httr]{PUT}} requests for Trello API endpoints.
 \details{
 See \href{https://developers.trello.com/v1.0/reference}{Trello API reference}
 for more info about what arguments can be passed to PUT requests.
+}
+\examples{
+
+\dontrun{
+
+# Get token with write access
+token = get_token(yourkey, yoursecret, scope = c("read", "write"))
+
+# Get board ID
+url = "Your board URL"
+bid = get_id_board(url, token)
+
+# Get cards and extract ID of the first one
+cid = get_board_cards(bid, token)$id[1]
+
+# Content for the new card
+payload = list(
+  id = cid,
+  name = "A new card name",
+  desc = "Description - updated by trelloR",
+  pos = "top" #put card on the top of a list
+)
+
+# Update card's name, descriptionand position
+put_model(model = "card", id = cid, body = payload, token = token)
+}
 }

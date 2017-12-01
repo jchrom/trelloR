@@ -4,18 +4,14 @@
 \alias{update_card_members}
 \title{Update card members}
 \usage{
-update_card_members(card, members, token, verbose = FALSE, ...)
+update_card_members(card, members, ...)
 }
 \arguments{
 \item{card}{Card id}
 
 \item{members}{A character vector of one or more member id}
 
-\item{token}{Secure token, see \code{\link{get_token}} (scope must include write permissions)}
-
-\item{verbose}{Whether to pass \code{verbose()} to \code{\link[httr]{PUT}}}
-
-\item{...}{Additional arguments passed to \code{\link[httr]{PUT}}}
+\item{...}{Additional arguments passed to \code{\link{put_model}}}
 }
 \description{
 Replace currently assigned members.

@@ -18,10 +18,12 @@
 #' @param filter Filter results by this string
 #' @param limit Defaults to \code{1000}; set to \code{0} to get everything
 #' @param paging Deprecated, use \code{limit = 0} instead
-#' @param bind.rows By default, pages will be combined into one \code{data.frame} by \code{\link[dplyr]{bind_rows}}. Set to \code{FALSE} if you want \code{list} instead. This is useful on the rare occasion that the JSON response is not formatted correctly and makes \code{\link[dplyr]{bind_rows}} fail
+#' @param response Can be either "content" (a \code{\link[dplyr]{tbl}}) or an object of class \code{\link[httr]{response}}
+#' @param bind.rows Deprecated; will always bind rows unless \code{response} is not \code{"content"}
 #' @param add.class Assign additional S3 class (defaults to \code{TRUE})
 #' @seealso \code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}}, \code{\link{get_token}}, \code{\link{get_id}}
 #' @importFrom dplyr bind_rows as_data_frame
+#' @importFrom httr modify_url
 #' @export
 #' @examples
 #' # No authorization is required to access public boards. Let's get
@@ -55,53 +57,70 @@
 #' all_open_cards = get_board_cards(board_id, token, filter = "open")
 #' }
 
-get_model = function(parent = NULL, child = NULL, id = NULL,
-                     token = NULL, query = NULL,
-                     url = NULL, filter = NULL, limit = 1000, paging = FALSE,
-                     bind.rows = TRUE, add.class = TRUE
-) {
+get_model = function(parent = NULL, child = NULL, id = NULL, token = NULL,
+                     query = NULL, url = NULL, filter = NULL, limit = 1000,
+                     paging = FALSE, response = "content", bind.rows = TRUE,
+                     add.class = TRUE)
+{
 
   if (!missing("paging")) {
-    warning("paging is deprecated - set limit to 0 to fetch all", call. = FALSE)
-    if (missing(limit) & paging) limit = 0
+
+    warning(
+      "paging is deprecated - set limit to 0 to fetch all",
+      call. = FALSE
+    )
+
+    if (missing(limit) & paging)
+      limit = 0
   }
 
-  url   = build_url(url = url, parent = parent, child = child, id = id)
-  query = build_query(query = query, filter = filter, limit = limit)
-  result = get_pages(url = url, token = token, query = query)
+  if (!missing("bind.rows")) {
 
-  if (all(add.class, !is.null(child), !is.null(parent)))
-    for (i in seq_along(result)) {
-      result[[i]] = tryCatch(
-        expr = add_class(result[[i]], child = child),
-        error = function(e) {
-          warning("Could not assign additional S3 class.", call. = FALSE)
-          result[[i]]
-        })
-    }
+    warning(
+      "bind.rows is deprecated",
+      call. = FALSE
+    )
+  }
 
-  if (bind.rows)
+  if (is.null(url)) {
+
+    url = modify_url(
+      url = "https://api.trello.com",
+      path = c(1, parent, id, child), #path overrides url if url includes path
+      query = c(query, list(limit = limit, filter = filter))
+    )
+
+  }
+
+  result = paginate(
+    url = url,
+    token = token,
+    response = response
+  )
+
+  if (response == "content")
+
     result = tryCatch(
-      expr  = bind_rows(result),
+
+      expr  = {
+        add_class(
+          x = bind_rows(result),
+          child = child
+        )
+      },
+
       error = function(e) {
-        message("Binding failed: ", e$message)
-        message("Returning list (", length(result), " elements)")
+
+        warning(
+          "Binding failed: ", e$message, "\nreturning list",
+          call. = FALSE
+        )
+
         result
-      })
-  result
-}
+      }
+    )
 
-build_url = function(url, parent, id, child) {
-  if (is.null(url))  {
-    url = paste("https://api.trello.com/1", parent, id, child, sep = "/")
-    url = gsub("[/]+$", "", url) #remove trailing /
-  }
-  url
-}
+  else
 
-build_query = function(query = NULL, filter = NULL, limit = 1000) {
-  if (is.null(query)) query = list()
-  query$filter = filter
-  query$limit  = limit
-  return(query)
+    result
 }

@@ -12,13 +12,40 @@
 #' @param verbose Whether to pass \code{verbose()} to \code{\link[httr]{PUT}}
 #' @param response Can return \code{"content"} (default), \code{"headers"}, \code{"status"} code or the complete \code{"response"}
 #' @param on.error Issues either \code{\link[base]{warning}} (default), \code{\link[base]{message}} or error (and \code{\link[base]{stop}}s)
-#' @param ... Additional arguments passed to \code{\link[httr]{PUT}}
+#' @param encode Passed to \code{\link[httr]{PUT}}
+#' @param handle Passed to \code{\link[httr]{PUT}}
 #' @importFrom httr modify_url PUT content status_code headers message_for_status warn_for_status stop_for_status
 #' @export
+#' @examples
+#'
+#' \dontrun{
+#'
+#' # Get token with write access
+#' token = get_token(yourkey, yoursecret, scope = c("read", "write"))
+#'
+#' # Get board ID
+#' url = "Your board URL"
+#' bid = get_id_board(url, token)
+#'
+#' # Get cards and extract ID of the first one
+#' cid = get_board_cards(bid, token)$id[1]
+#'
+#' # Content for the new card
+#' payload = list(
+#'   id = cid,
+#'   name = "A new card name",
+#'   desc = "Description - updated by trelloR",
+#'   pos = "top" #put card on the top of a list
+#' )
+#'
+#' # Update card's name, descriptionand position
+#' put_model(model = "card", id = cid, body = payload, token = token)
+#' }
 
-put_model = function(model, id = NULL, path = NULL, body = NULL, token,
-                     verbose = FALSE, response = "content",
-                     on.error = "warning", ...) {
+
+put_model = function(model, id = NULL, path = NULL, body = NULL,
+                     token, response = "content", on.error = "warning",
+                     encode = "json", handle = NULL, verbose = FALSE) {
 
   url = modify_url(
     url = "https://api.trello.com",
@@ -37,13 +64,17 @@ put_model = function(model, id = NULL, path = NULL, body = NULL, token,
 
   if (verbose)
     req = PUT(
-      url = url, body = body, config = config(token = token), encode = "json",
-      verbose(),
-      ...)
+      url = url, body = body, config = config(token = token), encode = encode,
+      handle = handle, verbose(),
+      user_agent("https://github.com/jchrom/trelloR")
+    )
+
   else
     req = PUT(
-      url = url, body = body, config = config(token = token), encode = "json",
-      ...)
+      url = url, body = body, config = config(token = token), encode = encode,
+      handle = handle,
+      user_agent("https://github.com/jchrom/trelloR")
+    )
 
   switch(
     on.error,

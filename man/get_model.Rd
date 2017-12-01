@@ -6,7 +6,8 @@
 \usage{
 get_model(parent = NULL, child = NULL, id = NULL, token = NULL,
   query = NULL, url = NULL, filter = NULL, limit = 1000,
-  paging = FALSE, bind.rows = TRUE, add.class = TRUE)
+  paging = FALSE, response = "content", bind.rows = TRUE,
+  add.class = TRUE)
 }
 \arguments{
 \item{parent}{Parent structure (e.g. \code{"board"})}
@@ -27,7 +28,9 @@ get_model(parent = NULL, child = NULL, id = NULL, token = NULL,
 
 \item{paging}{Deprecated, use \code{limit = 0} instead}
 
-\item{bind.rows}{By default, pages will be combined into one \code{data.frame} by \code{\link[dplyr]{bind_rows}}. Set to \code{FALSE} if you want \code{list} instead. This is useful on the rare occasion that the JSON response is not formatted correctly and makes \code{\link[dplyr]{bind_rows}} fail}
+\item{response}{Can be either "content" (a \code{\link[dplyr]{tbl}}) or an object of class \code{\link[httr]{response}}}
+
+\item{bind.rows}{Deprecated; will always bind rows unless \code{response} is not \code{"content"}}
 
 \item{add.class}{Assign additional S3 class (defaults to \code{TRUE})}
 }

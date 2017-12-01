@@ -4,8 +4,9 @@
 \alias{post_model}
 \title{POST data to Trello API}
 \usage{
-post_model(model, id = NULL, path = NULL, body = list(name = "New Card"),
-  token, verbose = FALSE, response = "content", on.error = "warning", ...)
+post_model(model, id = NULL, path = NULL, body = list(name = "New"),
+  token, response = "content", on.error = "warning", encode = "json",
+  handle = NULL, verbose = FALSE)
 }
 \arguments{
 \item{model}{Model}
@@ -18,13 +19,15 @@ post_model(model, id = NULL, path = NULL, body = list(name = "New Card"),
 
 \item{token}{Secure token, see \code{\link{get_token}} (scope must include write permissions)}
 
-\item{verbose}{Whether to pass \code{verbose()} to \code{\link[httr]{POST}}}
-
 \item{response}{Can return \code{"content"} (default), \code{"headers"}, \code{"status"} code or the complete \code{"response"}}
 
 \item{on.error}{Issues either \code{\link[base]{warning}} (default), \code{\link[base]{message}} or error (and \code{\link[base]{stop}}s)}
 
-\item{...}{Additional arguments passed to \code{\link[httr]{POST}}}
+\item{encode}{Passed to \code{\link[httr]{POST}}}
+
+\item{handle}{Passed to \code{\link[httr]{POST}}}
+
+\item{verbose}{Whether to pass \code{verbose()} to \code{\link[httr]{POST}}}
 }
 \description{
 Issues \code{\link[httr]{POST}} requests for Trello API endpoints.
@@ -32,4 +35,34 @@ Issues \code{\link[httr]{POST}} requests for Trello API endpoints.
 \details{
 See \href{https://developers.trello.com/v1.0/reference}{Trello API reference}
 for more info about what arguments can be passed to POST requests.
+}
+\examples{
+
+\dontrun{
+
+# Get token with write access
+token = get_token(yourkey, yoursecret, scope = c("read", "write"))
+
+# Get board ID
+url = "Your board URL"
+bid = get_id_board(url, token)
+
+# Get lists on that board, extract ID of the first one
+lid = get_board_lists(bid, token)$id[1]
+
+# Content for the new card
+payload = list(
+  idList = lid,
+  name = "A new card",
+  desc = "#This card has been created by trelloR",
+  pos = "bottom"
+)
+
+# Create card and store the response (to capture the ID
+# of the newly created model)
+r = post_model(model = "card", body = payload, token = token)
+
+# Get ID of the new card
+r$id
+}
 }

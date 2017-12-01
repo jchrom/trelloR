@@ -4,16 +4,12 @@
 \alias{delete_checklist}
 \title{Delete checklist}
 \usage{
-delete_checklist(checklist, token, verbose = FALSE, ...)
+delete_checklist(checklist, ...)
 }
 \arguments{
 \item{checklist}{Checklist id}
 
-\item{token}{Secure token, see \code{\link{get_token}} (scope must include write permissions)}
-
-\item{verbose}{Whether to pass \code{verbose()} to \code{\link[httr]{DELETE}} (for verbose output)}
-
-\item{...}{Additional arguments passed to \code{\link[httr]{DELETE}}}
+\item{...}{Additional arguments passed to \code{\link{delete_model}}}
 }
 \description{
 DELETE checklist.

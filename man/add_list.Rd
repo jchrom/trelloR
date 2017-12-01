@@ -4,7 +4,7 @@
 \alias{add_list}
 \title{Add list}
 \usage{
-add_list(board, name, position = NULL, token, verbose = FALSE, ...)
+add_list(board, name, position = NULL, ...)
 }
 \arguments{
 \item{board}{Board id}
@@ -13,11 +13,7 @@ add_list(board, name, position = NULL, token, verbose = FALSE, ...)
 
 \item{position}{List position (defaults to \code{NULL}); legal values are \code{"top"}, \code{"bottom"}}
 
-\item{token}{Secure token, see \code{\link{get_token}} (scope must include write permissions)}
-
-\item{verbose}{Whether to pass \code{verbose()} to \code{\link[httr]{POST}} (for verbose output)}
-
-\item{...}{Additional arguments passed to \code{\link[httr]{POST}}}
+\item{...}{Additional arguments passed to \code{\link{post_model}}}
 }
 \description{
 POST list to a board.

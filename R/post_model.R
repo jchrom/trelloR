@@ -9,17 +9,46 @@
 #' @param path Path
 #' @param body A named list of query paramters (will be passed as body)
 #' @param token Secure token, see \code{\link{get_token}} (scope must include write permissions)
-#' @param verbose Whether to pass \code{verbose()} to \code{\link[httr]{POST}}
 #' @param response Can return \code{"content"} (default), \code{"headers"}, \code{"status"} code or the complete \code{"response"}
 #' @param on.error Issues either \code{\link[base]{warning}} (default), \code{\link[base]{message}} or error (and \code{\link[base]{stop}}s)
-#' @param ... Additional arguments passed to \code{\link[httr]{POST}}
+#' @param encode Passed to \code{\link[httr]{POST}}
+#' @param handle Passed to \code{\link[httr]{POST}}
+#' @param verbose Whether to pass \code{verbose()} to \code{\link[httr]{POST}}
 #' @importFrom httr modify_url POST content status_code headers message_for_status warn_for_status stop_for_status verbose
 #' @export
+#' @examples
+#'
+#' \dontrun{
+#'
+#' # Get token with write access
+#' token = get_token(yourkey, yoursecret, scope = c("read", "write"))
+#'
+#' # Get board ID
+#' url = "Your board URL"
+#' bid = get_id_board(url, token)
+#'
+#' # Get lists on that board, extract ID of the first one
+#' lid = get_board_lists(bid, token)$id[1]
+#'
+#' # Content for the new card
+#' payload = list(
+#'   idList = lid,
+#'   name = "A new card",
+#'   desc = "#This card has been created by trelloR",
+#'   pos = "bottom"
+#' )
+#'
+#' # Create card and store the response (to capture the ID
+#' # of the newly created model)
+#' r = post_model(model = "card", body = payload, token = token)
+#'
+#' # Get ID of the new card
+#' r$id
+#' }
 
-post_model = function(model, id = NULL, path = NULL,
-                      body = list(name = "New Card"), token,
-                      verbose = FALSE, response = "content",
-                      on.error = "warning", ...) {
+post_model = function(model, id = NULL, path = NULL, body = list(name = "New"),
+                      token, response = "content", on.error = "warning",
+                      encode = "json", handle = NULL, verbose = FALSE) {
 
   url = modify_url(
     url = "https://api.trello.com",
@@ -38,13 +67,17 @@ post_model = function(model, id = NULL, path = NULL,
 
   if (verbose)
     req = POST(
-      url = url, body = body, config = config(token = token),
-      verbose(),
-      ...)
+      url = url, body = body, config = config(token = token), encode = encode,
+      handle = handle, verbose(),
+      user_agent("https://github.com/jchrom/trelloR")
+    )
+
   else
     req = POST(
-      url = url, body = body, config = config(token = token),
-      ...)
+      url = url, body = body, config = config(token = token), encode = encode,
+      handle = handle,
+      user_agent("https://github.com/jchrom/trelloR")
+    )
 
   switch(
     on.error,

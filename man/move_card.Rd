@@ -4,18 +4,14 @@
 \alias{move_card}
 \title{Move card}
 \usage{
-move_card(card, list, token, verbose = FALSE, ...)
+move_card(card, list, ...)
 }
 \arguments{
 \item{card}{Card id}
 
 \item{list}{List id}
 
-\item{token}{Secure token, see \code{\link{get_token}} (scope must include write permissions)}
-
-\item{verbose}{Whether to pass \code{verbose()} to \code{\link[httr]{PUT}}}
-
-\item{...}{Additional arguments passed to \code{\link[httr]{PUT}}}
+\item{...}{Additional arguments passed to \code{\link{put_model}}}
 }
 \description{
 Move card to another list.
