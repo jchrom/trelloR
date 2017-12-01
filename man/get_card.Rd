@@ -6,6 +6,7 @@
 \alias{get_card_comments}
 \alias{get_card_labels}
 \alias{get_card_members}
+\alias{get_card_fields}
 \title{Get Card}
 \usage{
 get_card_actions(id, ...)
@@ -15,6 +16,8 @@ get_card_comments(id, ...)
 get_card_labels(id, ...)
 
 get_card_members(id, ...)
+
+get_card_fields(id, ...)
 }
 \arguments{
 \item{id}{Card ID}
@@ -23,6 +26,10 @@ get_card_members(id, ...)
 }
 \description{
 Returns a flat \code{data.frame} with card-related data.
+}
+\details{
+As of now, Trello API does not allow recursion for custom fields, so they can
+only be fetched one card at a time.
 }
 \seealso{
 \code{\link{get_model}}
