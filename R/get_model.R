@@ -83,39 +83,45 @@ get_model = function(parent = NULL, child = NULL, id = NULL, token = NULL,
   }
 
   if (is.null(url)) {
-
     url = modify_url(
       url = "https://api.trello.com",
       path = c(1, parent, id, child), #path overrides url if url includes path
       query = c(query, list(limit = limit, filter = filter))
     )
-
   }
 
-  result = paginate(
-    url = url,
-    token = token,
-    response = response
+  paginate = all(
+    request_type(url) == "iterative",
+    any(
+      result_limit(url) == 0,
+      result_limit(url)  > 1000
+    )
   )
+
+  if (paginate) {
+
+    result = paginate(
+      url = url,
+      token = token,
+      response = response
+    )
+
+  } else {
+
+    result = get_url(
+      url = url,
+      token = token,
+      response = response
+    )
+  }
 
   if (response == "content")
 
-    result = tryCatch(
-
-      expr  = {
-        add_class(
-          x = bind_rows(result),
-          child = child
-        )
-      },
-
+    tryCatch(
+      # bind_rows works even if only 1 data.frame or empty list is supplied
+      expr  = add_class(x = bind_rows(result), child = child),
       error = function(e) {
-
-        warning(
-          "Binding failed: ", e$message, "\nreturning list",
-          call. = FALSE
-        )
-
+        warning("Binding failed: ", e$message, "\nreturning list", call. = FALSE)
         result
       }
     )
@@ -123,4 +129,19 @@ get_model = function(parent = NULL, child = NULL, id = NULL, token = NULL,
   else
 
     result
+}
+
+result_limit = function(url) {
+
+  limit = as.integer(
+    httr::parse_url(url)$query$limit
+  )
+
+  if (identical(limit, integer(0))) return(NULL)
+
+  if (is.na(limit)) stop("limit must be an integer of length 1", call. = FALSE)
+
+  if (limit < 0) stop("limit must be 0 or higher", call. = FALSE)
+
+  limit
 }

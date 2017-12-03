@@ -10,21 +10,19 @@ paginate = function(url, token = NULL, response = "content") {
 
   # This decides how pagination will be done. The default passed from get_model
   # is 1000 (ie ne full page) and this should also be used if not limit is set
-  limit = get_limit(url)
+  limit = result_limit(url)
 
-  if (is.null(limit))
-
-    result = get_url(
-      url = modify_url(url, query = list(limit = 1000)),
-      token = token,
-      response = response
+  invalid_limit = any(
+    is.null(result_limit(url)),
+    all(
+      result_limit(url) <= 1000,
+      result_limit(url) >  0
     )
+  )
 
-  else if (limit < 0)
+  if (invalid_limit) stop("Paging only if limit is 0 or over 1000", call. = FALSE)
 
-    stop("'limit' must be 0 or higher", call. = FALSE)
-
-  else if (limit == 0) {
+  if (limit == 0) {
 
     result = list()
     req = url #only used in the first iteration
@@ -33,7 +31,7 @@ paginate = function(url, token = NULL, response = "content") {
 
       req = get_url(
         url = modify_url(
-          url = get_next_url(req),
+          url = next_url(req),
           query = list(limit = 1000)
         ),
         token = token,
@@ -42,18 +40,10 @@ paginate = function(url, token = NULL, response = "content") {
 
       result = append(result, list(req))
 
-      if (get_page_length(req) < 1000)
+      if (page_length(req) < 1000)
         break
     }
   }
-
-  else if (limit <= 1000)
-
-    result = get_url(
-      url = url,
-      token = token,
-      response = response
-    )
 
   else {
 
@@ -64,7 +54,7 @@ paginate = function(url, token = NULL, response = "content") {
 
       req = get_url(
         url = modify_url(
-          url = get_next_url(req),
+          url = next_url(req),
           query = list(limit = i)
         ),
         token = token,
@@ -73,49 +63,37 @@ paginate = function(url, token = NULL, response = "content") {
 
       result = append(result, list(req))
 
-      if (get_page_length(req) < 1000)
+      if (page_length(req) < 1000)
         break
     }
   }
 
-  if (inherits(result, "list"))
 
-    message(
-      "Request complete. Got ",
-      sum(
-        unlist(
-          lapply(result, attr, "page.length")
-        )
-      ),
-      " results.\n"
+  n_results = sum(
+    vapply(
+      result, attr, "page.length",
+      FUN.VALUE = numeric(1)
     )
+  )
 
-  else
+  message("Request complete. Got ", n_results, " results.\n")
 
-    message("Request complete")
-
-  if (inherits(result, "list") && length(result) == 1)
-
-    result[[1]]
-
-  else
-
+  switch(
+    as.character(length(result)),
+    "0" = list(),
+    "1" = result[[1]],
     result
+  )
 }
 
-get_limit = function(url) {
-  limit = httr::parse_url(url)$query$limit
-  if (is.null(limit)) NULL else as.numeric(limit)
-}
-
-get_next_url = function(x) {
-  if (is.null(attributes(x)$next.page))
+next_url = function(x) {
+  if (is.null(attributes(x)$next.url))
     x
   else
-    attributes(x)$next.page
+    attributes(x)$next.url
 }
 
-get_page_length = function(x)
+page_length = function(x)
   attributes(x)$page.length
 
 page_limits = function(x) {
@@ -237,25 +215,25 @@ as_tbl_response = function(x, ...) {
     )
   }
 
-  request_type = function(url) {
-
-    path = parse_url(url)$path
-    segments = unlist(strsplit(path, "/"))[-1]
-
-    switch(
-      length(segments),
-      `1` = "search",
-      `2` = "singleton",
-      `3` = "iterative",
-      "singleton"
-    )
-  }
-
   switch(
     request_type(x$url),
     search = as_df_search(x),
     singleton = as_df_singleton(x),
     iterative = as_df_iterative(x),
     as_df_singleton(x)
+  )
+}
+
+request_type = function(url) {
+
+  path = httr::parse_url(url)$path
+  segments = unlist(strsplit(path, "/"))[-1] #Trello API path starts with /1/
+
+  switch(
+    length(segments),
+    `1` = "search",
+    `2` = "singleton",
+    `3` = "iterative",
+    "singleton"
   )
 }
