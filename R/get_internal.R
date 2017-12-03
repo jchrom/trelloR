@@ -151,12 +151,13 @@ get_url = function(url, token = NULL, response = "content", retry.times = 3) {
 #' multiple rows if there are more than 1 results; singleton requests return
 #' a data.frame with 1 row (usually containing some list columns with nested
 #' data); searches also return a data.frame with 1 row, including
-#' @param httr content parse_url modify_url
-#' @param dplyr as_data_frame as.tbl
-#' @param jsonlite fromJSON
+#' @param x Object of class \code{"response"}
+#' @importFrom httr content parse_url modify_url
+#' @importFrom dplyr as_data_frame as_data_frame
+#' @importFrom jsonlite fromJSON
 #' @export
 
-as_tbl_response = function(x, ...) {
+as_tbl_response = function(x) {
 
   stopifnot(inherits(x, "response"))
 
@@ -203,7 +204,7 @@ as_tbl_response = function(x, ...) {
   as_df_iterative = function(x) {
 
     response_text = content(x, as = "text")
-    response_df = as.tbl(fromJSON(response_text, flatten = TRUE))
+    response_df = as_data_frame(fromJSON(response_text, flatten = TRUE))
 
     structure(
       response_df,

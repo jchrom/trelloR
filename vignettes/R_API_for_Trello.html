@@ -12,7 +12,7 @@
 
 <meta name="author" content="Jakub Chromec" />
 
-<meta name="date" content="2017-12-01" />
+<meta name="date" content="2017-12-03" />
 
 <title>R API for Trello</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">R API for Trello</h1>
 <h4 class="author"><em>Jakub Chromec</em></h4>
-<h4 class="date"><em>2017-12-01</em></h4>
+<h4 class="date"><em>2017-12-03</em></h4>
 
 
 
@@ -88,13 +88,11 @@ idb =<span class="st"> </span><span class="kw">get_id_board</span>(<span class="
 <span class="co">#&gt; GET URL:</span>
 <span class="co">#&gt; https://api.trello.com/1/board/nC8QJJoZ?fields=name&amp;limit=1000</span>
 <span class="co">#&gt; Fetched 1 result(s)</span>
-<span class="co">#&gt; Request complete</span>
 cards =<span class="st"> </span><span class="kw">get_board_cards</span>(idb, <span class="dt">limit =</span> <span class="dv">5</span>)
 <span class="co">#&gt; </span>
 <span class="co">#&gt; GET URL:</span>
 <span class="co">#&gt; https://api.trello.com/1/board/4d5ea62fd76aa1136000000c/cards?limit=5</span>
-<span class="co">#&gt; Fetched 5 result(s)</span>
-<span class="co">#&gt; Request complete</span></code></pre></div>
+<span class="co">#&gt; Fetched 5 result(s)</span></code></pre></div>
 <p>The above example uses <code>get_id_board()</code> to get the board ID based on its URL. Board ID is then supplied to <code>get_board_cards()</code> which fetches card-related data. The <code>limit = 5</code> parameter just means that only the 5 newest cards will be returned.</p>
 <p>If there are no complaints from the server, a JSON response is received and converted into a <code>data.frame</code>. It will pretty-print like this:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cards
@@ -142,8 +140,7 @@ card_updates =<span class="st"> </span><span class="kw">get_card_updates</span>(
 <span class="co">#&gt; </span>
 <span class="co">#&gt; GET URL:</span>
 <span class="co">#&gt; https://api.trello.com/1/card/59c03456e1ea9ffc086f1ca3/actions?limit=5&amp;filter=updateCard</span>
-<span class="co">#&gt; Fetched 2 result(s)</span>
-<span class="co">#&gt; Request complete</span></code></pre></div>
+<span class="co">#&gt; Fetched 2 result(s)</span></code></pre></div>
 <p>For a detailed list of all possible queries, consult the <a href="https://developers.trello.com/v1.0/reference">Trello API reference</a>.</p>
 </div>
 <div id="additional-arguments-for-get_model" class="section level3">
@@ -161,8 +158,7 @@ card_updates =<span class="st"> </span><span class="kw">get_card_updates</span>(
 <span class="co">#&gt; </span>
 <span class="co">#&gt; GET URL:</span>
 <span class="co">#&gt; https://api.trello.com/1/board/4d5ea62fd76aa1136000000c/actions?limit=5&amp;filter=commentCard</span>
-<span class="co">#&gt; Fetched 5 result(s)</span>
-<span class="co">#&gt; Request complete</span></code></pre></div>
+<span class="co">#&gt; Fetched 5 result(s)</span></code></pre></div>
 </div>
 <div id="error-handling" class="section level3">
 <h3>Error handling</h3>
@@ -174,7 +170,7 @@ card_updates =<span class="st"> </span><span class="kw">get_card_updates</span>(
 <span class="co">#&gt; </span>
 <span class="co">#&gt; GET URL:</span>
 <span class="co">#&gt; https://api.trello.com/1/card/I_have_a_bad_feeling_about_this/actions?limit=1000</span>
-<span class="co">#&gt; Request failed [400]. Retrying in 2 seconds...</span>
+<span class="co">#&gt; Request failed [400]. Retrying in 1.3 seconds...</span>
 <span class="co">#&gt; Request failed [400]. Retrying in 3.6 seconds...</span>
 <span class="co">#&gt; Bad Request (HTTP 400).</span></code></pre></div>
 <p>In case of a server-side error, the request will be re-send two more times, with random delay before each attempt. If it fails for the 3rd time, the error message is printed in the console.</p>
@@ -254,7 +250,7 @@ new_card = post_model(model = &quot;card&quot;, body = payload, token = token)</
 <span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; other attached packages:</span>
-<span class="co">#&gt; [1] httr_1.3.1    trelloR_0.3.0</span>
+<span class="co">#&gt; [1] httr_1.3.1    trelloR_0.4.0</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; loaded via a namespace (and not attached):</span>
 <span class="co">#&gt;  [1] Rcpp_0.12.13     rstudioapi_0.7   knitr_1.17       bindr_0.1       </span>

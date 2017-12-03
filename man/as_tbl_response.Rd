@@ -4,14 +4,10 @@
 \alias{as_tbl_response}
 \title{Coerce response object to data.frame}
 \usage{
-as_tbl_response(x, ...)
+as_tbl_response(x)
 }
 \arguments{
-\item{httr}{content parse_url modify_url}
-
-\item{dplyr}{as_data_frame as.tbl}
-
-\item{jsonlite}{fromJSON}
+\item{x}{Object of class \code{"response"}}
 }
 \description{
 Coerce response object to data.frame.
