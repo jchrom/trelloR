@@ -149,18 +149,14 @@ get_url = function(url, token = NULL, response = "content", retry.times = 3) {
 
   if (response == "content" && length(content(req)) > 0)
 
-    res = structure(
-      .Data = as_tbl_response(req),
-      next.page = set_next_url(req),
-      page.length = nrow(as_tbl_response(req))
-    )
+    res = as_tbl_response(req)
 
   else
 
     res = structure(
       .Data = req,
-      next.page = set_next_url(req),
-      page.length = length(content(req))
+      next.url = attributes(as_tbl_response(req))[["next.url"]],
+      page.length = attributes(as_tbl_response(req))[["page.length"]]
     )
 
   message("Fetched ", attributes(res)$page.length, " result(s)\n")
@@ -168,72 +164,98 @@ get_url = function(url, token = NULL, response = "content", retry.times = 3) {
   res
 }
 
+#' Coerce response object to data.frame
+#'
+#' Coerce response object to data.frame.
+#'
+#' The exact shape of the data.frame depends on its content, and also on the
+#' type of the GET request. Iterative requests can return data.frames with
+#' multiple rows if there are more than 1 results; singleton requests return
+#' a data.frame with 1 row (usually containing some list columns with nested
+#' data); searches also return a data.frame with 1 row, including
+#' @param httr content parse_url modify_url
+#' @param dplyr as_data_frame as.tbl
+#' @param jsonlite fromJSON
+#' @export
+
 as_tbl_response = function(x, ...) {
 
   stopifnot(inherits(x, "response"))
 
-  x = httr::content(x, as = "text")
-  x = jsonlite::fromJSON(x, flatten = TRUE)
+  as_df_search = function(x) {
 
-  # If the response is a malformed data (which cannot be flattened by the
-  # previous step) we have to be content with unlisted version coerced into
-  # tbl
+    response_text = content(x, as = "text")
+    response_list = fromJSON(response_text)
 
-  if (is.data.frame(x))
-
-    dplyr::as.tbl(x)
-
-  else
-
-    squash_list(x)
-}
-
-set_next_url = function(x) {
-
-  stopifnot(inherits(x, "response"))
-
-  before = tryCatch(
-    expr = {
-      model_ids =
-        unlist(
-          lapply(
-            httr::content(x), `[[`, "id"
-          )
-        )
-      before = min(model_ids)
-    },
-    error = function(e)
-      NULL
-  )
-
-  httr::modify_url(
-    url = x$url,
-    query = list(before = before)
-  )
-}
-
-squash_list = function(x) {
-
-  # replace NULL values
-  replace_null = function(x, becomes = "") {
-    x[sapply(x, is.null)] = becomes
-    x
-  }
-
-  # single out shallow elements
-  scalars = x[sapply(x, length) <= 1]
-  vectors = x[sapply(x, length) >= 2]
-
-  # make df out of scalars
-  df = dplyr::as_data_frame(
-    replace_null(scalars)
-  )
-
-  # add non-scalar elements
-  for (i in names(vectors))
-    df[i] = list(
-      replace_null(vectors[i])
+    response_lengths = vapply(
+      X = response_list$options$modelType,
+      FUN.VALUE = numeric(1),
+      FUN = function(model_type) length(response_list[[model_type]])
     )
 
-  df
+    response_df = dplyr::as_data_frame(t(as.matrix(response_list)))
+    response_df$options = NULL
+
+    structure(
+      response_df,
+      next.url = NA,
+      page.length = sum(response_lengths),
+      search.options = response_list$options
+    )
+  }
+
+  as_df_singleton = function(x) {
+
+    response_list = httr::content(x)
+    response_df = dplyr::as_data_frame(t(as.matrix(response_list)))
+
+    response_df[] = lapply(
+      response_df,
+      function(col)
+        if (length(unlist(col)) <= 1) unlist(col) else col
+    )
+
+    structure(
+      response_df,
+      next.url = NA,
+      page.length = nrow(response_df)
+    )
+  }
+
+  as_df_iterative = function(x) {
+
+    response_text = content(x, as = "text")
+    response_df = as.tbl(fromJSON(response_text, flatten = TRUE))
+
+    structure(
+      response_df,
+      next.url = modify_url(
+        url = x$url,
+        query = list(before = min(response_df$id))
+      ),
+      page.length = nrow(response_df)
+    )
+  }
+
+  request_type = function(url) {
+
+    path = parse_url(url)$path
+    segments = unlist(strsplit(path, "/"))[-1]
+
+    switch(
+      length(segments),
+      `1` = "search",
+      `2` = "singleton",
+      `3` = "iterative",
+      "singleton"
+    )
+  }
+
+  switch(
+    request_type(x$url),
+    search = as_df_search(x),
+    singleton = as_df_singleton(x),
+    iterative = as_df_iterative(x),
+    as_df_singleton(x)
+  )
 }
