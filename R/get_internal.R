@@ -125,7 +125,7 @@ get_url = function(url, token = NULL, response = "content", retry.times = 3) {
 
   stop_for_status(req)
 
-  if (response == "content" && length(content(req)) > 0)
+  if (response == "content")
 
     res = as_tbl_response(req)
 
@@ -153,13 +153,29 @@ get_url = function(url, token = NULL, response = "content", retry.times = 3) {
 #' data); searches also return a data.frame with 1 row, including
 #' @param x Object of class \code{"response"}
 #' @importFrom httr content parse_url modify_url
-#' @importFrom dplyr as_data_frame as_data_frame
+#' @importFrom dplyr as_data_frame data_frame
 #' @importFrom jsonlite fromJSON
 #' @export
 
 as_tbl_response = function(x) {
 
   stopifnot(inherits(x, "response"))
+
+  response_is_empty = length(content(x)) == 0
+
+  if (response_is_empty) {
+
+    response_list = structure(
+      list(),
+      next.url = NA,
+      page.length = 0
+    )
+
+    message("\nResponse was empty")
+
+    return(response_list)
+
+  }
 
   as_df_search = function(x) {
 

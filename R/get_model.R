@@ -115,10 +115,16 @@ get_model = function(parent = NULL, child = NULL, id = NULL, token = NULL,
     )
   }
 
-  if (response == "content")
+  if (response == "content" && length(result) == 0) {
+
+    message("Nothing to coerce to a data.frame; returning NULL")
+    NULL
+
+  }
+
+  else if (response == "content")
 
     tryCatch(
-      # bind_rows works even if only 1 data.frame or empty list is supplied
       expr  = add_class(x = bind_rows(result), child = child),
       error = function(e) {
         warning("Binding failed: ", e$message, "\nreturning list", call. = FALSE)
