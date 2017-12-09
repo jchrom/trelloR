@@ -182,10 +182,13 @@ as_tbl_response = function(x) {
     response_text = content(x, as = "text")
     response_list = fromJSON(response_text)
 
+    nrow_safe = function(x)
+      if (inherits(x, "data.frame")) nrow(x) else 0
+
     response_lengths = vapply(
       X = response_list$options$modelType,
       FUN.VALUE = numeric(1),
-      FUN = function(model_type) length(response_list[[model_type]])
+      FUN = function(model_type) nrow_safe(response_list[[model_type]])
     )
 
     response_df = dplyr::as_data_frame(t(as.matrix(response_list)))

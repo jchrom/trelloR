@@ -6,10 +6,10 @@
 
 #' Search models
 #'
-#' Returns a \code{list} with search results.
+#' Deprecated. Use \code{\link{search_model}}
 #' @param string Text to search for
 #' @param ... Additional arguments passed to \code{\link{get_model}}
-#' @seealso \code{\link{get_model}} \code{\link{trello_get_token}}
+#' @seealso \code{\link{get_model}} \code{\link{get_token}}
 #' @name trello_search
 #' @examples
 #' # Searches are only possible if authorized - a token is required:
@@ -25,58 +25,35 @@ NULL
 #' @export
 #' @rdname trello_search
 trello_search = function(string, ...) {
-
-    dat = get_model(parent = "search", id = NULL, child = NULL,
-                     query = list(query = string), ...)
-    return(dat)
+    .Deprecated("search_model")
 }
 
 #' @export
 #' @rdname trello_search
 trello_search_actions = function(string, ...) {
-
-    string = paste0(string, "?modelTypes:actions")
-    dat = get_model(parent = "search", id = NULL, child = NULL,
-                     query = list(query = string), ...)
-    return(dat)
+  .Deprecated("search_actions")
 }
 
 #' @export
 #' @rdname trello_search
 trello_search_cards = function(string, ...) {
-
-    string = paste0(string, "?modelTypes:cards")
-    dat = get_model(parent = "search", id = NULL, child = NULL,
-                     query = list(query = string), ...)
-    return(dat)
+  .Deprecated("search_cards")
 }
 
 #' @export
 #' @rdname trello_search
 trello_search_boards = function(string, ...) {
-
-    string = paste0(string, "?modelTypes:boards")
-    dat = get_model(parent = "search", id = NULL, child = NULL,
-                     query = list(query = string), ...)
-    return(dat)
+  .Deprecated("search_boards")
 }
 
 #' @export
 #' @rdname trello_search
 trello_search_members = function(string, ...) {
-
-    string = paste0(string, "?modelTypes:members")
-    dat = get_model(parent = "search", id = NULL, child = NULL,
-                     query = list(query = string), ...)
-    return(dat)
+  .Deprecated("search_members")
 }
 
 #' @export
 #' @rdname trello_search
 trello_search_teams = function(string, ...) {
-
-    string = paste0(string, "?modelTypes:organizations")
-    dat = get_model(parent = "search", id = NULL, child = NULL,
-                     query = list(query = string), ...)
-    return(dat)
+  .Deprecated("search_teams")
 }
