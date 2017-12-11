@@ -8,10 +8,10 @@
 
 as_POSIXct_hex = function(x) {
 
-  # Check input
   stopifnot(is.character(x))
+
   if (!all(nchar(x) == 8))
-    stop("Each element must have 8 characters", call. = FALSE)
+    x = strtrim(x, 8)
 
   # Convert into POSIXct
   as.POSIXct(strtoi(x, 16L), origin = "1970-01-01")
