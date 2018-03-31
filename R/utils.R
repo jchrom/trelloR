@@ -17,8 +17,22 @@ as_POSIXct_hex = function(x) {
   as.POSIXct(strtoi(x, 16L), origin = "1970-01-01")
 }
 
-# NOT FOR EXPORT ----
-# -------------------
+#' Exctract ID
+#'
+#' Exctract model ID from model URL. If input is not a valid URL, it is returned
+#' as is.
+#' @param x character vector of length 1
+#' @export
+
+extract_id = function(x) {
+  if (httr:::is.url(x)) {
+    path = httr::parse_url(x)$path
+    x = unlist(strsplit(path, "/"))[2]
+  }
+  x
+}
+
+# NOT FOR EXPORT
 
 .onAttach <- function(libname, pkgname) {
   packageStartupMessage(
