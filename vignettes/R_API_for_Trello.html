@@ -188,7 +188,7 @@ card_updates =<span class="st"> </span><span class="kw">get_card_updates</span>(
 <span class="co">#&gt; GET URL:</span>
 <span class="co">#&gt; https://api.trello.com/1/card/I_have_a_bad_feeling_about_this/actions?limit=1000</span>
 <span class="co">#&gt; Request failed [400]. Retrying in 1 seconds...</span>
-<span class="co">#&gt; Request failed [400]. Retrying in 3.5 seconds...</span>
+<span class="co">#&gt; Request failed [400]. Retrying in 1.1 seconds...</span>
 <span class="co">#&gt; Bad Request (HTTP 400).</span></code></pre></div>
 <p>After a server-side error, the request will be re-send two more times, with random delay before each attempt. If it fails for the 3rd time, the error message is printed in the console and nothing is returned.</p>
 </div>
@@ -272,7 +272,7 @@ post_model(model = &quot;card&quot;, body = payload, token = my_token)</code></p
 <span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; other attached packages:</span>
-<span class="co">#&gt; [1] httr_1.3.1    trelloR_0.4.0</span>
+<span class="co">#&gt; [1] httr_1.3.1    trelloR_0.5.0</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; loaded via a namespace (and not attached):</span>
 <span class="co">#&gt;  [1] Rcpp_0.12.13     rstudioapi_0.7   knitr_1.20       bindr_0.1       </span>
