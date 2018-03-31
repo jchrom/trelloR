@@ -108,7 +108,9 @@
 
 <span class='fu'>get_card_labels</span>(<span class='no'>id</span>, <span class='no'>...</span>)
 
-<span class='fu'>get_card_members</span>(<span class='no'>id</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>get_card_members</span>(<span class='no'>id</span>, <span class='no'>...</span>)
+
+<span class='fu'>get_card_fields</span>(<span class='no'>id</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -123,6 +125,11 @@
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>As of now, Trello API does not allow recursion for custom fields, so they can
+only be fetched one card at a time.</p>
+    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <p><code><a href='get_model.html'>get_model</a></code></p>
@@ -134,6 +141,8 @@
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#details">Details</a></li>
+
       <li><a href="#see-also">See also</a></li>
           </ul>
 

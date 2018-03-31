@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get Board — get_board • trelloR</title>
+<title>Exctract ID — extract_id • trelloR</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -95,52 +95,24 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get Board</h1>
+    <h1>Exctract ID</h1>
     </div>
 
     
-    <p>Returns a flat <code>data.frame</code> with board-related data.</p>
+    <p>Exctract model ID from model URL. If input is not a valid URL, it is returned
+as is.</p>
     
 
-    <pre class="usage"><span class='fu'>get_board_actions</span>(<span class='no'>id</span>, <span class='no'>...</span>)
-
-<span class='fu'>get_board_cards</span>(<span class='no'>id</span>, <span class='no'>...</span>)
-
-<span class='fu'>get_board_checklists</span>(<span class='no'>id</span>, <span class='no'>...</span>)
-
-<span class='fu'>get_board_comments</span>(<span class='no'>id</span>, <span class='no'>...</span>)
-
-<span class='fu'>get_board_labels</span>(<span class='no'>id</span>, <span class='no'>...</span>)
-
-<span class='fu'>get_board_lists</span>(<span class='no'>id</span>, <span class='no'>...</span>)
-
-<span class='fu'>get_board_members</span>(<span class='no'>id</span>, <span class='no'>...</span>)
-
-<span class='fu'>get_board_fields</span>(<span class='no'>id</span>, <span class='no'>...</span>)
-
-<span class='fu'>get_card_checklists</span>(<span class='no'>id</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>extract_id</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>id</th>
-      <td><p>Board ID</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Additional arguments passed to <code><a href='get_model.html'>get_model</a></code></p></td>
+      <th>x</th>
+      <td><p>character vector of length 1</p></td>
     </tr>
     </table>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>As of now, Trello API does not allow recursion for custom fields, so they can
-only be fetched one board at a time.</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <p><code><a href='get_model.html'>get_model</a></code></p>
     
 
   </div>
@@ -148,11 +120,7 @@ only be fetched one board at a time.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-          </ul>
+                </ul>
 
   </div>
 </div>
