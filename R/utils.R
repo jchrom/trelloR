@@ -25,7 +25,10 @@ as_POSIXct_hex = function(x) {
 #' @export
 
 extract_id = function(x) {
-  if (httr:::is.url(x)) {
+
+  is_url = function(x) !is.null(httr::parse_url(x)$hostname)
+
+  if (is_url(x)) {
     path = httr::parse_url(x)$path
     x = unlist(strsplit(path, "/"))[2]
   }
