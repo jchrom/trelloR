@@ -26,6 +26,8 @@ as_POSIXct_hex = function(x) {
 
 extract_id = function(x) {
 
+  if (is.null(x)) return(NULL)
+
   is_url = function(x) !is.null(httr::parse_url(x)$hostname)
 
   if (is_url(x)) {
