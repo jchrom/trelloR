@@ -7,6 +7,9 @@
 #' Get Card
 #'
 #' Returns a flat \code{data.frame} with card-related data.
+#'
+#' As of now, Trello API does not allow recursion for custom fields, so they can
+#' only be fetched one card at a time.
 #' @param id Card ID
 #' @param ... Additional arguments passed to \code{\link{get_model}}
 #' @seealso \code{\link{get_model}}
@@ -52,4 +55,21 @@ get_card_members = function(id, ...) {
 
     dat = get_model(parent = "card", child = "members", id = id, ...)
     return(dat)
+}
+
+#' @export
+#' @rdname get_card
+get_card_fields = function(id, ...) {
+
+  dat = get_model(
+    parent = "card", id = id, child = "pluginData", ...
+  )
+
+  dat = jsonlite::fromJSON(dat$value)$fields
+
+  data.frame(
+    id = names(dat), o = unlist(dat),
+    stringsAsFactors = FALSE,
+    row.names = NULL
+  )
 }

@@ -4,15 +4,11 @@ knitr::opts_chunk$set(comment = "#>", collapse = TRUE)
 
 ## ---- results='hide'-----------------------------------------------------
 library(trelloR)
-url = "https://trello.com/b/nC8QJJoZ/trello-development-roadmap"
-idb = get_id_board(url = url)
-cards = get_board_cards(idb, limit = 5)
+roadmap_url = "https://trello.com/b/nC8QJJoZ/trello-development-roadmap"
+cards = get_board_cards(roadmap_url, limit = 5)
 
 ## ------------------------------------------------------------------------
 cards
-
-## ------------------------------------------------------------------------
-cards[1:5, c("name", "closed", "shortUrl")]
 
 ## ------------------------------------------------------------------------
 get_card_updates = function(id, ...) {
@@ -20,12 +16,18 @@ get_card_updates = function(id, ...) {
 }
 
 ## ---- results='hide'-----------------------------------------------------
-idc = cards$id[1]
-card_updates = get_card_updates(idc, limit = 5)
+card_id = cards$id[1]
+card_updates = get_card_updates(card_id, limit = 5)
+
+## ------------------------------------------------------------------------
+card_updates
 
 ## ---- results='hide'-----------------------------------------------------
-board_comments = get_model(parent = "board", child = "actions", id = idb,
-                           filter = "commentCard", limit = 5)
+comments = get_model(parent = "board", child = "actions", id = roadmap_url,
+                     filter = "commentCard", limit = 5)
+
+## ----eval=FALSE----------------------------------------------------------
+#  search_members("Tony Stark", token = my_token)
 
 ## ---- results='hide'-----------------------------------------------------
 tryCatch(

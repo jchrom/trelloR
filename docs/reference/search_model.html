@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get Board — get_board • trelloR</title>
+<title>Search models — search_model • trelloR</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -95,37 +95,53 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get Board</h1>
+    <h1>Search models</h1>
     </div>
 
     
-    <p>Returns a flat <code>data.frame</code> with board-related data.</p>
+    <p>Returns a (nested) <code>data.frame</code> with search results.</p>
     
 
-    <pre class="usage"><span class='fu'>get_board_actions</span>(<span class='no'>id</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>search_model</span>(<span class='no'>string</span>, <span class='kw'>modeltype</span> <span class='kw'>=</span> <span class='st'>"all"</span>, <span class='kw'>boards</span> <span class='kw'>=</span> <span class='st'>"mine"</span>, <span class='kw'>partial</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>query</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='no'>...</span>)
 
-<span class='fu'>get_board_cards</span>(<span class='no'>id</span>, <span class='no'>...</span>)
+<span class='fu'>search_cards</span>(<span class='no'>string</span>, <span class='kw'>boards</span> <span class='kw'>=</span> <span class='st'>"mine"</span>, <span class='kw'>partial</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>query</span> <span class='kw'>=</span> <span class='fu'>list</span>(),
+  <span class='no'>...</span>)
 
-<span class='fu'>get_board_checklists</span>(<span class='no'>id</span>, <span class='no'>...</span>)
+<span class='fu'>search_actions</span>(<span class='no'>string</span>, <span class='kw'>boards</span> <span class='kw'>=</span> <span class='st'>"mine"</span>, <span class='kw'>partial</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>query</span> <span class='kw'>=</span> <span class='fu'>list</span>(),
+  <span class='no'>...</span>)
 
-<span class='fu'>get_board_comments</span>(<span class='no'>id</span>, <span class='no'>...</span>)
+<span class='fu'>search_boards</span>(<span class='no'>string</span>, <span class='kw'>boards</span> <span class='kw'>=</span> <span class='st'>"mine"</span>, <span class='kw'>partial</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>query</span> <span class='kw'>=</span> <span class='fu'>list</span>(),
+  <span class='no'>...</span>)
 
-<span class='fu'>get_board_labels</span>(<span class='no'>id</span>, <span class='no'>...</span>)
+<span class='fu'>search_members</span>(<span class='no'>string</span>, <span class='kw'>boards</span> <span class='kw'>=</span> <span class='st'>"mine"</span>, <span class='kw'>partial</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>query</span> <span class='kw'>=</span> <span class='fu'>list</span>(),
+  <span class='no'>...</span>)
 
-<span class='fu'>get_board_lists</span>(<span class='no'>id</span>, <span class='no'>...</span>)
-
-<span class='fu'>get_board_members</span>(<span class='no'>id</span>, <span class='no'>...</span>)
-
-<span class='fu'>get_board_fields</span>(<span class='no'>id</span>, <span class='no'>...</span>)
-
-<span class='fu'>get_card_checklists</span>(<span class='no'>id</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>search_teams</span>(<span class='no'>string</span>, <span class='kw'>boards</span> <span class='kw'>=</span> <span class='st'>"mine"</span>, <span class='kw'>partial</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>query</span> <span class='kw'>=</span> <span class='fu'>list</span>(),
+  <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>id</th>
-      <td><p>Board ID</p></td>
+      <th>string</th>
+      <td><p>Text to search for</p></td>
+    </tr>
+    <tr>
+      <th>modeltype</th>
+      <td><p>Type of model to return; typically <code>"cards"</code>; defaults to <code>"all"</code></p></td>
+    </tr>
+    <tr>
+      <th>boards</th>
+      <td><p>Boards to limit the search to - defaults to <code>"mine"</code></p></td>
+    </tr>
+    <tr>
+      <th>partial</th>
+      <td><p>Should partial matching be used? Defaults to <code>FALSE</code></p></td>
+    </tr>
+    <tr>
+      <th>query</th>
+      <td><p>Name list of additional query parameters; consult <a href='https://developers.trello.com/v1.0/reference'>Trello API reference</a></p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -135,14 +151,22 @@
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>As of now, Trello API does not allow recursion for custom fields, so they can
-only be fetched one board at a time.</p>
+    <p>Search results include one <code>data.frame</code> per each model type found. They
+can be narrowed down by model type and other attributes (see <a href='https://developers.trello.com/v1.0/reference'>Trello API reference</a>)</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='get_model.html'>get_model</a></code></p>
+    <p><code><a href='get_model.html'>get_model</a></code> <code><a href='get_token.html'>get_token</a></code></p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'># Searches are only possible if authorized - a token is required:
+
+</div><span class='co'># NOT RUN {</span>
+<span class='fu'>search_model</span>(<span class='st'>"Anything with this text"</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='no'>mytoken</span>)
+<span class='fu'>search_cards</span>(<span class='st'>"A card with this text"</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='no'>mytoken</span>)
+
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -152,7 +176,9 @@ only be fetched one board at a time.</p>
       <li><a href="#details">Details</a></li>
 
       <li><a href="#see-also">See also</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

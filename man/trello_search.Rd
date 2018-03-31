@@ -28,7 +28,7 @@ trello_search_teams(string, ...)
 \item{...}{Additional arguments passed to \code{\link{get_model}}}
 }
 \description{
-Returns a \code{list} with search results.
+Deprecated. Use \code{\link{search_model}}
 }
 \examples{
 # Searches are only possible if authorized - a token is required:
@@ -41,5 +41,5 @@ trello_search_cards("A card with this text", my_token)
 }
 }
 \seealso{
-\code{\link{get_model}} \code{\link{trello_get_token}}
+\code{\link{get_model}} \code{\link{get_token}}
 }

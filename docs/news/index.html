@@ -100,6 +100,19 @@
     </div>
 
     <div class="contents">
+    <div id="trellor-0-5-0" class="section level1">
+<h1 class="hasAnchor">
+<a href="#trellor-0-5-0" class="anchor"></a>trelloR 0.5.0</h1>
+<p><strong>New features</strong></p>
+<ul>
+<li>You can now use URL for model ID</li>
+</ul>
+<p><strong>Other stuff</strong></p>
+<ul>
+<li>When nothing matches the request, a nice message is printed, instead of an ugly warning</li>
+<li>Updated vignette and pkg docs</li>
+</ul>
+</div>
     <div id="trellor-0-4-0" class="section level1">
 <h1 class="hasAnchor">
 <a href="#trellor-0-4-0" class="anchor"></a>trelloR 0.4.0</h1>
@@ -107,17 +120,64 @@
 <ul>
 <li>You can now issue PUT and DELETE requests</li>
 <li>Calling wrappers update_ and delete_ is going to make it easier for you</li>
-<li>you can decide whether you want to obtain content of a response (data.frame for get_, list for the others) or a complete response object including headers, statuses etc.</li>
+<li>You can decide whether you want to return content of a response (data.frame for get_, list for the others) or a complete response object including headers, statuses etc.</li>
 </ul>
 <p><strong>Deprecated arguments</strong></p>
 <ul>
-<li>bind.rows in get_token() has been deprecated, will always try to return a single data.frame if content is returned</li>
+<li>bind.rows in get_model() has been deprecated, will always try to return a single data.frame if content is returned</li>
 </ul>
 <p><strong>Other stuff</strong></p>
 <ul>
 <li>refactored GET-related code to make use of httr function for repeated requests, stopping/warning/messaging on errors</li>
 <li>updated vignette and pkg docs</li>
 </ul>
+</div>
+    <div id="trellor-0-3-0" class="section level1">
+<h1 class="hasAnchor">
+<a href="#trellor-0-3-0" class="anchor"></a>trelloR 0.3.0</h1>
+<p><strong>New features</strong></p>
+<ul>
+<li>You can now get a token with permissions to write, and specify its expiration (incl. “never” for everlasting tokens)</li>
+<li>You can now issue POST requests to add cards, comments etc.</li>
+<li>You can use the add_ family of wrappers for doing so</li>
+</ul>
+<p><strong>Deprecated functions</strong></p>
+<ul>
+<li>
+<code><a href="../reference/trello_get_token.html">trello_get_token()</a></code> has been deprecated, use <code><a href="../reference/get_token.html">get_token()</a></code> instead</li>
+<li>
+<code><a href="../reference/trello_get.html">trello_get()</a></code> has been deprecated, use <code><a href="../reference/get_model.html">get_model()</a></code> instead</li>
+</ul>
+<p><strong>Other stuff</strong></p>
+<ul>
+<li>Greater reliance on httr - eg. when building URLs or convert status codes to messages/warnings/errors; this is true only for the newly added code, but in time I will rewrite the older code too</li>
+<li>Updated vignette</li>
+</ul>
+</div>
+    <div id="trellor-0-2-0" class="section level1">
+<h1 class="hasAnchor">
+<a href="#trellor-0-2-0" class="anchor"></a>trelloR 0.2.0</h1>
+<p><strong>New features</strong></p>
+<ul>
+<li>You can now specify values for limit larger than 1000</li>
+<li>Added S3 classes for results</li>
+<li>some classes (cards_df, actions_df, labels_df, checklists_df) now pretty-print on the console (<strong>EDIT:</strong> This is dropped in later releases!)</li>
+</ul>
+<p><strong>Deprecated arguments</strong></p>
+<ul>
+<li>
+<code>paging</code> has been deprecated, use <code>limit=0</code> instead</li>
+</ul>
+<p><strong>Bugfixes</strong></p>
+<ul>
+<li>The internal <em>before</em> parameter is now set correctly (preventing duplicates in results)</li>
+<li>All messages can now be suppressed (as <code>cat</code> was replaced with <code>message</code> everywhere)</li>
+</ul>
+</div>
+    <div id="trellor-0-1-0" class="section level1">
+<h1 class="hasAnchor">
+<a href="#trellor-0-1-0" class="anchor"></a>trelloR 0.1.0</h1>
+<p>First version of R API for Trello. Implements GET requests for Trello API.</p>
 </div>
     </div>
   </div>
@@ -126,7 +186,11 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#trellor-0-5-0">0.5.0</a></li>
         <li><a href="#trellor-0-4-0">0.4.0</a></li>
+        <li><a href="#trellor-0-3-0">0.3.0</a></li>
+        <li><a href="#trellor-0-2-0">0.2.0</a></li>
+        <li><a href="#trellor-0-1-0">0.1.0</a></li>
       </ul>
     </div>
   </div>

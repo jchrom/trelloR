@@ -7,6 +7,9 @@
 #' Get Board
 #'
 #' Returns a flat \code{data.frame} with board-related data.
+#'
+#' As of now, Trello API does not allow recursion for custom fields, so they can
+#' only be fetched one board at a time.
 #' @param id Board ID
 #' @param ... Additional arguments passed to \code{\link{get_model}}
 #' @seealso \code{\link{get_model}}
@@ -68,4 +71,15 @@ get_board_members = function(id, ...) {
 
     dat = get_model(parent = "board", child = "members", id = id, ...)
     return(dat)
+}
+
+#' @export
+#' @rdname get_board
+get_board_fields = function(id, ...) {
+
+  dat = get_model(
+    parent = "board", id = id, child = "pluginData", ...
+  )
+
+  jsonlite::fromJSON(dat$value)$fields
 }
