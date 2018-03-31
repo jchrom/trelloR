@@ -6,9 +6,8 @@ Authors@R: c(
     person("Irina", "Matusevich", role = "ctb")
     )
 Description: Provides access to Trello API (https://developers.trello.com/).
-    A family of GET functions make it easy to fetch, create, update and delete 
-    cards, labels, members, teams and other data from Trello boards. See 
-    https://github.com/jchrom/trelloR for more information.
+    Easily fetch, create, update and delete cards, labels, members, teams 
+    and more. See https://github.com/jchrom/trelloR.
 Depends:
     R (>= 3.2.3)
 Imports:
