@@ -21,56 +21,38 @@ _NOTE. Accessing private boards requires authorization; see **Accessing private 
 Getting public data
 -------------------
 
-The basic building block of the Trello workflow is a __Board__. It encapsulates a hierarchy of "models", i.e. __Members, Teams, Lists, Cards, Labels, Checklists__ and __Actions__. Each model has a parent model (e.g. a board is a parent model for cards on it) and child models (a card can include comments as child models). The models can be accessed recursively. This means that you can obtain the actions from all cards by addressing the whole board without going through specific cards one by one.
+Most things in Trello live on a __Board__. A board encapsulates a hierarchy of "models", i.e. __Members, Teams, Lists, Cards, Labels, Checklists__ and __Actions__. Each model has a parent model (e.g. a board is a parent model for its cards) and child models (a card can include comments as child models).
 
-To access a particular model, you need to know its unique ID, or the ID of its parent model. In some cases (e.g. with boards or cards), you can use the model URL instead. This is useful because a URL can be found in your browser address bar (unlike ID). You can also obtain model ID by "searching", which you can read more about later.
+Models can be accessed recursively, so you can obtain all the actions from all cards by addressing the whole board, rather than going through specific cards one by one.
 
-Here is an example how to get the data from [Trello Development Roadmap](https://trello.com/b/nC8QJJoZ/trello-development-roadmap). Since it's a public board, no authentication is required:
+To access a model, you need to know its unique ID, or the ID of its parent model. In some cases (e.g. with boards or cards), you can use the model URL instead. This is useful because URLs can be found in the address bar of your browser (unlike IDs). You can also obtain model ID by "searching", which you can read more about later.
+
+The following snippet fetches 5 newest cards from the [Trello Development Roadmap](https://trello.com/b/nC8QJJoZ/trello-development-roadmap) (public board, no authentication required):
 
 ```{r, results='hide'}
 library(trelloR)
-url = "https://trello.com/b/nC8QJJoZ/trello-development-roadmap"
-idb = get_id_board(url = url)
-cards = get_board_cards(idb, limit = 5)
+roadmap_url = "https://trello.com/b/nC8QJJoZ/trello-development-roadmap"
+cards = get_board_cards(roadmap_url, limit = 5)
 ```
 
-The above example uses `get_id_board()` to get the board ID based on its URL. Board ID is then supplied to `get_board_cards()` which fetches card-related data. The `limit = 5` parameter just means that only the 5 newest cards will be returned.
-
-If there are no complaints from the server, a JSON response is received and converted into a `data.frame`. It will pretty-print like this:
+If there are no complaints from the server, a JSON response is received and converted into a `data.frame`. As it often includes many levels of nested JSON structure, the output can be quite rich:
 
 ``` {r}
 cards
 ```
 
-...but it is a `data.frame`, so you can work with it as usual:
-
-```{r}
-cards[1:5, c("name", "closed", "shortUrl")]
-```
-
-Typically, the response will contain multiple columns including model ID, name and other data, such as attachments or preferences. Because the ID of child elements is included in the response, you can use it to work your way down the hierarchy until you reach the desired model.
-
 ###Fetching specific models
-`trelloR` includes a number of data-fetching functions each of which targets one single model. This puts certain limits on what you can ask for; on the other hand, it eliminates most of the effort (and makes the code easier to read). It also means that the functions can have predictable names which are easy to guess. For example:
+`trelloR` includes a number of wrappers for specific models with easy-to-guess names. This eliminates most of the effort and makes the code easier to read. Examples:
 
-- call `get_board_cards()` to obtain cards from a particular board
-- call `get_card_members()` to obtain the list of people assigned to a card
+- `get_board_cards()` fetches cards from a particular board
+- `get_card_members()` fetches a list of people assigned to a card
 
-Basically, the parent model is always followed by the child model with the `get_` prefix in the beginning. For an overview of the available functions, call `?get_board`, `?get_card`, `?get_team`, `?get_member`, `?get_list` or `?get_id`.
-
-###Searching for model ID
-Sometimes you don't know the model ID but you have other information, such as name, description or other text. In such cases, you can call `trello_search()`, which is equivalent to the search field in Trello web app. To limit your search to specific models (e.g. only members), call the appropriately named version of the search function:
-
-```r
-captain = trello_search_members("Captain America", token = my_token)
-```
-
-Searches need to be authorized; hence, the token argument is needed (see __Getting private data__).
+For an overview of available functions, call `?get_board`, `?get_card`, `?get_team`, `?get_member`, `?get_list` or `?get_id`.
 
 ###Custom requests with `get_model()`
 All the `get_` functions in this package are wrappers for `get_model()`. You can call it directly if you lack a particular data-fetching option, or you can define a new function by wrapping `get_model()` and providing some default values. 
 
-The following example creates a function that fetches all updates made in a given card (it uses a filter because updates are a type of action, and there's no need to retrieve *all* actions):
+The following example creates a function that fetches all updates made to a given card (it uses a filter because updates are a type of action, and there's no need to retrieve *all* actions):
 
 ```{r}
 get_card_updates = function(id, ...) {
@@ -78,12 +60,17 @@ get_card_updates = function(id, ...) {
 }
 ```
 
-Such functions can be called the usual way by supplying a card ID:
+Such functions can be called the usual way, supplying a card URL or ID:
 
 ```{r, results='hide'}
-idc = cards$id[1]
-card_updates = get_card_updates(idc, limit = 5)
+card_id = cards$id[1]
+card_updates = get_card_updates(card_id, limit = 5)
 ```
+
+```{r}
+card_updates
+```
+
 
 For a detailed list of all possible queries, consult the [Trello API reference](https://developers.trello.com/v1.0/reference).
 
@@ -92,14 +79,27 @@ For a detailed list of all possible queries, consult the [Trello API reference](
 * `token` is necessary for accessing private boards (see __Getting private data__); defaults to `NULL`
 * `limit` defaults to 1000 results; set to 0 to obtain *all* results that match the request
 * `query` is useful if you need to provide a list of key-value pairs, such as `query = list(key1 = "value1", key2 = "value2")`; these will get appended to the URL request. Setting `filter = "updateCard"` and `limit=10` is equivalent to `query = list(filter = "updateCard", limit = 10)`; if you need more information about query parameters, see [Trello API reference](https://developers.trello.com/v1.0/reference)
+* `url` can be used instead of specifying `parent` and `child`
+
+*Deprecated:*
+
 * `paging` is deprecated - use `limit` instead
 * `bind.rows` is deprecated
 
-When calling `get_model()` directly, you have an option to either specify `parent` and `child` or provide the whole URL as a character vector of length 1.
+The following fetches 5 newest updates to cards on the public roadmap board.
 
 ```{r, results='hide'}
-board_comments = get_model(parent = "board", child = "actions", id = idb,
-                           filter = "commentCard", limit = 5)
+comments = get_model(parent = "board", child = "actions", id = roadmap_url,
+                     filter = "commentCard", limit = 5)
+```
+
+###Searching for model ID
+Sometimes you don't know the ID/URL but you have other information, such as name, description or other text. In such case, you can call `search_model` function which is equivalent to the search field in Trello.
+
+To limit your search to specific models (e.g. only members), call the appropriately named wrapper (searching requires authorization, so you need to supply a token as well - see __Getting private data__):
+
+```{r eval=FALSE}
+search_members("Tony Stark", token = my_token)
 ```
 
 ###Error handling
@@ -112,14 +112,14 @@ tryCatch(
 )
 ```
 
-In case of a server-side error, the request will be re-send two more times, with random delay before each attempt. If it fails for the 3rd time, the error message is printed in the console.
+After a server-side error, the request will be re-send two more times, with random delay before each attempt. If it fails for the 3rd time, the error message is printed in the console and nothing is returned.
 
 Accessing private boards
 ------------------------
 
-Access to private boards requires authorization. This is done by registering an "app" that uses a secure token to communicate with the Trello API. Supplying the token to data-fetching functions will allow you to retrieve data from private boards under the condition that the user who authorized the app has the right to access them.
+Access to private boards requires authorization. This is done by creating a secure token to communicate with the Trello API. 
 
-To create a token, **login** to Trello and visit the [Developer Start Page](https://developers.trello.com/get-started/start-building#connect). There you can get your developer credentials, i.e. your "key" and "secret". Then, call the `get_token()` function to create a token for your project. This will also trigger first-time authorization in the browser (you only have to do it once):
+To create a token, **login** to Trello and visit the [Developer Start Page](https://developers.trello.com/get-started/start-building#connect). Get your developer credentials there, i.e. your "key" and "secret". Then, call the `get_token()` function to create a token for your project. This will also trigger first-time authorization in the browser (you only have to do it once for a given project):
 
 ```r
 my_token = get_token(key = your_key, secret = your_secret)
@@ -129,26 +129,38 @@ You will also be offered an option to store the authentication data in your work
 
 Other arguments to `get_token()` include:
 
-* `appname` is used by R to store and manage your authenticated app; it is also appended to the authorization request, so you will see your app in the list of connected apps on the settings page in Trello (where you can manually disconnect it before it expires)
-* `scope` defaults to `"read"`, but you can add `"write"` and `"account"` permission too
-* `expiration` defaults to 30 days, but you can increase it to `"never"` or decrease to `"1day"` or `"1hour"`
+* `appname` is used by R to store and manage your authenticated app; you will see your app in the list of connected apps on the settings page in Trello
+* `scope` defaults to `"read"`, but you can add `"write"` and `"account"` too
+* `expiration` defaults to `"30 days"`, but you can increase it to `"never"` or decrease to `"1day"` or `"1hour"`
 
 ###Using the token to retrieve private data
 
-One thing you can do immediately after obtaining the token is call `get_my_boards()` to get an overview of your boards. It accepts the token as its only argument and returns a `data.frame` with the board names and IDs related to the user who authorized the app.
+Having obtained the token, you can call `get_my_boards()` to get an overview of your boards. It returns a `data.frame` with board names and IDs related to the user who authorized the app.
 
-```r
+```
 my_boards = get_my_boards(my_token)
+```
+
+For other functions, just feed the token to the `token` argument:
+
+```
+cards = get_board_cards(board_url, token = my_token)
 ```
 
 Write access
 ------------
 
-The write access token allows you to add, update and delete models. This is achieved by POST, PUT and DELETE http requests. Recursion for these requests is not implemented, so you can only process one model at a time.
+In order to add, update and delete models, you need to create a token with writing permissions, e.g.:
+
+```r
+my_token = get_token(key = your_key, secret = your_secret, scope=c("read", "write"))
+```
+
+This will allow `trelloR` to issue POST, PUT and DELETE http requests.
 
 ###Adding models
 
-The `post_model()` function allows you to create new models. At the very least, you have to specify a `model` (eg. "board"), its `id` and a `token` with permissions to write. To further specify the model to be added, you may have to use the `path` argument. The actual content of the new model (such as *name*, *decription* or *labels*) has to be passed as a named list to the `body` argument.
+The `post_model()` function allows you to create new models. At the very least, you have to specify a `model` (eg. "card") and a `token` with permissions to write. To further specify the model to be added, you may have to use the `path` argument. The actual content of the new model (such as *name*, *decription* or *labels*) has to be passed as a named list to the `body` argument.
 
 The following example creates a new card and places it at the bottom of a list:
 
@@ -158,24 +170,27 @@ payload = list(
   pos = "bottom",
   idList = list_id # get it by calling get_board_lists()
 )
-new_card = post_model(model = "card", body = payload, token = token)
+post_model(model = "card", body = payload, token = my_token)
 ```
-Consult the [Trello API reference](https://developers.trello.com/v1.0/reference) for element names. Some of the most frequently used POST requests have been implemented as wrappers for this function. Use `add_board()`, `add_card()`, `add_checklist()`, `add_checkitem()`, `add_comment()`, `add_label()` and  `add_list()` to create these models in Trello.
+
+Consult the [Trello API reference](https://developers.trello.com/v1.0/reference) for element names. Some of the most frequently used POST requests have been implemented as wrappers for this function. See `?add_board`, `?add_card`, `?add_checklist`, `?add_checkitem`, `?add_comment`, `?add_label` and  `?add_list`.
 
 Additional arguments to `post_model()` include:
 
-* `verbose`, which if set to `TRUE` provides verbose output for POST requests (as opposed to the default message which only includes request URL and a status code); this is implemented by calling `httr::verbose()`
-* `reponse`, which specifies the type of response returned; it defaults to `"content"` (a named list containing the content of the newly created model), `"status_code"`, `"headers"` or a complete response, as returned by `httr::POST`.
-* `on.error`, which specifies what to do when the requests results in an error: issue a message, a warning or stop
+* `verbose` which, if `TRUE`, provides verbose output for POST requests
+* `reponse` to specify the type of response returned; defaults to `"content"` (a named list containing the content of the newly created model), `"status_code"`, `"headers"` or `"response"` in its entirety
+* `on.error` to decide what to do when the requests results in an error: issue a message, a warning or stop
 * `...` to pass additional arguments to `httr::POST`
 
 ###Updating models
 
-The `put_model()` function follows the same logic as the `post_model()` function, but can only be called on existing models. Wrappers for this function include: `update_card()`, `update_card_labels()`, `update_card_members()` and `update_checkitem()` (for updating checklist items).
+The `put_model()` function follows the same logic as the `post_model()` function, but can only be called on existing models. See `?update_card`, `?update_card_labels`, `?update_card_members` and `?update_checkitem`.
 
 ###Deleting models
 
-To delete models, use `delete_model()` and its wrappers `delete_card()`, `delete_checklist()` and `delete_item()`. __Caution:__ Deleting models cannot be undone!
+To delete models, use `delete_model()` and its wrappers: `?delete_card`, `?delete_checklist` and `?delete_checkitem`.
+
+__Caution:__ Deleted models cannot be brought back!
 
 #####Disclaimer
 `trelloR` is not affiliated, associated, authorized, endorsed by or in any way officially connected to Trello, Inc. (www.trello.com).
