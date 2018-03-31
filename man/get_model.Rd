@@ -6,7 +6,7 @@
 \usage{
 get_model(parent = NULL, child = NULL, id = NULL, token = NULL,
   query = NULL, url = NULL, filter = NULL, limit = 1000,
-  paging = FALSE, response = "content", bind.rows = TRUE,
+  response = "content", paging = FALSE, bind.rows = TRUE,
   add.class = TRUE)
 }
 \arguments{
@@ -26,9 +26,9 @@ get_model(parent = NULL, child = NULL, id = NULL, token = NULL,
 
 \item{limit}{Defaults to \code{1000}; set to \code{0} to get everything}
 
-\item{paging}{Deprecated, use \code{limit = 0} instead}
-
 \item{response}{Can be either "content" (a \code{\link[dplyr]{tbl}}) or an object of class \code{\link[httr]{response}}}
+
+\item{paging}{Deprecated, use \code{limit = 0} instead}
 
 \item{bind.rows}{Deprecated; will always bind rows unless \code{response} is not \code{"content"}}
 

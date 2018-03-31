@@ -17,8 +17,8 @@
 #' @param url Url for the GET request, use instead of specifying \code{parent}, \code{id} and \code{child}; see \code{\link[httr]{GET}} for details
 #' @param filter Filter results by this string
 #' @param limit Defaults to \code{1000}; set to \code{0} to get everything
-#' @param paging Deprecated, use \code{limit = 0} instead
 #' @param response Can be either "content" (a \code{\link[dplyr]{tbl}}) or an object of class \code{\link[httr]{response}}
+#' @param paging Deprecated, use \code{limit = 0} instead
 #' @param bind.rows Deprecated; will always bind rows unless \code{response} is not \code{"content"}
 #' @param add.class Assign additional S3 class (defaults to \code{TRUE})
 #' @seealso \code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}}, \code{\link{get_token}}, \code{\link{get_id}}
@@ -59,14 +59,14 @@
 
 get_model = function(parent = NULL, child = NULL, id = NULL, token = NULL,
                      query = NULL, url = NULL, filter = NULL, limit = 1000,
-                     paging = FALSE, response = "content", bind.rows = TRUE,
+                     response = "content", paging = FALSE, bind.rows = TRUE,
                      add.class = TRUE)
 {
 
   if (!missing("paging")) {
 
     warning(
-      "paging is deprecated - set limit to 0 to fetch all",
+      "paging is deprecated - use limit=0 to fetch all",
       call. = FALSE
     )
 
