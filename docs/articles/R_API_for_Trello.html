@@ -216,7 +216,7 @@ card_updates =<span class="st"> </span><span class="kw">get_card_updates</span>(
 <span class="co">#&gt; GET URL:</span>
 <span class="co">#&gt; https://api.trello.com/1/card/I_have_a_bad_feeling_about_this/actions?limit=1000</span>
 <span class="co">#&gt; Request failed [400]. Retrying in 1 seconds...</span>
-<span class="co">#&gt; Request failed [400]. Retrying in 1.9 seconds...</span>
+<span class="co">#&gt; Request failed [400]. Retrying in 3.6 seconds...</span>
 <span class="co">#&gt; Bad Request (HTTP 400).</span></code></pre></div>
 <p>After a server-side error, the request will be re-send two more times, with random delay before each attempt. If it fails for the 3rd time, the error message is printed in the console and nothing is returned.</p>
 </div>
@@ -288,14 +288,15 @@ post_model(model = "card", body = payload, token = my_token)</code></pre>
 <a href="#deleting-models" class="anchor"></a>Deleting models</h3>
 <p>To delete models, use <code><a href="../reference/delete_model.html">delete_model()</a></code> and its wrappers: <code><a href="../reference/delete_card.html">?delete_card</a></code>, <code><a href="../reference/delete_checklist.html">?delete_checklist</a></code> and <code><a href="../reference/delete_checkitem.html">?delete_checkitem</a></code>.</p>
 <p><strong>Caution:</strong> Deleted models cannot be brought back!</p>
-<div id="disclaimer" class="section level5">
-<h5 class="hasAnchor">
-<a href="#disclaimer" class="anchor"></a>Disclaimer</h5>
+</div>
+<div id="disclaimer" class="section level3">
+<h3 class="hasAnchor">
+<a href="#disclaimer" class="anchor"></a>Disclaimer</h3>
 <p><code>trelloR</code> is not affiliated, associated, authorized, endorsed by or in any way officially connected to Trello, Inc. (www.trello.com).</p>
 </div>
-<div id="built-with" class="section level5">
-<h5 class="hasAnchor">
-<a href="#built-with" class="anchor"></a>Built with</h5>
+<div id="built-with" class="section level3">
+<h3 class="hasAnchor">
+<a href="#built-with" class="anchor"></a>Built with</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sessionInfo</span>()
 <span class="co">#&gt; R version 3.4.4 (2018-03-15)</span>
 <span class="co">#&gt; Platform: x86_64-pc-linux-gnu (64-bit)</span>
@@ -327,7 +328,6 @@ post_model(model = "card", body = payload, token = my_token)</code></pre>
 <span class="co">#&gt; [17] curl_2.8.1       glue_1.2.0       evaluate_0.10.1  rmarkdown_1.9.7 </span>
 <span class="co">#&gt; [21] stringi_1.1.7    compiler_3.4.4   backports_1.1.2  jsonlite_1.5    </span>
 <span class="co">#&gt; [25] pkgconfig_2.0.1</span></code></pre></div>
-</div>
 </div>
 </div>
 </div>

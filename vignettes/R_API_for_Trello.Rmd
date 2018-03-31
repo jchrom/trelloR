@@ -192,10 +192,11 @@ To delete models, use `delete_model()` and its wrappers: `?delete_card`, `?delet
 
 __Caution:__ Deleted models cannot be brought back!
 
-#####Disclaimer
+###Disclaimer
+
 `trelloR` is not affiliated, associated, authorized, endorsed by or in any way officially connected to Trello, Inc. (www.trello.com).
 
-#####Built with
+###Built with
 
 ```{r}
 sessionInfo()

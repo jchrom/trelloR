@@ -188,7 +188,7 @@ card_updates =<span class="st"> </span><span class="kw">get_card_updates</span>(
 <span class="co">#&gt; GET URL:</span>
 <span class="co">#&gt; https://api.trello.com/1/card/I_have_a_bad_feeling_about_this/actions?limit=1000</span>
 <span class="co">#&gt; Request failed [400]. Retrying in 1 seconds...</span>
-<span class="co">#&gt; Request failed [400]. Retrying in 1.1 seconds...</span>
+<span class="co">#&gt; Request failed [400]. Retrying in 2.3 seconds...</span>
 <span class="co">#&gt; Bad Request (HTTP 400).</span></code></pre></div>
 <p>After a server-side error, the request will be re-send two more times, with random delay before each attempt. If it fails for the 3rd time, the error message is printed in the console and nothing is returned.</p>
 </div>
@@ -245,12 +245,13 @@ post_model(model = &quot;card&quot;, body = payload, token = my_token)</code></p
 <h3>Deleting models</h3>
 <p>To delete models, use <code>delete_model()</code> and its wrappers: <code>?delete_card</code>, <code>?delete_checklist</code> and <code>?delete_checkitem</code>.</p>
 <p><strong>Caution:</strong> Deleted models cannot be brought back!</p>
-<div id="disclaimer" class="section level5">
-<h5>Disclaimer</h5>
+</div>
+<div id="disclaimer" class="section level3">
+<h3>Disclaimer</h3>
 <p><code>trelloR</code> is not affiliated, associated, authorized, endorsed by or in any way officially connected to Trello, Inc. (www.trello.com).</p>
 </div>
-<div id="built-with" class="section level5">
-<h5>Built with</h5>
+<div id="built-with" class="section level3">
+<h3>Built with</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sessionInfo</span>()
 <span class="co">#&gt; R version 3.4.4 (2018-03-15)</span>
 <span class="co">#&gt; Platform: x86_64-pc-linux-gnu (64-bit)</span>
@@ -284,7 +285,6 @@ post_model(model = &quot;card&quot;, body = payload, token = my_token)</code></p
 <span class="co">#&gt; [25] tidyr_0.7.2      curl_2.8.1       evaluate_0.10.1  memoise_1.1.0   </span>
 <span class="co">#&gt; [29] glue_1.2.0       rmarkdown_1.9.7  stringi_1.1.7    compiler_3.4.4  </span>
 <span class="co">#&gt; [33] backports_1.1.2  desc_1.1.1       jsonlite_1.5     pkgconfig_2.0.1</span></code></pre></div>
-</div>
 </div>
 </div>
 
