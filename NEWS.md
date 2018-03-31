@@ -37,11 +37,11 @@
 **Deprecated functions**
 
 * `trello_get_token()` has been deprecated, use `get_token()` instead
-* `trello_get_model()` has been deprecated, use `get_model()` instead
+* `trello_get()` has been deprecated, use `get_model()` instead
 
 **Other stuff**
 
-* Greater reliance on httr - eg. when building URLs or convert status codes to messages/warnings/errors in R (this is true only for the newly added code, but in time I will rewrite the older code too)
+* Greater reliance on httr - eg. when building URLs or convert status codes to messages/warnings/errors; this is true only for the newly added code, but in time I will rewrite the older code too
 * Updated vignette
 
 # trelloR 0.2.0
