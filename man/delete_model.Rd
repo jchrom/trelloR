@@ -4,7 +4,7 @@
 \alias{delete_model}
 \title{DELETE data via Trello API}
 \usage{
-delete_model(model, id = NULL, path = NULL, token,
+delete_model(model, id = NULL, path = NULL, token = NULL,
   response = "content", on.error = "warning", encode = "json",
   handle = NULL, verbose = FALSE)
 }

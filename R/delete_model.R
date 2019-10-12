@@ -33,7 +33,7 @@
 #' delete_model(model = "card", id = cid, token = token)
 #' }
 
-delete_model = function(model, id = NULL, path = NULL, token,
+delete_model = function(model, id = NULL, path = NULL, token = NULL,
                         response = "content", on.error = "warning",
                         encode = "json", handle = NULL, verbose = FALSE) {
 
