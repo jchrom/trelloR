@@ -1,3 +1,15 @@
+# trelloR 0.6.0
+
+**New features**
+
+* No need to use the `token` argument in all function calls, functions now check for a local .httr-oauth file first; you can still use the argument though
+* Nicer functions for retrieving custom fields
+* New wrapper to get board preferences
+
+**Other stuff**
+
+* Updated package website and nicer vignettes
+
 # trelloR 0.5.0
 
 **New features**
