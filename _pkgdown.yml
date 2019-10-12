@@ -1,5 +1,18 @@
 destination: docs
+
 template:
   params:
     bootswatch: cerulean
     ganalytics: UA-149868790-1
+
+navbar:
+  components:
+    articles:
+      text: Get started
+      menu:
+      - text: "Get public data"
+        href: articles/get-public-data.html
+      - text: "Authorized acccess"
+        href: articles/auth-access.html
+      - text: "Editing functions"
+        href: articles/edit-fun.html

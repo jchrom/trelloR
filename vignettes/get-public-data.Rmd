@@ -1,7 +1,5 @@
 ---
-title: "Getting data"
-author: "Jakub Chromec"
-date: "`r Sys.Date()`"
+title: "Get public data"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Getting-data}
@@ -94,8 +92,7 @@ tryCatch(
 
 After it fails, the request is re-send two more times, with random delay before each attempt. If it fails for the 3rd time, the error message is printed on the console and nothing is returned.
 
-Built with
-----------
+__Built with__
 
 ```{r}
 sessionInfo()
