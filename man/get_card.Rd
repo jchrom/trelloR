@@ -3,6 +3,7 @@
 \name{get_card}
 \alias{get_card}
 \alias{get_card_actions}
+\alias{get_card_checklists}
 \alias{get_card_comments}
 \alias{get_card_labels}
 \alias{get_card_members}
@@ -10,6 +11,8 @@
 \title{Get Card}
 \usage{
 get_card_actions(id, ...)
+
+get_card_checklists(id, ...)
 
 get_card_comments(id, ...)
 

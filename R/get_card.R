@@ -22,7 +22,7 @@ get_card_actions = function(id, ...) {
 }
 
 #' @export
-#' @rdname get_board
+#' @rdname get_card
 get_card_checklists = function(id, ...) {
   dat = get_model(parent = "card", child = "checklists", id = id, ...)
   dat

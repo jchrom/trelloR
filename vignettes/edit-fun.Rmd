@@ -1,0 +1,62 @@
+---
+title: "Editing functions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Editing functions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This document explains how to add, update and delete stuff in Trello. This requires authentication, as explained in the "Authorized access" vignette.
+
+```{r setup}
+library(trelloR)
+```
+
+Adding resources
+----------------
+
+The `post_model()` function allows you to create new resources. At the very least, you only have to specify a type of `model` (eg. "card"). Any other stuff, such as *name*, *decription* or *labels* has to be passed as a named list to the `body` argument.
+
+The following example creates a new card and places it at the bottom of a list (consult the [Trello API reference](https://developers.trello.com/reference) for query parameters):
+
+```r
+payload = list(
+  name = "My new card!", desc = "An example card.", 
+  pos = "bottom",
+  idList = list_id # get it by calling get_board_lists()
+)
+post_model(model = "card", body = payload)
+```
+When successful, the request returns a named list of values describing the newly created resource, including its ID. This is very useful as you can immediately capture the ID if you need it.
+
+See `?post_model` for additional arguments.
+
+The wrappers for this function include: `?add_board`, `?add_card`, `?add_checklist`, `?add_checkitem`, `?add_comment`, `?add_label`, `?add_list` and `?add_field`.
+
+Updating resources
+------------------
+
+The `put_model()` function follows the same logic as the `post_model()`, but can only be called on existing resources.
+
+See `?update_card`, `?update_card_labels`, `?update_card_members`, `?update_checkitem` and `?update_field`.
+
+Deleting resources
+------------------
+
+To delete resources, use `delete_model()` and its wrappers: `?delete_card`, `?delete_checklist`, `?delete_checkitem`, `?delete_field` and `?delete_field_option`.
+
+__Caution:__ Deleted resources cannot be brought back!
+
+__Built with__
+
+```{r}
+sessionInfo()
+```

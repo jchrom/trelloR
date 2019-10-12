@@ -1,0 +1,99 @@
+---
+title: "Get public data"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting-data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+  
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+collapse = TRUE,
+comment = "#>"
+)
+```
+
+This document explains how to interact with Trello from R. It includes a short intro for people unfamiliar with the Trello API, and a few recipes for how to get data from public boards. If you need access to private boards or need to create/edit boards, check out the other vignettes in this package.
+
+Introduction
+------------
+
+Most things in Trello live on a __Board__. A board encapsulates a hierarchy of resources:  __Members, Teams, Lists, Cards, Custom fields__ and __Actions__. Some of the resources may contain additional data (e.g. cards may have labels, due dates etc.) or other nested resources (e.g. boards may have lists, cards, label definitions etc.)
+
+Each resource can have a parent resource (e.g. a board is a parent resource for a card) and child resources (a card can include actions as a child resource). A resource can have more than one parent (a board and a list are both parents to a card).
+
+To access a resource, you need to know its unique ID, or the ID of its parent resource. In some cases (e.g. with boards or cards), you can use the resource URL instead.
+
+Getting data
+------------
+
+The following snippet fetches 5 cards from the [trelloR demo board](https://trello.com/b/Pw3EioMM/trellor-r-api-for-trello). This is a public board and so does not require authentication:
+
+```{r setup}
+library(trelloR)
+```
+
+```{r, results='hide'}
+board = "https://trello.com/b/Pw3EioMM/trellor-r-api-for-trello"
+param = list(fields = "id,name,idList,labels")
+cards = get_board_cards(board, query = param, limit = 5)
+```
+
+The result is a data.frame:
+
+``` {r}
+cards
+```
+
+Nsted resources can be obtained by querying their parent resource. In the example above, we didn't have to query each card individually - instead, we just queried the board resource to get all of its cards.
+
+A general way of retrieving data from a board is to use the function `get_model()` which allows you to specify parameters of the query. However, `trelloR` also includes a number of wrappers for specific resources. For example: 
+
+- use `get_board_cards()` to get cards from a particular board
+- use `get_card_members()` to get a list of people assigned to a card
+- use `get_board_fields()` to get custom field definitions
+- use `get_card_fields()` to get custom field values
+
+For an overview of all available wrappers, call `?get_board`, `?get_card`, `?get_team`, `?get_member`, `?get_list` or `?get_id`.
+
+If there is no wrapper for the query you need to make, you can call `get_model()` directly or use it to make your own. The following example creates a wrapper that fetches all updates to a given card. This is represented by the "updateCard" action type (notice the filter argument):
+
+```{r}
+get_card_updates = function(id, ...) {
+  get_model(parent = "card", child  = "actions", id = id, filter = "updateCard", ...)
+}
+```
+
+Such a function can be called the usual way, supplying a card URL or ID:
+
+```{r, results='hide'}
+card_id = cards$id[4]
+card_updates = get_card_updates(card_id)
+```
+
+```{r}
+card_updates
+```
+
+See `?get_model` and [Trello API reference](https://developers.trello.com/v1.0/reference) to build your own customized wrappers.
+
+Error handling
+--------------
+
+If a request fails, the error code is reprinted in the console. Additional server messages are also included to make debugging easier. See the example below with invalid card ID:
+
+```{r, results='hide'}
+tryCatch(
+  expr  = get_card_actions(id = "ThisIsGoingToFail"),
+  error = function(e) message(e$message)
+)
+```
+
+After it fails, the request is re-send two more times, with random delay before each attempt. If it fails for the 3rd time, the error message is printed on the console and nothing is returned.
+
+__Built with__
+
+```{r}
+sessionInfo()
+```
