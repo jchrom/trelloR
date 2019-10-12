@@ -1,0 +1,66 @@
+# trelloR 0.5.0
+
+**New features**
+
+* You can now use URL for model ID
+
+**Other stuff**
+
+* When nothing matches the request, a nice message is printed, instead of an ugly warning
+* Updated vignette and pkg docs
+
+# trelloR 0.4.0
+
+**New features**
+
+* You can now issue PUT and DELETE requests
+* Calling wrappers update_ and delete_ is going to make it easier for you
+* You can decide whether you want to return content of a response (data.frame for get_,  list for the others) or a complete response object including headers, statuses etc.
+
+**Deprecated arguments**
+
+* bind.rows in get_model() has been deprecated, will always try to return a single data.frame if content is returned
+
+**Other stuff**
+
+* refactored GET-related code to make use of httr function for repeated requests, stopping/warning/messaging on errors
+* updated vignette and pkg docs
+
+# trelloR 0.3.0
+
+**New features**
+
+* You can now get a token with permissions to write, and specify its expiration (incl. "never" for everlasting tokens)
+* You can now issue POST requests to add cards, comments etc.
+* You can use the add_ family of wrappers for doing so
+
+**Deprecated functions**
+
+* `trello_get_token()` has been deprecated, use `get_token()` instead
+* `trello_get()` has been deprecated, use `get_model()` instead
+
+**Other stuff**
+
+* Greater reliance on httr - eg. when building URLs or convert status codes to messages/warnings/errors; this is true only for the newly added code, but in time I will rewrite the older code too
+* Updated vignette
+
+# trelloR 0.2.0
+
+**New features**
+
+* You can now specify values for limit larger than 1000
+* Added S3 classes for results
+* some classes (cards_df, actions_df, labels_df, checklists_df) now pretty-print on the console (**EDIT:** This is dropped in later releases!)
+
+**Deprecated arguments**
+
+* `paging` has been deprecated, use `limit=0` instead
+
+**Bugfixes**
+
+* The internal *before* parameter is now set correctly (preventing duplicates in results)
+* All messages can now be suppressed (as `cat` was replaced with `message` everywhere)
+
+# trelloR 0.1.0
+
+First version of R API for Trello. Implements GET requests for Trello API.
