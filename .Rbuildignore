@@ -11,3 +11,5 @@
 ^av_asist$
 ^NEWS\.md$
 ^docs$
+^_pkgdown\.yml$
+^pkgdown$

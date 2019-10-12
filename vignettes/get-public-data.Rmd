@@ -30,11 +30,8 @@ Getting data
 
 The following snippet fetches 5 cards from the [trelloR demo board](https://trello.com/b/Pw3EioMM/trellor-r-api-for-trello). This is a public board and so does not require authentication:
 
-```{r setup}
-library(trelloR)
-```
-
 ```{r, results='hide'}
+library(trelloR)
 board = "https://trello.com/b/Pw3EioMM/trellor-r-api-for-trello"
 param = list(fields = "id,name,idList,labels")
 cards = get_board_cards(board, query = param, limit = 5)

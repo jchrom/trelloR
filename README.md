@@ -22,7 +22,7 @@ cards = get_board_cards("https://trello.com/b/Pw3EioMM/trellor-r-api-for-trello"
 
 Private and team boards can be accessed using a secure token. Check the
 vignettes to [get
-started](https://jchrom.github.io/trelloR/docs/articles/get-public-data.html).
+started](https://jchrom.github.io/trelloR/articles/get-public-data.html).
 
 ### Get it from CRAN (version 0.1)
 

@@ -118,24 +118,24 @@
 <p>The following snippet fetches 5 cards from the <a href="https://trello.com/b/Pw3EioMM/trellor-r-api-for-trello">trelloR demo board</a>. This is a public board and so does not require authentication:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(trelloR)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co">#&gt; R API for Trello</span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">#&gt; Disclaimer: trelloR is not affiliated, associated, authorized, endorsed by or in any way officially connected to Trello, Inc. (www.trello.com).</span></a></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">board =<span class="st"> "https://trello.com/b/Pw3EioMM/trellor-r-api-for-trello"</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">param =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">fields =</span> <span class="st">"id,name,idList,labels"</span>)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">cards =<span class="st"> </span><span class="kw"><a href="../reference/get_board.html">get_board_cards</a></span>(board, <span class="dt">query =</span> param, <span class="dt">limit =</span> <span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; GET URL:</span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; https://api.trello.com/1/board/Pw3EioMM/cards?fields=id%2Cname%2CidList%2Clabels&amp;limit=5</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; Fetched 5 result(s)</span></a></code></pre></div>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">#&gt; Disclaimer: trelloR is not affiliated, associated, authorized, endorsed by or in any way officially connected to Trello, Inc. (www.trello.com).</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">board =<span class="st"> "https://trello.com/b/Pw3EioMM/trellor-r-api-for-trello"</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">param =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">fields =</span> <span class="st">"id,name,idList,labels"</span>)</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6">cards =<span class="st"> </span><span class="kw"><a href="../reference/get_board.html">get_board_cards</a></span>(board, <span class="dt">query =</span> param, <span class="dt">limit =</span> <span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt; GET URL:</span></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt; https://api.trello.com/1/board/Pw3EioMM/cards?fields=id%2Cname%2CidList%2Clabels&amp;limit=5</span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#&gt; Fetched 5 result(s)</span></a></code></pre></div>
 <p>The result is a data.frame:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">cards</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; # A tibble: 5 x 4</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt;   id                 name                        idList            labels  </span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; * &lt;chr&gt;              &lt;chr&gt;                       &lt;chr&gt;             &lt;list&gt;  </span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; 1 5c2776ec65c66e24e… What's in the two lists on… 5c2776ec65c66e24… &lt;list […</span></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt; 2 5c2776ec65c66e24e… Comments                    5c2776ec65c66e24… &lt;list […</span></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt; 3 5c2776ec65c66e24e… How to install              5c2776ec65c66e24… &lt;list […</span></a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; 4 5c2776ec65c66e24e… How to use it               5c2776ec65c66e24… &lt;list […</span></a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt; 5 5c2776ec65c66e24e… I found a bug! I want to s… 5c2776ec65c66e24… &lt;list […</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">cards</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; # A tibble: 5 x 4</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt;   id                 name                        idList            labels  </span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; * &lt;chr&gt;              &lt;chr&gt;                       &lt;chr&gt;             &lt;list&gt;  </span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; 1 5c2776ec65c66e24e… What's in the two lists on… 5c2776ec65c66e24… &lt;list […</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; 2 5c2776ec65c66e24e… Comments                    5c2776ec65c66e24… &lt;list […</span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; 3 5c2776ec65c66e24e… How to install              5c2776ec65c66e24… &lt;list […</span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt; 4 5c2776ec65c66e24e… How to use it               5c2776ec65c66e24… &lt;list […</span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt; 5 5c2776ec65c66e24e… I found a bug! I want to s… 5c2776ec65c66e24… &lt;list […</span></a></code></pre></div>
 <p>Nsted resources can be obtained by querying their parent resource. In the example above, we didn’t have to query each card individually - instead, we just queried the board resource to get all of its cards.</p>
 <p>A general way of retrieving data from a board is to use the function <code><a href="../reference/get_model.html">get_model()</a></code> which allows you to specify parameters of the query. However, <code>trelloR</code> also includes a number of wrappers for specific resources. For example:</p>
 <ul>
@@ -146,81 +146,81 @@
 </ul>
 <p>For an overview of all available wrappers, call <code><a href="../reference/get_board.html">?get_board</a></code>, <code><a href="../reference/get_card.html">?get_card</a></code>, <code><a href="../reference/get_team.html">?get_team</a></code>, <code>?get_member</code>, <code><a href="../reference/get_list.html">?get_list</a></code> or <code><a href="../reference/get_id.html">?get_id</a></code>.</p>
 <p>If there is no wrapper for the query you need to make, you can call <code><a href="../reference/get_model.html">get_model()</a></code> directly or use it to make your own. The following example creates a wrapper that fetches all updates to a given card. This is represented by the “updateCard” action type (notice the filter argument):</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">get_card_updates =<span class="st"> </span><span class="cf">function</span>(id, ...) {</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">  <span class="kw"><a href="../reference/get_model.html">get_model</a></span>(<span class="dt">parent =</span> <span class="st">"card"</span>, <span class="dt">child  =</span> <span class="st">"actions"</span>, <span class="dt">id =</span> id, <span class="dt">filter =</span> <span class="st">"updateCard"</span>, ...)</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">}</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">get_card_updates =<span class="st"> </span><span class="cf">function</span>(id, ...) {</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">  <span class="kw"><a href="../reference/get_model.html">get_model</a></span>(<span class="dt">parent =</span> <span class="st">"card"</span>, <span class="dt">child  =</span> <span class="st">"actions"</span>, <span class="dt">id =</span> id, <span class="dt">filter =</span> <span class="st">"updateCard"</span>, ...)</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">}</a></code></pre></div>
 <p>Such a function can be called the usual way, supplying a card URL or ID:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">card_id =<span class="st"> </span>cards<span class="op">$</span>id[<span class="dv">4</span>]</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">card_updates =<span class="st"> </span><span class="kw">get_card_updates</span>(card_id)</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; GET URL:</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; https://api.trello.com/1/card/5c2776ec65c66e24e0763a74/actions?limit=1000&amp;filter=updateCard</span></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; Fetched 1 result(s)</span></a></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">card_updates</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt; # A tibble: 1 x 24</span></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt;   id    idMemberCreator type  date  data.list.name data.list.id</span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; * &lt;chr&gt; &lt;chr&gt;           &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;          &lt;chr&gt;       </span></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; 1 5c27… 5c276c0352a660… upda… 2018… The package    5c2776ec65c…</span></a>
-<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt; # … with 18 more variables: data.board.shortLink &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; #   data.board.name &lt;chr&gt;, data.board.id &lt;chr&gt;, data.card.shortLink &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; #   data.card.idShort &lt;int&gt;, data.card.name &lt;chr&gt;, data.card.id &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt; #   data.card.desc &lt;chr&gt;, data.old.desc &lt;chr&gt;, memberCreator.id &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt; #   memberCreator.activityBlocked &lt;lgl&gt;, memberCreator.avatarHash &lt;lgl&gt;,</span></a>
-<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt; #   memberCreator.avatarUrl &lt;lgl&gt;, memberCreator.fullName &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt; #   memberCreator.idMemberReferrer &lt;lgl&gt;, memberCreator.initials &lt;chr&gt;,</span></a>
-<a class="sourceLine" id="cb6-13" data-line-number="13"><span class="co">#&gt; #   memberCreator.nonPublicAvailable &lt;lgl&gt;, memberCreator.username &lt;chr&gt;</span></a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">card_id =<span class="st"> </span>cards<span class="op">$</span>id[<span class="dv">4</span>]</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">card_updates =<span class="st"> </span><span class="kw">get_card_updates</span>(card_id)</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt; GET URL:</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; https://api.trello.com/1/card/5c2776ec65c66e24e0763a74/actions?limit=1000&amp;filter=updateCard</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt; Fetched 1 result(s)</span></a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">card_updates</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; # A tibble: 1 x 24</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt;   id    idMemberCreator type  date  data.list.name data.list.id</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; * &lt;chr&gt; &lt;chr&gt;           &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;          &lt;chr&gt;       </span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; 1 5c27… 5c276c0352a660… upda… 2018… The package    5c2776ec65c…</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; # … with 18 more variables: data.board.shortLink &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt; #   data.board.name &lt;chr&gt;, data.board.id &lt;chr&gt;, data.card.shortLink &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt; #   data.card.idShort &lt;int&gt;, data.card.name &lt;chr&gt;, data.card.id &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt; #   data.card.desc &lt;chr&gt;, data.old.desc &lt;chr&gt;, memberCreator.id &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt; #   memberCreator.activityBlocked &lt;lgl&gt;, memberCreator.avatarHash &lt;lgl&gt;,</span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">#&gt; #   memberCreator.avatarUrl &lt;lgl&gt;, memberCreator.fullName &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt; #   memberCreator.idMemberReferrer &lt;lgl&gt;, memberCreator.initials &lt;chr&gt;,</span></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">#&gt; #   memberCreator.nonPublicAvailable &lt;lgl&gt;, memberCreator.username &lt;chr&gt;</span></a></code></pre></div>
 <p>See <code><a href="../reference/get_model.html">?get_model</a></code> and <a href="https://developers.trello.com/v1.0/reference">Trello API reference</a> to build your own customized wrappers.</p>
 </div>
 <div id="error-handling" class="section level2">
 <h2 class="hasAnchor">
 <a href="#error-handling" class="anchor"></a>Error handling</h2>
 <p>If a request fails, the error code is reprinted in the console. Additional server messages are also included to make debugging easier. See the example below with invalid card ID:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/conditions.html">tryCatch</a></span>(</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">  <span class="dt">expr  =</span> <span class="kw"><a href="../reference/get_card.html">get_card_actions</a></span>(<span class="dt">id =</span> <span class="st">"ThisIsGoingToFail"</span>),</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">  <span class="dt">error =</span> <span class="cf">function</span>(e) <span class="kw"><a href="https://rdrr.io/r/base/message.html">message</a></span>(e<span class="op">$</span>message)</a>
-<a class="sourceLine" id="cb7-4" data-line-number="4">)</a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt; GET URL:</span></a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt; https://api.trello.com/1/card/ThisIsGoingToFail/actions?limit=1000</span></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt; Request failed [400]. Retrying in 1.4 seconds...</span></a>
-<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt; Request failed [400]. Retrying in 2.3 seconds...</span></a>
-<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt; Bad Request (HTTP 400).</span></a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/conditions.html">tryCatch</a></span>(</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">  <span class="dt">expr  =</span> <span class="kw"><a href="../reference/get_card.html">get_card_actions</a></span>(<span class="dt">id =</span> <span class="st">"ThisIsGoingToFail"</span>),</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">  <span class="dt">error =</span> <span class="cf">function</span>(e) <span class="kw"><a href="https://rdrr.io/r/base/message.html">message</a></span>(e<span class="op">$</span>message)</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">)</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt; GET URL:</span></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; https://api.trello.com/1/card/ThisIsGoingToFail/actions?limit=1000</span></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; Request failed [400]. Retrying in 1 seconds...</span></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt; Request failed [400]. Retrying in 2.3 seconds...</span></a>
+<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt; Bad Request (HTTP 400).</span></a></code></pre></div>
 <p>After it fails, the request is re-send two more times, with random delay before each attempt. If it fails for the 3rd time, the error message is printed on the console and nothing is returned.</p>
 <p><strong>Built with</strong></p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span>()</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; R version 3.6.1 (2019-07-05)</span></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt; Platform: x86_64-pc-linux-gnu (64-bit)</span></a>
-<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt; Running under: elementary OS 5.0 Juno</span></a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt; Matrix products: default</span></a>
-<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt; BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.7.1</span></a>
-<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt; LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.7.1</span></a>
-<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt; locale:</span></a>
-<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt;  [1] LC_CTYPE=en_GB.UTF-8       LC_NUMERIC=C              </span></a>
-<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt;  [3] LC_TIME=cs_CZ.UTF-8        LC_COLLATE=en_GB.UTF-8    </span></a>
-<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">#&gt;  [5] LC_MONETARY=cs_CZ.UTF-8    LC_MESSAGES=en_GB.UTF-8   </span></a>
-<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt;  [7] LC_PAPER=cs_CZ.UTF-8       LC_NAME=C                 </span></a>
-<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">#&gt;  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span></a>
-<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co">#&gt; [11] LC_MEASUREMENT=cs_CZ.UTF-8 LC_IDENTIFICATION=C       </span></a>
-<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="co">#&gt; attached base packages:</span></a>
-<a class="sourceLine" id="cb8-19" data-line-number="19"><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></a>
-<a class="sourceLine" id="cb8-20" data-line-number="20"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb8-21" data-line-number="21"><span class="co">#&gt; other attached packages:</span></a>
-<a class="sourceLine" id="cb8-22" data-line-number="22"><span class="co">#&gt; [1] trelloR_0.5.0</span></a>
-<a class="sourceLine" id="cb8-23" data-line-number="23"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb8-24" data-line-number="24"><span class="co">#&gt; loaded via a namespace (and not attached):</span></a>
-<a class="sourceLine" id="cb8-25" data-line-number="25"><span class="co">#&gt;  [1] Rcpp_1.0.2       rstudioapi_0.10  knitr_1.23       magrittr_1.5    </span></a>
-<a class="sourceLine" id="cb8-26" data-line-number="26"><span class="co">#&gt;  [5] MASS_7.3-51.4    tidyselect_0.2.5 R6_2.4.0         rlang_0.4.0     </span></a>
-<a class="sourceLine" id="cb8-27" data-line-number="27"><span class="co">#&gt;  [9] fansi_0.4.0      httr_1.4.1       stringr_1.4.0    dplyr_0.8.3     </span></a>
-<a class="sourceLine" id="cb8-28" data-line-number="28"><span class="co">#&gt; [13] tools_3.6.1      xfun_0.7         utf8_1.1.4       cli_1.1.0       </span></a>
-<a class="sourceLine" id="cb8-29" data-line-number="29"><span class="co">#&gt; [17] htmltools_0.3.6  yaml_2.2.0       assertthat_0.2.1 digest_0.6.21   </span></a>
-<a class="sourceLine" id="cb8-30" data-line-number="30"><span class="co">#&gt; [21] rprojroot_1.3-2  tibble_2.1.3     pkgdown_1.4.1    crayon_1.3.4    </span></a>
-<a class="sourceLine" id="cb8-31" data-line-number="31"><span class="co">#&gt; [25] purrr_0.3.2      vctrs_0.2.0      fs_1.3.1         zeallot_0.1.0   </span></a>
-<a class="sourceLine" id="cb8-32" data-line-number="32"><span class="co">#&gt; [29] curl_4.2         memoise_1.1.0    glue_1.3.1       evaluate_0.14   </span></a>
-<a class="sourceLine" id="cb8-33" data-line-number="33"><span class="co">#&gt; [33] rmarkdown_1.13   stringi_1.4.3    pillar_1.4.2     compiler_3.6.1  </span></a>
-<a class="sourceLine" id="cb8-34" data-line-number="34"><span class="co">#&gt; [37] desc_1.2.0       backports_1.1.5  jsonlite_1.6     pkgconfig_2.0.3</span></a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span>()</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; R version 3.6.1 (2019-07-05)</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt; Platform: x86_64-pc-linux-gnu (64-bit)</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; Running under: elementary OS 5.0 Juno</span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt; Matrix products: default</span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt; BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.7.1</span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt; LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.7.1</span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt; locale:</span></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt;  [1] LC_CTYPE=en_GB.UTF-8       LC_NUMERIC=C              </span></a>
+<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt;  [3] LC_TIME=cs_CZ.UTF-8        LC_COLLATE=en_GB.UTF-8    </span></a>
+<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt;  [5] LC_MONETARY=cs_CZ.UTF-8    LC_MESSAGES=en_GB.UTF-8   </span></a>
+<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt;  [7] LC_PAPER=cs_CZ.UTF-8       LC_NAME=C                 </span></a>
+<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt;  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span></a>
+<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt; [11] LC_MEASUREMENT=cs_CZ.UTF-8 LC_IDENTIFICATION=C       </span></a>
+<a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#&gt; attached base packages:</span></a>
+<a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></a>
+<a class="sourceLine" id="cb7-20" data-line-number="20"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb7-21" data-line-number="21"><span class="co">#&gt; other attached packages:</span></a>
+<a class="sourceLine" id="cb7-22" data-line-number="22"><span class="co">#&gt; [1] trelloR_0.5.0</span></a>
+<a class="sourceLine" id="cb7-23" data-line-number="23"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb7-24" data-line-number="24"><span class="co">#&gt; loaded via a namespace (and not attached):</span></a>
+<a class="sourceLine" id="cb7-25" data-line-number="25"><span class="co">#&gt;  [1] Rcpp_1.0.2       rstudioapi_0.10  knitr_1.23       magrittr_1.5    </span></a>
+<a class="sourceLine" id="cb7-26" data-line-number="26"><span class="co">#&gt;  [5] MASS_7.3-51.4    tidyselect_0.2.5 R6_2.4.0         rlang_0.4.0     </span></a>
+<a class="sourceLine" id="cb7-27" data-line-number="27"><span class="co">#&gt;  [9] fansi_0.4.0      httr_1.4.1       stringr_1.4.0    dplyr_0.8.3     </span></a>
+<a class="sourceLine" id="cb7-28" data-line-number="28"><span class="co">#&gt; [13] tools_3.6.1      xfun_0.7         utf8_1.1.4       cli_1.1.0       </span></a>
+<a class="sourceLine" id="cb7-29" data-line-number="29"><span class="co">#&gt; [17] htmltools_0.3.6  yaml_2.2.0       assertthat_0.2.1 digest_0.6.21   </span></a>
+<a class="sourceLine" id="cb7-30" data-line-number="30"><span class="co">#&gt; [21] rprojroot_1.3-2  tibble_2.1.3     pkgdown_1.4.1    crayon_1.3.4    </span></a>
+<a class="sourceLine" id="cb7-31" data-line-number="31"><span class="co">#&gt; [25] purrr_0.3.2      vctrs_0.2.0      fs_1.3.1         zeallot_0.1.0   </span></a>
+<a class="sourceLine" id="cb7-32" data-line-number="32"><span class="co">#&gt; [29] curl_4.2         memoise_1.1.0    glue_1.3.1       evaluate_0.14   </span></a>
+<a class="sourceLine" id="cb7-33" data-line-number="33"><span class="co">#&gt; [33] rmarkdown_1.13   stringi_1.4.3    pillar_1.4.2     compiler_3.6.1  </span></a>
+<a class="sourceLine" id="cb7-34" data-line-number="34"><span class="co">#&gt; [37] desc_1.2.0       backports_1.1.5  jsonlite_1.6     pkgconfig_2.0.3</span></a></code></pre></div>
 </div>
   </div>
 
