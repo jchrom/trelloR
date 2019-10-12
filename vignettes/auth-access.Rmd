@@ -1,0 +1,78 @@
+---
+title: "Authorized access"
+author: "Jakub Chromec"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Authorized access}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Authentication is required in order to access boards that are not public, and to make edits. This document explains how to authenticate your access to Trello.
+
+```{r setup}
+library(trelloR)
+```
+
+Getting your access token
+-------------------------
+
+A secure token is required to authenticate your access to Trello. To create a token, **login** to Trello, visit the [Developer Start Page](https://trello.com/app-key/) and get your "key" and "secret". Then, call the `get_token()` function to create a token for your project. This will also trigger first-time authorization in the browser (you only have to do it once for a given project):
+
+```r
+my_token = get_token(key = your_key, secret = your_secret, appname = "my-app")
+```
+
+You will also be offered an option to store the token in your working directory, in a hidden `.httr-oauth` file. This is convenient, but make sure you keep it in a **safe, non-shared** location. If you think the token might have been compromised (ie. somebody might have gotten hold of it) or you simly do not want to use it anymore, you should revoke it.
+
+This can be done by visiting your account settings. Look up the appropriate entry in the "Applications" list at the bottom of the page and click the Revoke button. To make it easier to recognize the tokens you have created, use the `appname` argument when creating a token.
+
+You can create multiple tokens with different names, scope and expiration. See `?get_token` for additional arguments.
+
+Getting and searching private/team data
+---------------------------------------
+
+Now that you have your token, let's call `get_my_boards()` to get an overview of your boards. It returns a `data.frame` with board names and IDs related to the user who authorized the app.
+
+```r
+my_boards = get_my_boards()
+```
+
+The above works if you have chosen to store your token locally. If you prefer not to do that, you can invoke the token object from your working environment like so:
+
+```r
+my_boards = get_my_boards(my_token)
+```
+
+The main `get_model` function and all the wrappers derived from it require token whenver you want to perform an action that requires authorization. They will reach for your locally stored token first (so you can omit it in your code), but if it only exists in your environment, you need to supply it via the `token` argument:
+
+```r
+cards = get_board_cards(board_url, token = my_token)
+```
+
+__Searching__ also requires a token. For example:
+
+```{r eval=FALSE}
+search_members("Tony Stark", token = my_token)
+```
+
+In order to add, update and delete resources, you need to create a token with writing scope:
+
+```r
+my_token = get_token(key = your_key, secret = your_secret, scope = c("read", "write"))
+```
+
+Built with
+----------
+
+```{r}
+sessionInfo()
+```
