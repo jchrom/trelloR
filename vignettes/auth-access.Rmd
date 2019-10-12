@@ -1,7 +1,5 @@
 ---
 title: "Authorized access"
-author: "Jakub Chromec"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Authorized access}
@@ -70,8 +68,7 @@ In order to add, update and delete resources, you need to create a token with wr
 my_token = get_token(key = your_key, secret = your_secret, scope = c("read", "write"))
 ```
 
-Built with
-----------
+__Built with__
 
 ```{r}
 sessionInfo()

@@ -1,7 +1,5 @@
 ---
 title: "Editing functions"
-author: "Jakub Chromec"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Editing functions}
@@ -57,8 +55,7 @@ To delete resources, use `delete_model()` and its wrappers: `?delete_card`, `?de
 
 __Caution:__ Deleted resources cannot be brought back!
 
-Built with
-----------
+__Built with__
 
 ```{r}
 sessionInfo()
