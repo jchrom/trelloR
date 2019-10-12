@@ -47,7 +47,7 @@
 #' }
 
 post_model = function(model, id = NULL, path = NULL, body = list(name = "New"),
-                      token, response = "content", on.error = "warning",
+                      token = NULL, response = "content", on.error = "warning",
                       encode = "json", handle = NULL, verbose = FALSE) {
 
   url = modify_url(

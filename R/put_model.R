@@ -44,7 +44,7 @@
 
 
 put_model = function(model, id = NULL, path = NULL, body = NULL,
-                     token, response = "content", on.error = "warning",
+                     token = NULL, response = "content", on.error = "warning",
                      encode = "json", handle = NULL, verbose = FALSE) {
 
   url = modify_url(
