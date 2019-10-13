@@ -11,19 +11,19 @@ get_model(parent = NULL, child = NULL, id = NULL, token = NULL,
   verbose = FALSE)
 }
 \arguments{
-\item{parent}{Parent structure (e.g. \code{"board"})}
+\item{parent}{Parent resource (e.g. \code{"board"})}
 
-\item{child}{Child structure (e.g. \code{"card"})}
+\item{child}{Child resource (e.g. \code{"card"})}
 
 \item{id}{Model ID}
 
-\item{token}{Secure token, see \code{\link{get_token}} for how to obtain it}
+\item{token}{Secure token, see \code{\link{get_token}} for how to obtain it; if NULL, it will check for a cached token}
 
 \item{query}{Key-value pairs which form the query, see \code{\link[httr]{GET}} for details}
 
 \item{url}{Url for the GET request, use instead of specifying \code{parent}, \code{id} and \code{child}; see \code{\link[httr]{GET}} for details}
 
-\item{filter}{Possible values: \code{"closed", "open", "all"}}
+\item{filter}{Defaults to \code{"all"} which fetches both open and archived cards or all action types}
 
 \item{limit}{Defaults to \code{1000}; set to \code{0} to get everything}
 
@@ -31,7 +31,7 @@ get_model(parent = NULL, child = NULL, id = NULL, token = NULL,
 
 \item{paging}{Deprecated, use \code{limit = 0} instead}
 
-\item{bind.rows}{Deprecated; will always bind rows unless \code{response} is not \code{"content"}}
+\item{bind.rows}{Deprecated; will always try to bind rows unless \code{response} is not \code{"content"}}
 
 \item{add.class}{Assign additional S3 class (defaults to \code{TRUE}). The additional class is currently not being used for anything, and might be dropped in the future.}
 
@@ -49,7 +49,7 @@ If the request fails, server error messages are reprinted on the console.
 
 Only JSON responses are accepted. \code{\link[jsonlite]{fromJSON}} converts them into flat \code{data.frame}s or \code{list}s, while non-JSON type of response throws an error.
 
-When \code{limit > 1000}, paging is used. The ID of the earliest result is retrieved from every page and supplied to the next request as the value of the \code{"before"} parameter. PAging will stop after reaching the number of results specified by \code{limit}, or when there are no more data to get.
+When \code{limit > 1000}, paging is used. The ID of the oldest result is retrieved from every page and supplied to the next request as the value of the \code{"before"} parameter. Paging will stop after reaching the number of results specified by \code{limit}, or when there are no more data to get.
 
 \code{filter} and \code{limit} are query parameters that can be set individually; you could achieve the same result by using \code{query = list(filter = "filter_value", limit = "limit_value")}
 }

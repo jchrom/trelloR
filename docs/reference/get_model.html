@@ -76,7 +76,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">trelloR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1</span>
       </span>
     </div>
 
@@ -156,11 +156,11 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>parent</th>
-      <td><p>Parent structure (e.g. <code>"board"</code>)</p></td>
+      <td><p>Parent resource (e.g. <code>"board"</code>)</p></td>
     </tr>
     <tr>
       <th>child</th>
-      <td><p>Child structure (e.g. <code>"card"</code>)</p></td>
+      <td><p>Child resource (e.g. <code>"card"</code>)</p></td>
     </tr>
     <tr>
       <th>id</th>
@@ -168,7 +168,7 @@
     </tr>
     <tr>
       <th>token</th>
-      <td><p>Secure token, see <code><a href='get_token.html'>get_token</a></code> for how to obtain it</p></td>
+      <td><p>Secure token, see <code><a href='get_token.html'>get_token</a></code> for how to obtain it; if NULL, it will check for a cached token</p></td>
     </tr>
     <tr>
       <th>query</th>
@@ -180,7 +180,7 @@
     </tr>
     <tr>
       <th>filter</th>
-      <td><p>Possible values: <code>"closed", "open", "all"</code></p></td>
+      <td><p>Defaults to <code>"all"</code> which fetches both open and archived cards or all action types</p></td>
     </tr>
     <tr>
       <th>limit</th>
@@ -196,7 +196,7 @@
     </tr>
     <tr>
       <th>bind.rows</th>
-      <td><p>Deprecated; will always bind rows unless <code>response</code> is not <code>"content"</code></p></td>
+      <td><p>Deprecated; will always try to bind rows unless <code>response</code> is not <code>"content"</code></p></td>
     </tr>
     <tr>
       <th>add.class</th>
@@ -220,7 +220,7 @@
 
     <p>If the request fails, server error messages are reprinted on the console.</p>
 <p>Only JSON responses are accepted. <code><a href='https://rdrr.io/pkg/jsonlite/man/fromJSON.html'>fromJSON</a></code> converts them into flat <code>data.frame</code>s or <code>list</code>s, while non-JSON type of response throws an error.</p>
-<p>When <code>limit &gt; 1000</code>, paging is used. The ID of the earliest result is retrieved from every page and supplied to the next request as the value of the <code>"before"</code> parameter. PAging will stop after reaching the number of results specified by <code>limit</code>, or when there are no more data to get.</p>
+<p>When <code>limit &gt; 1000</code>, paging is used. The ID of the oldest result is retrieved from every page and supplied to the next request as the value of the <code>"before"</code> parameter. Paging will stop after reaching the number of results specified by <code>limit</code>, or when there are no more data to get.</p>
 <p><code>filter</code> and <code>limit</code> are query parameters that can be set individually; you could achieve the same result by using <code>query = list(filter = "filter_value", limit = "limit_value")</code></p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -241,7 +241,7 @@
 #&gt; <span class='message'>GET URL:</span>
 #&gt; <span class='message'>https://api.trello.com/1/board/5c2776ec65c66e24e0763a5a/labels?limit=1000</span></div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%</div><div class='output co'>#&gt; <span class='message'>Fetched 6 result(s)</span></div><div class='input'><span class='no'>cards</span> <span class='kw'>=</span> <span class='fu'><a href='get_board.html'>get_board_cards</a></span>(<span class='no'>bid</span>, <span class='kw'>filter</span> <span class='kw'>=</span> <span class='st'>"all"</span>)  <span class='co'># Get all cards, incl. archived</span></div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>GET URL:</span>
-#&gt; <span class='message'>https://api.trello.com/1/board/5c2776ec65c66e24e0763a5a/cards?limit=1000&amp;filter=all</span></div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |=======                                                               |   9%  |                                                                              |======================================================================| 100%</div><div class='output co'>#&gt; <span class='message'>Fetched 15 result(s)</span></div><div class='input'>
+#&gt; <span class='message'>https://api.trello.com/1/board/5c2776ec65c66e24e0763a5a/cards?limit=1000&amp;filter=all</span></div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |===================                                                   |  27%  |                                                                              |========================================                              |  57%  |                                                                              |======================================================================| 100%</div><div class='output co'>#&gt; <span class='message'>Fetched 15 result(s)</span></div><div class='input'>
 <span class='co'># We can also call get_model() directly:</span>
 <span class='no'>lists</span> <span class='kw'>=</span> <span class='fu'>get_model</span>(<span class='kw'>parent</span> <span class='kw'>=</span> <span class='st'>"board"</span>, <span class='kw'>child</span> <span class='kw'>=</span> <span class='st'>"lists"</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>bid</span>)</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>GET URL:</span>
