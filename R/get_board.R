@@ -80,7 +80,8 @@ get_board_fields = function(id, ...) {
 #' @rdname get_board
 get_board_prefs = function(id, ...) {
   dat = get_model(parent = "board", id = id, ...)
-  prefs_df = as.data.frame(dat$prefs, stringsAsFactors = FALSE)
+  prefs_li = Filter(Negate(is.null), dat$prefs[[1]])
+  prefs_df = as.data.frame(prefs_li, stringsAsFactors = FALSE)
   prefs_df = dplyr::select(prefs_df, -dplyr::contains("image"))
   board_df = dat[, !names(dat) %in% "prefs"]
   dplyr::bind_cols(board_df, prefs_df)
