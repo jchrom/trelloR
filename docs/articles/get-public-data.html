@@ -182,8 +182,8 @@
 <a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt; GET URL:</span></a>
 <a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; https://api.trello.com/1/card/ThisIsGoingToFail/actions?limit=1000</span></a>
-<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; Request failed [400]. Retrying in 1.7 seconds...</span></a>
-<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt; Request failed [400]. Retrying in 1.4 seconds...</span></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; Request failed [400]. Retrying in 1 seconds...</span></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt; Request failed [400]. Retrying in 3.2 seconds...</span></a>
 <a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt; Bad Request (HTTP 400).</span></a></code></pre></div>
 <p>After it fails, the request is re-send two more times, with random delay before each attempt. If it fails for the 3rd time, the error message is printed on the console and nothing is returned.</p>
 <p><strong>Built with</strong></p>

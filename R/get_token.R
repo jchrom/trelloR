@@ -2,7 +2,7 @@
 #'
 #' Authorize access to Trello API.
 #'
-#' To access private data, a secure token is required. In order to create it, you will need your developer credentials ('key' and 'secret') - these can be obtained in the \href{https://trello.com/app-key}{Developer guide} after login.
+#' To access private data, a secure token is required. In order to create it, you will need your developer credentials ('key' and 'secret'). These can be obtained visiting `https://trello.com/app-key` after logging in to Trello.
 #'
 #' First time you create a token, you will be prompted to confirm the authorization in a browser (you only need to do this once). You will also be offered an option to store the authentication data in your working directory. Keep in mind you have to store your credentials in a \strong{secure, non-shared} location.
 #'
