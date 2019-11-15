@@ -16,22 +16,24 @@ knitr::opts_chunk$set(
 
 Authentication is required in order to access boards that are not public, and to make edits. This document explains how to authenticate your access to Trello.
 
-```{r setup}
-library(trelloR)
-```
-
 Getting your access token
 -------------------------
 
-A secure token is required to authenticate your access to Trello. To obtain it, login to Trello and visit `https://trello.com/app-key`. Copy both "key" and "secret" from that page and feed them to the `get_token()` function (see below). This will trigger the first-time authorization in the browser (you only have to do it once for a given project):
+A secure token is required to authenticate your access to Trello. To obtain it, login to Trello and visit `https://trello.com/app-key`. You will need to do two things there:
+
+* Check the value of Allowed origins. Every API request comes from an "origin", i.e. a URL. Trello API will only accept authorized requests if they come from the allowed origins list, which makes communication with web apps more secure. Chances are though you will be calling Trello from your PC, in which case you might want to set at least one origin to something like `http://localhost:1410`.
+* Copy both "key" and "secret" - you will need them for the next step.
+
+Back in R, feed the key and secrey to the `get_token()` function. This will trigger first-time authorization in the browser (you only have to do it once for a given project):
 
 ```r
+library(trelloR)
 my_token = get_token(key = your_key, secret = your_secret, appname = "my-app")
 ```
 
 You will also be offered an option to store the token in your working directory, in a hidden `.httr-oauth` file. This is convenient, but make sure you keep it in a **safe, non-shared** location.
 
-If you think the token might have been compromised (ie. somebody might have gotten hold of it) or you simly do not want to use it anymore, you should revoke it. This can be done by visiting your account settings. Look up the appropriate entry in the "Applications" list at the bottom of the page and click the Revoke button. To make it easier to recognize the tokens you have created, use the `appname` argument when creating a token.
+If you think the token might have been compromised (ie. somebody might have gotten hold of it) or you simply do not want to use it anymore, you should revoke it. This can be done by visiting your account settings. Look up the appropriate entry in the "Applications" list at the bottom of the page and click the Revoke button. To make it easier to recognize the tokens you have created, use the `appname` argument when creating a token.
 
 You can create multiple tokens with different names, scope and expiration. See `?get_token` for additional arguments.
 

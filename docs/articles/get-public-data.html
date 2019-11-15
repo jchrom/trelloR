@@ -118,14 +118,16 @@
 <p>The following snippet fetches 5 cards from the <a href="https://trello.com/b/Pw3EioMM/trellor-r-api-for-trello">trelloR demo board</a>. This is a public board and so does not require authentication:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(trelloR)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co">#&gt; R API for Trello</span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">#&gt; Disclaimer: trelloR is not affiliated, associated, authorized, endorsed by or in any way officially connected to Trello, Inc. (www.trello.com).</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">board =<span class="st"> "https://trello.com/b/Pw3EioMM/trellor-r-api-for-trello"</span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">param =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">fields =</span> <span class="st">"id,name,idList,labels"</span>)</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">cards =<span class="st"> </span><span class="kw"><a href="../reference/get_board.html">get_board_cards</a></span>(board, <span class="dt">query =</span> param, <span class="dt">limit =</span> <span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt; GET URL:</span></a>
-<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt; https://api.trello.com/1/board/Pw3EioMM/cards?fields=id%2Cname%2CidList%2Clabels&amp;limit=5</span></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#&gt; Fetched 5 result(s)</span></a></code></pre></div>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">#&gt; Disclaimer: trelloR is not affiliated, associated, authorized,</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#&gt; endorsed by or in any way officially connected to Trello, Inc.</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#&gt; (www.trello.com).</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6">board =<span class="st"> "https://trello.com/b/Pw3EioMM/trellor-r-api-for-trello"</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">param =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">fields =</span> <span class="st">"id,name,idList,labels"</span>)</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">cards =<span class="st"> </span><span class="kw"><a href="../reference/get_board.html">get_board_cards</a></span>(board, <span class="dt">query =</span> param, <span class="dt">limit =</span> <span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#&gt; GET URL:</span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">#&gt; https://api.trello.com/1/board/Pw3EioMM/cards?fields=id%2Cname%2CidList%2Clabels&amp;limit=5</span></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co">#&gt; Fetched 5 result(s)</span></a></code></pre></div>
 <p>The result is a data.frame:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">cards</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; # A tibble: 5 x 4</span></a>
@@ -183,7 +185,7 @@
 <a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt; GET URL:</span></a>
 <a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; https://api.trello.com/1/card/ThisIsGoingToFail/actions?limit=1000</span></a>
 <a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; Request failed [400]. Retrying in 1 seconds...</span></a>
-<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt; Request failed [400]. Retrying in 3.2 seconds...</span></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt; Request failed [400]. Retrying in 1.2 seconds...</span></a>
 <a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt; Bad Request (HTTP 400).</span></a></code></pre></div>
 <p>After it fails, the request is re-send two more times, with random delay before each attempt. If it fails for the 3rd time, the error message is printed on the console and nothing is returned.</p>
 <p><strong>Built with</strong></p>
@@ -212,12 +214,12 @@
 <a class="sourceLine" id="cb7-23" data-line-number="23"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb7-24" data-line-number="24"><span class="co">#&gt; loaded via a namespace (and not attached):</span></a>
 <a class="sourceLine" id="cb7-25" data-line-number="25"><span class="co">#&gt;  [1] Rcpp_1.0.2       rstudioapi_0.10  knitr_1.23       magrittr_1.5    </span></a>
-<a class="sourceLine" id="cb7-26" data-line-number="26"><span class="co">#&gt;  [5] MASS_7.3-51.4    tidyselect_0.2.5 R6_2.4.0         rlang_0.4.0     </span></a>
+<a class="sourceLine" id="cb7-26" data-line-number="26"><span class="co">#&gt;  [5] MASS_7.3-51.4    tidyselect_0.2.5 R6_2.4.0         rlang_0.4.1     </span></a>
 <a class="sourceLine" id="cb7-27" data-line-number="27"><span class="co">#&gt;  [9] fansi_0.4.0      httr_1.4.1       stringr_1.4.0    dplyr_0.8.3     </span></a>
 <a class="sourceLine" id="cb7-28" data-line-number="28"><span class="co">#&gt; [13] tools_3.6.1      xfun_0.7         utf8_1.1.4       cli_1.1.0       </span></a>
-<a class="sourceLine" id="cb7-29" data-line-number="29"><span class="co">#&gt; [17] htmltools_0.3.6  yaml_2.2.0       assertthat_0.2.1 digest_0.6.21   </span></a>
+<a class="sourceLine" id="cb7-29" data-line-number="29"><span class="co">#&gt; [17] htmltools_0.3.6  yaml_2.2.0       assertthat_0.2.1 digest_0.6.22   </span></a>
 <a class="sourceLine" id="cb7-30" data-line-number="30"><span class="co">#&gt; [21] rprojroot_1.3-2  tibble_2.1.3     pkgdown_1.4.1    crayon_1.3.4    </span></a>
-<a class="sourceLine" id="cb7-31" data-line-number="31"><span class="co">#&gt; [25] purrr_0.3.2      vctrs_0.2.0      fs_1.3.1         zeallot_0.1.0   </span></a>
+<a class="sourceLine" id="cb7-31" data-line-number="31"><span class="co">#&gt; [25] purrr_0.3.3      vctrs_0.2.0      fs_1.3.1         zeallot_0.1.0   </span></a>
 <a class="sourceLine" id="cb7-32" data-line-number="32"><span class="co">#&gt; [29] curl_4.2         memoise_1.1.0    glue_1.3.1       evaluate_0.14   </span></a>
 <a class="sourceLine" id="cb7-33" data-line-number="33"><span class="co">#&gt; [33] rmarkdown_1.13   stringi_1.4.3    pillar_1.4.2     compiler_3.6.1  </span></a>
 <a class="sourceLine" id="cb7-34" data-line-number="34"><span class="co">#&gt; [37] desc_1.2.0       backports_1.1.5  jsonlite_1.6     pkgconfig_2.0.3</span></a></code></pre></div>

@@ -42,7 +42,7 @@ extract_id = function(x) {
 .onAttach <- function(libname, pkgname) {
   packageStartupMessage(
     "R API for Trello\n",
-    "Disclaimer: trelloR is not affiliated, associated, authorized, endorsed by or in any way officially connected to Trello, Inc. (www.trello.com).\n")
+    paste(strwrap("Disclaimer: trelloR is not affiliated, associated, authorized, endorsed by or in any way officially connected to Trello, Inc. (www.trello.com).\n"), collapse = "\n"))
 }
 
 tolower_if_logical = function(x) {
