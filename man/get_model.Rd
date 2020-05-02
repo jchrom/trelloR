@@ -4,11 +4,23 @@
 \alias{get_model}
 \title{Get Data From Trello API}
 \usage{
-get_model(parent = NULL, child = NULL, id = NULL, token = NULL,
-  query = NULL, url = NULL, filter = NULL, limit = 1000,
-  response = "content", paging = FALSE, bind.rows = TRUE,
-  add.class = TRUE, on.error = "error", handle = NULL,
-  verbose = FALSE)
+get_model(
+  parent = NULL,
+  child = NULL,
+  id = NULL,
+  token = NULL,
+  query = NULL,
+  url = NULL,
+  filter = NULL,
+  limit = 1000,
+  response = "content",
+  paging = FALSE,
+  bind.rows = TRUE,
+  add.class = TRUE,
+  on.error = "error",
+  handle = NULL,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{parent}{Parent resource (e.g. \code{"board"})}
@@ -86,5 +98,6 @@ cards_open = get_board_cards(board_id, token, filter = "open")
 }
 }
 \seealso{
-\code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}}, \code{\link{get_token}}, \code{\link{get_id}}
+\code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}},
+  \code{\link{get_token}}, \code{\link{get_id}}
 }

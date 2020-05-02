@@ -110,7 +110,6 @@ page_limits = function(x) {
 #' @param handle The handle to use with this request (see \code{\link[httr]{RETRY}})
 #' @param verbose Set to \code{TRUE} for verbose output
 #' @importFrom httr RETRY config user_agent accept_json progress stop_for_status message_for_status content status_code headers
-#' @importFrom dplyr as.tbl
 #' @importFrom jsonlite fromJSON
 
 get_url = function(url, token = NULL, response = "content", retry.times = 3,
@@ -173,7 +172,6 @@ get_url = function(url, token = NULL, response = "content", retry.times = 3,
 #' data); searches also return a data.frame with 1 row, including
 #' @param x Object of class \code{"response"}
 #' @importFrom httr content parse_url modify_url
-#' @importFrom dplyr as_data_frame data_frame
 #' @importFrom jsonlite fromJSON
 #' @export
 
@@ -211,7 +209,16 @@ as_tbl_response = function(x) {
       FUN = function(model_type) nrow_safe(response_list[[model_type]])
     )
 
-    response_df = dplyr::as_data_frame(t(as.matrix(response_list)))
+    if (requireNamespace("tibble", quietly = TRUE)) {
+
+      response_df = tibble::as_tibble(t(as.matrix(response_list)))
+
+    } else {
+
+      response_df = as.data.frame(t(as.matrix(response_list)))
+
+    }
+
     response_df$options = NULL
 
     structure(
@@ -225,7 +232,16 @@ as_tbl_response = function(x) {
   as_df_singleton = function(x) {
 
     response_list = httr::content(x)
-    response_df = dplyr::as_data_frame(t(as.matrix(response_list)))
+
+    if (requireNamespace("tibble", quietly = TRUE)) {
+
+      response_df = tibble::as_tibble(t(as.matrix(response_list)))
+
+    } else {
+
+      response_df = as.data.frame(t(as.matrix(response_list)))
+
+    }
 
     response_df[] = lapply(
       response_df,
@@ -243,7 +259,16 @@ as_tbl_response = function(x) {
   as_df_iterative = function(x) {
 
     response_text = content(x, as = "text")
-    response_df = as_data_frame(fromJSON(response_text, flatten = TRUE))
+
+    if (requireNamespace("tibble", quietly = TRUE)) {
+
+      response_df = tibble::as_tibble(fromJSON(response_text, flatten = TRUE))
+
+    } else {
+
+      response_df = as.data.frame(fromJSON(response_text, flatten = TRUE))
+
+    }
 
     structure(
       response_df,

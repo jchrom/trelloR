@@ -4,8 +4,15 @@
 \alias{get_url}
 \title{GET url from Trello API}
 \usage{
-get_url(url, token = NULL, response = "content", retry.times = 3,
-  on.error = "error", handle = NULL, verbose = FALSE)
+get_url(
+  url,
+  token = NULL,
+  response = "content",
+  retry.times = 3,
+  on.error = "error",
+  handle = NULL,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{url}{Url to get}

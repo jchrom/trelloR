@@ -4,8 +4,13 @@
 \alias{get_token}
 \title{Get OAuth1.0 Token}
 \usage{
-get_token(key, secret, appname = "trello-app", scope = "read",
-  expiration = "30days")
+get_token(
+  key,
+  secret,
+  appname = "trello-app",
+  scope = "read",
+  expiration = "30days"
+)
 }
 \arguments{
 \item{key}{developer key}

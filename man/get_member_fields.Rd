@@ -4,8 +4,11 @@
 \alias{get_member_fields}
 \title{Get Member Info}
 \usage{
-get_member_fields(id, fields = c("fullName", "username", "memberType",
-  "bio"), ...)
+get_member_fields(
+  id,
+  fields = c("fullName", "username", "memberType", "bio"),
+  ...
+)
 }
 \arguments{
 \item{id}{member ID or username}

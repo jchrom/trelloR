@@ -3,7 +3,6 @@
 \docType{package}
 \name{trelloR}
 \alias{trelloR}
-\alias{trelloR-package}
 \title{trelloR: R API for Trello}
 \description{
 Authorize your access to Trello from R and get data from boards, cards, lists

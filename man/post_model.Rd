@@ -4,9 +4,18 @@
 \alias{post_model}
 \title{POST data to Trello API}
 \usage{
-post_model(model, id = NULL, path = NULL, body = list(name = "New"),
-  token = NULL, response = "content", on.error = "warning",
-  encode = "json", handle = NULL, verbose = FALSE)
+post_model(
+  model,
+  id = NULL,
+  path = NULL,
+  body = list(name = "New"),
+  token = NULL,
+  response = "content",
+  on.error = "warning",
+  encode = "json",
+  handle = NULL,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{model}{Model}

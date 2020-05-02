@@ -9,23 +9,24 @@
 \alias{search_teams}
 \title{Search models}
 \usage{
-search_model(string, modeltype = "all", boards = "mine",
-  partial = FALSE, query = list(), ...)
+search_model(
+  string,
+  modeltype = "all",
+  boards = "mine",
+  partial = FALSE,
+  query = list(),
+  ...
+)
 
-search_cards(string, boards = "mine", partial = FALSE,
-  query = list(), ...)
+search_cards(string, boards = "mine", partial = FALSE, query = list(), ...)
 
-search_actions(string, boards = "mine", partial = FALSE,
-  query = list(), ...)
+search_actions(string, boards = "mine", partial = FALSE, query = list(), ...)
 
-search_boards(string, boards = "mine", partial = FALSE,
-  query = list(), ...)
+search_boards(string, boards = "mine", partial = FALSE, query = list(), ...)
 
-search_members(string, boards = "mine", partial = FALSE,
-  query = list(), ...)
+search_members(string, boards = "mine", partial = FALSE, query = list(), ...)
 
-search_teams(string, boards = "mine", partial = FALSE,
-  query = list(), ...)
+search_teams(string, boards = "mine", partial = FALSE, query = list(), ...)
 }
 \arguments{
 \item{string}{Text to search for}

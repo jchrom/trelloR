@@ -4,34 +4,22 @@
 \alias{trello_get}
 \title{Get Data From Trello API}
 \usage{
-trello_get(parent = NULL, child = NULL, id = NULL, token = NULL,
-  query = NULL, url = NULL, filter = NULL, limit = 1000,
-  paging = FALSE, bind.rows = TRUE)
+trello_get(
+  parent = NULL,
+  child = NULL,
+  id = NULL,
+  token = NULL,
+  query = NULL,
+  url = NULL,
+  filter = NULL,
+  limit = 1000,
+  paging = FALSE,
+  bind.rows = TRUE
+)
 }
 \arguments{
-\item{parent}{Parent structure (e.g. \code{"board"})}
-
-\item{child}{Child structure (e.g. \code{"card"})}
-
-\item{id}{Model ID}
-
-\item{token}{Peviously generated secure token, see \code{\link{get_token}} for how to obtain it}
-
-\item{query}{key-value pairs which form the query, see \code{\link[httr]{GET}} for details}
-
-\item{url}{Url for the GET request, use instead of specifying see \code{parent}, see \code{id} and see \code{child}; see \code{\link[httr]{GET}} for details}
-
-\item{filter}{Query value}
-
-\item{limit}{Query value (defaults to 1000; if reached, paging is suggested)}
-
-\item{paging}{Logical whether paging should be used}
-
-\item{bind.rows}{By default, pages will be combined into one \code{data.frame} by \code{\link[dplyr]{bind_rows}}. Set to \code{FALSE} if you want \code{list} instead. This is useful on the rare occasion that the JSON response is not formatted correctly and makes \code{\link[dplyr]{bind_rows}} fail}
+\item{parent, child, id, token, query, url, filter, limit, paging, bind.rows}{Use \code{\link{get_model}}.}
 }
 \description{
 Deprecated. Use \code{\link{get_model}} instead.
-}
-\seealso{
-\code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}}, \code{\link{get_token}}, \code{\link{get_id}}
 }

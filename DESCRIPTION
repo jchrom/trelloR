@@ -1,27 +1,24 @@
 Package: trelloR
 Title: R API for Trello
-Version: 0.6.1
-Authors@R: c(
-    person("Jakub", "Chromec", , "chromec.jakub@gmail.com", role = c("aut", "cre")),
-    person("Irina", "Matusevich", role = "ctb")
-    )
+Version: 0.6.2
+Authors@R: c(person("Jakub", "Chromec", , "chromec.jakub@gmail.com",
+    role = c("aut", "cre")))
 Description: R client for Trello API: <https://developers.trello.com/reference>.
     Most API calls are supported, including authentication, updates and deletes,
     and downloading data.
 Depends:
     R (>= 3.2.3)
 Imports:
-    dplyr (>= 0.5),
-    tidyr (>= 0.6),
-    httr (>= 1.2),
-    jsonlite (>= 1.0)
+    httr,
+    jsonlite
 License: GPL-3
 LazyData: true
 URL: https://github.com/jchrom/trelloR
 BugReports: https://github.com/jchrom/trelloR/issues
 Date: 2019-10-15
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
 Suggests:
     knitr,
-    rmarkdown
+    rmarkdown,
+    tibble
 VignetteBuilder: knitr

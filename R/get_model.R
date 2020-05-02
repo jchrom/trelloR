@@ -26,9 +26,9 @@
 #' @param handle The handle to use with this request (see \code{\link[httr]{RETRY}})
 #' @param verbose Set to \code{TRUE} for verbose output
 #'
-#' @seealso \code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}}, \code{\link{get_token}}, \code{\link{get_id}}
+#' @seealso \code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}},
+#'   \code{\link{get_token}}, \code{\link{get_id}}
 #'
-#' @importFrom dplyr bind_rows as_data_frame
 #' @importFrom httr modify_url
 #'
 #' @export
@@ -124,7 +124,7 @@ get_model = function(parent = NULL, child = NULL, id = NULL, token = NULL,
 
   if (response == "content") {
     result =  tryCatch(
-      expr  = add_class(x = bind_rows(result), child = child),
+      expr  = add_class(x = rbind_vector(result), child = child),
       error = function(e) {
         warning("Binding failed: ", e$message, "\nreturning list", call. = FALSE)
         result })

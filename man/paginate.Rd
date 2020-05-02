@@ -4,8 +4,14 @@
 \alias{paginate}
 \title{GET multiple pages}
 \usage{
-paginate(url, token = NULL, response = "content", on.error = "error",
-  handle = NULL, verbose = FALSE)
+paginate(
+  url,
+  token = NULL,
+  response = "content",
+  on.error = "error",
+  handle = NULL,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{url}{Url for the GET request}

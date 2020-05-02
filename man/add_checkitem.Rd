@@ -4,8 +4,7 @@
 \alias{add_checkitem}
 \title{Add checklist item}
 \usage{
-add_checkitem(checklist, name, checked = FALSE, position = "bottom",
-  ...)
+add_checkitem(checklist, name, checked = FALSE, position = "bottom", ...)
 }
 \arguments{
 \item{checklist}{Checklist id}

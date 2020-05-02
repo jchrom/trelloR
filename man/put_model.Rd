@@ -4,9 +4,18 @@
 \alias{put_model}
 \title{PUT data to Trello API}
 \usage{
-put_model(model, id = NULL, path = NULL, body = NULL, token = NULL,
-  response = "content", on.error = "warning", encode = "json",
-  handle = NULL, verbose = FALSE)
+put_model(
+  model,
+  id = NULL,
+  path = NULL,
+  body = NULL,
+  token = NULL,
+  response = "content",
+  on.error = "warning",
+  encode = "json",
+  handle = NULL,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{model}{Model}
