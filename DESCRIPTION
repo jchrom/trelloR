@@ -21,5 +21,6 @@ Roxygen: list(markdown = TRUE)
 Suggests:
     knitr,
     rmarkdown,
-    tibble
+    tibble,
+    testthat
 VignetteBuilder: knitr
