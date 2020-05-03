@@ -10,7 +10,7 @@ post_model(
   path = NULL,
   body = list(name = "New"),
   token = NULL,
-  response = "content",
+  response = c("content", "headers", "status", "response"),
   on.error = c("stop", "warn", "message"),
   verbose = FALSE,
   encode = "json",

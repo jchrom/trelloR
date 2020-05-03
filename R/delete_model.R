@@ -36,7 +36,7 @@
 #' }
 
 delete_model = function(model, id = NULL, path = NULL, token = NULL,
-                        response = "content",
+                        response = c("content", "headers", "status", "response"),
                         on.error = c("stop", "warn", "message"),
                         verbose = FALSE,
                         encode   = "json", handle = NULL) {
@@ -49,6 +49,10 @@ delete_model = function(model, id = NULL, path = NULL, token = NULL,
   message(
     "Request URL:\n", url, "\n"
   )
+
+  on.error = match.arg(on.error, several.ok = FALSE)
+
+  response = match.arg(response, several.ok = FALSE)
 
   if (is.null(token) && file.exists(".httr-oauth"))
     token = read_last_token()
@@ -70,7 +74,7 @@ delete_model = function(model, id = NULL, path = NULL, token = NULL,
   }
 
   switch(
-    match.arg(on.error, several.ok = FALSE),
+    on.error,
     message = httr::message_for_status(res),
     warn    = httr::warn_for_status(res),
     httr::stop_for_status(res)

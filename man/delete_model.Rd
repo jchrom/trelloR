@@ -9,7 +9,7 @@ delete_model(
   id = NULL,
   path = NULL,
   token = NULL,
-  response = "content",
+  response = c("content", "headers", "status", "response"),
   on.error = c("stop", "warn", "message"),
   verbose = FALSE,
   encode = "json",
