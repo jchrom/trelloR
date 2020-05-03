@@ -50,6 +50,6 @@ tolower_if_logical = function(x) {
 }
 
 read_last_token = function() {
-  cached_tokens = readRDS(".httr-oauth")
-  utils::tail(cached_tokens)[[1]]
+  token = utils::tail(readRDS(".httr-oauth"), 1)[[1]]
+  structure(token, class = c("trello_api_token", class(token)))
 }
