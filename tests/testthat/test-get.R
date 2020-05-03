@@ -47,6 +47,12 @@ skip_if_no_token <- function() {
 
 token = utils::tail(readRDS(Sys.getenv("TOKEN_PATH")))[[1]]
 
+if (!identical(Sys.getenv("TOKEN_PATH"), "")) {
+
+  token = utils::tail(readRDS(Sys.getenv("TOKEN_PATH")))[[1]]
+
+}
+
 test_that("search produces a data frame with 1 row", {
 
   skip_if_no_token()
