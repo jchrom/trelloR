@@ -24,22 +24,19 @@ Private and team boards can be accessed using a secure token. Check the
 vignettes to [get
 started](https://jchrom.github.io/trelloR/articles/get-public-data.html).
 
-### Get it from CRAN (version 0.1)
-
-The CRAN version can only download data. Support for PUT, POST and
-DELETE requests is implemented in the development version (see below).
-
-``` r
-install.packages("trelloR")
-```
-
-**…or from GitHub (current)**
+### Get it from GitHub
 
 ``` r
 devtools::install_github("jchrom/trelloR")
 ```
 
-Built on [httr](https://cran.r-project.org/package=httr) and
+**CRAN (version 0.1)**
+
+The CRAN version has been long outdated and should not be preferred. The
+CRAN package will be updated when version 0.7 is released. In the
+meantime, please use the development version above.
+
+Built using [httr](https://cran.r-project.org/package=httr) and
 [jsonlite](https://cran.r-project.org/package=jsonlite).
 
 **Disclaimer:** `trelloR` is not affiliated, associated, authorized,

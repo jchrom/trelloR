@@ -14,14 +14,18 @@ skip_if_no_token <- function() {
   }
 }
 
-token = utils::tail(readRDS(Sys.getenv("TOKEN_PATH")))[[1]]
+if (!identical(Sys.getenv("TOKEN_PATH"), "")) {
 
-board = trelloR::add_board(
-  name  = paste0("trelloR testing: ", Sys.Date()),
-  body  = list(defaultLists = TRUE,
-               desc = "Test trelloR with testthat"),
-  token = token
-)
+  token = utils::tail(readRDS(Sys.getenv("TOKEN_PATH")))[[1]]
+
+  board = trelloR::add_board(
+    name  = paste0("trelloR testing: ", Sys.Date()),
+    body  = list(defaultLists = TRUE,
+                 desc = "Test trelloR with testthat"),
+    token = token
+  )
+
+}
 
 test_that("new board can be created", {
 
