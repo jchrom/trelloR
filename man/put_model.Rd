@@ -11,39 +11,39 @@ put_model(
   body = NULL,
   token = NULL,
   response = "content",
-  on.error = "warning",
+  on.error = c("stop", "warn", "message"),
+  verbose = FALSE,
   encode = "json",
-  handle = NULL,
-  verbose = FALSE
+  handle = NULL
 )
 }
 \arguments{
-\item{model}{Model}
+\item{model}{Model name, eg. \code{"card"}.}
 
-\item{id}{Model id}
+\item{id}{Model id.}
 
-\item{path}{Path}
+\item{path}{Path.}
 
-\item{body}{A named list of query paramters (will be passed as body)}
+\item{body}{A named list.}
 
-\item{token}{Secure token, see \code{\link{get_token}} (scope must include write permissions)}
+\item{token}{Secure token, see \link{get_token} (scope must include write
+permissions).}
 
-\item{response}{Can return \code{"content"} (default), \code{"headers"}, \code{"status"} code or the complete \code{"response"}}
+\item{response}{Can return \code{"content"} (the default), \code{"headers"}
+or response object.}
 
-\item{on.error}{Issues either \code{\link[base]{warning}} (default), \code{\link[base]{message}} or error (and \code{\link[base]{stop}}s)}
+\item{on.error}{Issues a warning, a message or an error on API error.}
 
-\item{encode}{Passed to \code{\link[httr]{PUT}}}
+\item{verbose}{Whether to pass \link[httr:verbose]{httr::verbose} to \link[httr:PUT]{httr::PUT}.}
 
-\item{handle}{Passed to \code{\link[httr]{PUT}}}
-
-\item{verbose}{Whether to pass \code{verbose()} to \code{\link[httr]{PUT}}}
+\item{encode, handle}{Passed to \link[httr:PUT]{httr::PUT}.}
 }
 \description{
-Issues \code{\link[httr]{PUT}} requests for Trello API endpoints.
+Issues \link[httr:PUT]{httr::PUT} requests for Trello API endpoints.
 }
 \details{
 See \href{https://developers.trello.com/v1.0/reference}{Trello API reference}
-for more info about what arguments can be passed to PUT requests.
+for more info about what arguments can be passed to POST requests.
 }
 \examples{
 

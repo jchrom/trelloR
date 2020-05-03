@@ -20,10 +20,9 @@
 #
 #   Objects for which base::is.vector returns FALSE will break in unexpected
 #   ways. This is only accepted because no such objects will ever be returned
-#   by jsonlite::fromJSON, and trelloR::rbind_vector is not exported to avoid
-#   its use in other situations.
+#   by jsonlite::fromJSON.
 #
-# @param dfs
+# @param dfs A list of data frames.
 #
 # @return A data frame.
 
@@ -32,6 +31,9 @@ rbind_vector = function(dfs) {
   if (is.data.frame(dfs)) return(dfs)
 
   stopifnot(is.list(dfs))
+
+  dfs = Filter(length, dfs)
+
   stopifnot(all(sapply(dfs, is.data.frame)))
 
   row_lengths = unlist(lapply(dfs, .row_names_info, 2L), use.names = FALSE)

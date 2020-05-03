@@ -25,8 +25,7 @@ get_id_board = function(url, token = NULL) {
 
   dat = get_model(
       parent = "board", id = extract_shortname(url), token = token,
-      query = list(fields = "name"), add.class = FALSE
-    )
+      query = list(fields = "name"))
 
   structure(dat$id, names = dat$name)
 }
@@ -39,8 +38,7 @@ get_id_card = function(url, token = NULL) {
 
     dat = get_model(
       parent = "card", id = extract_shortname(url), token = token,
-      query = list(fields = "name"), add.class = FALSE
-    )
+      query = list(fields = "name"))
 
     structure(dat$id, names = dat$name)
 }

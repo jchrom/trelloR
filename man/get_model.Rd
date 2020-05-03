@@ -13,58 +13,92 @@ get_model(
   url = NULL,
   filter = NULL,
   limit = 1000,
-  response = "content",
-  paging = FALSE,
-  bind.rows = TRUE,
-  add.class = TRUE,
-  on.error = "error",
+  on.error = "stop",
+  retry.times = 3,
   handle = NULL,
-  verbose = FALSE
+  verbose = FALSE,
+  response,
+  paging,
+  bind.rows
 )
 }
 \arguments{
-\item{parent}{Parent resource (e.g. \code{"board"})}
+\item{parent}{Parent resource, e.g. \code{"board"} or \code{NULL}.}
 
-\item{child}{Child resource (e.g. \code{"card"})}
+\item{child}{Child resource, eg. \code{"card"} or \code{NULL}.}
 
-\item{id}{Model ID}
+\item{id}{Model ID or \code{NULL}.}
 
-\item{token}{Secure token, see \code{\link{get_token}} for how to obtain it; if NULL, it will check for a cached token}
+\item{token}{Secure token, see \link{get_token} for how to obtain it.
+If \code{NULL}, it will attempt to read a cached token from disk.}
 
-\item{query}{Key-value pairs which form the query, see \code{\link[httr]{GET}} for details}
+\item{query}{Named list of key-value pairs, see \link[httr:GET]{httr::GET} for details.}
 
-\item{url}{Url for the GET request, use instead of specifying \code{parent}, \code{id} and \code{child}; see \code{\link[httr]{GET}} for details}
+\item{url}{Url for the GET request. Can be \code{NULL} if \code{parent} is specified,
+or a combination of \code{parent}, \code{child} and \code{id} is provided.}
 
-\item{filter}{Defaults to \code{"all"} which fetches both open and archived cards or all action types}
+\item{filter}{Defaults to \code{"all"} which includes both open and archived cards
+or all action types, depending on what resource is requested.}
 
-\item{limit}{Defaults to \code{1000}; set to \code{0} to get everything}
+\item{limit}{Defaults to \code{1000}. Set to \code{Inf} (or 0) to get everything.}
 
-\item{response}{Can be either "content" (a \code{\link[dplyr]{tbl}}) or an object of class \code{\link[httr]{response}}}
+\item{on.error}{Whether to \code{"stop"}, \code{"warn"} or \code{"message"} on API error.}
 
-\item{paging}{Deprecated, use \code{limit = 0} instead}
+\item{retry.times}{How many times to re-try when a request fails. Defaults
+to 3.}
 
-\item{bind.rows}{Deprecated; will always try to bind rows unless \code{response} is not \code{"content"}}
+\item{handle}{The handle to use with this request, see \link[httr:RETRY]{httr::RETRY}.}
 
-\item{add.class}{Assign additional S3 class (defaults to \code{TRUE}). The additional class is currently not being used for anything, and might be dropped in the future.}
+\item{verbose}{Set to \code{TRUE} for verbose output.}
 
-\item{on.error}{Whether to stop, fail or message on error}
+\item{response}{Deprecated. When a request fails and \code{on.error} is something
+else than \code{"error"}, the unparsed response object is included in the result.}
 
-\item{handle}{The handle to use with this request (see \code{\link[httr]{RETRY}})}
+\item{paging}{Deprecated, use \code{limit = Inf} instead.}
 
-\item{verbose}{Set to \code{TRUE} for verbose output}
+\item{bind.rows}{Deprecated and abandoned.}
+}
+\value{
+A data frame with API responses.
 }
 \description{
-Issues \code{\link[httr]{GET}} requests for Trello API endpoints.
+Issue \link[httr:GET]{httr::GET} requests for Trello API endpoints.
 }
-\details{
+\section{Request limits}{
+
+
+At maximum, the API can retrieve 1000 results in a single call. Setting
+\code{limit > 1000} will activate paging. When paging is used, the request will
+be issued repeatedly, retrieving new batch of results each time until
+the \code{limit} is reached or there is nothing else to fetch. Results are fetched
+chronologically, ie. newest results are retrieved first (eg. newest cards).
+Use \code{limit = Inf} to make sure you get all.
+}
+
+\section{Errors}{
+
+
 If the request fails, server error messages are reprinted on the console.
-
-Only JSON responses are accepted. \code{\link[jsonlite]{fromJSON}} converts them into flat \code{data.frame}s or \code{list}s, while non-JSON type of response throws an error.
-
-When \code{limit > 1000}, paging is used. The ID of the oldest result is retrieved from every page and supplied to the next request as the value of the \code{"before"} parameter. Paging will stop after reaching the number of results specified by \code{limit}, or when there are no more data to get.
-
-\code{filter} and \code{limit} are query parameters that can be set individually; you could achieve the same result by using \code{query = list(filter = "filter_value", limit = "limit_value")}
+Depending on the value of \code{on.error}, the request call can return an error
+in R, or can issue a warning/message and return \code{NULL}.
 }
+
+\section{Results}{
+
+
+The API returns JSON objects which are parsed using \link[jsonlite:fromJSON]{jsonlite::fromJSON}.
+Non-JSON results throw an error, but these should never happen anyway. The
+result is always a data frame, or a \code{tibble} if the package is installed.
+}
+
+\section{Filter}{
+
+
+Both \code{filter} and \code{limit} exist as explicitly defined arguments, but you can
+ignore them in favor of supplying their values as query parameters, eg.
+\code{query = list(filter = "filter_value", limit = "limit_value")}.
+}
+
 \examples{
 
 # No authorization is required to access public boards, so there is no need
@@ -98,6 +132,5 @@ cards_open = get_board_cards(board_id, token, filter = "open")
 }
 }
 \seealso{
-\code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}},
-  \code{\link{get_token}}, \code{\link{get_id}}
+\link[httr:GET]{httr::GET}, \link[jsonlite:fromJSON]{jsonlite::fromJSON}, \link{get_token}, \link{get_id}
 }

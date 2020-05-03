@@ -10,33 +10,33 @@ delete_model(
   path = NULL,
   token = NULL,
   response = "content",
-  on.error = "warning",
+  on.error = c("stop", "warn", "message"),
+  verbose = FALSE,
   encode = "json",
-  handle = NULL,
-  verbose = FALSE
+  handle = NULL
 )
 }
 \arguments{
-\item{model}{Model}
+\item{model}{Model name, eg. \code{"card"}.}
 
-\item{id}{Model id}
+\item{id}{Model id.}
 
-\item{path}{Path}
+\item{path}{Path.}
 
-\item{token}{Secure token, see \code{\link{get_token}} (scope must include write permissions)}
+\item{token}{Secure token, see \link{get_token} (scope must include write
+permissions).}
 
-\item{response}{Can return \code{"content"} (default), \code{"headers"} or the complete \code{"response"}}
+\item{response}{Can return \code{"content"} (the default), \code{"headers"}
+or response object.}
 
-\item{on.error}{Issues either \code{\link[base]{warning}} (default), \code{\link[base]{message}} or error (and \code{\link[base]{stop}}s)}
+\item{on.error}{Issues a warning, a message or an error on API error.}
 
-\item{encode}{Passed to \code{\link[httr]{DELETE}}}
+\item{verbose}{Whether to pass \link[httr:verbose]{httr::verbose} to \link[httr:DELETE]{httr::DELETE}.}
 
-\item{handle}{Passed to \code{\link[httr]{DELETE}}}
-
-\item{verbose}{Whether to pass \code{verbose()} to \code{\link[httr]{DELETE}}}
+\item{encode, handle}{Passed to \link[httr:DELETE]{httr::DELETE}.}
 }
 \description{
-Issues \code{\link[httr]{DELETE}} requests for Trello API endpoints.
+Issues \link[httr:DELETE]{httr::DELETE} requests for Trello API endpoints.
 }
 \details{
 See \href{https://developers.trello.com/v1.0/reference}{Trello API reference}

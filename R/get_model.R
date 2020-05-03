@@ -1,35 +1,58 @@
 #' Get Data From Trello API
 #'
-#' Issues \code{\link[httr]{GET}} requests for Trello API endpoints.
+#' Issue [httr::GET] requests for Trello API endpoints.
+#'
+#' @section Request limits:
+#'
+#' At maximum, the API can retrieve 1000 results in a single call. Setting
+#' `limit > 1000` will activate paging. When paging is used, the request will
+#' be issued repeatedly, retrieving new batch of results each time until
+#' the `limit` is reached or there is nothing else to fetch. Results are fetched
+#' chronologically, ie. newest results are retrieved first (eg. newest cards).
+#' Use `limit = Inf` to make sure you get all.
+#'
+#' @section Errors:
 #'
 #' If the request fails, server error messages are reprinted on the console.
+#' Depending on the value of `on.error`, the request call can return an error
+#' in R, or can issue a warning/message and return `NULL`.
 #'
-#' Only JSON responses are accepted. \code{\link[jsonlite]{fromJSON}} converts them into flat \code{data.frame}s or \code{list}s, while non-JSON type of response throws an error.
+#' @section Results:
 #'
-#' When \code{limit > 1000}, paging is used. The ID of the oldest result is retrieved from every page and supplied to the next request as the value of the \code{"before"} parameter. Paging will stop after reaching the number of results specified by \code{limit}, or when there are no more data to get.
+#' The API returns JSON objects which are parsed using [jsonlite::fromJSON].
+#' Non-JSON results throw an error, but these should never happen anyway. The
+#' result is always a data frame, or a `tibble` if the package is installed.
 #'
-#' \code{filter} and \code{limit} are query parameters that can be set individually; you could achieve the same result by using \code{query = list(filter = "filter_value", limit = "limit_value")}
+#' @section Filter:
 #'
-#' @param parent Parent resource (e.g. \code{"board"})
-#' @param child Child resource (e.g. \code{"card"})
-#' @param id Model ID
-#' @param token Secure token, see \code{\link{get_token}} for how to obtain it; if NULL, it will check for a cached token
-#' @param query Key-value pairs which form the query, see \code{\link[httr]{GET}} for details
-#' @param url Url for the GET request, use instead of specifying \code{parent}, \code{id} and \code{child}; see \code{\link[httr]{GET}} for details
-#' @param filter Defaults to \code{"all"} which fetches both open and archived cards or all action types
-#' @param limit Defaults to \code{1000}; set to \code{0} to get everything
-#' @param response Can be either "content" (a \code{\link[dplyr]{tbl}}) or an object of class \code{\link[httr]{response}}
-#' @param paging Deprecated, use \code{limit = 0} instead
-#' @param bind.rows Deprecated; will always try to bind rows unless \code{response} is not \code{"content"}
-#' @param add.class Assign additional S3 class (defaults to \code{TRUE}). The additional class is currently not being used for anything, and might be dropped in the future.
-#' @param on.error Whether to stop, fail or message on error
-#' @param handle The handle to use with this request (see \code{\link[httr]{RETRY}})
-#' @param verbose Set to \code{TRUE} for verbose output
+#' Both `filter` and `limit` exist as explicitly defined arguments, but you can
+#' ignore them in favor of supplying their values as query parameters, eg.
+#' `query = list(filter = "filter_value", limit = "limit_value")`.
 #'
-#' @seealso \code{\link[httr]{GET}}, \code{\link[jsonlite]{fromJSON}},
-#'   \code{\link{get_token}}, \code{\link{get_id}}
+#' @param parent Parent resource, e.g. `"board"` or `NULL`.
+#' @param child Child resource, eg. `"card"` or `NULL`.
+#' @param id Model ID or `NULL`.
+#' @param token Secure token, see [get_token] for how to obtain it.
+#'   If `NULL`, it will attempt to read a cached token from disk.
+#' @param query Named list of key-value pairs, see [httr::GET] for details.
+#' @param url Url for the GET request. Can be `NULL` if `parent` is specified,
+#'   or a combination of `parent`, `child` and `id` is provided.
+#' @param filter Defaults to `"all"` which includes both open and archived cards
+#'   or all action types, depending on what resource is requested.
+#' @param limit Defaults to `1000`. Set to `Inf` (or 0) to get everything.
+#' @param on.error Whether to `"stop"`, `"warn"` or `"message"` on API error.
+#' @param retry.times How many times to re-try when a request fails. Defaults
+#'   to 3.
+#' @param handle The handle to use with this request, see [httr::RETRY].
+#' @param verbose Set to `TRUE` for verbose output.
+#' @param response Deprecated. When a request fails and `on.error` is something
+#'   else than `"error"`, the unparsed response object is included in the result.
+#' @param paging Deprecated, use `limit = Inf` instead.
+#' @param bind.rows Deprecated and abandoned.
 #'
-#' @importFrom httr modify_url
+#' @seealso [httr::GET], [jsonlite::fromJSON], [get_token], [get_id]
+#'
+#' @return A data frame with API responses.
 #'
 #' @export
 #'
@@ -67,81 +90,114 @@
 
 get_model = function(parent = NULL, child = NULL, id = NULL, token = NULL,
                      query = NULL, url = NULL, filter = NULL, limit = 1000,
-                     response = "content", paging = FALSE, bind.rows = TRUE,
-                     add.class = TRUE, on.error = "error", handle = NULL,
-                     verbose = FALSE)
+                     on.error = "stop", retry.times = 3, handle = NULL,
+                     verbose = FALSE, response, paging, bind.rows)
 {
 
   if (!missing("paging")) {
-    warning("paging is deprecated - use limit=0 to fetch all",
+    warning("`paging`: argument is deprecated; use `limit=Inf`",
             call. = FALSE)
     if (missing(limit) & paging) limit = 0
   }
 
-  if (!missing("bind.rows")) {
-    warning("bind.rows is deprecated",
-            call. = FALSE)
-  }
+  if (!missing("bind.rows"))
+    warning("`bind.rows`: argument is deprecated", call. = FALSE)
+
+  if (!missing("response"))
+    warning("`response`: argument is deprecated", call. = FALSE)
 
   if (is.null(url)) {
-    url = modify_url(
+
+    url = httr::modify_url(
       url = "https://api.trello.com",
       path = c(1, parent, extract_id(id), child), #path overrides url if url includes path
-      query = c(lapply(query, tolower_if_logical),
-                list(limit = limit,
-                     filter = filter))
-    )
+      query = c(
+        lapply(query, tolower_if_logical),
+        list(limit = limit, filter = filter)))
   }
 
   if (is.null(token) && file.exists(".httr-oauth"))
     token = read_last_token()
 
-  paginate = all(
-    request_type(url) == "iterative",
-    any(
-      result_limit(url) == 0,
-      result_limit(url)  > 1000
-    )
-  )
+  if (is_nested(url)) {
 
-  if (paginate) {
-    result = paginate(
-      url = url, token = token, response = response, on.error = on.error,
-      handle = handle, verbose = verbose)
+    result = get_nested(
+      url,
+      limit       = limit,
+      token       = token,
+      on.error    = on.error,
+      retry.times = retry.times,
+      handle      = handle,
+      verbose     = verbose)
+
+  } else if (is_search(url)) {
+
+    result = quick_df_search(get_url(
+      url,
+      token       = token,
+      on.error    = on.error,
+      retry.times = retry.times,
+      handle      = handle,
+      verbose     = verbose
+    ))
+
   } else {
-    result = get_url(
-      url = url, token = token, response = response, on.error = on.error,
-      handle = handle, verbose = verbose)
+
+    result = quick_df_single(get_url(
+      url,
+      token       = token,
+      on.error    = on.error,
+      retry.times = retry.times,
+      handle      = handle,
+      verbose     = verbose
+    ))
   }
 
-  if (inherits(result, "response"))
-    return(result)
-
-  if (response == "content" && length(result) == 0) {
-    message("Nothing to coerce to a data.frame; returning NULL")
-    return(NULL)
-  }
-
-  if (response == "content") {
-    result =  tryCatch(
-      expr  = add_class(x = rbind_vector(result), child = child),
-      error = function(e) {
-        warning("Binding failed: ", e$message, "\nreturning list", call. = FALSE)
-        result })
+  if (requireNamespace("tibble", quietly = TRUE)) {
+    return(tibble::as_tibble(result))
   }
 
   result
 }
 
-result_limit = function(url) {
+is_nested = function(url) {
 
-  limit = as.integer(httr::parse_url(url)$query$limit)
+  path = httr::parse_url(url)[["path"]]
 
-  if (identical(limit, integer(0))) return(NULL)
+  length(strsplit(path, "/")[[1]]) > 3
+}
 
-  if (is.na(limit)) stop("limit must be an integer of length 1", call. = FALSE)
+is_search = function(url) {
 
-  if (limit < 0) stop("limit must be 0 or higher", call. = FALSE)
+  path = httr::parse_url(url)[["path"]]
 
-  limit
+  identical(strsplit(path, "/")[[1]][2], "search")
+}
+
+quick_df_single = function(x) {
+
+  structure(
+    wrap_list(x),
+    class     = "data.frame",
+    row.names = .set_row_names(1))
+
+}
+
+quick_df_search = function(x) {
+
+  search_options = x[["options"]][[1]]
+
+  search_results = x[setdiff(names(x), "options")]
+
+  message("Fetched ", sum(vapply(search_results, NROW, 1L)), " search results.")
+
+  structure(
+    wrap_list(c(search_options, search_results)),
+    class     = "data.frame",
+    row.names = .set_row_names(1))
+}
+
+wrap_list = function(x) {
+  x[lengths(x) > 1] = lapply(x[lengths(x) > 1], list)
+  Filter(length, x)
 }

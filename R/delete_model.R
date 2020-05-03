@@ -1,19 +1,21 @@
 #' DELETE data via Trello API
 #'
-#' Issues \code{\link[httr]{DELETE}} requests for Trello API endpoints.
+#' Issues [httr::DELETE] requests for Trello API endpoints.
 #'
-#' See \href{https://developers.trello.com/v1.0/reference}{Trello API reference}
+#' See [Trello API reference](https://developers.trello.com/v1.0/reference)
 #' for more info about what arguments can be passed to DELETE requests.
-#' @param model Model
-#' @param id Model id
-#' @param path Path
-#' @param token Secure token, see \code{\link{get_token}} (scope must include write permissions)
-#' @param verbose Whether to pass \code{verbose()} to \code{\link[httr]{DELETE}}
-#' @param response Can return \code{"content"} (default), \code{"headers"} or the complete \code{"response"}
-#' @param on.error Issues either \code{\link[base]{warning}} (default), \code{\link[base]{message}} or error (and \code{\link[base]{stop}}s)
-#' @param encode Passed to \code{\link[httr]{DELETE}}
-#' @param handle Passed to \code{\link[httr]{DELETE}}
-#' @importFrom httr modify_url DELETE content status_code headers message_for_status warn_for_status stop_for_status verbose
+#'
+#' @param model Model name, eg. `"card"`.
+#' @param id Model id.
+#' @param path Path.
+#' @param token Secure token, see [get_token] (scope must include write
+#'   permissions).
+#' @param verbose Whether to pass [httr::verbose] to [httr::DELETE].
+#' @param response Can return `"content"` (the default), `"headers"`
+#'   or response object.
+#' @param on.error Issues a warning, a message or an error on API error.
+#' @param encode,handle Passed to [httr::DELETE].
+#'
 #' @export
 #' @examples
 #'
@@ -34,10 +36,12 @@
 #' }
 
 delete_model = function(model, id = NULL, path = NULL, token = NULL,
-                        response = "content", on.error = "warning",
-                        encode = "json", handle = NULL, verbose = FALSE) {
+                        response = "content",
+                        on.error = c("stop", "warn", "message"),
+                        verbose = FALSE,
+                        encode   = "json", handle = NULL) {
 
-  url = modify_url(
+  url = httr::modify_url(
     url = "https://api.trello.com",
     path = c(1, paste0(model, "s"), id, path)
   )
@@ -49,34 +53,37 @@ delete_model = function(model, id = NULL, path = NULL, token = NULL,
   if (is.null(token) && file.exists(".httr-oauth"))
     token = read_last_token()
 
-  if (verbose)
-    req = DELETE(
-      url = url, config = config(token = token),
-      verbose(),
-      user_agent("https://github.com/jchrom/trelloR")
-    )
+  if (verbose) {
 
-  else
-    req = DELETE(
-      url = url, config = config(token = token),
-      user_agent("https://github.com/jchrom/trelloR")
-    )
+    res = httr::DELETE(
+      url = url,
+      httr::config(token = token),
+      httr::verbose(),
+      httr::user_agent("https://github.com/jchrom/trelloR"))
+
+  } else {
+
+    res = httr::DELETE(
+      url = url,
+      httr::config(token = token),
+      httr::user_agent("https://github.com/jchrom/trelloR"))
+  }
 
   switch(
-    on.error,
-    message = message_for_status(req),
-    error = stop_for_status(req),
-    warn_for_status(req)
+    match.arg(on.error, several.ok = FALSE),
+    message = httr::message_for_status(res),
+    warn    = httr::warn_for_status(res),
+    httr::stop_for_status(res)
   )
 
-  if (!on.error == "message" && !status_code(req) >= 300)
-    message_for_status(req)
+  if (!on.error == "message" && !httr::status_code(res) >= 300)
+    httr::message_for_status(res)
 
   switch(
     response,
-    content = content(req),
-    headers = headers(req),
-    status = status_code(req),
-    req
+    content = httr::content(res),
+    headers = httr::headers(res),
+    status  = httr::status_code(res),
+    res
   )
 }

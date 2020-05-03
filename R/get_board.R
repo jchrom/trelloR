@@ -80,13 +80,19 @@ get_board_fields = function(id, ...) {
 #' @rdname get_board
 get_board_prefs = function(id, ...) {
 
-  dat = get_model(parent = "board", id = id, ...)
+  dat  = get_model(parent = "board", id = id, ...)
 
-  prefs_li = Filter(Negate(is.null), dat$prefs[[1]])
+  pref = dat[["prefs"]][[1]]
+  misc = dat[setdiff(names(diff), "prefs")]
 
-  prefs_df = as.data.frame(prefs_li, stringsAsFactors = FALSE)
+  result = structure(
+    wrap_list(c(pref, misc)),
+    class     = "data.frame",
+    row.names = .set_row_names(1))
 
-  board_df = dat[, !names(dat) %in% "prefs"]
+  if (requireNamespace("tibble", quietly = TRUE)) {
+    return(tibble::as_tibble(result))
+  }
 
-  cbind(board_df, prefs_df)
+  result
 }
