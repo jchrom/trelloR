@@ -5,34 +5,57 @@
 \title{Get OAuth1.0 Token}
 \usage{
 get_token(
-  key,
-  secret,
+  key = NULL,
+  secret = NULL,
   appname = "trello-app",
-  scope = "read",
-  expiration = "30days"
+  scope = c("read", "write", "account"),
+  expiration = c("30days", "1day", "1hour", "never"),
+  force.new = FALSE
 )
 }
 \arguments{
-\item{key}{developer key}
+\item{key}{Developer key.}
 
-\item{secret}{developer secret}
+\item{secret}{Developer secret.}
 
-\item{appname}{optional app name, defaults to "trello-app"}
+\item{appname}{App name. Choose something meaningful (it does not have to be
+very short) that will distinguish tokens for different projects. Default
+is \code{"trello-app"}.}
 
-\item{scope}{defaults to \code{"read"}; allowed are \code{c("read", "write", "account")} or \code{"read,write,account"} if you prefer}
+\item{scope}{Can be \code{"read"}, \code{"write"}, \code{"account"} or \code{"read,write,account"}
+if you prefer. Defaults to \code{"read"}.}
 
-\item{expiration}{defaults to \code{"30days"}; also allowed \code{"1hour"}, \code{"1day"} and \code{"never"}}
+\item{expiration}{Can be \code{"1hour"}, \code{"1day"}, \code{"30days"} or \code{"never"}.
+Defaults to \code{"30days"}.}
+
+\item{force.new}{Should cached tokens be deleted and new token created?
+Defaults to \code{FALSE}, ie. last cached token will be reused if it exists.}
 }
 \description{
 Authorize access to Trello API.
 }
-\details{
-To access private data, a secure token is required. In order to create it, you will need your developer credentials ('key' and 'secret'). These can be obtained visiting \verb{https://trello.com/app-key} after logging in to Trello.
+\section{Developer credentials}{
 
-First time you create a token, you will be prompted to confirm the authorization in a browser (you only need to do this once). You will also be offered an option to store the authentication data in your working directory. Keep in mind you have to store your credentials in a \strong{secure, non-shared} location.
 
-\code{\link{get_token}} uses authentication functions from \code{\link{httr}}.
+To access private data, a secure token is required. In order to create it,
+get your developer credentials, 'key' and 'secret'. These can be obtained
+visiting \verb{https://trello.com/app-key} after logging in to Trello. You may
+want to set at least one \emph{allowed origin} there. If you are using trelloR
+locally (ie. from your laptop or PC), \verb{http://localhost:1410} is a good value
+to use.
 }
+
+\section{Create token}{
+
+
+Once back in R, see examples below for how to run this function. First time
+you create a token, you will be prompted to confirm the authorization
+in a browser (you only need to do this once). You will also be offered
+an option to store the authentication data in your working directory. Keep
+in mind you have to store your credentials in a \strong{secure, non-shared}
+location.
+}
+
 \examples{
 # Source credentials from non-shared location (important!)
 
@@ -43,5 +66,5 @@ token = get_token(key, secret, scope = "read,write")
 }
 }
 \seealso{
-\code{\link[httr]{oauth_app}}, \code{\link[httr]{oauth_endpoint}}, \code{\link[httr]{oauth1.0_token}}
+\link[httr:oauth_app]{httr::oauth_app}, \link[httr:oauth_endpoint]{httr::oauth_endpoint}, \link[httr:oauth1.0_token]{httr::oauth1.0_token}
 }

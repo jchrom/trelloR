@@ -45,7 +45,8 @@
 
 
 put_model = function(model, id = NULL, path = NULL, body = NULL,
-                     token = NULL, response = "content",
+                     token = NULL,
+                     response = c("content", "headers", "status", "response"),
                      on.error = c("stop", "warn", "message"),
                      verbose = FALSE,
                      encode = "json", handle = NULL) {
@@ -64,6 +65,10 @@ put_model = function(model, id = NULL, path = NULL, body = NULL,
     paste(names(body), collapse = ", "),
     "\n"
   )
+
+  on.error = match.arg(on.error, several.ok = FALSE)
+
+  response = match.arg(response, several.ok = FALSE)
 
   if (!is.null(body))
     body = lapply(body, tolower_if_logical)
@@ -95,7 +100,7 @@ put_model = function(model, id = NULL, path = NULL, body = NULL,
   }
 
   switch(
-    match.arg(on.error, several.ok = FALSE),
+    on.error,
     message = httr::message_for_status(res),
     warn    = httr::warn_for_status(res),
     httr::stop_for_status(res)

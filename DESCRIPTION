@@ -1,6 +1,6 @@
 Package: trelloR
 Title: R API for Trello
-Version: 0.6.3
+Version: 0.6.4
 Authors@R: c(person("Jakub", "Chromec", , "chromec.jakub@gmail.com",
     role = c("aut", "cre")))
 Description: R client for Trello API: <https://developers.trello.com/reference>.
