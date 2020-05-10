@@ -56,6 +56,8 @@ get_url = function(url, token = NULL, retry.times = 3,
       failed.message = httr::content(res),
       stringsAsFactors = FALSE)
 
+    error_df[["failed.headers"]] = list(res$all_headers)
+
     return(error_df)
   }
 

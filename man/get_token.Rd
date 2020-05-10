@@ -5,64 +5,91 @@
 \title{Get OAuth1.0 Token}
 \usage{
 get_token(
+  appname = "trello-app",
   key = NULL,
   secret = NULL,
-  appname = "trello-app",
   scope = c("read", "write", "account"),
   expiration = c("30days", "1day", "1hour", "never"),
-  force.new = FALSE
+  cache = getOption("httr_oauth_cache")
 )
 }
 \arguments{
-\item{key}{Developer key.}
+\item{appname}{App name. It does not have to be very short, so choose
+something meaningful to make it easy to spot your token on the settings
+page \verb{https://trello.com/username/account}. Defaults to \code{"trello-app"}.}
 
-\item{secret}{Developer secret.}
+\item{key, secret}{Developer credentials from \verb{https://trello.com/app-key}
+(see details). If \code{NULL} and a cache file exists, the newest token is read
+from it, otherwise an error is thrown.}
 
-\item{appname}{App name. Choose something meaningful (it does not have to be
-very short) that will distinguish tokens for different projects. Default
-is \code{"trello-app"}.}
-
-\item{scope}{Can be \code{"read"}, \code{"write"}, \code{"account"} or \code{"read,write,account"}
-if you prefer. Defaults to \code{"read"}.}
+\item{scope}{Can be one or several of \code{"read"}, \code{"write"} or \code{"account"}.
+Defaults to \code{"read"}.}
 
 \item{expiration}{Can be \code{"1hour"}, \code{"1day"}, \code{"30days"} or \code{"never"}.
 Defaults to \code{"30days"}.}
 
-\item{force.new}{Should cached tokens be deleted and new token created?
-Defaults to \code{FALSE}, ie. last cached token will be reused if it exists.}
+\item{cache}{Passed to \code{\link[httr:oauth1.0_token]{httr::oauth1.0_token()}}. Can specify whether
+the token should be cached locally (will ask the first time and then \code{TRUE}
+by default) or choose an alternative path for the cache file.}
+}
+\value{
+An object of class \code{"Trello_API_token"} (a Token).
 }
 \description{
-Authorize access to Trello API.
+Authorize access to Trello API, required for private boards and write access
+(see details).
 }
-\section{Developer credentials}{
+\section{Getting developer access}{
 
 
 To access private data, a secure token is required. In order to create it,
-get your developer credentials, 'key' and 'secret'. These can be obtained
-visiting \verb{https://trello.com/app-key} after logging in to Trello. You may
+you will need your developer \code{key} and \code{secret} which you can get by visiting
+\verb{https://trello.com/app-key} after logging in to Trello. You may also
 want to set at least one \emph{allowed origin} there. If you are using trelloR
 locally (ie. from your laptop or PC), \verb{http://localhost:1410} is a good value
 to use.
 }
 
-\section{Create token}{
+\section{Creating tokens}{
 
 
-Once back in R, see examples below for how to run this function. First time
-you create a token, you will be prompted to confirm the authorization
-in a browser (you only need to do this once). You will also be offered
-an option to store the authentication data in your working directory. Keep
-in mind you have to store your credentials in a \strong{secure, non-shared}
-location.
+Once back in R, run this function the following way:
+
+\code{my_token = get_token("my_app", key = key, secret = secret)}
+
+passing the values you have obtained on the developer page. First time you
+create a token, you will be prompted to confirm the authorization
+in a browser. If you chose to store the token locally as prompted, you won't
+have to do this anymore until your token expires (see \code{expiration}) or your
+local cache file is deleted.
+
+Tokens are stored inside a hidden \code{.httr-oauth} cache file and automatically
+read when any function in the package is called. Optionally, you can specify
+a different cache path using the \code{cache} argument, or avoid caching the token
+completely with \code{cache = FALSE}. See \code{\link[httr:oauth1.0_token]{httr::oauth1.0_token()}} for details.
+
+If you opt out of storing the token, then it will only be held until your
+R session is over, and you will have to pass it to the \code{token} argument, eg.
+\code{get_my_boards(token = my_token)} each time you are fetching data.
+
+Remember to store your credentials in a \strong{secure, non-shared} location. To
+minimize the risk of unwanted disclosure when using remote code
+repositories, \code{.httr-oauth} (or whatever cache path you have specified
+using the \code{cache} argument) is automatically added to \code{.gitignore}.
 }
 
 \examples{
-# Source credentials from non-shared location (important!)
+# This example assumes you are reading your key and secret from environment
+# variables. This is not obligatory, but wherever you read them from, make
+# sure it is a secure, non-shared location.
 
 \dontrun{
 
-source("mykeys.R")
-token = get_token(key, secret, scope = "read,write")
+key = Sys.getenv("MY_TRELLO_KEY")
+secret = Sys.getenv("MY_TRELLO_SECRET")
+
+token = get_token("my_app", key = key, secret = secret,
+                  scope = c("read", "write"))
 }
 }
 \seealso{

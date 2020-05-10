@@ -3,18 +3,25 @@
 #' Issues [httr::PUT] requests for Trello API endpoints.
 #'
 #' See [Trello API reference](https://developers.trello.com/v1.0/reference)
-#' for more info about what arguments can be passed to POST requests.
+#' for more info about what elements can be included in PUT request body.
 #'
 #' @param model Model name, eg. `"card"`.
 #' @param id Model id.
 #' @param path Path.
 #' @param body A named list.
-#' @param token Secure token, see [get_token] (scope must include write
-#'   permissions).
+#' @param token An object of class `"Trello_API_token"`, a path to a cache file
+#'   or `NULL`.
+#'
+#'   * If a token, it is passed as is.
+#'   * If `NULL` and a cache file called `".httr-oauth"` exists, the newest token
+#'     is read from it. If the file is not found, an error is thrown.
+#'   * If a character vector of length 1, it will be used as an alternative path
+#'     to the cache file.
+#'
 #' @param verbose Whether to pass [httr::verbose] to [httr::PUT].
-#' @param response Can return `"content"` (the default), `"headers"`
-#'   or response object.
-#' @param on.error Issues a warning, a message or an error on API error.
+#' @param response Can return `"content"` (the default), `"headers"`, `"status"`
+#'   or the raw `"response"`.
+#' @param on.error Whether to `"stop"`, `"warn"` or `"message"` on http error.
 #' @param encode,handle Passed to [httr::PUT].
 #' @export
 #' @examples
@@ -22,7 +29,11 @@
 #' \dontrun{
 #'
 #' # Get token with write access
-#' token = get_token(yourkey, yoursecret, scope = c("read", "write"))
+#' key = Sys.getenv("MY_TRELLO_KEY")
+#' secret = Sys.getenv("MY_TRELLO_SECRET")
+#'
+#' token = get_token("my_app", key = key, secret = secret,
+#'                   scope = c("read", "write"))
 #'
 #' # Get board ID
 #' url = "Your board URL"
@@ -73,8 +84,9 @@ put_model = function(model, id = NULL, path = NULL, body = NULL,
   if (!is.null(body))
     body = lapply(body, tolower_if_logical)
 
-  if (is.null(token) && file.exists(".httr-oauth"))
-    token = read_last_token()
+  if (!inherits(token, "Trello_API_token")) {
+    token = read_cached_token(token)
+  }
 
   if (verbose) {
 

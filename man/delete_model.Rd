@@ -23,15 +23,22 @@ delete_model(
 
 \item{path}{Path.}
 
-\item{token}{Secure token, see \link{get_token} (scope must include write
-permissions).}
+\item{token}{An object of class \code{"Trello_API_token"}, a path to a cache file
+or \code{NULL}.
+\itemize{
+\item If a token, it is passed as is.
+\item If \code{NULL} and a cache file called \code{".httr-oauth"} exists, the newest token
+is read from it. If the file is not found, an error is thrown.
+\item If a character vector of length 1, it will be used as an alternative path
+to the cache file.
+}}
 
-\item{response}{Can return \code{"content"} (the default), \code{"headers"}
-or response object.}
+\item{response}{Can return \code{"content"} (the default), \code{"headers"}, \code{"status"}
+or the raw \code{"response"}.}
 
-\item{on.error}{Issues a warning, a message or an error on API error.}
+\item{on.error}{Whether to \code{"stop"}, \code{"warn"} or \code{"message"} on http error.}
 
-\item{verbose}{Whether to pass \link[httr:verbose]{httr::verbose} to \link[httr:DELETE]{httr::DELETE}.}
+\item{verbose}{Whether to pass \link[httr:verbose]{httr::verbose} to \link[httr:PUT]{httr::PUT}.}
 
 \item{encode, handle}{Passed to \link[httr:DELETE]{httr::DELETE}.}
 }
@@ -40,14 +47,18 @@ Issues \link[httr:DELETE]{httr::DELETE} requests for Trello API endpoints.
 }
 \details{
 See \href{https://developers.trello.com/v1.0/reference}{Trello API reference}
-for more info about what arguments can be passed to DELETE requests.
+for more info about DELETE requests.
 }
 \examples{
 
 \dontrun{
 
 # Get token with write access
-token = get_token(yourkey, yoursecret, scope = c("read", "write"))
+key = Sys.getenv("MY_TRELLO_KEY")
+secret = Sys.getenv("MY_TRELLO_SECRET")
+
+token = get_token("my_app", key = key, secret = secret,
+                  scope = c("read", "write"))
 
 # Get board ID
 url = "Your board URL"

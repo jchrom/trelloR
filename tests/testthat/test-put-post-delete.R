@@ -11,12 +11,14 @@
 skip_if_no_token <- function() {
   if (identical(Sys.getenv("TOKEN_PATH"), "")) {
     skip("No authentication available")
+  } else {
+    utils::tail(readRDS(Sys.getenv("TOKEN_PATH")))[[1]]
   }
 }
 
 if (!identical(Sys.getenv("TOKEN_PATH"), "")) {
 
-  token = utils::tail(readRDS(Sys.getenv("TOKEN_PATH")))[[1]]
+  token = skip_if_no_token()
 
   board = trelloR::add_board(
     name  = paste0("trelloR testing: ", Sys.Date()),
@@ -29,7 +31,7 @@ if (!identical(Sys.getenv("TOKEN_PATH"), "")) {
 
 test_that("new board can be created", {
 
-  skip_if_no_token()
+  token = skip_if_no_token()
 
   expect_is(board, "list")
   expect_equal(board$desc, "Test trelloR with testthat")
@@ -38,7 +40,7 @@ test_that("new board can be created", {
 
 test_that("board description can be updated", {
 
-  skip_if_no_token()
+  token = skip_if_no_token()
 
   updated = trelloR::put_model(
     "board",
@@ -52,29 +54,13 @@ test_that("board description can be updated", {
 
 })
 
-test_that("card can be created and deleted", {
+test_that("board can be deleted", {
 
-  skip_if_no_token()
+  token = skip_if_no_token()
 
-  lists = trelloR::get_board_lists(board$id, token = token)
-
-  created = trelloR::add_card(
-    list  = lists$id[1],
-    body  = list(name = "A New Card!",
-                 desc = "New description"),
-    token = token
-  )
-
-  expect_is(created, "list")
-  expect_equal(created$name, "A New Card!")
-
-  deleted = trelloR::delete_card(created$id, token = token)
+  deleted = trelloR::delete_model("board", board$id, token = token)
 
   expect_is(deleted, "list")
-
-  cards  = trelloR::get_board_cards(board$id, token = token)
-
-  expect_is(cards, "data.frame")
-  expect_equal(nrow(cards), 0)
+  testthat::expect_null(deleted[["_value"]])
 
 })
