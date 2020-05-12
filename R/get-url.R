@@ -50,8 +50,13 @@ get_url = function(url, token = NULL, retry.times = 3,
 
   if (httr::status_code(res) >= 300) {
 
-    error_df = data.frame(failed.url = url, stringsAsFactors = FALSE)
-    error_df[["response"]] = list(res)
+    error_df = data.frame(
+      failed.url     = url,
+      failed.status  = httr::status_code(res),
+      failed.message = httr::content(res),
+      stringsAsFactors = FALSE)
+
+    error_df[["failed.headers"]] = list(res$all_headers)
 
     return(error_df)
   }

@@ -48,8 +48,3 @@ extract_id = function(x) {
 tolower_if_logical = function(x) {
   if (inherits(x, "logical")) tolower(x) else x
 }
-
-read_last_token = function() {
-  token = utils::tail(readRDS(".httr-oauth"), 1)[[1]]
-  structure(token, class = c("trello_api_token", class(token)))
-}

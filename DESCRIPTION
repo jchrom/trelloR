@@ -24,3 +24,4 @@ Suggests:
     tibble,
     testthat
 VignetteBuilder: knitr
+Encoding: UTF-8

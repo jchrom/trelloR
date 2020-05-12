@@ -42,18 +42,30 @@ test_that("getting a nested resource respects limit > 1000", {
 skip_if_no_token <- function() {
   if (identical(Sys.getenv("TOKEN_PATH"), "")) {
     skip("No authentication available")
+  } else {
+    utils::tail(readRDS(Sys.getenv("TOKEN_PATH")))[[1]]
   }
 }
 
 test_that("search produces a data frame with 1 row", {
 
-  skip_if_no_token()
-
-  token = utils::tail(readRDS(Sys.getenv("TOKEN_PATH")))[[1]]
+  token = skip_if_no_token()
 
   results = trelloR::search_model("User", partial = TRUE, token = token)
 
   expect_is(results, "data.frame")
   expect_equal(nrow(results), 1)
+
+})
+
+test_that("errors work correctly", {
+
+  token = skip_if_no_token()
+
+  error = trelloR::get_board_cards("asdf", on.error = "message",
+                                   retry.times = 1)
+
+  expect_is(error, "data.frame")
+  expect_equal(error[["failed.message"]], "invalid id")
 
 })

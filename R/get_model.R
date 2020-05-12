@@ -1,6 +1,6 @@
 #' Get Data From Trello API
 #'
-#' Issue [httr::GET] requests for Trello API endpoints.
+#' Issue GET requests for Trello API endpoints.
 #'
 #' @section Request limits:
 #'
@@ -14,8 +14,10 @@
 #' @section Errors:
 #'
 #' If the request fails, server error messages are reprinted on the console.
-#' Depending on the value of `on.error`, the request call can return an error
-#' in R, or can issue a warning/message and return `NULL`.
+#' Depending on the value of `on.error`, the request call can throw an error
+#' in R (this is the default), or can issue a warning/message. If the latter,
+#' the function returns a data frame containing the failed URL, HTTP status
+#' and an informative message (produced by the server).
 #'
 #' @section Results:
 #'
@@ -32,8 +34,15 @@
 #' @param parent Parent resource, e.g. `"board"` or `NULL`.
 #' @param child Child resource, eg. `"card"` or `NULL`.
 #' @param id Model ID or `NULL`.
-#' @param token Secure token, see [get_token] for how to obtain it.
-#'   If `NULL`, it will attempt to read a cached token from disk.
+#' @param token An object of class `"Trello_API_token"`, a path to a cache file
+#'   or `NULL`.
+#'
+#'   * If a token, it is passed as is.
+#'   * If `NULL` and a cache file called `".httr-oauth"` exists, the newest token
+#'     is read from it. If the file is not found, an error is thrown.
+#'   * If a character vector of length 1, it will be used as an alternative path
+#'     to the cache file.
+#'
 #' @param query Named list of key-value pairs, see [httr::GET] for details.
 #' @param url Url for the GET request. Can be `NULL` if `parent` is specified,
 #'   or a combination of `parent`, `child` and `id` is provided.
@@ -45,12 +54,14 @@
 #'   to 3.
 #' @param handle The handle to use with this request, see [httr::RETRY].
 #' @param verbose Set to `TRUE` for verbose output.
-#' @param response Deprecated. When a request fails and `on.error` is something
-#'   else than `"error"`, the unparsed response object is included in the result.
-#' @param paging Deprecated, use `limit = Inf` instead.
-#' @param bind.rows Deprecated and abandoned.
 #'
-#' @seealso [httr::GET], [jsonlite::fromJSON], [get_token], [get_id]
+#' @param response Deprecated. Response headers are returned only when
+#'   the request fails (and `on.error` is not `"stop"`).
+#' @param paging Deprecated. Use `limit = Inf` instead.
+#' @param bind.rows Deprecated. Results are always bound into a single
+#'   data frame.
+#'
+#' @seealso [get_token], [get_id], [httr::GET], [jsonlite::fromJSON]
 #'
 #' @return A data frame with API responses.
 #'
@@ -84,13 +95,19 @@
 #' # For private and team boards, you need a secure token:
 #'
 #' \dontrun{
-#' token = get_token("your_key", "your_secret")
+#' key = Sys.getenv("MY_TRELLO_KEY")
+#' secret = Sys.getenv("MY_TRELLO_SECRET")
+#'
+#' token = get_token("my_app", key = key, secret = secret,
+#'                   scope = c("read", "write"))
+#'
 #' cards_open = get_board_cards(board_id, token, filter = "open")
 #' }
 
 get_model = function(parent = NULL, child = NULL, id = NULL, token = NULL,
                      query = NULL, url = NULL, filter = NULL, limit = 1000,
-                     on.error = "stop", retry.times = 3, handle = NULL,
+                     on.error = c("stop", "warn", "message"),
+                     retry.times = 3, handle = NULL,
                      verbose = FALSE, response, paging, bind.rows)
 {
 
@@ -106,6 +123,8 @@ get_model = function(parent = NULL, child = NULL, id = NULL, token = NULL,
   if (!missing("response"))
     warning("`response`: argument is deprecated", call. = FALSE)
 
+  on.error = match.arg(on.error, several.ok = FALSE)
+
   if (is.null(url)) {
 
     url = httr::modify_url(
@@ -117,7 +136,7 @@ get_model = function(parent = NULL, child = NULL, id = NULL, token = NULL,
   }
 
   if (is.null(token) && file.exists(".httr-oauth"))
-    token = read_last_token()
+    token = get_token(NULL)
 
   if (is_nested(url)) {
 

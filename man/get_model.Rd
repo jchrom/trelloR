@@ -13,7 +13,7 @@ get_model(
   url = NULL,
   filter = NULL,
   limit = 1000,
-  on.error = "stop",
+  on.error = c("stop", "warn", "message"),
   retry.times = 3,
   handle = NULL,
   verbose = FALSE,
@@ -29,8 +29,15 @@ get_model(
 
 \item{id}{Model ID or \code{NULL}.}
 
-\item{token}{Secure token, see \link{get_token} for how to obtain it.
-If \code{NULL}, it will attempt to read a cached token from disk.}
+\item{token}{An object of class \code{"Trello_API_token"}, a path to a cache file
+or \code{NULL}.
+\itemize{
+\item If a token, it is passed as is.
+\item If \code{NULL} and a cache file called \code{".httr-oauth"} exists, the newest token
+is read from it. If the file is not found, an error is thrown.
+\item If a character vector of length 1, it will be used as an alternative path
+to the cache file.
+}}
 
 \item{query}{Named list of key-value pairs, see \link[httr:GET]{httr::GET} for details.}
 
@@ -51,18 +58,19 @@ to 3.}
 
 \item{verbose}{Set to \code{TRUE} for verbose output.}
 
-\item{response}{Deprecated. When a request fails and \code{on.error} is something
-else than \code{"error"}, the unparsed response object is included in the result.}
+\item{response}{Deprecated. Response headers are returned only when
+the request fails (and \code{on.error} is not \code{"stop"}).}
 
-\item{paging}{Deprecated, use \code{limit = Inf} instead.}
+\item{paging}{Deprecated. Use \code{limit = Inf} instead.}
 
-\item{bind.rows}{Deprecated and abandoned.}
+\item{bind.rows}{Deprecated. Results are always bound into a single
+data frame.}
 }
 \value{
 A data frame with API responses.
 }
 \description{
-Issue \link[httr:GET]{httr::GET} requests for Trello API endpoints.
+Issue GET requests for Trello API endpoints.
 }
 \section{Request limits}{
 
@@ -79,8 +87,10 @@ Use \code{limit = Inf} to make sure you get all.
 
 
 If the request fails, server error messages are reprinted on the console.
-Depending on the value of \code{on.error}, the request call can return an error
-in R, or can issue a warning/message and return \code{NULL}.
+Depending on the value of \code{on.error}, the request call can throw an error
+in R (this is the default), or can issue a warning/message. If the latter,
+the function returns a data frame containing the failed URL, HTTP status
+and an informative message (produced by the server).
 }
 
 \section{Results}{
@@ -127,10 +137,15 @@ acts_all = get_board_actions(bid, limit = 0)
 # For private and team boards, you need a secure token:
 
 \dontrun{
-token = get_token("your_key", "your_secret")
+key = Sys.getenv("MY_TRELLO_KEY")
+secret = Sys.getenv("MY_TRELLO_SECRET")
+
+token = get_token("my_app", key = key, secret = secret,
+                  scope = c("read", "write"))
+
 cards_open = get_board_cards(board_id, token, filter = "open")
 }
 }
 \seealso{
-\link[httr:GET]{httr::GET}, \link[jsonlite:fromJSON]{jsonlite::fromJSON}, \link{get_token}, \link{get_id}
+\link{get_token}, \link{get_id}, \link[httr:GET]{httr::GET}, \link[jsonlite:fromJSON]{jsonlite::fromJSON}
 }
