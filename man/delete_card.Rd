@@ -9,7 +9,7 @@ delete_card(card, ...)
 \arguments{
 \item{card}{Card id}
 
-\item{...}{Additional arguments passed to \code{\link{delete_model}}}
+\item{...}{Additional arguments passed to \code{\link[=delete_resource]{delete_resource()}}}
 }
 \description{
 DELETE card.

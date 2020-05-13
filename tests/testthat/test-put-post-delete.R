@@ -58,7 +58,7 @@ test_that("board can be deleted", {
 
   token = skip_if_no_token()
 
-  deleted = trelloR::delete_model("board", board$id, token = token)
+  deleted = trelloR::delete_resource("board", board$id, token = token)
 
   expect_is(deleted, "list")
   expect_null(deleted[["_value"]])

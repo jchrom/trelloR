@@ -1,17 +1,16 @@
-#' DELETE data via Trello API
+#' DELETE resources via Trello API
 #'
-#' Issues [httr::DELETE] requests for Trello API endpoints.
+#' `DELETE` a resource via Trello API endpoints.
 #'
 #' See [Trello API reference](https://developers.trello.com/v1.0/reference)
 #' for more info about DELETE requests.
 #'
-#' @param model Model name, eg. `"card"`.
-#' @param id Model id.
-#' @param path Path.
+#' @param resource,id Resource name (eg. `"card"`) and id.
+#' @param path Path (optional).
 #' @param token An object of class `"Trello_API_token"`, a path to a cache file
 #'   or `NULL`.
 #'
-#'   * If a token, it is passed as is.
+#'   * If a `Token` object, it is passed as is.
 #'   * If `NULL` and a cache file called `".httr-oauth"` exists, the newest token
 #'     is read from it. If the file is not found, an error is thrown.
 #'   * If a character vector of length 1, it will be used as an alternative path
@@ -22,6 +21,8 @@
 #'   or the raw `"response"`.
 #' @param on.error Whether to `"stop"`, `"warn"` or `"message"` on http error.
 #' @param encode,handle Passed to [httr::DELETE].
+#'
+#' @return See `response`.
 #'
 #' @export
 #' @examples
@@ -43,18 +44,19 @@
 #' cid = get_board_cards(bid, token)$id[1]
 #'
 #' # Delete it
-#' delete_model(model = "card", id = cid, token = token)
+#' delete_resource(resource = "card", id = cid, token = token)
 #' }
 
-delete_model = function(model, id = NULL, path = NULL, token = NULL,
-                        response = c("content", "headers", "status", "response"),
-                        on.error = c("stop", "warn", "message"),
-                        verbose = FALSE,
-                        encode   = "json", handle = NULL) {
+delete_resource = function(resource, id, path = NULL, token = NULL,
+                           response = c("content", "headers", "status",
+                                        "response"),
+                           on.error = c("stop", "warn", "message"),
+                           verbose = FALSE,
+                           encode   = "json", handle = NULL) {
 
   url = httr::modify_url(
     url = "https://api.trello.com",
-    path = c(1, paste0(model, "s"), id, path)
+    path = c(1, paste0(resource, "s"), id, path)
   )
 
   message(

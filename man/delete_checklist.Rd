@@ -9,7 +9,7 @@ delete_checklist(checklist, ...)
 \arguments{
 \item{checklist}{Checklist id}
 
-\item{...}{Additional arguments passed to \code{\link{delete_model}}}
+\item{...}{Additional arguments passed to \code{\link[=delete_resource]{delete_resource()}}}
 }
 \description{
 DELETE checklist.
