@@ -42,7 +42,7 @@ test_that("board description can be updated", {
 
   token = skip_if_no_token()
 
-  updated = trelloR::put_model(
+  updated = trelloR::update_resource(
     "board",
     id    = board$id,
     body  = list(desc = "Updated description"),

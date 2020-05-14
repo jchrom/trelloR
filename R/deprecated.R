@@ -2,11 +2,9 @@
 
 #' Deprecated functions
 #'
-#' See details for what to use instead.
-#'
-#' * Use `[get_resource()]` instead of `get_model()` or `trello_get()`
-#' * Use `[put_resource()]` instead of `put_model()`
-#' * Use `[post_resource()]` instead of `post_model()`
+#' * Use [get_resource()] instead of `get_model()` or `trello_get()`
+#' * Use [update_resource()] instead of `put_model()`
+#' * Use [create_resource()] instead of `post_model()`
 #' * Use [delete_resource()] instead of `delete_model()`
 #' * Use [get_token()] instead of `trello_get_token()`
 #' * Use [search_resource()] instead of `trello_search()`
@@ -19,8 +17,29 @@ NULL
 #' @rdname Deprecated
 #' @export
 trello_get = function(...) {
-  .Deprecated("get_model")
-  get_model(...)
+  .Deprecated("get_resource")
+  get_resource(...)
+}
+
+#' @rdname Deprecated
+#' @export
+get_model = function(...) {
+  .Deprecated("get_resource")
+  get_resource(...)
+}
+
+#' @rdname Deprecated
+#' @export
+post_model = function(...) {
+  .Deprecated("create_resource")
+  create_resource(...)
+}
+
+#' @rdname Deprecated
+#' @export
+put_model = function(...) {
+  .Deprecated("update_resource")
+  update_resource(...)
 }
 
 #' @rdname Deprecated

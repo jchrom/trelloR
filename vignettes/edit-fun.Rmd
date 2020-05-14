@@ -14,7 +14,8 @@ knitr::opts_chunk$set(
 )
 ```
 
-This document explains how to add, update and delete stuff in Trello. This requires authentication, as explained [here](https://jchrom.github.io/trelloR/articles/auth-access.html).
+This document explains how to add, update and delete resources via Trello API.
+This requires authentication, as explained [here](https://jchrom.github.io/trelloR/articles/auth-access.html).
 
 ```{r setup}
 library(trelloR)

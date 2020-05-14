@@ -1,9 +1,3 @@
-############################################
-#                                          #
-#    Retrieve resource id                  #
-#                                          #
-############################################
-
 #' Get model ID
 #'
 #' Get ID of a resource.
@@ -23,7 +17,7 @@
 #' @rdname get_id
 get_id_board = function(url, token = NULL) {
 
-  dat = get_model(
+  dat = get_resource(
       parent = "board", id = extract_shortname(url), token = token,
       query = list(fields = "name"))
 
@@ -36,7 +30,7 @@ get_id_card = function(url, token = NULL) {
 
     short = extract_shortname(url)
 
-    dat = get_model(
+    dat = get_resource(
       parent = "card", id = extract_shortname(url), token = token,
       query = list(fields = "name"))
 

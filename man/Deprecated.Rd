@@ -3,6 +3,9 @@
 \name{Deprecated}
 \alias{Deprecated}
 \alias{trello_get}
+\alias{get_model}
+\alias{post_model}
+\alias{put_model}
 \alias{delete_model}
 \alias{trello_get_token}
 \alias{trello_search}
@@ -15,6 +18,12 @@
 \title{Deprecated functions}
 \usage{
 trello_get(...)
+
+get_model(...)
+
+post_model(...)
+
+put_model(...)
 
 delete_model(...)
 
@@ -38,13 +47,10 @@ trello_search_teams(...)
 \item{...}{See current functions for argument names and defaults.}
 }
 \description{
-See details for what to use instead.
-}
-\details{
 \itemize{
-\item Use \verb{[get_resource()]} instead of \code{get_model()} or \code{trello_get()}
-\item Use \verb{[put_resource()]} instead of \code{put_model()}
-\item Use \verb{[post_resource()]} instead of \code{post_model()}
+\item Use \code{\link[=get_resource]{get_resource()}} instead of \code{get_model()} or \code{trello_get()}
+\item Use \code{\link[=update_resource]{update_resource()}} instead of \code{put_model()}
+\item Use \code{\link[=create_resource]{create_resource()}} instead of \code{post_model()}
 \item Use \code{\link[=delete_resource]{delete_resource()}} instead of \code{delete_model()}
 \item Use \code{\link[=get_token]{get_token()}} instead of \code{trello_get_token()}
 \item Use \code{\link[=search_resource]{search_resource()}} instead of \code{trello_search()}

@@ -13,10 +13,10 @@
 #' @param boards Boards to limit the search to - defaults to `"mine"`.
 #' @param partial Should partial matching be used? Defaults to `FALSE`.
 #' @param query Name list of additional query parameters; consult [search API reference](https://developer.atlassian.com/cloud/trello/rest/#api-search-get)
-#' @param ... Additional arguments passed to [get_model()].
+#' @param ... Additional arguments passed to [get_resource()].
 #' @param modeltype Deprecated, use `resource` instead.
 #'
-#' @seealso [get_model()], [get_token()]
+#' @seealso [get_resource()], [get_token()]
 #'
 #' @return A data frame.
 #'
@@ -41,7 +41,7 @@ search_resource = function(string, resource = "all", boards = "mine",
     resource = modeltype
   }
 
-  get_model(
+  get_resource(
     parent = "search",
     query = c(
       list(

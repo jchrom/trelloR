@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get OAuth1.0 Token — get_token • trelloR</title>
+<title>Create Resources — create_resource • trelloR</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -36,10 +36,9 @@
 
 
 
-<meta property="og:title" content="Get OAuth1.0 Token — get_token" />
+<meta property="og:title" content="Create Resources — create_resource" />
 
-<meta property="og:description" content="Authorize access to Trello API, required for private boards and write access
-(see details)." />
+<meta property="og:description" content="Create resources via Trello API." />
 
 
 
@@ -140,117 +139,117 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get OAuth1.0 Token</h1>
-    <small class="dont-index">Source: <a href='https://github.com/jchrom/trelloR/blob/master/R/get_token.R'><code>R/get_token.R</code></a></small>
-    <div class="hidden name"><code>get_token.Rd</code></div>
+    <h1>Create Resources</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jchrom/trelloR/blob/master/R/create_resource.R'><code>R/create_resource.R</code></a></small>
+    <div class="hidden name"><code>create_resource.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Authorize access to Trello API, required for private boards and write access
-(see details).</p>
+    <p>Create resources via Trello API.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>get_token</span>(
-  <span class='kw'>appname</span> <span class='kw'>=</span> <span class='st'>"trello-app"</span>,
-  <span class='kw'>key</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>secret</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>scope</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"read"</span>, <span class='st'>"write"</span>, <span class='st'>"account"</span>),
-  <span class='kw'>expiration</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"30days"</span>, <span class='st'>"1day"</span>, <span class='st'>"1hour"</span>, <span class='st'>"never"</span>),
-  <span class='kw'>cache</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"httr_oauth_cache"</span>)
+    <pre class="usage"><span class='fu'>create_resource</span>(
+  <span class='no'>resource</span>,
+  <span class='kw'>id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>body</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"New"</span>),
+  <span class='kw'>token</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>response</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"content"</span>, <span class='st'>"headers"</span>, <span class='st'>"status"</span>, <span class='st'>"response"</span>),
+  <span class='kw'>on.error</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"stop"</span>, <span class='st'>"warn"</span>, <span class='st'>"message"</span>),
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>encode</span> <span class='kw'>=</span> <span class='st'>"json"</span>,
+  <span class='kw'>handle</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
 )</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>appname</th>
-      <td><p>App name. It does not have to be very short, so choose
-something meaningful to make it easy to spot your token on the settings
-page <code>https://trello.com/username/account</code>. Defaults to <code>"trello-app"</code>.</p></td>
+      <th>resource</th>
+      <td><p>Model name, eg. <code>"card"</code>.</p></td>
     </tr>
     <tr>
-      <th>key, secret</th>
-      <td><p>Developer credentials from <code>https://trello.com/app-key</code>
-(see details). If <code>NULL</code> and a cache file exists, the newest token is read
-from it, otherwise an error is thrown.</p></td>
+      <th>id</th>
+      <td><p>Model id.</p></td>
     </tr>
     <tr>
-      <th>scope</th>
-      <td><p>Can be one or several of <code>"read"</code>, <code>"write"</code> or <code>"account"</code>.
-Defaults to <code>"read"</code>.</p></td>
+      <th>path</th>
+      <td><p>Path.</p></td>
     </tr>
     <tr>
-      <th>expiration</th>
-      <td><p>Can be <code>"1hour"</code>, <code>"1day"</code>, <code>"30days"</code> or <code>"never"</code>.
-Defaults to <code>"30days"</code>.</p></td>
+      <th>body</th>
+      <td><p>A named list.</p></td>
     </tr>
     <tr>
-      <th>cache</th>
-      <td><p>Passed to <code><a href='https://httr.r-lib.org/reference/oauth1.0_token.html'>httr::oauth1.0_token()</a></code>. Can specify whether
-the token should be cached locally (will ask the first time and then <code>TRUE</code>
-by default) or choose an alternative path for the cache file.</p></td>
+      <th>token</th>
+      <td><p>An object of class <code>"Trello_API_token"</code>, a path to a cache file
+or <code>NULL</code>.</p><ul>
+<li><p>If a <code>Token</code>, it is passed as is.</p></li>
+<li><p>If <code>NULL</code> and a cache file called <code>".httr-oauth"</code> exists, the newest token
+is read from it. If the file is not found, an error is thrown.</p></li>
+<li><p>If a character vector of length 1, it will be used as an alternative path
+to the cache file.</p></li>
+</ul></td>
+    </tr>
+    <tr>
+      <th>response</th>
+      <td><p>Can return <code>"content"</code> (the default), <code>"headers"</code>, <code>"status"</code>
+or the raw <code>"response"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>on.error</th>
+      <td><p>Whether to <code>"stop"</code>, <code>"warn"</code> or <code>"message"</code> on http error.</p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>Whether to pass <a href='https://httr.r-lib.org/reference/verbose.html'>httr::verbose</a> to <a href='https://httr.r-lib.org/reference/PUT.html'>httr::PUT</a>.</p></td>
+    </tr>
+    <tr>
+      <th>encode, handle</th>
+      <td><p>Passed to <a href='https://httr.r-lib.org/reference/POST.html'>httr::POST</a>.</p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>An object of class <code>"Trello_API_token"</code> (a Token).</p>
-    
-    <h2 class="hasAnchor" id="getting-developer-access"><a class="anchor" href="#getting-developer-access"></a>Getting developer access</h2>
-
-    
-
-
-<p>To access private data, a secure token is required. In order to create it,
-you will need your developer <code>key</code> and <code>secret</code> which you can get by visiting
-<code>https://trello.com/app-key</code> after logging in to Trello. You may also
-want to set at least one <em>allowed origin</em> there. If you are using trelloR
-locally (ie. from your laptop or PC), <code>http://localhost:1410</code> is a good value
-to use.</p>
-    
-    <h2 class="hasAnchor" id="creating-tokens"><a class="anchor" href="#creating-tokens"></a>Creating tokens</h2>
-
-    
-
-
-<p>Once back in R, run this function the following way:</p>
-<p><code>my_token = get_token("my_app", key = key, secret = secret)</code></p>
-<p>passing the values you have obtained on the developer page. First time you
-create a token, you will be prompted to confirm the authorization
-in a browser. If you chose to store the token locally as prompted, you won't
-have to do this anymore until your token expires (see <code>expiration</code>) or your
-local cache file is deleted.</p>
-<p>Tokens are stored inside a hidden <code>.httr-oauth</code> cache file and automatically
-read when any function in the package is called. Optionally, you can specify
-a different cache path using the <code>cache</code> argument, or avoid caching the token
-completely with <code>cache = FALSE</code>. See <code><a href='https://httr.r-lib.org/reference/oauth1.0_token.html'>httr::oauth1.0_token()</a></code> for details.</p>
-<p>If you opt out of storing the token, then it will only be held until your
-R session is over, and you will have to pass it to the <code>token</code> argument, eg.
-<code><a href='get_my_boards.html'>get_my_boards(token = my_token)</a></code> each time you are fetching data.</p>
-<p>Remember to store your credentials in a <strong>secure, non-shared</strong> location. To
-minimize the risk of unwanted disclosure when using remote code
-repositories, <code>.httr-oauth</code> (or whatever cache path you have specified
-using the <code>cache</code> argument) is automatically added to <code>.gitignore</code>.</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><a href='https://httr.r-lib.org/reference/oauth_app.html'>httr::oauth_app</a>, <a href='https://httr.r-lib.org/reference/oauth_endpoint.html'>httr::oauth_endpoint</a>, <a href='https://httr.r-lib.org/reference/oauth1.0_token.html'>httr::oauth1.0_token</a></p></div>
+    <p>See <a href='https://developers.trello.com/v1.0/reference'>Trello API reference</a>
+for more info about what elements can be included in POST request body.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># This example assumes you are reading your key and secret from environment</span>
-<span class='co'># variables. This is not obligatory, but wherever you read them from, make</span>
-<span class='co'># sure it is a secure, non-shared location.</span>
-
+    <pre class="examples"><div class='input'>
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 
+<span class='co'># Get token with write access</span>
 <span class='no'>key</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.getenv.html'>Sys.getenv</a></span>(<span class='st'>"MY_TRELLO_KEY"</span>)
 <span class='no'>secret</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.getenv.html'>Sys.getenv</a></span>(<span class='st'>"MY_TRELLO_SECRET"</span>)
 
-<span class='no'>token</span> <span class='kw'>=</span> <span class='fu'>get_token</span>(<span class='st'>"my_app"</span>, <span class='kw'>key</span> <span class='kw'>=</span> <span class='no'>key</span>, <span class='kw'>secret</span> <span class='kw'>=</span> <span class='no'>secret</span>,
+<span class='no'>token</span> <span class='kw'>=</span> <span class='fu'><a href='get_token.html'>get_token</a></span>(<span class='st'>"my_app"</span>, <span class='kw'>key</span> <span class='kw'>=</span> <span class='no'>key</span>, <span class='kw'>secret</span> <span class='kw'>=</span> <span class='no'>secret</span>,
                   <span class='kw'>scope</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"read"</span>, <span class='st'>"write"</span>))
+
+<span class='co'># Get board ID</span>
+<span class='no'>url</span> <span class='kw'>=</span> <span class='st'>"Your board URL"</span>
+<span class='no'>bid</span> <span class='kw'>=</span> <span class='fu'><a href='get_id.html'>get_id_board</a></span>(<span class='no'>url</span>, <span class='no'>token</span>)
+
+<span class='co'># Get lists on that board, extract ID of the first one</span>
+<span class='no'>lid</span> <span class='kw'>=</span> <span class='fu'><a href='get_board.html'>get_board_lists</a></span>(<span class='no'>bid</span>, <span class='no'>token</span>)$<span class='no'>id</span>[<span class='fl'>1</span>]
+
+<span class='co'># Content for the new card</span>
+<span class='no'>payload</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
+  <span class='kw'>idList</span> <span class='kw'>=</span> <span class='no'>lid</span>,
+  <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"A new card"</span>,
+  <span class='kw'>desc</span> <span class='kw'>=</span> <span class='st'>"#This card has been created by trelloR"</span>,
+  <span class='kw'>pos</span> <span class='kw'>=</span> <span class='st'>"bottom"</span>
+)
+
+<span class='co'># Create card and store the response (to capture the ID</span>
+<span class='co'># of the newly created resource)</span>
+<span class='no'>r</span> <span class='kw'>=</span> <span class='fu'>create_resource</span>(<span class='st'>"card"</span>, <span class='kw'>body</span> <span class='kw'>=</span> <span class='no'>payload</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='no'>token</span>)
+
+<span class='co'># Get ID of the new card</span>
+<span class='no'>r</span>$<span class='no'>id</span>
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

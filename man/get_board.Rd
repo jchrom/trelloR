@@ -34,7 +34,7 @@ get_board_prefs(id, ...)
 \arguments{
 \item{id}{Board ID}
 
-\item{...}{Additional arguments passed to \code{\link{get_model}}}
+\item{...}{Additional arguments passed to \code{\link{get_resource}}}
 }
 \description{
 Returns a flat \code{data.frame} with board-related data.
@@ -46,5 +46,5 @@ cards = get_board_cards(board_id, query = list(customFieldItems = "true"))
 }
 }
 \seealso{
-\code{\link{get_model}}
+\code{\link{get_resource}}
 }

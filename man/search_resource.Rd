@@ -43,7 +43,7 @@ search_teams(string, boards = "mine", partial = FALSE, query = list(), ...)
 
 \item{modeltype}{Deprecated, use \code{resource} instead.}
 
-\item{...}{Additional arguments passed to \code{\link[=get_model]{get_model()}}.}
+\item{...}{Additional arguments passed to \code{\link[=get_resource]{get_resource()}}.}
 }
 \value{
 A data frame.
@@ -67,5 +67,5 @@ search_cards("A card with this text")
 }
 }
 \seealso{
-\code{\link[=get_model]{get_model()}}, \code{\link[=get_token]{get_token()}}
+\code{\link[=get_resource]{get_resource()}}, \code{\link[=get_token]{get_token()}}
 }

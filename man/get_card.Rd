@@ -25,11 +25,11 @@ get_card_fields(id, ...)
 \arguments{
 \item{id}{Card ID}
 
-\item{...}{Additional arguments passed to \code{\link{get_model}}}
+\item{...}{Additional arguments passed to \code{\link{get_resource}}}
 }
 \description{
 Returns a flat \code{data.frame} with card-related data.
 }
 \seealso{
-\code{\link{get_model}}
+\code{\link{get_resource}}
 }

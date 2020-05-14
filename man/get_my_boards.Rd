@@ -7,11 +7,11 @@
 get_my_boards(...)
 }
 \arguments{
-\item{...}{Additional arguments passed to \code{\link{get_model}}}
+\item{...}{Additional arguments passed to \code{\link{get_resource}}}
 }
 \description{
 Returns a flat \code{data.frame} with all your boards.
 }
 \seealso{
-\code{\link{get_model}}
+\code{\link{get_resource}}
 }

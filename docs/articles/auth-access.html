@@ -6,13 +6,13 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Authorized access • trelloR</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Authorized access">
-<meta property="og:description" content="">
-<meta name="twitter:card" content="summary">
+<meta property="og:description" content="trelloR">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -24,7 +24,7 @@
   gtag('config', 'UA-149868790-1');
 </script>
 </head>
-<body>
+<body data-spy="scroll" data-target="#toc">
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">trelloR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.4</span>
       </span>
     </div>
 
@@ -76,7 +76,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/jchrom/trelloR">
+  <a href="https://github.com/jchrom/trelloR/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -94,7 +94,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Authorized access</h1>
+      <h1 data-toc-skip>Authorized access</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/jchrom/trelloR/blob/master/vignettes/auth-access.Rmd"><code>vignettes/auth-access.Rmd</code></a></small>
@@ -110,71 +110,60 @@
 <a href="#getting-your-access-token" class="anchor"></a>Getting your access token</h2>
 <p>A secure token is required to authenticate your access to Trello. To obtain it, login to Trello and visit <code>https://trello.com/app-key</code>. You will need to do two things there:</p>
 <ul>
-<li>Check the value of Allowed origins. Every API request comes from an “origin”, i.e. a URL. Trello API will only accept authorized requests if they come from the allowed origins list, which makes communication with web apps more secure. Chances are though you will be calling Trello from your PC, in which case you might want to set at least one origin to something like <code>http://localhost:1410</code>.</li>
-<li>Copy both “key” and “secret” - you will need them for the next step.</li>
+<li><p>Check the value of Allowed origins. Every API request comes from an “origin”, i.e. a URL. Trello API will only accept authorized requests if they come from the allowed origins list, which makes communication with web apps more secure. If you are using trelloR locally (eg. from your laptop or PC) then <code>http://localhost:1410</code> is a good value to use.</p></li>
+<li><p>Copy both “key” and “secret”.</p></li>
 </ul>
-<p>Back in R, feed the key and secrey to the <code><a href="../reference/get_token.html">get_token()</a></code> function. This will trigger first-time authorization in the browser (you only have to do it once for a given project):</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(trelloR)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">my_token =<span class="st"> </span><span class="kw"><a href="../reference/get_token.html">get_token</a></span>(<span class="dt">key =</span> your_key, <span class="dt">secret =</span> your_secret, <span class="dt">appname =</span> <span class="st">"my-app"</span>)</a></code></pre></div>
-<p>You will also be offered an option to store the token in your working directory, in a hidden <code>.httr-oauth</code> file. This is convenient, but make sure you keep it in a <strong>safe, non-shared</strong> location.</p>
-<p>If you think the token might have been compromised (ie. somebody might have gotten hold of it) or you simply do not want to use it anymore, you should revoke it. This can be done by visiting your account settings. Look up the appropriate entry in the “Applications” list at the bottom of the page and click the Revoke button. To make it easier to recognize the tokens you have created, use the <code>appname</code> argument when creating a token.</p>
+<p>Back in R, feed the key and secrey to the <code><a href="../reference/get_token.html">get_token()</a></code> function. This will trigger first-time authorization in the browser, allowing you to cache your token locally. You only have to do it once for a given project, unless you opt out of using cache or the cache file is deleted.</p>
+<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">trelloR</span>)
+<span class="no">my_token</span> <span class="kw">=</span> <span class="fu"><a href="../reference/get_token.html">get_token</a></span>(<span class="st">"my-app"</span>, <span class="kw">key</span> <span class="kw">=</span> <span class="no">your_key</span>, <span class="kw">secret</span> <span class="kw">=</span> <span class="no">your_secret</span>)</pre></body></html></div>
+<p>This will create an object of class <code>Trello_API_token</code>. Functions in the TrelloR package will always try to read cached token when needed, unless you supply a token object directly. For example, any of these will work with local cache in place:</p>
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">my_boards</span> <span class="kw">=</span> <span class="fu"><a href="../reference/get_my_boards.html">get_my_boards</a></span>()
+<span class="no">my_boards</span> <span class="kw">=</span> <span class="fu"><a href="../reference/get_my_boards.html">get_my_boards</a></span>(<span class="kw">token</span> <span class="kw">=</span> <span class="st">"path/to/cache/file"</span>)
+<span class="no">my_boards</span> <span class="kw">=</span> <span class="fu"><a href="../reference/get_my_boards.html">get_my_boards</a></span>(<span class="kw">token</span> <span class="kw">=</span> <span class="no">my_token</span>) <span class="co">#works even without local cache</span></pre></body></html></div>
 <p>You can create multiple tokens with different names, scope and expiration. See <code><a href="../reference/get_token.html">?get_token</a></code> for additional arguments.</p>
 </div>
-<div id="getting-and-searching-privateteam-data" class="section level2">
+<div id="keep-your-credentials-safe" class="section level2">
 <h2 class="hasAnchor">
-<a href="#getting-and-searching-privateteam-data" class="anchor"></a>Getting and searching private/team data</h2>
-<p>Now that you have your token, let’s call <code><a href="../reference/get_my_boards.html">get_my_boards()</a></code> to get an overview of your boards. It returns a <code>data.frame</code> with board names and IDs related to the user who authorized the app.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">my_boards =<span class="st"> </span><span class="kw"><a href="../reference/get_my_boards.html">get_my_boards</a></span>()</a></code></pre></div>
-<p>The above works if you have chosen to store your token locally. If you prefer not to do that, you can invoke the token object from your working environment like so:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">my_boards =<span class="st"> </span><span class="kw"><a href="../reference/get_my_boards.html">get_my_boards</a></span>(my_token)</a></code></pre></div>
-<p>The main <code>get_model</code> function and all the wrappers derived from it require token whenver you want to perform an action that requires authorization. They will reach for your locally stored token first (so you can omit it in your code), but if it only exists in your environment, you need to supply it via the <code>token</code> argument:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">cards =<span class="st"> </span><span class="kw"><a href="../reference/get_board.html">get_board_cards</a></span>(board_url, <span class="dt">token =</span> my_token)</a></code></pre></div>
-<p><strong>Searching</strong> also requires a token. For example:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/search_model.html">search_members</a></span>(<span class="st">"Tony Stark"</span>, <span class="dt">token =</span> my_token)</a></code></pre></div>
-<p>In order to add, update and delete resources, you need to create a token with writing scope:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">my_token =<span class="st"> </span><span class="kw"><a href="../reference/get_token.html">get_token</a></span>(<span class="dt">key =</span> your_key, <span class="dt">secret =</span> your_secret, <span class="dt">scope =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"read"</span>, <span class="st">"write"</span>))</a></code></pre></div>
+<a href="#keep-your-credentials-safe" class="anchor"></a>Keep your credentials safe</h2>
+<p>Keep your key, secret and any token cache in a <strong>safe, non-shared</strong> location. Using environment variables or packages like <a href="https://github.com/jeroen/askpass">askpass</a> are good options.</p>
+<p>Token cache is by default stored in a file called <code>.httr-oauth</code>, but you can change that via the <code>cache</code> argument to the <code><a href="../reference/get_token.html">get_token()</a></code> function. Whatever the case, you should avoid accidentaly copying or exporting this file along with other files. To make this easier, the cache file path is automatically added to <code>.gitignore</code>.</p>
+<p>If you think the token might have been compromised or you simply do not want to use it anymore, you should revoke it. Login to Trello and access your account settings. To make it easier to recognize tokens you have created, use the <code>appname</code> argument when creating a token.</p>
 <p><strong>Built with</strong></p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span>()</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; R version 3.6.1 (2019-07-05)</span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt; Platform: x86_64-pc-linux-gnu (64-bit)</span></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; Running under: elementary OS 5.0 Juno</span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt; Matrix products: default</span></a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt; BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.7.1</span></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt; LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.7.1</span></a>
-<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt; locale:</span></a>
-<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt;  [1] LC_CTYPE=en_GB.UTF-8       LC_NUMERIC=C              </span></a>
-<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt;  [3] LC_TIME=cs_CZ.UTF-8        LC_COLLATE=en_GB.UTF-8    </span></a>
-<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt;  [5] LC_MONETARY=cs_CZ.UTF-8    LC_MESSAGES=en_GB.UTF-8   </span></a>
-<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt;  [7] LC_PAPER=cs_CZ.UTF-8       LC_NAME=C                 </span></a>
-<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt;  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span></a>
-<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt; [11] LC_MEASUREMENT=cs_CZ.UTF-8 LC_IDENTIFICATION=C       </span></a>
-<a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#&gt; attached base packages:</span></a>
-<a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></a>
-<a class="sourceLine" id="cb7-20" data-line-number="20"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb7-21" data-line-number="21"><span class="co">#&gt; loaded via a namespace (and not attached):</span></a>
-<a class="sourceLine" id="cb7-22" data-line-number="22"><span class="co">#&gt;  [1] Rcpp_1.0.2       rprojroot_1.3-2  crayon_1.3.4     digest_0.6.22   </span></a>
-<a class="sourceLine" id="cb7-23" data-line-number="23"><span class="co">#&gt;  [5] assertthat_0.2.1 MASS_7.3-51.4    R6_2.4.0         backports_1.1.5 </span></a>
-<a class="sourceLine" id="cb7-24" data-line-number="24"><span class="co">#&gt;  [9] magrittr_1.5     evaluate_0.14    stringi_1.4.3    rlang_0.4.1     </span></a>
-<a class="sourceLine" id="cb7-25" data-line-number="25"><span class="co">#&gt; [13] rstudioapi_0.10  fs_1.3.1         rmarkdown_1.13   pkgdown_1.4.1   </span></a>
-<a class="sourceLine" id="cb7-26" data-line-number="26"><span class="co">#&gt; [17] desc_1.2.0       tools_3.6.1      stringr_1.4.0    yaml_2.2.0      </span></a>
-<a class="sourceLine" id="cb7-27" data-line-number="27"><span class="co">#&gt; [21] xfun_0.7         compiler_3.6.1   memoise_1.1.0    htmltools_0.3.6 </span></a>
-<a class="sourceLine" id="cb7-28" data-line-number="28"><span class="co">#&gt; [25] knitr_1.23</span></a></code></pre></div>
+<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span>()
+<span class="co">#&gt; R version 3.6.3 (2020-02-29)</span>
+<span class="co">#&gt; Platform: x86_64-pc-linux-gnu (64-bit)</span>
+<span class="co">#&gt; Running under: elementary OS 5.1.4 Hera</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Matrix products: default</span>
+<span class="co">#&gt; BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.7.1</span>
+<span class="co">#&gt; LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.7.1</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; locale:</span>
+<span class="co">#&gt;  [1] LC_CTYPE=en_GB.UTF-8       LC_NUMERIC=C              </span>
+<span class="co">#&gt;  [3] LC_TIME=cs_CZ.UTF-8        LC_COLLATE=en_GB.UTF-8    </span>
+<span class="co">#&gt;  [5] LC_MONETARY=cs_CZ.UTF-8    LC_MESSAGES=en_GB.UTF-8   </span>
+<span class="co">#&gt;  [7] LC_PAPER=cs_CZ.UTF-8       LC_NAME=C                 </span>
+<span class="co">#&gt;  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span>
+<span class="co">#&gt; [11] LC_MEASUREMENT=cs_CZ.UTF-8 LC_IDENTIFICATION=C       </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; attached base packages:</span>
+<span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; loaded via a namespace (and not attached):</span>
+<span class="co">#&gt;  [1] Rcpp_1.0.4.6     rprojroot_1.3-2  crayon_1.3.4     digest_0.6.23   </span>
+<span class="co">#&gt;  [5] assertthat_0.2.1 MASS_7.3-51.6    R6_2.4.1         backports_1.1.5 </span>
+<span class="co">#&gt;  [9] magrittr_1.5     evaluate_0.14    stringi_1.4.3    rlang_0.4.5     </span>
+<span class="co">#&gt; [13] rstudioapi_0.10  fs_1.4.1         rmarkdown_2.1    pkgdown_1.5.1   </span>
+<span class="co">#&gt; [17] desc_1.2.0       tools_3.6.3      stringr_1.4.0    yaml_2.2.1      </span>
+<span class="co">#&gt; [21] xfun_0.12        compiler_3.6.3   memoise_1.1.0    htmltools_0.4.0 </span>
+<span class="co">#&gt; [25] knitr_1.28</span></pre></body></html></div>
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-        <div id="tocnav">
-      <h2 class="hasAnchor">
-<a href="#tocnav" class="anchor"></a>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-<li><a href="#getting-your-access-token">Getting your access token</a></li>
-      <li><a href="#getting-and-searching-privateteam-data">Getting and searching private/team data</a></li>
-      </ul>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
 </div>
-      </div>
 
 </div>
 
@@ -185,7 +174,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

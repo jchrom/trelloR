@@ -1,18 +1,18 @@
-#' PUT data to Trello API
+#' Create Resources
 #'
-#' Issues [httr::PUT] requests for Trello API endpoints.
+#' Create resources via Trello API.
 #'
 #' See [Trello API reference](https://developers.trello.com/v1.0/reference)
-#' for more info about what elements can be included in PUT request body.
+#' for more info about what elements can be included in POST request body.
 #'
-#' @param model Model name, eg. `"card"`.
+#' @param resource Model name, eg. `"card"`.
 #' @param id Model id.
 #' @param path Path.
 #' @param body A named list.
 #' @param token An object of class `"Trello_API_token"`, a path to a cache file
 #'   or `NULL`.
 #'
-#'   * If a token, it is passed as is.
+#'   * If a `Token`, it is passed as is.
 #'   * If `NULL` and a cache file called `".httr-oauth"` exists, the newest token
 #'     is read from it. If the file is not found, an error is thrown.
 #'   * If a character vector of length 1, it will be used as an alternative path
@@ -22,8 +22,10 @@
 #' @param response Can return `"content"` (the default), `"headers"`, `"status"`
 #'   or the raw `"response"`.
 #' @param on.error Whether to `"stop"`, `"warn"` or `"message"` on http error.
-#' @param encode,handle Passed to [httr::PUT].
+#' @param encode,handle Passed to [httr::POST].
+#'
 #' @export
+#'
 #' @examples
 #'
 #' \dontrun{
@@ -39,37 +41,40 @@
 #' url = "Your board URL"
 #' bid = get_id_board(url, token)
 #'
-#' # Get cards and extract ID of the first one
-#' cid = get_board_cards(bid, token)$id[1]
+#' # Get lists on that board, extract ID of the first one
+#' lid = get_board_lists(bid, token)$id[1]
 #'
 #' # Content for the new card
 #' payload = list(
-#'   id = cid,
-#'   name = "A new card name",
-#'   desc = "Description - updated by trelloR",
-#'   pos = "top" #put card on the top of a list
+#'   idList = lid,
+#'   name = "A new card",
+#'   desc = "#This card has been created by trelloR",
+#'   pos = "bottom"
 #' )
 #'
-#' # Update card's name, descriptionand position
-#' put_model(model = "card", id = cid, body = payload, token = token)
+#' # Create card and store the response (to capture the ID
+#' # of the newly created resource)
+#' r = create_resource("card", body = payload, token = token)
+#'
+#' # Get ID of the new card
+#' r$id
 #' }
 
-
-put_model = function(model, id = NULL, path = NULL, body = NULL,
-                     token = NULL,
-                     response = c("content", "headers", "status", "response"),
-                     on.error = c("stop", "warn", "message"),
-                     verbose = FALSE,
-                     encode = "json", handle = NULL) {
+create_resource = function(resource, id = NULL, path = NULL,
+                           body = list(name = "New"),
+                           token = NULL,
+                           response = c("content", "headers", "status",
+                                        "response"),
+                           on.error = c("stop", "warn", "message"),
+                           verbose  = FALSE,
+                           encode   = "json", handle = NULL) {
 
   url = httr::modify_url(
     url = "https://api.trello.com",
-    path = c(1, paste0(model, "s"), id, path)
+    path = c(1, paste0(resource, "s"), id, path)
   )
 
-  message(
-    "Request URL:\n", url, "\n"
-  )
+  message("Request URL:\n", url, "\n")
 
   message(
     "Request body: ",
@@ -90,9 +95,9 @@ put_model = function(model, id = NULL, path = NULL, body = NULL,
 
   if (verbose) {
 
-    res = httr::PUT(
-      url    = url,
-      body   = body,
+    res = httr::POST(
+      url   = url,
+      body  = body,
       httr::config(token = token),
       encode = encode,
       handle = handle,
@@ -101,7 +106,7 @@ put_model = function(model, id = NULL, path = NULL, body = NULL,
 
   } else {
 
-    res = httr::PUT(
+    res = httr::POST(
       url    = url,
       body   = body,
       httr::config(token = token),

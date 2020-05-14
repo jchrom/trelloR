@@ -16,11 +16,11 @@ get_list_comments(id, ...)
 \arguments{
 \item{id}{Board ID}
 
-\item{...}{Additional arguments passed to \code{\link{get_model}}}
+\item{...}{Additional arguments passed to \code{\link{get_resource}}}
 }
 \description{
 Returns a flat \code{data.frame} with list-related data.
 }
 \seealso{
-\code{\link{get_model}}
+\code{\link{get_resource}}
 }

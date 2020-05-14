@@ -19,56 +19,57 @@ Authentication is required in order to access boards that are not public, and to
 Getting your access token
 -------------------------
 
-A secure token is required to authenticate your access to Trello. To obtain it, login to Trello and visit `https://trello.com/app-key`. You will need to do two things there:
+A secure token is required to authenticate your access to Trello. To obtain it,
+login to Trello and visit `https://trello.com/app-key`. You will need to do two
+things there:
 
-* Check the value of Allowed origins. Every API request comes from an "origin", i.e. a URL. Trello API will only accept authorized requests if they come from the allowed origins list, which makes communication with web apps more secure. Chances are though you will be calling Trello from your PC, in which case you might want to set at least one origin to something like `http://localhost:1410`.
-* Copy both "key" and "secret" - you will need them for the next step.
+* Check the value of Allowed origins. Every API request comes from an "origin",
+  i.e. a URL. Trello API will only accept authorized requests if they come from
+  the allowed origins list, which makes communication with web apps more secure.
+  If you are using trelloR locally (eg. from your laptop or PC) then
+  `http://localhost:1410` is a good value to use.
 
-Back in R, feed the key and secrey to the `get_token()` function. This will trigger first-time authorization in the browser (you only have to do it once for a given project):
+* Copy both "key" and "secret".
+
+Back in R, feed the key and secrey to the `get_token()` function. This will
+trigger first-time authorization in the browser, allowing you to cache your
+token locally. You only have to do it once for a given project, unless you opt
+out of using cache or the cache file is deleted.
 
 ```r
 library(trelloR)
-my_token = get_token(key = your_key, secret = your_secret, appname = "my-app")
+my_token = get_token("my-app", key = your_key, secret = your_secret)
 ```
 
-You will also be offered an option to store the token in your working directory, in a hidden `.httr-oauth` file. This is convenient, but make sure you keep it in a **safe, non-shared** location.
-
-If you think the token might have been compromised (ie. somebody might have gotten hold of it) or you simply do not want to use it anymore, you should revoke it. This can be done by visiting your account settings. Look up the appropriate entry in the "Applications" list at the bottom of the page and click the Revoke button. To make it easier to recognize the tokens you have created, use the `appname` argument when creating a token.
-
-You can create multiple tokens with different names, scope and expiration. See `?get_token` for additional arguments.
-
-Getting and searching private/team data
----------------------------------------
-
-Now that you have your token, let's call `get_my_boards()` to get an overview of your boards. It returns a `data.frame` with board names and IDs related to the user who authorized the app.
+This will create an object of class `Trello_API_token`. Functions in the TrelloR
+package will always try to read cached token when needed, unless you supply
+a token object directly. For example, any of these will work with local cache
+in place:
 
 ```r
 my_boards = get_my_boards()
+my_boards = get_my_boards(token = "path/to/cache/file")
+my_boards = get_my_boards(token = my_token) #works even without local cache
 ```
 
-The above works if you have chosen to store your token locally. If you prefer not to do that, you can invoke the token object from your working environment like so:
+You can create multiple tokens with different names, scope and expiration. See `?get_token` for additional arguments.
 
-```r
-my_boards = get_my_boards(my_token)
-```
+Keep your credentials safe
+--------------------------
 
-The main `get_model` function and all the wrappers derived from it require token whenver you want to perform an action that requires authorization. They will reach for your locally stored token first (so you can omit it in your code), but if it only exists in your environment, you need to supply it via the `token` argument:
+Keep your key, secret and any token cache in a **safe, non-shared** location.
+Using environment variables or packages like [askpass](https://github.com/jeroen/askpass) are good options.
 
-```r
-cards = get_board_cards(board_url, token = my_token)
-```
+Token cache is by default stored in a file called `.httr-oauth`, but you can
+change that via the `cache` argument to the `get_token()` function. Whatever the
+case, you should avoid accidentaly copying or exporting this file along with
+other files. To make this easier, the cache file path is automatically added to
+`.gitignore`.
 
-__Searching__ also requires a token. For example:
-
-```{r eval=FALSE}
-search_members("Tony Stark", token = my_token)
-```
-
-In order to add, update and delete resources, you need to create a token with writing scope:
-
-```r
-my_token = get_token(key = your_key, secret = your_secret, scope = c("read", "write"))
-```
+If you think the token might have been compromised or you simply do not want to
+use it anymore, you should revoke it. Login to Trello and access your account
+settings. To make it easier to recognize tokens you have created, use the
+`appname` argument when creating a token.
 
 __Built with__
 

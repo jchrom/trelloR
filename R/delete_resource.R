@@ -1,6 +1,6 @@
-#' DELETE resources via Trello API
+#' Delete Resources
 #'
-#' `DELETE` a resource via Trello API endpoints.
+#' Delete resources via Trello API.
 #'
 #' See [Trello API reference](https://developers.trello.com/v1.0/reference)
 #' for more info about DELETE requests.
@@ -10,7 +10,7 @@
 #' @param token An object of class `"Trello_API_token"`, a path to a cache file
 #'   or `NULL`.
 #'
-#'   * If a `Token` object, it is passed as is.
+#'   * If a `Token`, it is passed as is.
 #'   * If `NULL` and a cache file called `".httr-oauth"` exists, the newest token
 #'     is read from it. If the file is not found, an error is thrown.
 #'   * If a character vector of length 1, it will be used as an alternative path

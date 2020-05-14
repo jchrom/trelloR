@@ -1,27 +1,23 @@
-# Functions that retrieve data related to a member
-
 #' Get Own Boards
 #'
 #' Returns a flat \code{data.frame} with all your boards.
-#' @param ... Additional arguments passed to \code{\link{get_model}}
-#' @seealso \code{\link{get_model}}
+#' @param ... Additional arguments passed to \code{\link{get_resource}}
+#' @seealso \code{\link{get_resource}}
 #' @export
 
 get_my_boards = function(...) {
-  get_model(parent = "member", child = "boards", id = "me",...)
+  get_resource(parent = "member", child = "boards", id = "me",...)
 }
 
 #' Get Member's Boards
 #'
 #' Returns a flat \code{data.frame} with member-related data.
 #' @param id member ID or username
-#' @param ... Additional arguments passed to \code{\link{get_model}}
-#' @seealso \code{\link{get_model}}
+#' @param ... Additional arguments passed to \code{\link{get_resource}}
+#' @seealso \code{\link{get_resource}}
 #' @export
 get_member_boards = function(id, ...) {
-
-    dat = get_model(parent = "member", child = "boards", id = id, ...)
-    return(dat)
+  get_resource(parent = "member", child = "boards", id = id, ...)
 }
 
 #' Get Member Info
@@ -29,16 +25,15 @@ get_member_boards = function(id, ...) {
 #' Returns a flat \code{data.frame} with member-related data.
 #' @param id member ID or username
 #' @param fields by default fetches fullName, username, memberType, bio
-#' @param ... Additional arguments passed to \code{\link{get_model}}
-#' @seealso \code{\link{get_model}}
+#' @param ... Additional arguments passed to \code{\link{get_resource}}
+#' @seealso \code{\link{get_resource}}
 #' @export
 get_member_fields = function(id,
                              fields = c("fullName", "username", "memberType",
                                         "bio"),
                              ...) {
 
-    dat = get_model(parent = "member", child = NULL, id = id,
-                     query = list(fields = paste0(fields, collapse = ",")),
-                     ...)
-    return(dat)
+  get_resource(parent = "member", child = NULL, id = id,
+               query = list(fields = paste0(fields, collapse = ",")),
+               ...)
 }

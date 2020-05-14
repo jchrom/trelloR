@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Convert hex string into POSIXct — as_POSIXct_hex • trelloR</title>
+<title>Deprecated functions — Deprecated • trelloR</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -36,9 +36,18 @@
 
 
 
-<meta property="og:title" content="Convert hex string into POSIXct — as_POSIXct_hex" />
+<meta property="og:title" content="Deprecated functions — Deprecated" />
 
-<meta property="og:description" content="Convert hex string into POSIXct" />
+<meta property="og:description" content="
+
+Use get_resource() instead of get_model() or trello_get()
+Use update_resource() instead of put_model()
+Use create_resource() instead of post_model()
+Use delete_resource() instead of delete_model()
+Use get_token() instead of trello_get_token()
+Use search_resource() instead of trello_search()
+
+" />
 
 
 
@@ -139,25 +148,58 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Convert hex string into POSIXct</h1>
-    <small class="dont-index">Source: <a href='https://github.com/jchrom/trelloR/blob/master/R/utils.R'><code>R/utils.R</code></a></small>
-    <div class="hidden name"><code>as_POSIXct_hex.Rd</code></div>
+    <h1>Deprecated functions</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jchrom/trelloR/blob/master/R/deprecated.R'><code>R/deprecated.R</code></a></small>
+    <div class="hidden name"><code>Deprecated.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Convert hex string into POSIXct</p>
+    
+<ul>
+<li><p>Use <code><a href='get_resource.html'>get_resource()</a></code> instead of <code>get_model()</code> or <code>trello_get()</code></p></li>
+<li><p>Use <code><a href='update_resource.html'>update_resource()</a></code> instead of <code>put_model()</code></p></li>
+<li><p>Use <code><a href='create_resource.html'>create_resource()</a></code> instead of <code>post_model()</code></p></li>
+<li><p>Use <code><a href='delete_resource.html'>delete_resource()</a></code> instead of <code>delete_model()</code></p></li>
+<li><p>Use <code><a href='get_token.html'>get_token()</a></code> instead of <code>trello_get_token()</code></p></li>
+<li><p>Use <code><a href='search_resource.html'>search_resource()</a></code> instead of <code>trello_search()</code></p></li>
+</ul>
+
     
     </div>
 
-    <pre class="usage"><span class='fu'>as_POSIXct_hex</span>(<span class='no'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>trello_get</span>(<span class='no'>...</span>)
+
+<span class='fu'>get_model</span>(<span class='no'>...</span>)
+
+<span class='fu'>post_model</span>(<span class='no'>...</span>)
+
+<span class='fu'>put_model</span>(<span class='no'>...</span>)
+
+<span class='fu'>delete_model</span>(<span class='no'>...</span>)
+
+<span class='fu'>trello_get_token</span>(<span class='no'>...</span>)
+
+<span class='fu'>trello_search</span>(<span class='no'>...</span>)
+
+<span class='fu'>search_model</span>(<span class='no'>...</span>)
+
+<span class='fu'>trello_search_actions</span>(<span class='no'>...</span>)
+
+<span class='fu'>trello_search_cards</span>(<span class='no'>...</span>)
+
+<span class='fu'>trello_search_boards</span>(<span class='no'>...</span>)
+
+<span class='fu'>trello_search_members</span>(<span class='no'>...</span>)
+
+<span class='fu'>trello_search_teams</span>(<span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>Vector of strings, each 8 characters long</p></td>
+      <th>...</th>
+      <td><p>See current functions for argument names and defaults.</p></td>
     </tr>
     </table>
     

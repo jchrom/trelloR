@@ -1,6 +1,6 @@
 #' Get Data From Trello API
 #'
-#' Issue GET requests for Trello API endpoints.
+#' Fetch resources using Trello API.
 #'
 #' @section Request limits:
 #'
@@ -33,7 +33,7 @@
 #'
 #' @param parent Parent resource, e.g. `"board"` or `NULL`.
 #' @param child Child resource, eg. `"card"` or `NULL`.
-#' @param id Model ID or `NULL`.
+#' @param id Resource ID or `NULL`.
 #' @param token An object of class `"Trello_API_token"`, a path to a cache file
 #'   or `NULL`.
 #'
@@ -54,12 +54,7 @@
 #'   to 3.
 #' @param handle The handle to use with this request, see [httr::RETRY].
 #' @param verbose Set to `TRUE` for verbose output.
-#'
-#' @param response Deprecated. Response headers are returned only when
-#'   the request fails (and `on.error` is not `"stop"`).
-#' @param paging Deprecated. Use `limit = Inf` instead.
-#' @param bind.rows Deprecated. Results are always bound into a single
-#'   data frame.
+#' @param response,paging,bind.rows Deprecated.
 #'
 #' @seealso [get_token], [get_id], [httr::GET], [jsonlite::fromJSON]
 #'
@@ -78,8 +73,8 @@
 #' labels = get_board_labels(bid)                # Get all labels
 #' cards = get_board_cards(bid, filter = "all")  # Get all cards, incl. archived
 #'
-#' # We can also call get_model() directly:
-#' lists = get_model(parent = "board", child = "lists", id = bid)
+#' # We can also call get_resource() directly:
+#' lists = get_resource(parent = "board", child = "lists", id = bid)
 #'
 #' # As with boards, cards can be queried for particular resources:
 #' card10 = cards$id[10]
@@ -104,11 +99,11 @@
 #' cards_open = get_board_cards(board_id, token, filter = "open")
 #' }
 
-get_model = function(parent = NULL, child = NULL, id = NULL, token = NULL,
-                     query = NULL, url = NULL, filter = NULL, limit = 1000,
-                     on.error = c("stop", "warn", "message"),
-                     retry.times = 3, handle = NULL,
-                     verbose = FALSE, response, paging, bind.rows)
+get_resource = function(parent = NULL, child = NULL, id = NULL, token = NULL,
+                        query = NULL, url = NULL, filter = NULL, limit = 1000,
+                        on.error = c("stop", "warn", "message"),
+                        retry.times = 3, handle = NULL,
+                        verbose = FALSE, response, paging, bind.rows)
 {
 
   if (!missing("paging")) {
