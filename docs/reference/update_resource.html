@@ -154,11 +154,11 @@
   path <span class='op'>=</span> <span class='cn'>NULL</span>,
   body <span class='op'>=</span> <span class='cn'>NULL</span>,
   token <span class='op'>=</span> <span class='cn'>NULL</span>,
-  response <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"content"</span>, <span class='st'>"headers"</span>, <span class='st'>"status"</span>, <span class='st'>"response"</span><span class='op'>)</span>,
   on.error <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"stop"</span>, <span class='st'>"warn"</span>, <span class='st'>"message"</span><span class='op'>)</span>,
   verbose <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  encode <span class='op'>=</span> <span class='st'>"json"</span>,
-  handle <span class='op'>=</span> <span class='cn'>NULL</span>
+  handle <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>encode</span>,
+  <span class='va'>response</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -182,8 +182,7 @@
     </tr>
     <tr>
       <th>token</th>
-      <td><p>An object of class <code>"Trello_API_token"</code>, a path to a cache file
-or <code>NULL</code>.</p><ul>
+      <td><p>An object of class <code>"Trello_API_token"</code>, a path or <code>NULL</code>.</p><ul>
 <li><p>If a <code>Token</code>, it is passed as is.</p></li>
 <li><p>If <code>NULL</code> and a cache file called <code>".httr-oauth"</code> exists, the newest token
 is read from it. If the file is not found, an error is thrown.</p></li>
@@ -192,21 +191,20 @@ to the cache file.</p></li>
 </ul></td>
     </tr>
     <tr>
-      <th>response</th>
-      <td><p>Can return <code>"content"</code> (the default), <code>"headers"</code>, <code>"status"</code>
-or the raw <code>"response"</code>.</p></td>
-    </tr>
-    <tr>
       <th>on.error</th>
-      <td><p>Whether to <code>"stop"</code>, <code>"warn"</code> or <code>"message"</code> on http error.</p></td>
+      <td><p>Behavior when HTTP status &gt;= 300, defaults to <code>"stop"</code>.</p></td>
     </tr>
     <tr>
       <th>verbose</th>
-      <td><p>Whether to pass <a href='https://httr.r-lib.org/reference/verbose.html'>httr::verbose</a> to <a href='https://httr.r-lib.org/reference/PUT.html'>httr::PUT</a>.</p></td>
+      <td><p>Whether to pass <a href='https://httr.r-lib.org/reference/verbose.html'>httr::verbose</a> to <a href='https://httr.r-lib.org/reference/RETRY.html'>httr::RETRY</a>.</p></td>
     </tr>
     <tr>
-      <th>encode, handle</th>
-      <td><p>Passed to <a href='https://httr.r-lib.org/reference/PUT.html'>httr::PUT</a>.</p></td>
+      <th>handle</th>
+      <td><p>Passed to <a href='https://httr.r-lib.org/reference/RETRY.html'>httr::RETRY</a>.</p></td>
+    </tr>
+    <tr>
+      <th>encode, response</th>
+      <td><p>Deprecated.</p></td>
     </tr>
     </table>
 

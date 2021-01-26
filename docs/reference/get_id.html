@@ -170,15 +170,23 @@
     <pre class="examples"><div class='input'><span class='co'># Get Trello Development Roadmap board ID</span>
 <span class='va'>url</span>    <span class='op'>=</span> <span class='st'>"https://trello.com/b/nC8QJJoZ/trello-development-roadmap"</span>
 <span class='va'>tdr_id</span> <span class='op'>=</span> <span class='fu'>get_id_board</span><span class='op'>(</span><span class='va'>url</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>GET URL:</span>
-#&gt; <span class='message'>https://api.trello.com/1/board/nC8QJJoZ?fields=name&amp;limit=100</span></div><div class='output co'>#&gt; Downloading: 66 B     Downloading: 66 B     Downloading: 66 B     Downloading: 66 B     </div><div class='output co'>#&gt; <span class='message'>OK (HTTP 200).</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>GET: https://api.trello.com/1/board/nC8QJJoZ?fields=name&amp;limit=100</span></div><div class='output co'>#&gt; $fields
+#&gt; [1] "name"
+#&gt; 
+#&gt; $limit
+#&gt; [1] 100
+#&gt; 
+#&gt; Downloading: 66 B     Downloading: 66 B     Downloading: 66 B     Downloading: 66 B     </div><div class='output co'>#&gt; <span class='message'>OK (HTTP 200).</span></div><div class='input'>
 <span class='co'># Also works:</span>
 <span class='va'>url</span>    <span class='op'>=</span> <span class='st'>"nC8QJJoZ"</span>
 <span class='va'>tdr_id</span> <span class='op'>=</span> <span class='fu'>get_id_board</span><span class='op'>(</span><span class='va'>url</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>GET URL:</span>
-#&gt; <span class='message'>https://api.trello.com/1/board/nC8QJJoZ?fields=name&amp;limit=100</span></div><div class='output co'>#&gt; Downloading: 66 B     Downloading: 66 B     Downloading: 66 B     Downloading: 66 B     </div><div class='output co'>#&gt; <span class='message'>OK (HTTP 200).</span></div></pre>
+</div><div class='output co'>#&gt; <span class='message'>GET: https://api.trello.com/1/board/nC8QJJoZ?fields=name&amp;limit=100</span></div><div class='output co'>#&gt; $fields
+#&gt; [1] "name"
+#&gt; 
+#&gt; $limit
+#&gt; [1] 100
+#&gt; 
+#&gt; Downloading: 66 B     Downloading: 66 B     Downloading: 66 B     Downloading: 66 B     </div><div class='output co'>#&gt; <span class='message'>OK (HTTP 200).</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -104,39 +104,27 @@
 
     
     
-<p>This document explains how to add, update and delete resources via Trello API. This requires authentication, as explained <a href="https://jchrom.github.io/trelloR/articles/auth-access.html">here</a>.</p>
+<p>This document explains how to add, update and delete resources via Trello API. This requires authentication, as explained <a href="/articles/auth-access.html">here</a>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jchrom/trelloR">trelloR</a></span><span class="op">)</span>
 <span class="co">#&gt; R API for Trello</span>
 <span class="co">#&gt; Disclaimer: trelloR is not affiliated, associated, authorized, endorsed by or</span>
 <span class="co">#&gt; in any way officially connected to Trello, Inc. (www.trello.com).</span></code></pre></div>
-<div id="adding-resources" class="section level2">
+<div id="creating-and-modifying-resources" class="section level2">
 <h2 class="hasAnchor">
-<a href="#adding-resources" class="anchor"></a>Adding resources</h2>
-<p>The <code><a href="../reference/Deprecated.html">post_model()</a></code> function allows you to create new resources. At the very least, you only have to specify a type of <code>model</code> (eg. “card”). Any other stuff, such as <em>name</em>, <em>decription</em> or <em>labels</em> has to be passed as a named list to the <code>body</code> argument.</p>
-<p>The following example creates a new card and places it at the bottom of a list (consult the <a href="https://developers.trello.com/reference">Trello API reference</a> for query parameters):</p>
+<a href="#creating-and-modifying-resources" class="anchor"></a>Creating and modifying resources</h2>
+<p>The <code><a href="../reference/create_resource.html">create_resource()</a></code> function allows you to create new boards, cards, lists and other resources. To create a new resource, specify its type (e.g. “card”) using the <code>resource</code> argument. Further details such as name or description must be passed as a named list using the <code>body</code> argument.</p>
+<p>The following example creates a new card and places it at the bottom of a list (see the <a href="https://developers.trello.com/reference">Trello API reference</a> for query parameters):</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">payload</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
   name <span class="op">=</span> <span class="st">"My new card!"</span>, desc <span class="op">=</span> <span class="st">"An example card."</span>, 
   pos <span class="op">=</span> <span class="st">"bottom"</span>,
   idList <span class="op">=</span> <span class="va">list_id</span> <span class="co"># get it by calling get_board_lists()</span>
 <span class="op">)</span>
-<span class="fu"><a href="../reference/Deprecated.html">post_model</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"card"</span>, body <span class="op">=</span> <span class="va">payload</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="../reference/create_resource.html">create_resource</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"card"</span>, body <span class="op">=</span> <span class="va">payload</span><span class="op">)</span></code></pre></div>
 <p>When successful, the request returns a named list of values describing the newly created resource, including its ID. This is very useful as you can immediately capture the ID if you need it.</p>
-<p>See <code><a href="../reference/Deprecated.html">?post_model</a></code> for additional arguments.</p>
-<p>The wrappers for this function include: <code><a href="../reference/add_board.html">?add_board</a></code>, <code><a href="../reference/add_card.html">?add_card</a></code>, <code><a href="../reference/add_checklist.html">?add_checklist</a></code>, <code><a href="../reference/add_checkitem.html">?add_checkitem</a></code>, <code><a href="../reference/add_comment.html">?add_comment</a></code>, <code><a href="../reference/add_label.html">?add_label</a></code>, <code><a href="../reference/add_list.html">?add_list</a></code> and <code><a href="../reference/add_field.html">?add_field</a></code>.</p>
-</div>
-<div id="updating-resources" class="section level2">
-<h2 class="hasAnchor">
-<a href="#updating-resources" class="anchor"></a>Updating resources</h2>
-<p>The <code><a href="../reference/Deprecated.html">put_model()</a></code> function follows the same logic as the <code><a href="../reference/Deprecated.html">post_model()</a></code>, but can only be called on existing resources.</p>
-<p>See <code><a href="../reference/update_card.html">?update_card</a></code>, <code><a href="../reference/update_card_labels.html">?update_card_labels</a></code>, <code><a href="../reference/update_card_members.html">?update_card_members</a></code>, <code><a href="../reference/update_checkitem.html">?update_checkitem</a></code> and <code><a href="../reference/update_field.html">?update_field</a></code>.</p>
-</div>
-<div id="deleting-resources" class="section level2">
-<h2 class="hasAnchor">
-<a href="#deleting-resources" class="anchor"></a>Deleting resources</h2>
-<p>To delete resources, use <code><a href="../reference/Deprecated.html">delete_model()</a></code> and its wrappers: <code><a href="../reference/delete_card.html">?delete_card</a></code>, <code><a href="../reference/delete_checklist.html">?delete_checklist</a></code>, <code><a href="../reference/delete_checkitem.html">?delete_checkitem</a></code>, <code><a href="../reference/delete_field.html">?delete_field</a></code> and <code><a href="../reference/delete_field_option.html">?delete_field_option</a></code>.</p>
-<p><strong>Caution:</strong> Deleted resources cannot be brought back!</p>
+<p>The <code><a href="../reference/update_resource.html">update_resource()</a></code> function follows the similar logic, but can only be used with existing resources.</p>
+<p>To delete resources, use <code><a href="../reference/delete_resource.html">delete_resource()</a></code>, but beware: Deleted resources cannot be brought back!</p>
 <p><strong>Built with</strong></p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span>

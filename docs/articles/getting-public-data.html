@@ -104,7 +104,7 @@
 
     
     
-<p>This document explains how to interact with Trello from R with read-only access. For editing/private access, see the vignettes <a href="https://jchrom.github.io/trelloR/articles/auth-access.html">Authorized access</a> and <a href="https://jchrom.github.io/trelloR/articles/edit-fun.html">Editing functions</a>.</p>
+<p>This document explains how to interact with Trello from R with read-only access. For editing/private access, see <a href="../articles/auth-access.html">Authorized access</a> and <a href="../articles/edit-fun.html">Editing functions</a>.</p>
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
@@ -124,9 +124,7 @@
 <span class="va">board</span> <span class="op">=</span> <span class="st">"https://trello.com/b/wVWPK9I4/r-client-for-the-trello-api"</span>
 <span class="va">param</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>fields <span class="op">=</span> <span class="st">"id,name,idList,labels"</span><span class="op">)</span>
 <span class="va">cards</span> <span class="op">=</span> <span class="fu"><a href="../reference/get_board.html">get_board_cards</a></span><span class="op">(</span><span class="va">board</span>, query <span class="op">=</span> <span class="va">param</span>, limit <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; GET URL:</span>
-<span class="co">#&gt; https://api.trello.com/1/board/wVWPK9I4/cards?fields=id%2Cname%2CidList%2Clabels&amp;limit=5</span>
+<span class="co">#&gt; GET: https://api.trello.com/1/board/wVWPK9I4/cards?fields=id%2Cname%2CidList%2Clabels&amp;limit=5</span>
 <span class="co">#&gt; OK (HTTP 200).</span>
 <span class="co">#&gt; Fetched 5 results</span>
 <span class="co">#&gt; </span>
@@ -158,9 +156,7 @@
                filter <span class="op">=</span> <span class="st">"updateCard"</span>, <span class="va">...</span><span class="op">)</span>
 <span class="op">}</span>
 <span class="va">card_updates</span> <span class="op">=</span> <span class="fu">get_card_updates</span><span class="op">(</span><span class="va">cards</span><span class="op">[[</span><span class="st">"id"</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; GET URL:</span>
-<span class="co">#&gt; https://api.trello.com/1/card/600f54e86a3733550971ed73/actions?limit=100&amp;filter=updateCard</span>
+<span class="co">#&gt; GET: https://api.trello.com/1/card/600f54e86a3733550971ed73/actions?limit=100&amp;filter=updateCard</span>
 <span class="co">#&gt; OK (HTTP 200).</span>
 <span class="co">#&gt; Fetched 1 results</span>
 <span class="co">#&gt; </span>
@@ -182,19 +178,18 @@
 </ul>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">error</span> <span class="op">=</span> <span class="fu"><a href="../reference/get_card.html">get_card_actions</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"wrong_id"</span>, on.error <span class="op">=</span> <span class="st">"message"</span><span class="op">)</span>
+<span class="co">#&gt; GET: https://api.trello.com/1/card/wrong_id/actions?limit=100</span>
+<span class="co">#&gt; invalid id (HTTP 400)</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; GET URL:</span>
-<span class="co">#&gt; https://api.trello.com/1/card/wrong_id/actions?limit=100</span>
-<span class="co">#&gt; Bad Request (HTTP 400).</span>
 <span class="co">#&gt; Fetched 1 results</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Request complete: 1 results.</span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">error</span>
 <span class="co">#&gt; # A tibble: 1 x 4</span>
-<span class="co">#&gt;   failed.url                         failed.status failed.message failed.headers</span>
-<span class="co">#&gt;   &lt;chr&gt;                                      &lt;int&gt; &lt;chr&gt;          &lt;list&gt;        </span>
-<span class="co">#&gt; 1 https://api.trello.com/1/card/wro…           400 invalid id     &lt;list [1]&gt;</span></code></pre></div>
+<span class="co">#&gt;   failed.url                        failed.status failed.message failed.headers </span>
+<span class="co">#&gt;   &lt;chr&gt;                                     &lt;int&gt; &lt;chr&gt;          &lt;list&gt;         </span>
+<span class="co">#&gt; 1 https://api.trello.com/1/card/wr…           400 invalid id     &lt;named list [3…</span></code></pre></div>
 <p><strong>Built with</strong></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span>
