@@ -22,7 +22,7 @@ test_that("getting a nested resource produces a data frame", {
 
 test_that("getting a nested resource respects limit > 1000", {
 
-  actions = trelloR::get_board_actions(board, limit  = 1005, filter = "all")
+  actions = trelloR::get_board_actions(board, limit = 1005, filter = "all")
 
   expect_equal(nrow(actions), 1005)
   expect_equal(length(unique(actions$id)), nrow(actions))
