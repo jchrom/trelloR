@@ -14,7 +14,8 @@ knitr::opts_chunk$set(
 )
 ```
 
-Authentication is required in order to access boards that are not public, and to make edits. This document explains how to authenticate your access to Trello.
+Authentication is required in order to access boards that are not public, and to
+make edits. This document explains how to authenticate your access to Trello.
 
 Getting your access token
 -------------------------
@@ -31,7 +32,7 @@ things there:
 
 * Copy both "key" and "secret".
 
-Back in R, feed the key and secrey to the `get_token()` function. This will
+Back in R, feed the key and secret to the `get_token()` function. This will
 trigger first-time authorization in the browser, allowing you to cache your
 token locally. You only have to do it once for a given project, unless you opt
 out of using cache or the cache file is deleted.
@@ -48,26 +49,28 @@ in place:
 
 ```r
 my_boards = get_my_boards()
-my_boards = get_my_boards(token = "path/to/cache/file")
-my_boards = get_my_boards(token = my_token) #works even without local cache
+my_boards = get_my_boards("path/to/cache/file")
+
+# Works without a cache file, if `my_token` is a Token object.
+my_boards = get_my_boards(my_token)
 ```
 
-You can create multiple tokens with different names, scope and expiration. See `?get_token` for additional arguments.
+You can create multiple tokens with different names, scope and expiration.
+See `?get_token` for additional arguments.
 
 Keep your credentials safe
 --------------------------
 
 Keep your key, secret and any token cache in a **safe, non-shared** location.
-Using environment variables or packages like [askpass](https://github.com/jeroen/askpass) are good options.
+Using environment variables or packages like [askpass](https://github.com/jeroen/askpass)
+are good options.
 
-Token cache is by default stored in a file called `.httr-oauth`, but you can
-change that via the `cache` argument to the `get_token()` function. Whatever the
-case, you should avoid accidentaly copying or exporting this file along with
-other files. To make this easier, the cache file path is automatically added to
-`.gitignore`.
+Token cache is by default stored in a file called `.httr-oauth`. You should avoid
+accidentally copying or exporting this file along with other files. To make this
+easier, the cache file path is automatically added to `.gitignore`.
 
 If you think the token might have been compromised or you simply do not want to
-use it anymore, you should revoke it. Login to Trello and access your account
+use it anymore, you should revoke it. Log in to Trello and access your account
 settings. To make it easier to recognize tokens you have created, use the
 `appname` argument when creating a token.
 

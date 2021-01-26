@@ -15,10 +15,8 @@ comment = "#>"
 ```
 
 This document explains how to interact with Trello from R with read-only access.
-For editing/private access, see the vignettes
-[Authorized access](https://jchrom.github.io/trelloR/articles/auth-access.html)
-and
-[Editing functions](https://jchrom.github.io/trelloR/articles/edit-fun.html).
+For editing/private access, see [Authorized access](../articles/auth-access.html)
+and [Editing functions](../articles/edit-fun.html).
 
 Introduction
 ------------
