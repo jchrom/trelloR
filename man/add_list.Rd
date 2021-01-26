@@ -18,3 +18,15 @@ add_list(board, name, position = NULL, ...)
 \description{
 Add list to a board.
 }
+\seealso{
+Other functions to create resources: 
+\code{\link{add_board}()},
+\code{\link{add_card}()},
+\code{\link{add_checkitem}()},
+\code{\link{add_checklist}()},
+\code{\link{add_comment}()},
+\code{\link{add_label}()},
+\code{\link{add_member}()},
+\code{\link{create_resource}()}
+}
+\concept{functions to create resources}

@@ -20,3 +20,15 @@ add_checkitem(checklist, name, checked = FALSE, position = "bottom", ...)
 \description{
 Add item to a checklist.
 }
+\seealso{
+Other functions to create resources: 
+\code{\link{add_board}()},
+\code{\link{add_card}()},
+\code{\link{add_checklist}()},
+\code{\link{add_comment}()},
+\code{\link{add_label}()},
+\code{\link{add_list}()},
+\code{\link{add_member}()},
+\code{\link{create_resource}()}
+}
+\concept{functions to create resources}

@@ -1,6 +1,5 @@
-get_nested = function(url, limit, token,
-                      response = "content",
-                      on.error = "error", retry.times, handle, verbose) {
+get_nested = function(url, limit, token, on.error, retry.times, handle,
+                      verbose) {
 
   if (!is.numeric(limit) || limit < 0) {
     stop("`limit` must be a positive integer or Inf", call. = FALSE)
@@ -18,8 +17,7 @@ get_nested = function(url, limit, token,
     url = httr::modify_url(url, query = list(limit = pmin(1000, limit)))
 
     res = trello_api_verb("GET", url = url, times = retry.times,
-                          handle = handle, token,
-                          verbose,
+                          handle = handle, token = token, verbose = verbose,
                           on.error = on.error)
 
     message("\nFetched ", NROW(res), " results")

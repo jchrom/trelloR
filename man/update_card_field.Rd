@@ -33,7 +33,7 @@ clear_card_field(card, field, ...)
 
 \item{value}{New value}
 
-\item{...}{Additional arguments passed to \code{\link{put_model}}}
+\item{...}{Additional arguments passed to \code{\link{update_resource}}}
 }
 \description{
 Set custom field value on a single card.
@@ -47,5 +47,11 @@ e.g. \code{"2018-12-24 16:00 UTC+1"}
 the equivalent of "No selection"
 }
 \seealso{
-\code{\link{put_model}}
+Other functions to handle custom fields: 
+\code{\link{add_field_option}()},
+\code{\link{add_field}()},
+\code{\link{delete_field_option}()},
+\code{\link{delete_field}()},
+\code{\link{update_field}()}
 }
+\concept{functions to handle custom fields}

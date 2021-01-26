@@ -29,10 +29,9 @@ get_resource(
 
 \item{id}{Resource ID or \code{NULL}.}
 
-\item{token}{An object of class \code{"Trello_API_token"}, a path to a cache file
-or \code{NULL}.
+\item{token}{An object of class \code{"Trello_API_token"}, a path or \code{NULL}.
 \itemize{
-\item If a token, it is passed as is.
+\item If a \code{Token}, it is passed as is.
 \item If \code{NULL} and a cache file called \code{".httr-oauth"} exists, the newest token
 is read from it. If the file is not found, an error is thrown.
 \item If a character vector of length 1, it will be used as an alternative path

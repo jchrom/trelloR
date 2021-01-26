@@ -10,11 +10,11 @@ create_resource(
   path = NULL,
   body = list(name = "New"),
   token = NULL,
-  response = c("content", "headers", "status", "response"),
   on.error = c("stop", "warn", "message"),
   verbose = FALSE,
-  encode = "json",
-  handle = NULL
+  handle = NULL,
+  encode,
+  response
 )
 }
 \arguments{
@@ -26,8 +26,7 @@ create_resource(
 
 \item{body}{A named list.}
 
-\item{token}{An object of class \code{"Trello_API_token"}, a path to a cache file
-or \code{NULL}.
+\item{token}{An object of class \code{"Trello_API_token"}, a path or \code{NULL}.
 \itemize{
 \item If a \code{Token}, it is passed as is.
 \item If \code{NULL} and a cache file called \code{".httr-oauth"} exists, the newest token
@@ -36,14 +35,13 @@ is read from it. If the file is not found, an error is thrown.
 to the cache file.
 }}
 
-\item{response}{Can return \code{"content"} (the default), \code{"headers"}, \code{"status"}
-or the raw \code{"response"}.}
+\item{on.error}{Behavior when HTTP status >= 300, defaults to \code{"stop"}.}
 
-\item{on.error}{Whether to \code{"stop"}, \code{"warn"} or \code{"message"} on http error.}
+\item{verbose}{Whether to pass \link[httr:verbose]{httr::verbose} to \link[httr:RETRY]{httr::RETRY}.}
 
-\item{verbose}{Whether to pass \link[httr:verbose]{httr::verbose} to \link[httr:PUT]{httr::PUT}.}
+\item{handle}{Passed to \link[httr:RETRY]{httr::RETRY}.}
 
-\item{encode, handle}{Passed to \link[httr:POST]{httr::POST}.}
+\item{encode, response}{Deprecated.}
 }
 \description{
 Create resources via Trello API.
@@ -86,3 +84,15 @@ r = create_resource("card", body = payload, token = token)
 r$id
 }
 }
+\seealso{
+Other functions to create resources: 
+\code{\link{add_board}()},
+\code{\link{add_card}()},
+\code{\link{add_checkitem}()},
+\code{\link{add_checklist}()},
+\code{\link{add_comment}()},
+\code{\link{add_label}()},
+\code{\link{add_list}()},
+\code{\link{add_member}()}
+}
+\concept{functions to create resources}

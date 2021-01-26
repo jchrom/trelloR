@@ -1,18 +1,31 @@
 trello_api_verb = function(verb, url, times, handle, token, verbose,
+                           query = NULL, body = NULL,
                            on.error = c("stop", "warn", "message")) {
 
-  message("\n", verb, " URL:\n", url, "\n")
+  on.error = match.arg(on.error, several.ok = FALSE)
 
   agent = "https://github.com/jchrom/trelloR"
   token = get_token(token)
 
+  message(sprintf("%s: %s", verb, url))
+
+  if (length(body)) {
+    text = sprintf("Request body: %s", paste(names(body), collapse = ", "))
+    message(text)
+  }
+
   params = list(verb = verb, url = url, times = times, handle = handle,
+                query = sanitize_params(query),
+                body = sanitize_params(body),
+                if (verbose) httr::verbose(),
                 terminate_on = 429,
+                encode = "json",
                 httr::config(token = token),
                 httr::user_agent(agent),
-                if (verbose) httr::verbose(),
                 httr::accept_json(),
                 httr::progress())
+
+  print(params[["query"]])
 
   res = do.call(httr::RETRY, Filter(length, params))
 
@@ -37,10 +50,12 @@ trello_api_verb = function(verb, url, times, handle, token, verbose,
 
   if (httr::status_code(res) >= 300) {
 
+    text = sprintf("%s (HTTP %s)", httr::content(res), httr::status_code(res))
+
     switch(match.arg(on.error, several.ok = FALSE),
-           stop = httr::stop_for_status(res),
-           warn = httr::warn_for_status(res),
-           httr::message_for_status(res))
+           stop = stop(text, call. = FALSE),
+           warn = warning(text, call. = FALSE),
+           message(text))
 
     error_df = data.frame(
       failed.url = url,
@@ -49,7 +64,7 @@ trello_api_verb = function(verb, url, times, handle, token, verbose,
       stringsAsFactors = FALSE
     )
 
-    error_df[["failed.headers"]] = list(res$all_headers)
+    error_df[["failed.headers"]] = res$all_headers
 
     return(require_tibble(error_df))
 
@@ -61,4 +76,10 @@ trello_api_verb = function(verb, url, times, handle, token, verbose,
 
   jsonlite::fromJSON(content, flatten  = TRUE)
 
+}
+
+sanitize_params = function(x) {
+  lgl = vapply(x, is.logical, FALSE)
+  x[lgl] = lapply(x[lgl], tolower)
+  Filter(length, x)
 }

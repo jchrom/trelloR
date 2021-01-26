@@ -1,9 +1,3 @@
-###################################################
-#                                                 #
-#    POST, PUT DELETE wrappers - Custom fields    #
-#                                                 #
-###################################################
-
 #' Add a custom field
 #'
 #' Create a new custom field definition and attach it to the board.
@@ -15,9 +9,9 @@
 #' @param type Custom field type
 #' @param name Custom field name
 #' @param body Named list with additional parameters
-#' @param ... Additional arguments passed to \code{\link{post_model}}
+#' @param ... Additional arguments passed to \code{\link{create_resource}}
 #'
-#' @seealso \code{\link{post_model}}
+#' @family functions to handle custom fields
 #'
 #' @name add_field
 NULL
@@ -31,7 +25,7 @@ add_field = function(id, type, name = "New field", body = NULL, ...) {
     idModel = id, modelType = "board", type = type, pos = 1,
     name = name, display_cardFront = "true")
   body = utils::modifyList(default_body, body, keep.null = TRUE)
-  post_model("customField", body = body, ...)
+  create_resource("customField", body = body, ...)
 }
 
 #' @export
@@ -95,15 +89,15 @@ add_field_text = function(id, name = "New text", body = NULL, ...) {
 #' @param text Option text
 #' @param color Option color
 #' @param position Option position
-#' @param ... Additional arguments passed to \code{\link{post_model}}
+#' @param ... Additional arguments passed to \code{\link{create_resource}}
 #'
-#' @seealso \code{\link{post_model}}, \code{\link{get_board_fields}}
+#' @family functions to handle custom fields
 #'
 #' @export
 
 add_field_option = function(id, text, color = "none", position = "bottom", ...) {
   pars = list(pos = position, color = color, value = list(text = text))
-  post_model("customField", id = id, path = "options", body = pars, ...)
+  create_resource("customField", id = id, path = "options", body = pars, ...)
 }
 
 #' Delete custom field
@@ -111,14 +105,14 @@ add_field_option = function(id, text, color = "none", position = "bottom", ...) 
 #' Delete custom field - this will remove it from all cards on the board.
 #'
 #' @param id Custom field ID (see \code{\link{get_board_fields}})
-#' @param ... Additional arguments passed to \code{\link{post_model}}
+#' @param ... Additional arguments passed to \code{\link{create_resource}}
 #'
-#' @seealso \code{\link{post_model}}, \code{\link{get_board_fields}}
+#' @family functions to handle custom fields
 #'
 #' @export
 
 delete_field = function(id, ...) {
-  delete_model("customField", id = id, ...)
+  delete_resource("customField", id = id, ...)
 }
 
 #' Delete dropdown option
@@ -128,14 +122,14 @@ delete_field = function(id, ...) {
 #'
 #' @param id Custom field ID (see \code{\link{get_board_fields}})
 #' @param option Dropdown option ID
-#' @param ... Additional arguments passed to \code{\link{post_model}}
+#' @param ... Additional arguments passed to \code{\link{create_resource}}
 #'
-#' @seealso \code{\link{post_model}}, \code{\link{get_board_fields}}
+#' @family functions to handle custom fields
 #'
 #' @export
 
 delete_field_option = function(id, option, ...) {
-  delete_model("customField", id = id, path = c("options", option), ...)
+  delete_resource("customField", id = id, path = c("options", option), ...)
 }
 
 #' Update custom field
@@ -144,14 +138,14 @@ delete_field_option = function(id, option, ...) {
 #'
 #' @param id Board ID
 #' @param body Named list with additional parameters
-#' @param ... Additional arguments passed to \code{\link{put_model}}
+#' @param ... Additional arguments passed to \code{\link{update_resource}}
 #'
-#' @seealso \code{\link{put_model}}
+#' @family functions to handle custom fields
 #'
 #' @export
 
 update_field = function(id, body = list(name = "New name"), ...) {
-  put_model("customField", id = id, body = body, ...)
+  update_resource("customField", id = id, body = body, ...)
 }
 
 #' Update card field value
@@ -169,9 +163,9 @@ update_field = function(id, body = list(name = "New name"), ...) {
 #' @param field Custom field ID
 #' @param key Key for the value, e.g. \code{"number"} or \code{"checked"}
 #' @param value New value
-#' @param ... Additional arguments passed to \code{\link{put_model}}
+#' @param ... Additional arguments passed to \code{\link{update_resource}}
 #'
-#' @seealso \code{\link{put_model}}
+#' @family functions to handle custom fields
 #'
 #' @name update_card_field
 NULL
@@ -183,8 +177,8 @@ update_card_field = function(card, field, key, value, ...) {
   if (is.logical(value))
     value = tolower(value)
   pars = list(value = structure(list(value), names = key))
-  put_model("card", id = card, path = c("customField", field, "item"),
-            body = pars, ...)
+  update_resource("card", id = card, path = c("customField", field, "item"),
+                  body = pars, ...)
 }
 
 # In order to set the custom field value on a card, Trello API requires the body
@@ -210,8 +204,8 @@ update_card_date = function(card, field, value, ...) {
 #' @export
 #' @rdname update_card_field
 update_card_dropdown = function(card, field, value, ...) {
-  put_model("card", id = card, path = c("customField", field, "item"),
-            body = list(idValue = value), ...)
+  update_resource("card", id = card, path = c("customField", field, "item"),
+                  body = list(idValue = value), ...)
 }
 
 #' @export
@@ -229,6 +223,6 @@ update_card_text = function(card, field, value, ...) {
 #' @export
 #' @rdname update_card_field
 clear_card_field = function(card, field, ...) {
-  put_model("card", id = card, path = c("customField", field, "item"),
-            body = list(value = "", key = ""), ...)
+  update_resource("card", id = card, path = c("customField", field, "item"),
+                  body = list(value = "", key = ""), ...)
 }

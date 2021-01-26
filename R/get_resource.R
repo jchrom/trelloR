@@ -34,10 +34,9 @@
 #' @param parent Parent resource, e.g. `"board"` or `NULL`.
 #' @param child Child resource, eg. `"card"` or `NULL`.
 #' @param id Resource ID or `NULL`.
-#' @param token An object of class `"Trello_API_token"`, a path to a cache file
-#'   or `NULL`.
+#' @param token An object of class `"Trello_API_token"`, a path or `NULL`.
 #'
-#'   * If a token, it is passed as is.
+#'   * If a `Token`, it is passed as is.
 #'   * If `NULL` and a cache file called `".httr-oauth"` exists, the newest token
 #'     is read from it. If the file is not found, an error is thrown.
 #'   * If a character vector of length 1, it will be used as an alternative path
@@ -127,9 +126,9 @@ get_resource = function(parent = NULL, child = NULL, id = NULL, token = NULL,
 
     path = c(1, parent, extract_id(id), child)
 
-    query = c(lapply(query, tolower_if_logical),
-              list(limit = limit),
-              list(filter = filter))
+    query = utils::modifyList(
+      as.list(query), list(limit = limit, filter = filter)
+    )
 
     # NOTE: `path` overrides `url` if `url` includes `path`.
     url = httr::modify_url("https://api.trello.com", path = path,
@@ -139,7 +138,8 @@ get_resource = function(parent = NULL, child = NULL, id = NULL, token = NULL,
 
   if (is_nested(url)) {
 
-    result = get_nested(url, limit = limit, token = token, on.error = on.error,
+    result = get_nested(url, limit = limit, token = token,
+                        on.error = on.error,
                         retry.times = retry.times, handle = handle,
                         verbose = verbose)
 
@@ -147,7 +147,7 @@ get_resource = function(parent = NULL, child = NULL, id = NULL, token = NULL,
 
     result = trello_api_verb("GET", url = url, times = retry.times,
                              handle = handle, token = token,
-                             verbose = verbose,
+                             verbose = verbose, query = query,
                              on.error = on.error)
 
     if (is_search(url)) {

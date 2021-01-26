@@ -19,3 +19,15 @@ Defaults to \code{NULL}.}
 \description{
 Add checklist to a card.
 }
+\seealso{
+Other functions to create resources: 
+\code{\link{add_board}()},
+\code{\link{add_card}()},
+\code{\link{add_checkitem}()},
+\code{\link{add_comment}()},
+\code{\link{add_label}()},
+\code{\link{add_list}()},
+\code{\link{add_member}()},
+\code{\link{create_resource}()}
+}
+\concept{functions to create resources}

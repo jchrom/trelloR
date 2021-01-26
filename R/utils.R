@@ -40,10 +40,6 @@ extract_id = function(x) {
 
 # NOT FOR EXPORT
 
-tolower_if_logical = function(x) {
-  if (inherits(x, "logical")) tolower(x) else x
-}
-
 require_tibble = function(x) {
   if (requireNamespace("tibble", quietly = TRUE))
     x = tibble::as_tibble(x)

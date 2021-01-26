@@ -16,3 +16,15 @@ add_card(list, body = list(name = "New card"), ...)
 \description{
 Add card to a list.
 }
+\seealso{
+Other functions to create resources: 
+\code{\link{add_board}()},
+\code{\link{add_checkitem}()},
+\code{\link{add_checklist}()},
+\code{\link{add_comment}()},
+\code{\link{add_label}()},
+\code{\link{add_list}()},
+\code{\link{add_member}()},
+\code{\link{create_resource}()}
+}
+\concept{functions to create resources}

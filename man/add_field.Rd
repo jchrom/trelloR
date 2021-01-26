@@ -30,7 +30,7 @@ add_field_text(id, name = "New text", body = NULL, ...)
 
 \item{body}{Named list with additional parameters}
 
-\item{...}{Additional arguments passed to \code{\link{post_model}}}
+\item{...}{Additional arguments passed to \code{\link{create_resource}}}
 }
 \description{
 Create a new custom field definition and attach it to the board.
@@ -40,5 +40,11 @@ Create a new custom field definition and attach it to the board.
 named) vector: \code{body = list(options = c(red = "Alert", green = "Ok", "Nothing"))}
 }
 \seealso{
-\code{\link{post_model}}
+Other functions to handle custom fields: 
+\code{\link{add_field_option}()},
+\code{\link{delete_field_option}()},
+\code{\link{delete_field}()},
+\code{\link{update_card_field}()},
+\code{\link{update_field}()}
 }
+\concept{functions to handle custom fields}

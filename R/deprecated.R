@@ -45,7 +45,7 @@ put_model = function(...) {
 #' @rdname Deprecated
 #' @export
 delete_model = function(...) {
-  .Deprecated("get_resource")
+  .Deprecated("delete_resource")
   delete_resource(...)
 }
 

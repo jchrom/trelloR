@@ -9,11 +9,17 @@ delete_field(id, ...)
 \arguments{
 \item{id}{Custom field ID (see \code{\link{get_board_fields}})}
 
-\item{...}{Additional arguments passed to \code{\link{post_model}}}
+\item{...}{Additional arguments passed to \code{\link{create_resource}}}
 }
 \description{
 Delete custom field - this will remove it from all cards on the board.
 }
 \seealso{
-\code{\link{post_model}}, \code{\link{get_board_fields}}
+Other functions to handle custom fields: 
+\code{\link{add_field_option}()},
+\code{\link{add_field}()},
+\code{\link{delete_field_option}()},
+\code{\link{update_card_field}()},
+\code{\link{update_field}()}
 }
+\concept{functions to handle custom fields}

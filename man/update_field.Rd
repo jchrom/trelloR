@@ -11,11 +11,17 @@ update_field(id, body = list(name = "New name"), ...)
 
 \item{body}{Named list with additional parameters}
 
-\item{...}{Additional arguments passed to \code{\link{put_model}}}
+\item{...}{Additional arguments passed to \code{\link{update_resource}}}
 }
 \description{
 Update custom field definition.
 }
 \seealso{
-\code{\link{put_model}}
+Other functions to handle custom fields: 
+\code{\link{add_field_option}()},
+\code{\link{add_field}()},
+\code{\link{delete_field_option}()},
+\code{\link{delete_field}()},
+\code{\link{update_card_field}()}
 }
+\concept{functions to handle custom fields}
