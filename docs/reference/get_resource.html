@@ -8,10 +8,12 @@
 
 <title>Get Data From Trello API — get_resource • trelloR</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -36,10 +38,9 @@
 
 
 
+
 <meta property="og:title" content="Get Data From Trello API — get_resource" />
-
 <meta property="og:description" content="Fetch resources using Trello API." />
-
 
 
 
@@ -89,7 +90,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -104,7 +105,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/get-public-data.html">Get public data</a>
+      <a href="../articles/getting-public-data.html">Get public data</a>
     </li>
     <li>
       <a href="../articles/auth-access.html">Authorized acccess</a>
@@ -118,11 +119,10 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/jchrom/trelloR/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -145,29 +145,27 @@
     </div>
 
     <div class="ref-description">
-    
     <p>Fetch resources using Trello API.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>get_resource</span>(
-  <span class='kw'>parent</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>child</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>token</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>query</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>url</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>filter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>limit</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
-  <span class='kw'>on.error</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"stop"</span>, <span class='st'>"warn"</span>, <span class='st'>"message"</span>),
-  <span class='kw'>retry.times</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>handle</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>response</span>,
-  <span class='no'>paging</span>,
-  <span class='no'>bind.rows</span>
-)</pre>
-    
+    <pre class="usage"><span class='fu'>get_resource</span><span class='op'>(</span>
+  parent <span class='op'>=</span> <span class='cn'>NULL</span>,
+  child <span class='op'>=</span> <span class='cn'>NULL</span>,
+  id <span class='op'>=</span> <span class='cn'>NULL</span>,
+  token <span class='op'>=</span> <span class='cn'>NULL</span>,
+  query <span class='op'>=</span> <span class='cn'>NULL</span>,
+  url <span class='op'>=</span> <span class='cn'>NULL</span>,
+  filter <span class='op'>=</span> <span class='cn'>NULL</span>,
+  limit <span class='op'>=</span> <span class='fl'>100</span>,
+  on.error <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"stop"</span>, <span class='st'>"warn"</span>, <span class='st'>"message"</span><span class='op'>)</span>,
+  retry.times <span class='op'>=</span> <span class='fl'>1</span>,
+  handle <span class='op'>=</span> <span class='cn'>NULL</span>,
+  verbose <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>response</span>,
+  <span class='va'>paging</span>,
+  <span class='va'>bind.rows</span>
+<span class='op'>)</span></pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -210,7 +208,7 @@ or all action types, depending on what resource is requested.</p></td>
     </tr>
     <tr>
       <th>limit</th>
-      <td><p>Defaults to <code>1000</code>. Set to <code>Inf</code> (or 0) to get everything.</p></td>
+      <td><p>Defaults to <code>100</code>. Set to <code>Inf</code> to get everything.</p></td>
     </tr>
     <tr>
       <th>on.error</th>
@@ -219,7 +217,7 @@ or all action types, depending on what resource is requested.</p></td>
     <tr>
       <th>retry.times</th>
       <td><p>How many times to re-try when a request fails. Defaults
-to 3.</p></td>
+to 1.</p></td>
     </tr>
     <tr>
       <th>handle</th>
@@ -234,11 +232,10 @@ to 3.</p></td>
       <td><p>Deprecated.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A data frame with API responses.</p>
-    
     <h2 class="hasAnchor" id="request-limits"><a class="anchor" href="#request-limits"></a>Request limits</h2>
 
     
@@ -250,7 +247,6 @@ be issued repeatedly, retrieving new batch of results each time until
 the <code>limit</code> is reached or there is nothing else to fetch. Results are fetched
 chronologically, ie. newest results are retrieved first (eg. newest cards).
 Use <code>limit = Inf</code> to make sure you get all.</p>
-    
     <h2 class="hasAnchor" id="errors"><a class="anchor" href="#errors"></a>Errors</h2>
 
     
@@ -261,16 +257,14 @@ Depending on the value of <code>on.error</code>, the request call can throw an e
 in R (this is the default), or can issue a warning/message. If the latter,
 the function returns a data frame containing the failed URL, HTTP status
 and an informative message (produced by the server).</p>
-    
     <h2 class="hasAnchor" id="results"><a class="anchor" href="#results"></a>Results</h2>
 
     
 
 
-<p>The API returns JSON objects which are parsed using <a href='https://jeroen.cran.dev/jsonlite/reference/fromJSON.html'>jsonlite::fromJSON</a>.
+<p>The API returns JSON objects which are parsed using <a href='https://rdrr.io/pkg/jsonlite/man/fromJSON.html'>jsonlite::fromJSON</a>.
 Non-JSON results throw an error, but these should never happen anyway. The
 result is always a data frame, or a <code>tibble</code> if the package is installed.</p>
-    
     <h2 class="hasAnchor" id="filter"><a class="anchor" href="#filter"></a>Filter</h2>
 
     
@@ -279,61 +273,68 @@ result is always a data frame, or a <code>tibble</code> if the package is instal
 <p>Both <code>filter</code> and <code>limit</code> exist as explicitly defined arguments, but you can
 ignore them in favor of supplying their values as query parameters, eg.
 <code>query = list(filter = "filter_value", limit = "limit_value")</code>.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='get_token.html'>get_token</a>, <a href='get_id.html'>get_id</a>, <a href='https://httr.r-lib.org/reference/GET.html'>httr::GET</a>, <a href='https://jeroen.cran.dev/jsonlite/reference/fromJSON.html'>jsonlite::fromJSON</a></p></div>
-    
+    <div class='dont-index'><p><a href='get_token.html'>get_token</a>, <a href='get_id.html'>get_id</a>, <a href='https://httr.r-lib.org/reference/GET.html'>httr::GET</a>, <a href='https://rdrr.io/pkg/jsonlite/man/fromJSON.html'>jsonlite::fromJSON</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='co'># No authorization is required to access public boards, so there is no need</span>
+<span class='co'># Public boards can be accessed without authorization, so there is no need</span>
 <span class='co'># to create a token, just the board id:</span>
-<span class='no'>url</span> <span class='kw'>=</span> <span class='st'>"https://trello.com/b/Pw3EioMM/trellor-r-api-for-trello"</span>
-<span class='no'>bid</span> <span class='kw'>=</span> <span class='fu'><a href='get_id.html'>get_id_board</a></span>(<span class='no'>url</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+<span class='va'>url</span> <span class='op'>=</span> <span class='st'>"https://trello.com/b/wVWPK9I4/r-client-for-the-trello-api"</span>
+<span class='va'>bid</span> <span class='op'>=</span> <span class='fu'><a href='get_id.html'>get_id_board</a></span><span class='op'>(</span><span class='va'>url</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>GET URL:</span>
-#&gt; <span class='message'>https://api.trello.com/1/board/Pw3EioMM?fields=name&amp;limit=1000</span></div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%</div><div class='input'>
-<span class='co'># Once we have the ID, we can use it to make specific queries:</span>
-<span class='no'>labels</span> <span class='kw'>=</span> <span class='fu'><a href='get_board.html'>get_board_labels</a></span>(<span class='no'>bid</span>)                <span class='co'># Get all labels</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>https://api.trello.com/1/board/wVWPK9I4?fields=name&amp;limit=100</span></div><div class='output co'>#&gt; Downloading: 71 B     Downloading: 71 B     Downloading: 71 B     Downloading: 71 B     </div><div class='output co'>#&gt; <span class='message'>OK (HTTP 200).</span></div><div class='input'>
+<span class='co'># Getting resources from the whole board. `filter="all"` fetches archived</span>
+<span class='co'># cards as well.</span>
+<span class='va'>labels</span> <span class='op'>=</span> <span class='fu'><a href='get_board.html'>get_board_labels</a></span><span class='op'>(</span><span class='va'>bid</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>GET URL:</span>
-#&gt; <span class='message'>https://api.trello.com/1/board/5c2776ec65c66e24e0763a5a/labels?limit=1000</span></div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>https://api.trello.com/1/board/600f54e86a3733550971ed4a/labels?limit=100</span></div><div class='output co'>#&gt; Downloading: 150 B     Downloading: 150 B     Downloading: 150 B     Downloading: 150 B     </div><div class='output co'>#&gt; <span class='message'>OK (HTTP 200).</span></div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Fetched 6 results</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Request complete: 6 results.</span></div><div class='input'><span class='no'>cards</span> <span class='kw'>=</span> <span class='fu'><a href='get_board.html'>get_board_cards</a></span>(<span class='no'>bid</span>, <span class='kw'>filter</span> <span class='kw'>=</span> <span class='st'>"all"</span>)  <span class='co'># Get all cards, incl. archived</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Request complete: 6 results.</span></div><div class='input'><span class='va'>cards</span> <span class='op'>=</span> <span class='fu'><a href='get_board.html'>get_board_cards</a></span><span class='op'>(</span><span class='va'>bid</span>, filter <span class='op'>=</span> <span class='st'>"all"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>GET URL:</span>
-#&gt; <span class='message'>https://api.trello.com/1/board/5c2776ec65c66e24e0763a5a/cards?limit=1000&amp;filter=all</span></div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Fetched 15 results</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Request complete: 15 results.</span></div><div class='input'>
-<span class='co'># We can also call get_resource() directly:</span>
-<span class='no'>lists</span> <span class='kw'>=</span> <span class='fu'>get_resource</span>(<span class='kw'>parent</span> <span class='kw'>=</span> <span class='st'>"board"</span>, <span class='kw'>child</span> <span class='kw'>=</span> <span class='st'>"lists"</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>bid</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>https://api.trello.com/1/board/600f54e86a3733550971ed4a/cards?limit=100&amp;filter=all</span></div><div class='output co'>#&gt; Downloading: 3 kB     Downloading: 3 kB     Downloading: 3 kB     Downloading: 3 kB     </div><div class='output co'>#&gt; <span class='message'>OK (HTTP 200).</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Fetched 11 results</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Request complete: 11 results.</span></div><div class='input'>
+<span class='co'># It is possible to call `get_resource()` directly:</span>
+<span class='va'>lists</span> <span class='op'>=</span> <span class='fu'>get_resource</span><span class='op'>(</span>parent <span class='op'>=</span> <span class='st'>"board"</span>, child <span class='op'>=</span> <span class='st'>"lists"</span>, id <span class='op'>=</span> <span class='va'>bid</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>GET URL:</span>
-#&gt; <span class='message'>https://api.trello.com/1/board/5c2776ec65c66e24e0763a5a/lists?limit=1000</span></div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>https://api.trello.com/1/board/600f54e86a3733550971ed4a/lists?limit=100</span></div><div class='output co'>#&gt; Downloading: 170 B     Downloading: 170 B     Downloading: 170 B     Downloading: 170 B     </div><div class='output co'>#&gt; <span class='message'>OK (HTTP 200).</span></div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Fetched 3 results</span></div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Request complete: 3 results.</span></div><div class='input'>
-<span class='co'># As with boards, cards can be queried for particular resources:</span>
-<span class='no'>card10</span> <span class='kw'>=</span> <span class='no'>cards</span>$<span class='no'>id</span>[<span class='fl'>10</span>]
-<span class='no'>acts10</span> <span class='kw'>=</span> <span class='fu'><a href='get_card.html'>get_card_actions</a></span>(<span class='no'>card10</span>)    <span class='co'># Get all actions performed on that card</span></div><div class='output co'>#&gt; <span class='message'></span>
+<span class='co'># As with boards, cards can be queried for particular resources, in this case</span>
+<span class='co'># to obtain custom fields:</span>
+<span class='va'>card</span> <span class='op'>=</span> <span class='va'>cards</span><span class='op'>$</span><span class='va'>id</span><span class='op'>[</span><span class='fl'>5</span><span class='op'>]</span>
+<span class='va'>acts</span> <span class='op'>=</span> <span class='fu'><a href='get_card.html'>get_card_fields</a></span><span class='op'>(</span><span class='va'>card</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>GET URL:</span>
-#&gt; <span class='message'>https://api.trello.com/1/card/5c2776ec65c66e24e0763a76/actions?limit=1000</span></div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Fetched 3 results</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Request complete: 3 results.</span></div><div class='input'>
-<span class='co'># To specify the number of results, use limit = number. If limit = 0, all</span>
-<span class='co'># results will be acquired eventually.</span>
+#&gt; <span class='message'>https://api.trello.com/1/card/600f54e86a3733550971ed69/customFields?limit=100</span></div><div class='output co'>#&gt; Downloading: 620 B     Downloading: 620 B     Downloading: 620 B     Downloading: 620 B     </div><div class='output co'>#&gt; <span class='message'>OK (HTTP 200).</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Fetched 5 results</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Request complete: 5 results.</span></div><div class='input'>
+<span class='co'># Set `limit` to specify the number of results. Pagination will be used</span>
+<span class='co'># whenever limit exceeds 1000. Use `limit=Inf` to make sure you get all.</span>
 
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='no'>acts_all</span> <span class='kw'>=</span> <span class='fu'><a href='get_board.html'>get_board_actions</a></span>(<span class='no'>bid</span>, <span class='kw'>limit</span> <span class='kw'>=</span> <span class='fl'>0</span>)
-}
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='va'>all_actions</span> <span class='op'>=</span> <span class='fu'><a href='get_board.html'>get_board_actions</a></span><span class='op'>(</span><span class='va'>bid</span>, limit <span class='op'>=</span> <span class='cn'>Inf</span><span class='op'>)</span>
+<span class='op'>}</span>
 
-<span class='co'># For private and team boards, you need a secure token:</span>
+<span class='co'># For private and team boards, a secure token is required:</span>
 
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='no'>key</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.getenv.html'>Sys.getenv</a></span>(<span class='st'>"MY_TRELLO_KEY"</span>)
-<span class='no'>secret</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.getenv.html'>Sys.getenv</a></span>(<span class='st'>"MY_TRELLO_SECRET"</span>)
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='va'>key</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.getenv.html'>Sys.getenv</a></span><span class='op'>(</span><span class='st'>"MY_TRELLO_KEY"</span><span class='op'>)</span>
+<span class='va'>secret</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.getenv.html'>Sys.getenv</a></span><span class='op'>(</span><span class='st'>"MY_TRELLO_SECRET"</span><span class='op'>)</span>
 
-<span class='no'>token</span> <span class='kw'>=</span> <span class='fu'><a href='get_token.html'>get_token</a></span>(<span class='st'>"my_app"</span>, <span class='kw'>key</span> <span class='kw'>=</span> <span class='no'>key</span>, <span class='kw'>secret</span> <span class='kw'>=</span> <span class='no'>secret</span>,
-                  <span class='kw'>scope</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"read"</span>, <span class='st'>"write"</span>))
+<span class='va'>token</span> <span class='op'>=</span> <span class='fu'><a href='get_token.html'>get_token</a></span><span class='op'>(</span><span class='st'>"my_app"</span>, key <span class='op'>=</span> <span class='va'>key</span>, secret <span class='op'>=</span> <span class='va'>secret</span>,
+                  scope <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"read"</span>, <span class='st'>"write"</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='no'>cards_open</span> <span class='kw'>=</span> <span class='fu'><a href='get_board.html'>get_board_cards</a></span>(<span class='no'>board_id</span>, <span class='no'>token</span>, <span class='kw'>filter</span> <span class='kw'>=</span> <span class='st'>"open"</span>)
-}</div></pre>
+<span class='co'># Token is now cached, no need to pass it explicitly.</span>
+<span class='va'>cards_open</span> <span class='op'>=</span> <span class='fu'><a href='get_board.html'>get_board_cards</a></span><span class='op'>(</span><span class='va'>board_id</span>, filter <span class='op'>=</span> <span class='st'>"open"</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -349,7 +350,7 @@ ignore them in favor of supplying their values as query parameters, eg.
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

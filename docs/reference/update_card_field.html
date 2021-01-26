@@ -8,10 +8,12 @@
 
 <title>Update card field value — update_card_field • trelloR</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -36,10 +38,9 @@
 
 
 
+
 <meta property="og:title" content="Update card field value — update_card_field" />
-
 <meta property="og:description" content="Set custom field value on a single card." />
-
 
 
 
@@ -89,7 +90,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -104,7 +105,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/get-public-data.html">Get public data</a>
+      <a href="../articles/getting-public-data.html">Get public data</a>
     </li>
     <li>
       <a href="../articles/auth-access.html">Authorized acccess</a>
@@ -118,11 +119,10 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/jchrom/trelloR/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -145,25 +145,23 @@
     </div>
 
     <div class="ref-description">
-    
     <p>Set custom field value on a single card.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>update_card_field</span>(<span class='no'>card</span>, <span class='no'>field</span>, <span class='no'>key</span>, <span class='no'>value</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>update_card_field</span><span class='op'>(</span><span class='va'>card</span>, <span class='va'>field</span>, <span class='va'>key</span>, <span class='va'>value</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>update_card_checkbox</span>(<span class='no'>card</span>, <span class='no'>field</span>, <span class='no'>value</span>, <span class='no'>...</span>)
+<span class='fu'>update_card_checkbox</span><span class='op'>(</span><span class='va'>card</span>, <span class='va'>field</span>, <span class='va'>value</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>update_card_date</span>(<span class='no'>card</span>, <span class='no'>field</span>, <span class='no'>value</span>, <span class='no'>...</span>)
+<span class='fu'>update_card_date</span><span class='op'>(</span><span class='va'>card</span>, <span class='va'>field</span>, <span class='va'>value</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>update_card_dropdown</span>(<span class='no'>card</span>, <span class='no'>field</span>, <span class='no'>value</span>, <span class='no'>...</span>)
+<span class='fu'>update_card_dropdown</span><span class='op'>(</span><span class='va'>card</span>, <span class='va'>field</span>, <span class='va'>value</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>update_card_number</span>(<span class='no'>card</span>, <span class='no'>field</span>, <span class='no'>value</span>, <span class='no'>...</span>)
+<span class='fu'>update_card_number</span><span class='op'>(</span><span class='va'>card</span>, <span class='va'>field</span>, <span class='va'>value</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>update_card_text</span>(<span class='no'>card</span>, <span class='no'>field</span>, <span class='no'>value</span>, <span class='no'>...</span>)
+<span class='fu'>update_card_text</span><span class='op'>(</span><span class='va'>card</span>, <span class='va'>field</span>, <span class='va'>value</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>clear_card_field</span>(<span class='no'>card</span>, <span class='no'>field</span>, <span class='no'>...</span>)</pre>
-    
+<span class='fu'>clear_card_field</span><span class='op'>(</span><span class='va'>card</span>, <span class='va'>field</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -188,7 +186,7 @@
       <td><p>Additional arguments passed to <code><a href='Deprecated.html'>put_model</a></code></p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>update_card_date</code> requires ISO Formatted Datetime String. <code>YYYY-MM-DD</code>
@@ -196,11 +194,9 @@ is fine, but if you want also hour and timezone, use <code>"YYYY-MM-DD hh:mm UTC
 e.g. <code>"2018-12-24 16:00 UTC+1"</code></p>
 <p><code>clear_card_field</code> does not remove the field, but replaces its value with
 the equivalent of "No selection"</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='Deprecated.html'>put_model</a></code></p></div>
-    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -217,7 +213,7 @@ the equivalent of "No selection"</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

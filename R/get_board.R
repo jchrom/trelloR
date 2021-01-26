@@ -79,14 +79,9 @@ get_board_prefs = function(id, ...) {
   pref = dat[["prefs"]][[1]]
   misc = dat[setdiff(names(diff), "prefs")]
 
-  result = structure(
-    wrap_list(c(pref, misc)),
-    class     = "data.frame",
-    row.names = .set_row_names(1))
+  result = structure(wrap_list(c(pref, misc)), row.names = c(NA, -1L),
+                     class = "data.frame")
 
-  if (requireNamespace("tibble", quietly = TRUE)) {
-    return(tibble::as_tibble(result))
-  }
+  require_tibble(result)
 
-  result
 }

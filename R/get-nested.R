@@ -1,47 +1,45 @@
-get_nested = function(url, limit = 1000, token = NULL, response = "content",
-                     on.error = "error", retry.times = 3, handle = NULL,
-                     verbose = FALSE) {
+get_nested = function(url, limit, token,
+                      response = "content",
+                      on.error = "error", retry.times, handle, verbose) {
 
-  limit = round(limit, 0) #conveniently fails for non-numeric values
-
-  if (limit < 0) {
-    stop("`limit` must be either a positive integer, zero, or Inf, not ", limit,
-         call. = FALSE)
+  if (!is.numeric(limit) || limit < 0) {
+    stop("`limit` must be a positive integer or Inf", call. = FALSE)
   }
 
   if (limit == 0) {
+    message("setting `limit` to Inf (cannot be zero)")
     limit = Inf
   }
 
   result = list()
 
-  while (NROW(result) < limit) {
+  repeat {
 
-    .limit = limit - NROW(result)
+    url = httr::modify_url(url, query = list(limit = pmin(1000, limit)))
 
-    url = httr::modify_url(
-      url, query = list(limit = if (.limit > 1000) 1000 else .limit))
-
-    res = get_url(
-      url,
-      token       = token,
-      on.error    = on.error,
-      retry.times = retry.times,
-      handle      = handle,
-      verbose     = verbose)
+    res = trello_api_verb("GET", url = url, times = retry.times,
+                          handle = handle, token,
+                          verbose,
+                          on.error = on.error)
 
     message("\nFetched ", NROW(res), " results")
 
-    result = rbind_vector(list(result, res))
+    result = append(result, list(res))
 
-    if (NROW(res) < 1000) break
+    if (!is.data.frame(res) || nrow(res) < 1000) break
 
-    url = httr::modify_url(
-      url, query = list(before = min(result$id)))
+    limit = limit - nrow(res)
+
+    if (!limit > 0) break
+
+    url = httr::modify_url(url, query = list(before = min(res$id)))
 
   }
+
+  result = tryCatch(rbind_vector(result), error = function(e) result)
 
   message("\nRequest complete: ", NROW(result), " results.")
 
   result
+
 }

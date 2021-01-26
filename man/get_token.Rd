@@ -5,7 +5,7 @@
 \title{Get OAuth1.0 Token}
 \usage{
 get_token(
-  appname = "trello-app",
+  app = NULL,
   key = NULL,
   secret = NULL,
   scope = c("read", "write", "account"),
@@ -14,9 +14,18 @@ get_token(
 )
 }
 \arguments{
-\item{appname}{App name. It does not have to be very short, so choose
-something meaningful to make it easy to spot your token on the settings
-page \verb{https://trello.com/username/account}. Defaults to \code{"trello-app"}.}
+\item{app}{A string, \code{NULL} or a Token.
+\itemize{
+\item If \code{key} and \code{secret} are set, a new token will be initialized and its
+name set to this value. A meaningful name can help you to spot your token
+on the settings page \verb{https://trello.com/username/account}. A token cannot
+be initialized without a name, so it will default to \code{"trello-app"} if it
+needs to.
+\item If \code{key} and \code{secret} are not set, the value of \code{app} will be used
+as a path from which an existing token is read. If \code{NULL}, the token will
+be read from the working directory and throw an error if not found.
+\item If a Token, return as is.
+}}
 
 \item{key, secret}{Developer credentials from \verb{https://trello.com/app-key}
 (see details). If \code{NULL} and a cache file exists, the newest token is read

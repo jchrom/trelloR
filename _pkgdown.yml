@@ -11,7 +11,7 @@ navbar:
       text: Get started
       menu:
       - text: "Get public data"
-        href: articles/get-public-data.html
+        href: articles/getting-public-data.html
       - text: "Authorized acccess"
         href: articles/auth-access.html
       - text: "Editing functions"

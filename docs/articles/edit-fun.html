@@ -45,7 +45,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -60,7 +60,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/get-public-data.html">Get public data</a>
+      <a href="../articles/getting-public-data.html">Get public data</a>
     </li>
     <li>
       <a href="../articles/auth-access.html">Authorized acccess</a>
@@ -77,7 +77,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/jchrom/trelloR/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -91,7 +91,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="edit-fun_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Editing functions</h1>
@@ -105,21 +105,23 @@
     
     
 <p>This document explains how to add, update and delete resources via Trello API. This requires authentication, as explained <a href="https://jchrom.github.io/trelloR/articles/auth-access.html">here</a>.</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">trelloR</span>)
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jchrom/trelloR">trelloR</a></span><span class="op">)</span>
 <span class="co">#&gt; R API for Trello</span>
-<span class="co">#&gt; Disclaimer: trelloR is not affiliated, associated, authorized, endorsed</span>
-<span class="co">#&gt; by or in any way officially connected to Trello, Inc. (www.trello.com).</span></pre></body></html></div>
+<span class="co">#&gt; Disclaimer: trelloR is not affiliated, associated, authorized, endorsed by or</span>
+<span class="co">#&gt; in any way officially connected to Trello, Inc. (www.trello.com).</span></code></pre></div>
 <div id="adding-resources" class="section level2">
 <h2 class="hasAnchor">
 <a href="#adding-resources" class="anchor"></a>Adding resources</h2>
 <p>The <code><a href="../reference/Deprecated.html">post_model()</a></code> function allows you to create new resources. At the very least, you only have to specify a type of <code>model</code> (eg. “card”). Any other stuff, such as <em>name</em>, <em>decription</em> or <em>labels</em> has to be passed as a named list to the <code>body</code> argument.</p>
 <p>The following example creates a new card and places it at the bottom of a list (consult the <a href="https://developers.trello.com/reference">Trello API reference</a> for query parameters):</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">payload</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(
-  <span class="kw">name</span> <span class="kw">=</span> <span class="st">"My new card!"</span>, <span class="kw">desc</span> <span class="kw">=</span> <span class="st">"An example card."</span>,
-  <span class="kw">pos</span> <span class="kw">=</span> <span class="st">"bottom"</span>,
-  <span class="kw">idList</span> <span class="kw">=</span> <span class="no">list_id</span> <span class="co"># get it by calling get_board_lists()</span>
-)
-<span class="fu"><a href="../reference/Deprecated.html">post_model</a></span>(<span class="kw">model</span> <span class="kw">=</span> <span class="st">"card"</span>, <span class="kw">body</span> <span class="kw">=</span> <span class="no">payload</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">payload</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+  name <span class="op">=</span> <span class="st">"My new card!"</span>, desc <span class="op">=</span> <span class="st">"An example card."</span>, 
+  pos <span class="op">=</span> <span class="st">"bottom"</span>,
+  idList <span class="op">=</span> <span class="va">list_id</span> <span class="co"># get it by calling get_board_lists()</span>
+<span class="op">)</span>
+<span class="fu"><a href="../reference/Deprecated.html">post_model</a></span><span class="op">(</span>model <span class="op">=</span> <span class="st">"card"</span>, body <span class="op">=</span> <span class="va">payload</span><span class="op">)</span></code></pre></div>
 <p>When successful, the request returns a named list of values describing the newly created resource, including its ID. This is very useful as you can immediately capture the ID if you need it.</p>
 <p>See <code><a href="../reference/Deprecated.html">?post_model</a></code> for additional arguments.</p>
 <p>The wrappers for this function include: <code><a href="../reference/add_board.html">?add_board</a></code>, <code><a href="../reference/add_card.html">?add_card</a></code>, <code><a href="../reference/add_checklist.html">?add_checklist</a></code>, <code><a href="../reference/add_checkitem.html">?add_checkitem</a></code>, <code><a href="../reference/add_comment.html">?add_comment</a></code>, <code><a href="../reference/add_label.html">?add_label</a></code>, <code><a href="../reference/add_list.html">?add_list</a></code> and <code><a href="../reference/add_field.html">?add_field</a></code>.</p>
@@ -136,10 +138,11 @@
 <p>To delete resources, use <code><a href="../reference/Deprecated.html">delete_model()</a></code> and its wrappers: <code><a href="../reference/delete_card.html">?delete_card</a></code>, <code><a href="../reference/delete_checklist.html">?delete_checklist</a></code>, <code><a href="../reference/delete_checkitem.html">?delete_checkitem</a></code>, <code><a href="../reference/delete_field.html">?delete_field</a></code> and <code><a href="../reference/delete_field_option.html">?delete_field_option</a></code>.</p>
 <p><strong>Caution:</strong> Deleted resources cannot be brought back!</p>
 <p><strong>Built with</strong></p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span>()
-<span class="co">#&gt; R version 3.6.3 (2020-02-29)</span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; R version 4.0.3 (2020-10-10)</span>
 <span class="co">#&gt; Platform: x86_64-pc-linux-gnu (64-bit)</span>
-<span class="co">#&gt; Running under: elementary OS 5.1.4 Hera</span>
+<span class="co">#&gt; Running under: elementary OS 5.1.7 Hera</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Matrix products: default</span>
 <span class="co">#&gt; BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.7.1</span>
@@ -160,17 +163,18 @@
 <span class="co">#&gt; [1] trelloR_0.6.4</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; loaded via a namespace (and not attached):</span>
-<span class="co">#&gt;  [1] Rcpp_1.0.4.6     rprojroot_1.3-2  crayon_1.3.4     digest_0.6.23   </span>
-<span class="co">#&gt;  [5] assertthat_0.2.1 MASS_7.3-51.6    R6_2.4.1         backports_1.1.5 </span>
-<span class="co">#&gt;  [9] magrittr_1.5     evaluate_0.14    stringi_1.4.3    rlang_0.4.5     </span>
-<span class="co">#&gt; [13] rstudioapi_0.10  fs_1.4.1         rmarkdown_2.1    pkgdown_1.5.1   </span>
-<span class="co">#&gt; [17] desc_1.2.0       tools_3.6.3      stringr_1.4.0    yaml_2.2.1      </span>
-<span class="co">#&gt; [21] xfun_0.12        compiler_3.6.3   memoise_1.1.0    htmltools_0.4.0 </span>
-<span class="co">#&gt; [25] knitr_1.28</span></pre></body></html></div>
+<span class="co">#&gt;  [1] rprojroot_2.0.2   digest_0.6.27     crayon_1.3.4      assertthat_0.2.1 </span>
+<span class="co">#&gt;  [5] R6_2.5.0          magrittr_2.0.1    evaluate_0.14     stringi_1.5.3    </span>
+<span class="co">#&gt;  [9] rlang_0.4.10      rstudioapi_0.13   fs_1.5.0          ragg_0.4.1       </span>
+<span class="co">#&gt; [13] rmarkdown_2.6     pkgdown_1.6.1     textshaping_0.2.1 desc_1.2.0       </span>
+<span class="co">#&gt; [17] tools_4.0.3       stringr_1.4.0     yaml_2.2.1        xfun_0.20        </span>
+<span class="co">#&gt; [21] compiler_4.0.3    systemfonts_0.3.2 memoise_1.1.0     htmltools_0.5.1.1</span>
+<span class="co">#&gt; [25] knitr_1.30</span></code></pre></div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+
         <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
     </nav>
 </div>
@@ -184,7 +188,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

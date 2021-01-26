@@ -51,7 +51,7 @@ test_that("search produces a data frame with 1 row", {
 
   token = skip_if_no_token()
 
-  results = trelloR::search_model("User", partial = TRUE, token = token)
+  results = trelloR::search_resource("User", partial = TRUE, token = token)
 
   expect_is(results, "data.frame")
   expect_equal(nrow(results), 1)

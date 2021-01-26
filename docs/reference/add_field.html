@@ -8,10 +8,12 @@
 
 <title>Add a custom field — add_field • trelloR</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -36,10 +38,9 @@
 
 
 
+
 <meta property="og:title" content="Add a custom field — add_field" />
-
 <meta property="og:description" content="Create a new custom field definition and attach it to the board." />
-
 
 
 
@@ -89,7 +90,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -104,7 +105,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/get-public-data.html">Get public data</a>
+      <a href="../articles/getting-public-data.html">Get public data</a>
     </li>
     <li>
       <a href="../articles/auth-access.html">Authorized acccess</a>
@@ -118,11 +119,10 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/jchrom/trelloR/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -145,23 +145,21 @@
     </div>
 
     <div class="ref-description">
-    
     <p>Create a new custom field definition and attach it to the board.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>add_field</span>(<span class='no'>id</span>, <span class='no'>type</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"New field"</span>, <span class='kw'>body</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>add_field</span><span class='op'>(</span><span class='va'>id</span>, <span class='va'>type</span>, name <span class='op'>=</span> <span class='st'>"New field"</span>, body <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>add_field_checkbox</span>(<span class='no'>id</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"New checkbox"</span>, <span class='kw'>body</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+<span class='fu'>add_field_checkbox</span><span class='op'>(</span><span class='va'>id</span>, name <span class='op'>=</span> <span class='st'>"New checkbox"</span>, body <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>add_field_date</span>(<span class='no'>id</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"New date"</span>, <span class='kw'>body</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+<span class='fu'>add_field_date</span><span class='op'>(</span><span class='va'>id</span>, name <span class='op'>=</span> <span class='st'>"New date"</span>, body <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>add_field_dropdown</span>(<span class='no'>id</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"New dropdown"</span>, <span class='kw'>body</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+<span class='fu'>add_field_dropdown</span><span class='op'>(</span><span class='va'>id</span>, name <span class='op'>=</span> <span class='st'>"New dropdown"</span>, body <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>add_field_number</span>(<span class='no'>id</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"New number"</span>, <span class='kw'>body</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+<span class='fu'>add_field_number</span><span class='op'>(</span><span class='va'>id</span>, name <span class='op'>=</span> <span class='st'>"New number"</span>, body <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>add_field_text</span>(<span class='no'>id</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"New text"</span>, <span class='kw'>body</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
-    
+<span class='fu'>add_field_text</span><span class='op'>(</span><span class='va'>id</span>, name <span class='op'>=</span> <span class='st'>"New text"</span>, body <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -186,16 +184,14 @@
       <td><p>Additional arguments passed to <code><a href='Deprecated.html'>post_model</a></code></p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>add_field_dropdown</code> - options can be provided using a single (optionally
 named) vector: <code>body = list(options = c(red = "Alert", green = "Ok", "Nothing"))</code></p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='Deprecated.html'>post_model</a></code></p></div>
-    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -212,7 +208,7 @@ named) vector: <code>body = list(options = c(red = "Alert", green = "Ok", "Nothi
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -8,10 +8,12 @@
 
 <title>Update Resources — update_resource • trelloR</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -36,10 +38,9 @@
 
 
 
+
 <meta property="og:title" content="Update Resources — update_resource" />
-
 <meta property="og:description" content="Update resources via Trello API." />
-
 
 
 
@@ -89,7 +90,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -104,7 +105,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/get-public-data.html">Get public data</a>
+      <a href="../articles/getting-public-data.html">Get public data</a>
     </li>
     <li>
       <a href="../articles/auth-access.html">Authorized acccess</a>
@@ -118,11 +119,10 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/jchrom/trelloR/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -145,24 +145,22 @@
     </div>
 
     <div class="ref-description">
-    
     <p>Update resources via Trello API.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>update_resource</span>(
-  <span class='no'>resource</span>,
-  <span class='kw'>id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>body</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>token</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>response</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"content"</span>, <span class='st'>"headers"</span>, <span class='st'>"status"</span>, <span class='st'>"response"</span>),
-  <span class='kw'>on.error</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"stop"</span>, <span class='st'>"warn"</span>, <span class='st'>"message"</span>),
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>encode</span> <span class='kw'>=</span> <span class='st'>"json"</span>,
-  <span class='kw'>handle</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
-)</pre>
-    
+    <pre class="usage"><span class='fu'>update_resource</span><span class='op'>(</span>
+  <span class='va'>resource</span>,
+  id <span class='op'>=</span> <span class='cn'>NULL</span>,
+  path <span class='op'>=</span> <span class='cn'>NULL</span>,
+  body <span class='op'>=</span> <span class='cn'>NULL</span>,
+  token <span class='op'>=</span> <span class='cn'>NULL</span>,
+  response <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"content"</span>, <span class='st'>"headers"</span>, <span class='st'>"status"</span>, <span class='st'>"response"</span><span class='op'>)</span>,
+  on.error <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"stop"</span>, <span class='st'>"warn"</span>, <span class='st'>"message"</span><span class='op'>)</span>,
+  verbose <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  encode <span class='op'>=</span> <span class='st'>"json"</span>,
+  handle <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -211,42 +209,42 @@ or the raw <code>"response"</code>.</p></td>
       <td><p>Passed to <a href='https://httr.r-lib.org/reference/PUT.html'>httr::PUT</a>.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>See <a href='https://developers.trello.com/v1.0/reference'>Trello API reference</a>
 for more info about what elements can be included in PUT request body.</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
 <span class='co'># Get token with write access</span>
-<span class='no'>key</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.getenv.html'>Sys.getenv</a></span>(<span class='st'>"MY_TRELLO_KEY"</span>)
-<span class='no'>secret</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.getenv.html'>Sys.getenv</a></span>(<span class='st'>"MY_TRELLO_SECRET"</span>)
+<span class='va'>key</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.getenv.html'>Sys.getenv</a></span><span class='op'>(</span><span class='st'>"MY_TRELLO_KEY"</span><span class='op'>)</span>
+<span class='va'>secret</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.getenv.html'>Sys.getenv</a></span><span class='op'>(</span><span class='st'>"MY_TRELLO_SECRET"</span><span class='op'>)</span>
 
-<span class='no'>token</span> <span class='kw'>=</span> <span class='fu'><a href='get_token.html'>get_token</a></span>(<span class='st'>"my_app"</span>, <span class='kw'>key</span> <span class='kw'>=</span> <span class='no'>key</span>, <span class='kw'>secret</span> <span class='kw'>=</span> <span class='no'>secret</span>,
-                  <span class='kw'>scope</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"read"</span>, <span class='st'>"write"</span>))
+<span class='va'>token</span> <span class='op'>=</span> <span class='fu'><a href='get_token.html'>get_token</a></span><span class='op'>(</span><span class='st'>"my_app"</span>, key <span class='op'>=</span> <span class='va'>key</span>, secret <span class='op'>=</span> <span class='va'>secret</span>,
+                  scope <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"read"</span>, <span class='st'>"write"</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># Get board ID</span>
-<span class='no'>url</span> <span class='kw'>=</span> <span class='st'>"Your board URL"</span>
-<span class='no'>bid</span> <span class='kw'>=</span> <span class='fu'><a href='get_id.html'>get_id_board</a></span>(<span class='no'>url</span>, <span class='no'>token</span>)
+<span class='va'>url</span> <span class='op'>=</span> <span class='st'>"Your board URL"</span>
+<span class='va'>bid</span> <span class='op'>=</span> <span class='fu'><a href='get_id.html'>get_id_board</a></span><span class='op'>(</span><span class='va'>url</span>, <span class='va'>token</span><span class='op'>)</span>
 
 <span class='co'># Get cards and extract ID of the first one</span>
-<span class='no'>cid</span> <span class='kw'>=</span> <span class='fu'><a href='get_board.html'>get_board_cards</a></span>(<span class='no'>bid</span>, <span class='no'>token</span>)$<span class='no'>id</span>[<span class='fl'>1</span>]
+<span class='va'>cid</span> <span class='op'>=</span> <span class='fu'><a href='get_board.html'>get_board_cards</a></span><span class='op'>(</span><span class='va'>bid</span>, <span class='va'>token</span><span class='op'>)</span><span class='op'>$</span><span class='va'>id</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>
 
 <span class='co'># Content for the new card</span>
-<span class='no'>payload</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
-  <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>cid</span>,
-  <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"A new card name"</span>,
-  <span class='kw'>desc</span> <span class='kw'>=</span> <span class='st'>"Description - updated by trelloR"</span>,
-  <span class='kw'>pos</span> <span class='kw'>=</span> <span class='st'>"top"</span> <span class='co'>#put card on the top of a list</span>
-)
+<span class='va'>payload</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
+  id <span class='op'>=</span> <span class='va'>cid</span>,
+  name <span class='op'>=</span> <span class='st'>"A new card name"</span>,
+  desc <span class='op'>=</span> <span class='st'>"Description - updated by trelloR"</span>,
+  pos <span class='op'>=</span> <span class='st'>"top"</span> <span class='co'>#put card on the top of a list</span>
+<span class='op'>)</span>
 
 <span class='co'># Update card's name, descriptionand position</span>
-<span class='fu'>update_resource</span>(<span class='st'>"card"</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='no'>cid</span>, <span class='kw'>body</span> <span class='kw'>=</span> <span class='no'>payload</span>, <span class='kw'>token</span> <span class='kw'>=</span> <span class='no'>token</span>)
-}</div></pre>
+<span class='fu'>update_resource</span><span class='op'>(</span><span class='st'>"card"</span>, id <span class='op'>=</span> <span class='va'>cid</span>, body <span class='op'>=</span> <span class='va'>payload</span>, token <span class='op'>=</span> <span class='va'>token</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -262,7 +260,7 @@ for more info about what elements can be included in PUT request body.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

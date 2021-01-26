@@ -1,13 +1,10 @@
 ## Test environments
-* ubuntu 12.04 (on travis-ci), R 3.3.1
-* win-builder (devel and release)
+* local R installation, R 4.0.3
+* ubuntu 16.04 (on travis-ci), R 4.0.3
+* win-builder (devel)
 
 ## R CMD check results
 
-0 errors | 0 warnings | 0 notes
+0 errors | 0 warnings | 1 note
 
-* On win build, the usual "misspelled" API, Trello (both actually correct)
-
-## Reverse dependencies
-
-No reverse dependencies.
+* This is a new release.

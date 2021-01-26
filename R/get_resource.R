@@ -48,10 +48,10 @@
 #'   or a combination of `parent`, `child` and `id` is provided.
 #' @param filter Defaults to `"all"` which includes both open and archived cards
 #'   or all action types, depending on what resource is requested.
-#' @param limit Defaults to `1000`. Set to `Inf` (or 0) to get everything.
+#' @param limit Defaults to `100`. Set to `Inf` to get everything.
 #' @param on.error Whether to `"stop"`, `"warn"` or `"message"` on API error.
 #' @param retry.times How many times to re-try when a request fails. Defaults
-#'   to 3.
+#'   to 1.
 #' @param handle The handle to use with this request, see [httr::RETRY].
 #' @param verbose Set to `TRUE` for verbose output.
 #' @param response,paging,bind.rows Deprecated.
@@ -64,30 +64,32 @@
 #'
 #' @examples
 #'
-#' # No authorization is required to access public boards, so there is no need
+#' # Public boards can be accessed without authorization, so there is no need
 #' # to create a token, just the board id:
-#' url = "https://trello.com/b/Pw3EioMM/trellor-r-api-for-trello"
+#' url = "https://trello.com/b/wVWPK9I4/r-client-for-the-trello-api"
 #' bid = get_id_board(url)
 #'
-#' # Once we have the ID, we can use it to make specific queries:
-#' labels = get_board_labels(bid)                # Get all labels
-#' cards = get_board_cards(bid, filter = "all")  # Get all cards, incl. archived
+#' # Getting resources from the whole board. `filter="all"` fetches archived
+#' # cards as well.
+#' labels = get_board_labels(bid)
+#' cards = get_board_cards(bid, filter = "all")
 #'
-#' # We can also call get_resource() directly:
+#' # It is possible to call `get_resource()` directly:
 #' lists = get_resource(parent = "board", child = "lists", id = bid)
 #'
-#' # As with boards, cards can be queried for particular resources:
-#' card10 = cards$id[10]
-#' acts10 = get_card_actions(card10)    # Get all actions performed on that card
+#' # As with boards, cards can be queried for particular resources, in this case
+#' # to obtain custom fields:
+#' card = cards$id[5]
+#' acts = get_card_fields(card)
 #'
-#' # To specify the number of results, use limit = number. If limit = 0, all
-#' # results will be acquired eventually.
+#' # Set `limit` to specify the number of results. Pagination will be used
+#' # whenever limit exceeds 1000. Use `limit=Inf` to make sure you get all.
 #'
 #' \dontrun{
-#' acts_all = get_board_actions(bid, limit = 0)
+#' all_actions = get_board_actions(bid, limit = Inf)
 #' }
 #'
-#' # For private and team boards, you need a secure token:
+#' # For private and team boards, a secure token is required:
 #'
 #' \dontrun{
 #' key = Sys.getenv("MY_TRELLO_KEY")
@@ -96,105 +98,79 @@
 #' token = get_token("my_app", key = key, secret = secret,
 #'                   scope = c("read", "write"))
 #'
-#' cards_open = get_board_cards(board_id, token, filter = "open")
+#' # Token is now cached, no need to pass it explicitly.
+#' cards_open = get_board_cards(board_id, filter = "open")
 #' }
 
 get_resource = function(parent = NULL, child = NULL, id = NULL, token = NULL,
-                        query = NULL, url = NULL, filter = NULL, limit = 1000,
+                        query = NULL, url = NULL, filter = NULL, limit = 100,
                         on.error = c("stop", "warn", "message"),
-                        retry.times = 3, handle = NULL,
+                        retry.times = 1, handle = NULL,
                         verbose = FALSE, response, paging, bind.rows)
 {
 
-  if (!missing("paging")) {
-    warning("`paging`: argument is deprecated; use `limit=Inf`",
-            call. = FALSE)
-    if (missing(limit) & paging) limit = 0
+  warn_for_argument(paging)
+  warn_for_argument(bind.rows)
+  warn_for_argument(response)
+
+  if (!missing(paging) && paging) {
+    message("setting `limit` to Inf because `paging=TRUE`")
+    limit = Inf
+  } else if (!missing(paging)) {
+    message("setting `limit` to 1000 (a single page) because `paging=FALSE`")
+    limit = Inf
   }
-
-  if (!missing("bind.rows"))
-    warning("`bind.rows`: argument is deprecated", call. = FALSE)
-
-  if (!missing("response"))
-    warning("`response`: argument is deprecated", call. = FALSE)
 
   on.error = match.arg(on.error, several.ok = FALSE)
 
   if (is.null(url)) {
 
-    url = httr::modify_url(
-      url = "https://api.trello.com",
-      path = c(1, parent, extract_id(id), child), #path overrides url if url includes path
-      query = c(
-        lapply(query, tolower_if_logical),
-        list(limit = limit, filter = filter)))
-  }
+    path = c(1, parent, extract_id(id), child)
 
-  if (is.null(token) && file.exists(".httr-oauth"))
-    token = get_token(NULL)
+    query = c(lapply(query, tolower_if_logical),
+              list(limit = limit),
+              list(filter = filter))
+
+    # NOTE: `path` overrides `url` if `url` includes `path`.
+    url = httr::modify_url("https://api.trello.com", path = path,
+                           query = query)
+
+  }
 
   if (is_nested(url)) {
 
-    result = get_nested(
-      url,
-      limit       = limit,
-      token       = token,
-      on.error    = on.error,
-      retry.times = retry.times,
-      handle      = handle,
-      verbose     = verbose)
-
-  } else if (is_search(url)) {
-
-    result = quick_df_search(get_url(
-      url,
-      token       = token,
-      on.error    = on.error,
-      retry.times = retry.times,
-      handle      = handle,
-      verbose     = verbose
-    ))
+    result = get_nested(url, limit = limit, token = token, on.error = on.error,
+                        retry.times = retry.times, handle = handle,
+                        verbose = verbose)
 
   } else {
 
-    result = quick_df_single(get_url(
-      url,
-      token       = token,
-      on.error    = on.error,
-      retry.times = retry.times,
-      handle      = handle,
-      verbose     = verbose
-    ))
+    result = trello_api_verb("GET", url = url, times = retry.times,
+                             handle = handle, token = token,
+                             verbose = verbose,
+                             on.error = on.error)
+
+    if (is_search(url)) {
+      result = quick_df_search(result)
+    } else {
+      result = structure(wrap_list(result), row.names = c(NA, -1),
+                         class = "data.frame")
+    }
+
   }
 
-  if (requireNamespace("tibble", quietly = TRUE)) {
-    return(tibble::as_tibble(result))
-  }
+  require_tibble(result)
 
-  result
 }
 
 is_nested = function(url) {
-
   path = httr::parse_url(url)[["path"]]
-
   length(strsplit(path, "/")[[1]]) > 3
 }
 
 is_search = function(url) {
-
   path = httr::parse_url(url)[["path"]]
-
   identical(strsplit(path, "/")[[1]][2], "search")
-}
-
-quick_df_single = function(x) {
-
-  structure(
-    wrap_list(x),
-    class     = "data.frame",
-    row.names = .set_row_names(1))
-
 }
 
 quick_df_search = function(x) {
@@ -205,10 +181,10 @@ quick_df_search = function(x) {
 
   message("Fetched ", sum(vapply(search_results, NROW, 1L)), " search results.")
 
-  structure(
-    wrap_list(c(search_options, search_results)),
-    class     = "data.frame",
-    row.names = .set_row_names(1))
+  structure(wrap_list(c(search_options, search_results)),
+            class = "data.frame",
+            row.names = c(NA, -1))
+
 }
 
 wrap_list = function(x) {

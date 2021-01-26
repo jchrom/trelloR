@@ -1,26 +1,9 @@
 # Bind Data Frames By Row
 #
-# Row-bind data from Trello API processed by jsonlite::fromJSON. Assumes data
-# frames with a mix of atomic vectors and lists. Not safe to use for other types
-# of data and therefore not exported.
-#
-# @details
-#
-#   Responses from Trello API are parsed by jsonlite::fromJSON which produces
-#   lists of data frames. Row-binding these with base::rbind often fails because
-#   not all data frames always have the same set of columns.
-#
-#   Using dplyr::bind_rows is also not an option because often the same column
-#   does not have the same type across all data frames (plus it introduces
-#   an expensive dependency).
-#
-#   trelloR::rbind_vector can handle data frames composed of vectors, ie. atomic
-#   vectors and lists, and follows standard coercion rules if mixed types are
-#   present.
-#
-#   Objects for which base::is.vector returns FALSE will break in unexpected
-#   ways. This is only accepted because no such objects will ever be returned
-#   by jsonlite::fromJSON.
+# Bind data frames by row. This is used to bind paged responses from Trello API,
+# parsed by jsonlite::fromJSON(). It is not safe for other types of inputs,
+# for example data frames containing factor or date-time columns. It is only
+# used internally and not exported.
 #
 # @param dfs A list of data frames.
 #

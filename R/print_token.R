@@ -12,9 +12,9 @@
 
 print.Trello_API_token = function(x, ...) {
 
-  cat("<Trello_API_token>\n")
+  cat("<Trello API token>\n")
 
-  cat(" app:        ", x$app$appname, "\n")
+  cat(" app name:   ", x$app$appname, "\n")
   cat(" permissions:", get_scope(x), "\n")
   cat(" approved:   ", get_time_issued(x), "\n")
   cat(" expires:    ", get_time_expiry(x))

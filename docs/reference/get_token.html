@@ -8,10 +8,12 @@
 
 <title>Get OAuth1.0 Token — get_token • trelloR</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -36,11 +38,10 @@
 
 
 
-<meta property="og:title" content="Get OAuth1.0 Token — get_token" />
 
+<meta property="og:title" content="Get OAuth1.0 Token — get_token" />
 <meta property="og:description" content="Authorize access to Trello API, required for private boards and write access
 (see details)." />
-
 
 
 
@@ -90,7 +91,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -105,7 +106,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/get-public-data.html">Get public data</a>
+      <a href="../articles/getting-public-data.html">Get public data</a>
     </li>
     <li>
       <a href="../articles/auth-access.html">Authorized acccess</a>
@@ -119,11 +120,10 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/jchrom/trelloR/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -146,29 +146,35 @@
     </div>
 
     <div class="ref-description">
-    
     <p>Authorize access to Trello API, required for private boards and write access
 (see details).</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>get_token</span>(
-  <span class='kw'>appname</span> <span class='kw'>=</span> <span class='st'>"trello-app"</span>,
-  <span class='kw'>key</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>secret</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>scope</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"read"</span>, <span class='st'>"write"</span>, <span class='st'>"account"</span>),
-  <span class='kw'>expiration</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"30days"</span>, <span class='st'>"1day"</span>, <span class='st'>"1hour"</span>, <span class='st'>"never"</span>),
-  <span class='kw'>cache</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"httr_oauth_cache"</span>)
-)</pre>
-    
+    <pre class="usage"><span class='fu'>get_token</span><span class='op'>(</span>
+  app <span class='op'>=</span> <span class='cn'>NULL</span>,
+  key <span class='op'>=</span> <span class='cn'>NULL</span>,
+  secret <span class='op'>=</span> <span class='cn'>NULL</span>,
+  scope <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"read"</span>, <span class='st'>"write"</span>, <span class='st'>"account"</span><span class='op'>)</span>,
+  expiration <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"30days"</span>, <span class='st'>"1day"</span>, <span class='st'>"1hour"</span>, <span class='st'>"never"</span><span class='op'>)</span>,
+  cache <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"httr_oauth_cache"</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>appname</th>
-      <td><p>App name. It does not have to be very short, so choose
-something meaningful to make it easy to spot your token on the settings
-page <code>https://trello.com/username/account</code>. Defaults to <code>"trello-app"</code>.</p></td>
+      <th>app</th>
+      <td><p>A string, <code>NULL</code> or a Token.</p><ul>
+<li><p>If <code>key</code> and <code>secret</code> are set, a new token will be initialized and its
+name set to this value. A meaningful name can help you to spot your token
+on the settings page <code>https://trello.com/username/account</code>. A token cannot
+be initialized without a name, so it will default to <code>"trello-app"</code> if it
+needs to.</p></li>
+<li><p>If <code>key</code> and <code>secret</code> are not set, the value of <code>app</code> will be used
+as a path from which an existing token is read. If <code>NULL</code>, the token will
+be read from the working directory and throw an error if not found.</p></li>
+<li><p>If a Token, return as is.</p></li>
+</ul></td>
     </tr>
     <tr>
       <th>key, secret</th>
@@ -193,11 +199,10 @@ the token should be cached locally (will ask the first time and then <code>TRUE<
 by default) or choose an alternative path for the cache file.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An object of class <code>"Trello_API_token"</code> (a Token).</p>
-    
     <h2 class="hasAnchor" id="getting-developer-access"><a class="anchor" href="#getting-developer-access"></a>Getting developer access</h2>
 
     
@@ -209,7 +214,6 @@ you will need your developer <code>key</code> and <code>secret</code> which you 
 want to set at least one <em>allowed origin</em> there. If you are using trelloR
 locally (ie. from your laptop or PC), <code>http://localhost:1410</code> is a good value
 to use.</p>
-    
     <h2 class="hasAnchor" id="creating-tokens"><a class="anchor" href="#creating-tokens"></a>Creating tokens</h2>
 
     
@@ -233,25 +237,24 @@ R session is over, and you will have to pass it to the <code>token</code> argume
 minimize the risk of unwanted disclosure when using remote code
 repositories, <code>.httr-oauth</code> (or whatever cache path you have specified
 using the <code>cache</code> argument) is automatically added to <code>.gitignore</code>.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='https://httr.r-lib.org/reference/oauth_app.html'>httr::oauth_app</a>, <a href='https://httr.r-lib.org/reference/oauth_endpoint.html'>httr::oauth_endpoint</a>, <a href='https://httr.r-lib.org/reference/oauth1.0_token.html'>httr::oauth1.0_token</a></p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># This example assumes you are reading your key and secret from environment</span>
 <span class='co'># variables. This is not obligatory, but wherever you read them from, make</span>
 <span class='co'># sure it is a secure, non-shared location.</span>
 
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
-<span class='no'>key</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.getenv.html'>Sys.getenv</a></span>(<span class='st'>"MY_TRELLO_KEY"</span>)
-<span class='no'>secret</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.getenv.html'>Sys.getenv</a></span>(<span class='st'>"MY_TRELLO_SECRET"</span>)
+<span class='va'>key</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.getenv.html'>Sys.getenv</a></span><span class='op'>(</span><span class='st'>"MY_TRELLO_KEY"</span><span class='op'>)</span>
+<span class='va'>secret</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.getenv.html'>Sys.getenv</a></span><span class='op'>(</span><span class='st'>"MY_TRELLO_SECRET"</span><span class='op'>)</span>
 
-<span class='no'>token</span> <span class='kw'>=</span> <span class='fu'>get_token</span>(<span class='st'>"my_app"</span>, <span class='kw'>key</span> <span class='kw'>=</span> <span class='no'>key</span>, <span class='kw'>secret</span> <span class='kw'>=</span> <span class='no'>secret</span>,
-                  <span class='kw'>scope</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"read"</span>, <span class='st'>"write"</span>))
-}</div></pre>
+<span class='va'>token</span> <span class='op'>=</span> <span class='fu'>get_token</span><span class='op'>(</span><span class='st'>"my_app"</span>, key <span class='op'>=</span> <span class='va'>key</span>, secret <span class='op'>=</span> <span class='va'>secret</span>,
+                  scope <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"read"</span>, <span class='st'>"write"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -267,7 +270,7 @@ using the <code>cache</code> argument) is automatically added to <code>.gitignor
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

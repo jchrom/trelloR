@@ -12,9 +12,9 @@ get_resource(
   query = NULL,
   url = NULL,
   filter = NULL,
-  limit = 1000,
+  limit = 100,
   on.error = c("stop", "warn", "message"),
-  retry.times = 3,
+  retry.times = 1,
   handle = NULL,
   verbose = FALSE,
   response,
@@ -47,12 +47,12 @@ or a combination of \code{parent}, \code{child} and \code{id} is provided.}
 \item{filter}{Defaults to \code{"all"} which includes both open and archived cards
 or all action types, depending on what resource is requested.}
 
-\item{limit}{Defaults to \code{1000}. Set to \code{Inf} (or 0) to get everything.}
+\item{limit}{Defaults to \code{100}. Set to \code{Inf} to get everything.}
 
 \item{on.error}{Whether to \code{"stop"}, \code{"warn"} or \code{"message"} on API error.}
 
 \item{retry.times}{How many times to re-try when a request fails. Defaults
-to 3.}
+to 1.}
 
 \item{handle}{The handle to use with this request, see \link[httr:RETRY]{httr::RETRY}.}
 
@@ -105,30 +105,32 @@ ignore them in favor of supplying their values as query parameters, eg.
 
 \examples{
 
-# No authorization is required to access public boards, so there is no need
+# Public boards can be accessed without authorization, so there is no need
 # to create a token, just the board id:
-url = "https://trello.com/b/Pw3EioMM/trellor-r-api-for-trello"
+url = "https://trello.com/b/wVWPK9I4/r-client-for-the-trello-api"
 bid = get_id_board(url)
 
-# Once we have the ID, we can use it to make specific queries:
-labels = get_board_labels(bid)                # Get all labels
-cards = get_board_cards(bid, filter = "all")  # Get all cards, incl. archived
+# Getting resources from the whole board. `filter="all"` fetches archived
+# cards as well.
+labels = get_board_labels(bid)
+cards = get_board_cards(bid, filter = "all")
 
-# We can also call get_resource() directly:
+# It is possible to call `get_resource()` directly:
 lists = get_resource(parent = "board", child = "lists", id = bid)
 
-# As with boards, cards can be queried for particular resources:
-card10 = cards$id[10]
-acts10 = get_card_actions(card10)    # Get all actions performed on that card
+# As with boards, cards can be queried for particular resources, in this case
+# to obtain custom fields:
+card = cards$id[5]
+acts = get_card_fields(card)
 
-# To specify the number of results, use limit = number. If limit = 0, all
-# results will be acquired eventually.
+# Set `limit` to specify the number of results. Pagination will be used
+# whenever limit exceeds 1000. Use `limit=Inf` to make sure you get all.
 
 \dontrun{
-acts_all = get_board_actions(bid, limit = 0)
+all_actions = get_board_actions(bid, limit = Inf)
 }
 
-# For private and team boards, you need a secure token:
+# For private and team boards, a secure token is required:
 
 \dontrun{
 key = Sys.getenv("MY_TRELLO_KEY")
@@ -137,7 +139,8 @@ secret = Sys.getenv("MY_TRELLO_SECRET")
 token = get_token("my_app", key = key, secret = secret,
                   scope = c("read", "write"))
 
-cards_open = get_board_cards(board_id, token, filter = "open")
+# Token is now cached, no need to pass it explicitly.
+cards_open = get_board_cards(board_id, filter = "open")
 }
 }
 \seealso{

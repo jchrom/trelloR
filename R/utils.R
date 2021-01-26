@@ -15,6 +15,7 @@ as_POSIXct_hex = function(x) {
 
   # Convert into POSIXct
   as.POSIXct(strtoi(x, 16L), origin = "1970-01-01")
+
 }
 
 #' Exctract ID
@@ -39,12 +40,23 @@ extract_id = function(x) {
 
 # NOT FOR EXPORT
 
-.onAttach <- function(libname, pkgname) {
-  packageStartupMessage(
-    "R API for Trello\n",
-    paste(strwrap("Disclaimer: trelloR is not affiliated, associated, authorized, endorsed by or in any way officially connected to Trello, Inc. (www.trello.com).\n"), collapse = "\n"))
-}
-
 tolower_if_logical = function(x) {
   if (inherits(x, "logical")) tolower(x) else x
+}
+
+require_tibble = function(x) {
+  if (requireNamespace("tibble", quietly = TRUE))
+    x = tibble::as_tibble(x)
+  x
+}
+
+warn_for_argument = function(x) {
+
+  if (!missing(x)) {
+    msg = sprintf("`%s`: argument is deprecated", as.character(substitute(x)))
+    warning(msg, call. = FALSE)
+  }
+
+  NULL
+
 }
