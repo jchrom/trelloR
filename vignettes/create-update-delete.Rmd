@@ -1,8 +1,8 @@
 ---
-title: "Editing functions"
+title: "Create, update, delete"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Editing functions}
+  %\VignetteIndexEntry{Create, update, delete}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -15,11 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 This document explains how to add, update and delete resources via Trello API.
-This requires authentication, as explained [here](/articles/auth-access.html).
-
-```{r setup}
-library(trelloR)
-```
+This requires authentication, as explained [here](../articles/auth-access.html).
 
 Creating and modifying resources
 --------------------------------
@@ -34,6 +30,7 @@ The following example creates a new card and places it at the bottom of a list
 for query parameters):
 
 ```r
+library(trelloR)
 payload = list(
   name = "My new card!", desc = "An example card.", 
   pos = "bottom",
