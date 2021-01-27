@@ -1,16 +1,19 @@
 Package: trelloR
-Title: R API for Trello
-Version: 0.6.4
-Authors@R: c(person("Jakub", "Chromec", , "chromec.jakub@gmail.com",
-    role = c("aut", "cre")))
-Description: R client for Trello API: <https://developers.trello.com/reference>.
-    Most API calls are supported, including authentication, updates and deletes,
-    and downloading data.
+Title: Access the Trello API
+Version: 0.7.0
+Authors@R: 
+    person(given = "Jakub",
+           family = "Chromec",
+           role = c("aut", "cre"),
+           email = "chromec.jakub@gmail.com")
+Description: An R client for the Trello API. Supports free-tier features such as
+    access to private boards, creating and updating cards and other resources,
+    and downloading data in a structured way.
 Depends:
-    R (>= 3.6)
+    R (>= 3.6.0)
 Imports:
-    httr (>= 1.4.2),
-    jsonlite (>= 1.7.2)
+    httr (>= 1.4.0),
+    jsonlite (>= 1.7.0)
 License: GPL-3
 LazyData: true
 URL: https://github.com/jchrom/trelloR
