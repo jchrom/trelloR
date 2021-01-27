@@ -1,8 +1,9 @@
 #' trelloR: R API for Trello
 #'
-#' Authorize your access to Trello from R and get data from boards, cards, lists
-#' and other places. Create and update and remove cards and boards, add labels,
-#' assign team members, add comments and more.
+#' Access the Trello API. Free-tier features are fully supported, including
+#' authentication and administration of private boards, teams, creating
+#' and updating cards and other resources, and downloading data in a structured
+#' way.
 #'
 #' @docType package
 #' @name trelloR

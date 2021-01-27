@@ -17,9 +17,9 @@
 #'   * If a character vector of length 1, it will be used as an alternative path
 #'     to the cache file.
 #'
-#' @param verbose Whether to pass [httr::verbose] to [httr::RETRY].
+#' @param verbose Whether to pass [httr::verbose()] to [httr::RETRY()].
 #' @param on.error Behavior when HTTP status >= 300, defaults to `"stop"`.
-#' @param handle Passed to [httr::RETRY].
+#' @param handle Passed to [httr::RETRY()].
 #' @param encode,response Deprecated.
 #'
 #' @export

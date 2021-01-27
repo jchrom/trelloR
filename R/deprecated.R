@@ -1,5 +1,3 @@
-# DEPRECATED FUNCTIONS
-
 #' Deprecated functions
 #'
 #' * Use [get_resource()] instead of `get_model()` or `trello_get()`

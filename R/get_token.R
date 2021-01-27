@@ -47,7 +47,7 @@
 #'     needs to.
 #'   * If `key` and `secret` are not set, the value of `app` will be used
 #'     as a path from which an existing token is read. If `NULL`, the token will
-#'     be read from the working directory and throw an error if not found.
+#'     be read from the working directory. `NULL` is returned if nothing is found.
 #'   * If a Token, return as is.
 #'
 #' @param key,secret Developer credentials from `https://trello.com/app-key`
@@ -60,8 +60,10 @@
 #' @param cache Passed to [httr::oauth1.0_token()]. Can specify whether
 #'   the token should be cached locally (will ask the first time and then `TRUE`
 #'   by default) or choose an alternative path for the cache file.
+#' @param appname Deprecated, use `app`.
 #'
-#' @seealso [httr::oauth_app], [httr::oauth_endpoint], [httr::oauth1.0_token]
+#' @seealso [httr::oauth_app()], [httr::oauth_endpoint()],
+#'   [httr::oauth1.0_token()]
 #'
 #' @return An object of class `"Trello_API_token"` (a Token).
 #'
@@ -84,7 +86,12 @@
 get_token = function(app = NULL, key = NULL, secret = NULL,
                      scope = c("read", "write", "account"),
                      expiration = c("30days", "1day", "1hour", "never"),
-                     cache = getOption("httr_oauth_cache")) {
+                     cache = getOption("httr_oauth_cache"),
+                     appname) {
+
+  warn_for_argument(appname)
+
+  if (!missing(appname) && is.null(app)) app = appname
 
   if (inherits(app, "Trello_API_token")) return(app)
 

@@ -2,14 +2,15 @@
 #'
 #' Create a new custom field definition and attach it to the board.
 #'
-#' \code{add_field_dropdown} - options can be provided using a single (optionally
-#' named) vector: \code{body = list(options = c(red = "Alert", green = "Ok", "Nothing"))}
+#' For `add_field_dropdown` - options can be provided using a single (optionally
+#' named) vector:
+#' `body = list(options = c(red = "Alert", green = "Ok", "Nothing"))`
 #'
 #' @param id Board ID
 #' @param type Custom field type
 #' @param name Custom field name
 #' @param body Named list with additional parameters
-#' @param ... Additional arguments passed to \code{\link{create_resource}}
+#' @param ... Additional arguments passed to [create_resource()]
 #'
 #' @family functions to handle custom fields
 #'
@@ -48,8 +49,7 @@ add_field_dropdown = function(id, name = "New dropdown", body = NULL, ...) {
   add_field(id = id, type = "list", name = name, body = body, ...)
 }
 
-# Building the nested structure for options is annoying - this convenience
-# function does it in a single atomic vector.
+# Build the nested structure for options.
 format_items = function(x) {
   if (is.null(x)) {
     warning("x is NULL - no options set")
@@ -57,7 +57,7 @@ format_items = function(x) {
   }
   if (is.null(names(x)))
     names(x) = rep("none", length(x))
-  names(x)[names(x) == ""] = "none"
+  names(x)[!nzchar(x)] = "none"
   items = list()
   for (i in seq_along(x)) {
     items[[i]] = list(
@@ -85,11 +85,11 @@ add_field_text = function(id, name = "New text", body = NULL, ...) {
 #'
 #' Add dropdown (custom field) option.
 #'
-#' @param id Custom field ID (see \code{\link{get_board_fields}})
+#' @param id Custom field ID (see [get_board_fields()])
 #' @param text Option text
 #' @param color Option color
 #' @param position Option position
-#' @param ... Additional arguments passed to \code{\link{create_resource}}
+#' @param ... Additional arguments passed to [create_resource()]
 #'
 #' @family functions to handle custom fields
 #'
@@ -104,8 +104,8 @@ add_field_option = function(id, text, color = "none", position = "bottom", ...) 
 #'
 #' Delete custom field - this will remove it from all cards on the board.
 #'
-#' @param id Custom field ID (see \code{\link{get_board_fields}})
-#' @param ... Additional arguments passed to \code{\link{create_resource}}
+#' @param id Custom field ID (see [get_board_fields()])
+#' @param ... Additional arguments passed to [create_resource()]
 #'
 #' @family functions to handle custom fields
 #'
@@ -120,9 +120,9 @@ delete_field = function(id, ...) {
 #' Delete dropdown (custom field) option - this will remove it from all cards
 #' on the board.
 #'
-#' @param id Custom field ID (see \code{\link{get_board_fields}})
+#' @param id Custom field ID (see [get_board_fields()]
 #' @param option Dropdown option ID
-#' @param ... Additional arguments passed to \code{\link{create_resource}}
+#' @param ... Additional arguments passed to [create_resource()]
 #'
 #' @family functions to handle custom fields
 #'
@@ -138,7 +138,7 @@ delete_field_option = function(id, option, ...) {
 #'
 #' @param id Board ID
 #' @param body Named list with additional parameters
-#' @param ... Additional arguments passed to \code{\link{update_resource}}
+#' @param ... Additional arguments passed to [update_resource()]
 #'
 #' @family functions to handle custom fields
 #'
@@ -152,18 +152,18 @@ update_field = function(id, body = list(name = "New name"), ...) {
 #'
 #' Set custom field value on a single card.
 #'
-#' \code{update_card_date} requires ISO Formatted Datetime String. \code{YYYY-MM-DD}
-#' is fine, but if you want also hour and timezone, use \code{"YYYY-MM-DD hh:mm UTC+X"},
-#' e.g. \code{"2018-12-24 16:00 UTC+1"}
+#' `update_card_date` requires ISO Formatted Datetime String. `"YYYY-MM-DD"` is
+#' fine, but if you want also hour and timezone, use `"YYYY-MM-DD hh:mm UTC+X"`,
+#' e.g. `"2018-12-24 16:00 UTC+1"`
 #'
 #' \code{clear_card_field} does not remove the field, but replaces its value with
 #' the equivalent of "No selection"
 #'
 #' @param card Card ID
 #' @param field Custom field ID
-#' @param key Key for the value, e.g. \code{"number"} or \code{"checked"}
+#' @param key Key for the value, e.g. `"number"` or `"checked"`
 #' @param value New value
-#' @param ... Additional arguments passed to \code{\link{update_resource}}
+#' @param ... Additional arguments passed to [update_resource()]
 #'
 #' @family functions to handle custom fields
 #'

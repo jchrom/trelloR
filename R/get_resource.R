@@ -21,7 +21,7 @@
 #'
 #' @section Results:
 #'
-#' The API returns JSON objects which are parsed using [jsonlite::fromJSON].
+#' The API returns JSON objects which are parsed using [jsonlite::fromJSON()].
 #' Non-JSON results throw an error, but these should never happen anyway. The
 #' result is always a data frame, or a `tibble` if the package is installed.
 #'
@@ -42,7 +42,7 @@
 #'   * If a character vector of length 1, it will be used as an alternative path
 #'     to the cache file.
 #'
-#' @param query Named list of key-value pairs, see [httr::GET] for details.
+#' @param query Named list of key-value pairs, see [httr::GET()] for details.
 #' @param url Url for the GET request. Can be `NULL` if `parent` is specified,
 #'   or a combination of `parent`, `child` and `id` is provided.
 #' @param filter Defaults to `"all"` which includes both open and archived cards
@@ -51,11 +51,11 @@
 #' @param on.error Whether to `"stop"`, `"warn"` or `"message"` on API error.
 #' @param retry.times How many times to re-try when a request fails. Defaults
 #'   to 1.
-#' @param handle The handle to use with this request, see [httr::RETRY].
+#' @param handle The handle to use with this request, see [httr::RETRY()].
 #' @param verbose Set to `TRUE` for verbose output.
 #' @param response,paging,bind.rows Deprecated.
 #'
-#' @seealso [get_token], [get_id], [httr::GET], [jsonlite::fromJSON]
+#' @seealso [get_token()], [get_id()], [httr::GET()], [jsonlite::fromJSON()]
 #'
 #' @return A data frame with API responses.
 #'

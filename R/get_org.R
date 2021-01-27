@@ -1,18 +1,12 @@
-######################################################
-#                                                    #
-#    Retrieve data related to a team/organization    #
-#                                                    #
-######################################################
-
 #' Get Team
 #'
-#' Returns a flat \code{data.frame} with team/organization-related data
+#' Returns a flat data frame with team/organization-related data
 #'
 #' Previously, teams were called "organizations", and the correct parent/child name in API calls remains "organization", "organizations".
 #'
 #' @param id team ID, short name or URL
-#' @param ... Additional arguments passed to \code{\link{get_model}}
-#' @seealso \code{\link{get_model}}
+#' @param ... Additional arguments passed to [get_resource()]
+#' @seealso [get_resource()]
 #' @name get_team
 NULL
 

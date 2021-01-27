@@ -1,9 +1,9 @@
 #' Get List
 #'
-#' Returns a flat \code{data.frame} with list-related data.
+#' Returns a flat data frame with list-related data.
 #' @param id Board ID
-#' @param ... Additional arguments passed to \code{\link{get_resource}}
-#' @seealso \code{\link{get_resource}}
+#' @param ... Additional arguments passed to [get_resource()]
+#' @seealso [get_resource()]
 #' @name get_list
 NULL
 

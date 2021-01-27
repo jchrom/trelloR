@@ -2,7 +2,7 @@
 #'
 #' Delete resources via Trello API.
 #'
-#' See [Trello API reference](https://developers.trello.com/v1.0/reference)
+#' See [Trello API reference](https://developer.atlassian.com/cloud/trello/rest)
 #' for more info about DELETE requests.
 #'
 #' @param resource,id Resource name (eg. `"card"`) and id.
@@ -15,9 +15,9 @@
 #'   * If a character vector of length 1, it will be used as an alternative path
 #'     to the cache file.
 #'
-#' @param verbose Whether to pass [httr::verbose] to [httr::RETRY].
+#' @param verbose Whether to pass [httr::verbose()] to [httr::RETRY()].
 #' @param on.error Behavior when HTTP status >= 300, defaults to `"stop"`.
-#' @param handle Passed to [httr::RETRY].
+#' @param handle Passed to [httr::RETRY()].
 #' @param encode,response Deprecated.
 #'
 #' @return See `response`.

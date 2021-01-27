@@ -18,16 +18,17 @@ as_POSIXct_hex = function(x) {
 
 }
 
-#' Exctract ID
+#' Extract ID
 #'
-#' Exctract model ID from model URL. If input is not a valid URL, it is returned
-#' as is.
+#' Extract resource ID from its URL. If input is not a valid URL, it is
+#' returned as is.
+#'
 #' @param x character vector of length 1
 #' @export
 
 extract_id = function(x) {
 
-  if (is.null(x)) return(NULL)
+  if (is.null(x)) return()
 
   is_url = function(x) !is.null(httr::parse_url(x)$hostname)
 

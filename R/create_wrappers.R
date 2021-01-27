@@ -1,10 +1,12 @@
 #' Add card
 #'
 #' Add card to a list.
+#'
 #' @param list List id.
 #' @param body A named list of query paramters.
 #' @param ... Additional arguments passed to [create_resource()].
 #' @export
+#'
 #' @family functions to create resources
 
 add_card = function(list, body = list(name = "New card"), ...) {
@@ -16,10 +18,12 @@ add_card = function(list, body = list(name = "New card"), ...) {
 #' Add comment
 #'
 #' Add comment to a card.
+#'
 #' @param card Card id.
 #' @param text Comment text.
 #' @param ... Additional arguments passed to [create_resource()].
 #' @export
+#'
 #' @family functions to create resources
 
 add_comment = function(card, text, ...) {
@@ -32,12 +36,14 @@ add_comment = function(card, text, ...) {
 #' Add label
 #'
 #' Add label to a card.
+#'
 #' @param card Card id.
 #' @param color Label color.
 #' @param name Label name; choosing different non-existing name will create new
 #'   label. Defaults to `NULL`.
 #' @param ... Additional arguments passed to [create_resource()].
 #' @export
+#'
 #' @family functions to create resources
 
 add_label = function(card, color, name = NULL, ...) {
@@ -50,12 +56,14 @@ add_label = function(card, color, name = NULL, ...) {
 #' Add checklist
 #'
 #' Add checklist to a card.
+#'
 #' @param card Card id.
 #' @param name Checklist name.
 #' @param source Items from this checklist id will be copied to the new one.
 #'   Defaults to `NULL`.
 #' @param ... Additional arguments passed to [create_resource()].
 #' @export
+#'
 #' @family functions to create resources
 
 add_checklist = function(card, name, source = NULL, ...) {
@@ -68,10 +76,12 @@ add_checklist = function(card, name, source = NULL, ...) {
 #' Add member
 #'
 #' Add member to a card.
+#'
 #' @param card Card id.
 #' @param member Member id.
 #' @param ... Additional arguments passed to [create_resource()].
 #' @export
+#'
 #' @family functions to create resources
 
 add_member = function(card, member, ...) {
@@ -84,10 +94,12 @@ add_member = function(card, member, ...) {
 #' Add board
 #'
 #' Add board.
+#'
 #' @param name Name of the board.
-#' @param body A named list of query paramters.
+#' @param body A named list of query parameters.
 #' @param ... Additional arguments passed to [create_resource()].
 #' @export
+#'
 #' @family functions to create resources
 
 add_board = function(name, body = NULL, ...) {
@@ -99,11 +111,13 @@ add_board = function(name, body = NULL, ...) {
 #' Add list
 #'
 #' Add list to a board.
+#'
 #' @param board Board id.
 #' @param name List name.
 #' @param position List position. One of `"top"`, `"bottom"` or `NULL`.
 #' @param ... Additional arguments passed to [create_resource()].
 #' @export
+#'
 #' @family functions to create resources
 
 add_list = function(board, name, position = NULL, ...) {
@@ -116,12 +130,14 @@ add_list = function(board, name, position = NULL, ...) {
 #' Add checklist item
 #'
 #' Add item to a checklist.
+#'
 #' @param checklist Checklist id.
 #' @param name Item name (text).
 #' @param position Position in the checklist; defaults to `"bottom"`.
 #' @param checked Whether item should be checked; defaults to `FALSE`.
 #' @param ... Additional arguments passed to [create_resource()].
 #' @export
+#'
 #' @family functions to create resources
 
 add_checkitem = function(checklist, name, checked = FALSE, position = "bottom",

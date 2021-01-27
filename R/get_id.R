@@ -2,16 +2,17 @@
 #'
 #' Get ID of a resource.
 #' @param url Complete url, short url or just the url ID part of a Trello board
-#' @param token Secure token (get it with \code{\link{get_token}})
+#' @param token Secure token, see [get_token()]
 #' @name get_id
 #' @examples
 #' # Get Trello Development Roadmap board ID
-#' url    = "https://trello.com/b/nC8QJJoZ/trello-development-roadmap"
+#' url = "https://trello.com/b/nC8QJJoZ/trello-development-roadmap"
 #' tdr_id = get_id_board(url)
 #'
 #' # Also works:
-#' url    = "nC8QJJoZ"
+#' url = "nC8QJJoZ"
 #' tdr_id = get_id_board(url)
+NULL
 
 #' @export
 #' @rdname get_id
