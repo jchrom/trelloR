@@ -7,11 +7,11 @@
 delete_field_option(id, option, ...)
 }
 \arguments{
-\item{id}{Custom field ID (see \code{\link{get_board_fields}})}
+\item{id}{Custom field ID (see \code{\link[=get_board_fields]{get_board_fields()}}}
 
 \item{option}{Dropdown option ID}
 
-\item{...}{Additional arguments passed to \code{\link{create_resource}}}
+\item{...}{Additional arguments passed to \code{\link[=create_resource]{create_resource()}}}
 }
 \description{
 Delete dropdown (custom field) option - this will remove it from all cards

@@ -33,14 +33,14 @@ clear_card_field(card, field, ...)
 
 \item{value}{New value}
 
-\item{...}{Additional arguments passed to \code{\link{update_resource}}}
+\item{...}{Additional arguments passed to \code{\link[=update_resource]{update_resource()}}}
 }
 \description{
 Set custom field value on a single card.
 }
 \details{
-\code{update_card_date} requires ISO Formatted Datetime String. \code{YYYY-MM-DD}
-is fine, but if you want also hour and timezone, use \code{"YYYY-MM-DD hh:mm UTC+X"},
+\code{update_card_date} requires ISO Formatted Datetime String. \code{"YYYY-MM-DD"} is
+fine, but if you want also hour and timezone, use \code{"YYYY-MM-DD hh:mm UTC+X"},
 e.g. \code{"2018-12-24 16:00 UTC+1"}
 
 \code{clear_card_field} does not remove the field, but replaces its value with

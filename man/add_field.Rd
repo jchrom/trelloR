@@ -30,14 +30,15 @@ add_field_text(id, name = "New text", body = NULL, ...)
 
 \item{body}{Named list with additional parameters}
 
-\item{...}{Additional arguments passed to \code{\link{create_resource}}}
+\item{...}{Additional arguments passed to \code{\link[=create_resource]{create_resource()}}}
 }
 \description{
 Create a new custom field definition and attach it to the board.
 }
 \details{
-\code{add_field_dropdown} - options can be provided using a single (optionally
-named) vector: \code{body = list(options = c(red = "Alert", green = "Ok", "Nothing"))}
+For \code{add_field_dropdown} - options can be provided using a single (optionally
+named) vector:
+\code{body = list(options = c(red = "Alert", green = "Ok", "Nothing"))}
 }
 \seealso{
 Other functions to handle custom fields: 

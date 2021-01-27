@@ -10,7 +10,8 @@ get_token(
   secret = NULL,
   scope = c("read", "write", "account"),
   expiration = c("30days", "1day", "1hour", "never"),
-  cache = getOption("httr_oauth_cache")
+  cache = getOption("httr_oauth_cache"),
+  appname
 )
 }
 \arguments{
@@ -23,7 +24,7 @@ be initialized without a name, so it will default to \code{"trello-app"} if it
 needs to.
 \item If \code{key} and \code{secret} are not set, the value of \code{app} will be used
 as a path from which an existing token is read. If \code{NULL}, the token will
-be read from the working directory and throw an error if not found.
+be read from the working directory. \code{NULL} is returned if nothing is found.
 \item If a Token, return as is.
 }}
 
@@ -40,6 +41,8 @@ Defaults to \code{"30days"}.}
 \item{cache}{Passed to \code{\link[httr:oauth1.0_token]{httr::oauth1.0_token()}}. Can specify whether
 the token should be cached locally (will ask the first time and then \code{TRUE}
 by default) or choose an alternative path for the cache file.}
+
+\item{appname}{Deprecated, use \code{app}.}
 }
 \value{
 An object of class \code{"Trello_API_token"} (a Token).
@@ -102,5 +105,6 @@ token = get_token("my_app", key = key, secret = secret,
 }
 }
 \seealso{
-\link[httr:oauth_app]{httr::oauth_app}, \link[httr:oauth_endpoint]{httr::oauth_endpoint}, \link[httr:oauth1.0_token]{httr::oauth1.0_token}
+\code{\link[httr:oauth_app]{httr::oauth_app()}}, \code{\link[httr:oauth_endpoint]{httr::oauth_endpoint()}},
+\code{\link[httr:oauth1.0_token]{httr::oauth1.0_token()}}
 }

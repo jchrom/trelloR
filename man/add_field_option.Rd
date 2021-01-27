@@ -7,7 +7,7 @@
 add_field_option(id, text, color = "none", position = "bottom", ...)
 }
 \arguments{
-\item{id}{Custom field ID (see \code{\link{get_board_fields}})}
+\item{id}{Custom field ID (see \code{\link[=get_board_fields]{get_board_fields()}})}
 
 \item{text}{Option text}
 
@@ -15,7 +15,7 @@ add_field_option(id, text, color = "none", position = "bottom", ...)
 
 \item{position}{Option position}
 
-\item{...}{Additional arguments passed to \code{\link{create_resource}}}
+\item{...}{Additional arguments passed to \code{\link[=create_resource]{create_resource()}}}
 }
 \description{
 Add dropdown (custom field) option.

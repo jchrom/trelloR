@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{extract_id}
 \alias{extract_id}
-\title{Exctract ID}
+\title{Extract ID}
 \usage{
 extract_id(x)
 }
@@ -10,6 +10,6 @@ extract_id(x)
 \item{x}{character vector of length 1}
 }
 \description{
-Exctract model ID from model URL. If input is not a valid URL, it is returned
-as is.
+Extract resource ID from its URL. If input is not a valid URL, it is
+returned as is.
 }

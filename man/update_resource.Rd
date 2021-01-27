@@ -37,9 +37,9 @@ to the cache file.
 
 \item{on.error}{Behavior when HTTP status >= 300, defaults to \code{"stop"}.}
 
-\item{verbose}{Whether to pass \link[httr:verbose]{httr::verbose} to \link[httr:RETRY]{httr::RETRY}.}
+\item{verbose}{Whether to pass \code{\link[httr:verbose]{httr::verbose()}} to \code{\link[httr:RETRY]{httr::RETRY()}}.}
 
-\item{handle}{Passed to \link[httr:RETRY]{httr::RETRY}.}
+\item{handle}{Passed to \code{\link[httr:RETRY]{httr::RETRY()}}.}
 
 \item{encode, response}{Deprecated.}
 }

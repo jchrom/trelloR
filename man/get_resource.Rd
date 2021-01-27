@@ -38,7 +38,7 @@ is read from it. If the file is not found, an error is thrown.
 to the cache file.
 }}
 
-\item{query}{Named list of key-value pairs, see \link[httr:GET]{httr::GET} for details.}
+\item{query}{Named list of key-value pairs, see \code{\link[httr:GET]{httr::GET()}} for details.}
 
 \item{url}{Url for the GET request. Can be \code{NULL} if \code{parent} is specified,
 or a combination of \code{parent}, \code{child} and \code{id} is provided.}
@@ -53,7 +53,7 @@ or all action types, depending on what resource is requested.}
 \item{retry.times}{How many times to re-try when a request fails. Defaults
 to 1.}
 
-\item{handle}{The handle to use with this request, see \link[httr:RETRY]{httr::RETRY}.}
+\item{handle}{The handle to use with this request, see \code{\link[httr:RETRY]{httr::RETRY()}}.}
 
 \item{verbose}{Set to \code{TRUE} for verbose output.}
 
@@ -89,7 +89,7 @@ and an informative message (produced by the server).
 \section{Results}{
 
 
-The API returns JSON objects which are parsed using \link[jsonlite:fromJSON]{jsonlite::fromJSON}.
+The API returns JSON objects which are parsed using \code{\link[jsonlite:fromJSON]{jsonlite::fromJSON()}}.
 Non-JSON results throw an error, but these should never happen anyway. The
 result is always a data frame, or a \code{tibble} if the package is installed.
 }
@@ -143,5 +143,5 @@ cards_open = get_board_cards(board_id, filter = "open")
 }
 }
 \seealso{
-\link{get_token}, \link{get_id}, \link[httr:GET]{httr::GET}, \link[jsonlite:fromJSON]{jsonlite::fromJSON}
+\code{\link[=get_token]{get_token()}}, \code{\link[=get_id]{get_id()}}, \code{\link[httr:GET]{httr::GET()}}, \code{\link[jsonlite:fromJSON]{jsonlite::fromJSON()}}
 }

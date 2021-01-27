@@ -7,11 +7,11 @@
 get_my_boards(...)
 }
 \arguments{
-\item{...}{Additional arguments passed to \code{\link{get_resource}}}
+\item{...}{Additional arguments passed to \code{\link[=get_resource]{get_resource()}}}
 }
 \description{
-Returns a flat \code{data.frame} with all your boards.
+Returns a flat data frame, containing the authenticated user's boards.
 }
 \seealso{
-\code{\link{get_resource}}
+\code{\link[=get_resource]{get_resource()}}
 }

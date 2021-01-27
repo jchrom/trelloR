@@ -16,11 +16,11 @@ get_list_comments(id, ...)
 \arguments{
 \item{id}{Board ID}
 
-\item{...}{Additional arguments passed to \code{\link{get_resource}}}
+\item{...}{Additional arguments passed to \code{\link[=get_resource]{get_resource()}}}
 }
 \description{
-Returns a flat \code{data.frame} with list-related data.
+Returns a flat data frame with list-related data.
 }
 \seealso{
-\code{\link{get_resource}}
+\code{\link[=get_resource]{get_resource()}}
 }

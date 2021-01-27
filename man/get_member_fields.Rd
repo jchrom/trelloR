@@ -15,11 +15,11 @@ get_member_fields(
 
 \item{fields}{by default fetches fullName, username, memberType, bio}
 
-\item{...}{Additional arguments passed to \code{\link{get_resource}}}
+\item{...}{Additional arguments passed to \code{\link[=get_resource]{get_resource()}}}
 }
 \description{
-Returns a flat \code{data.frame} with member-related data.
+Returns a flat data frame with member-related data.
 }
 \seealso{
-\code{\link{get_resource}}
+\code{\link[=get_resource]{get_resource()}}
 }

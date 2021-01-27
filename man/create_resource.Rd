@@ -37,9 +37,9 @@ to the cache file.
 
 \item{on.error}{Behavior when HTTP status >= 300, defaults to \code{"stop"}.}
 
-\item{verbose}{Whether to pass \link[httr:verbose]{httr::verbose} to \link[httr:RETRY]{httr::RETRY}.}
+\item{verbose}{Whether to pass \code{\link[httr:verbose]{httr::verbose()}} to \code{\link[httr:RETRY]{httr::RETRY()}}.}
 
-\item{handle}{Passed to \link[httr:RETRY]{httr::RETRY}.}
+\item{handle}{Passed to \code{\link[httr:RETRY]{httr::RETRY()}}.}
 
 \item{encode, response}{Deprecated.}
 }
@@ -47,7 +47,7 @@ to the cache file.
 Create resources via Trello API.
 }
 \details{
-See \href{https://developers.trello.com/v1.0/reference}{Trello API reference}
+See \href{https://developer.atlassian.com/cloud/trello/rest}{Trello API reference}
 for more info about what elements can be included in POST request body.
 }
 \examples{

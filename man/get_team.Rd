@@ -13,14 +13,14 @@ get_team_boards(id, ...)
 \arguments{
 \item{id}{team ID, short name or URL}
 
-\item{...}{Additional arguments passed to \code{\link{get_model}}}
+\item{...}{Additional arguments passed to \code{\link[=get_resource]{get_resource()}}}
 }
 \description{
-Returns a flat \code{data.frame} with team/organization-related data
+Returns a flat data frame with team/organization-related data
 }
 \details{
 Previously, teams were called "organizations", and the correct parent/child name in API calls remains "organization", "organizations".
 }
 \seealso{
-\code{\link{get_model}}
+\code{\link[=get_resource]{get_resource()}}
 }

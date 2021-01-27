@@ -9,7 +9,7 @@ add_board(name, body = NULL, ...)
 \arguments{
 \item{name}{Name of the board.}
 
-\item{body}{A named list of query paramters.}
+\item{body}{A named list of query parameters.}
 
 \item{...}{Additional arguments passed to \code{\link[=create_resource]{create_resource()}}.}
 }

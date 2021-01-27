@@ -11,7 +11,7 @@ update_field(id, body = list(name = "New name"), ...)
 
 \item{body}{Named list with additional parameters}
 
-\item{...}{Additional arguments passed to \code{\link{update_resource}}}
+\item{...}{Additional arguments passed to \code{\link[=update_resource]{update_resource()}}}
 }
 \description{
 Update custom field definition.

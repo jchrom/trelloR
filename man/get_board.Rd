@@ -34,10 +34,10 @@ get_board_prefs(id, ...)
 \arguments{
 \item{id}{Board ID}
 
-\item{...}{Additional arguments passed to \code{\link{get_resource}}}
+\item{...}{Additional arguments passed to \code{\link[=get_resource]{get_resource()}}}
 }
 \description{
-Returns a flat \code{data.frame} with board-related data.
+Returns a flat data frame with board-related data.
 }
 \examples{
 \dontrun{
@@ -46,5 +46,5 @@ cards = get_board_cards(board_id, query = list(customFieldItems = "true"))
 }
 }
 \seealso{
-\code{\link{get_resource}}
+\code{\link[=get_resource]{get_resource()}}
 }
