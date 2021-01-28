@@ -142,14 +142,28 @@
       <small>Source: <a href='https://github.com/jchrom/trelloR/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="trellor-070" class="section level1">
+<h1 class="page-header" data-toc-text="0.7.0">
+<a href="#trellor-070" class="anchor"></a>trelloR 0.7.0<small> Unreleased </small>
+</h1>
+<p><strong>New features</strong></p>
+<ul>
+<li>Can specify an alternate path for the token file</li>
+</ul>
+<p><strong>Other stuff</strong></p>
+<ul>
+<li>No longer imports dplyr</li>
+<li>Updated vignettes and function docs</li>
+</ul>
+</div>
     <div id="trellor-060" class="section level1">
 <h1 class="page-header" data-toc-text="0.6.0">
 <a href="#trellor-060" class="anchor"></a>trelloR 0.6.0<small> Unreleased </small>
 </h1>
 <p><strong>New features</strong></p>
 <ul>
-<li>No need to use the <code>token</code> argument in all function calls, functions now check for a local .httr-oauth file first; you can still use the argument though</li>
-<li>Nicer functions for retrieving custom fields</li>
+<li>No need to use the <code>token</code> argument in all function calls, functions now check for a local .httr-oauth file first; you can still pass a Token object directly though</li>
+<li>New wrappers for retrieving custom fields</li>
 <li>New wrapper to get board preferences</li>
 </ul>
 <p><strong>Other stuff</strong></p>
@@ -179,7 +193,7 @@
 <ul>
 <li>You can now issue PUT and DELETE requests</li>
 <li>Calling wrappers update_ and delete_ is going to make it easier for you</li>
-<li>You can decide whether you want to return content of a response (data.frame for get_, list for the others) or a complete response object including headers, statuses etc.</li>
+<li>You can decide whether you want to return content of a response (data frame for get_, list for the others) or a complete response object including headers, statuses etc.</li>
 </ul>
 <p><strong>Deprecated arguments</strong></p>
 <ul>

@@ -156,7 +156,8 @@
   secret <span class='op'>=</span> <span class='cn'>NULL</span>,
   scope <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"read"</span>, <span class='st'>"write"</span>, <span class='st'>"account"</span><span class='op'>)</span>,
   expiration <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"30days"</span>, <span class='st'>"1day"</span>, <span class='st'>"1hour"</span>, <span class='st'>"never"</span><span class='op'>)</span>,
-  cache <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"httr_oauth_cache"</span><span class='op'>)</span>
+  cache <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"httr_oauth_cache"</span><span class='op'>)</span>,
+  <span class='va'>appname</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -172,7 +173,7 @@ be initialized without a name, so it will default to <code>"trello-app"</code> i
 needs to.</p></li>
 <li><p>If <code>key</code> and <code>secret</code> are not set, the value of <code>app</code> will be used
 as a path from which an existing token is read. If <code>NULL</code>, the token will
-be read from the working directory and throw an error if not found.</p></li>
+be read from the working directory. <code>NULL</code> is returned if nothing is found.</p></li>
 <li><p>If a Token, return as is.</p></li>
 </ul></td>
     </tr>
@@ -197,6 +198,10 @@ Defaults to <code>"30days"</code>.</p></td>
       <td><p>Passed to <code><a href='https://httr.r-lib.org/reference/oauth1.0_token.html'>httr::oauth1.0_token()</a></code>. Can specify whether
 the token should be cached locally (will ask the first time and then <code>TRUE</code>
 by default) or choose an alternative path for the cache file.</p></td>
+    </tr>
+    <tr>
+      <th>appname</th>
+      <td><p>Deprecated, use <code>app</code>.</p></td>
     </tr>
     </table>
 
@@ -239,7 +244,8 @@ repositories, <code>.httr-oauth</code> (or whatever cache path you have specifie
 using the <code>cache</code> argument) is automatically added to <code>.gitignore</code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='https://httr.r-lib.org/reference/oauth_app.html'>httr::oauth_app</a>, <a href='https://httr.r-lib.org/reference/oauth_endpoint.html'>httr::oauth_endpoint</a>, <a href='https://httr.r-lib.org/reference/oauth1.0_token.html'>httr::oauth1.0_token</a></p></div>
+    <div class='dont-index'><p><code><a href='https://httr.r-lib.org/reference/oauth_app.html'>httr::oauth_app()</a></code>, <code><a href='https://httr.r-lib.org/reference/oauth_endpoint.html'>httr::oauth_endpoint()</a></code>,
+<code><a href='https://httr.r-lib.org/reference/oauth1.0_token.html'>httr::oauth1.0_token()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># This example assumes you are reading your key and secret from environment</span>

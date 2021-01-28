@@ -15,9 +15,9 @@ knitr::opts_chunk$set(
 API client for Trello
 ---------------------
 
-[![Build Status](https://travis-ci.org/jchrom/trelloR.svg?branch=master)](https://travis-ci.org/jchrom/trelloR)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/trelloR)](https://cran.r-project.org/package=trelloR)
-[![Rdoc](http://www.rdocumentation.org/badges/version/trelloR)](http://www.rdocumentation.org/packages/trelloR)
+[![Build Status](https://travis-ci.org/jchrom/trelloR.svg?branch=master)](https://travis-ci.org/jchrom/trelloR/)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/trelloR)](https://cran.r-project.org/package=trelloR/)
+[![Rdoc](https://www.rdocumentation.org/badges/version/trelloR)](https://www.rdocumentation.org/packages/trelloR/)
 
 The purpose of `trelloR` is to help you interact with the [Trello API](https://developer.atlassian.com/cloud/trello/rest) from R.
 
@@ -49,4 +49,4 @@ version above.
 trelloR is built using [httr](https://cran.r-project.org/package=httr) and [jsonlite](https://cran.r-project.org/package=jsonlite).
 
 **Disclaimer:** `trelloR` is not affiliated, associated, authorized, endorsed
-by or in any way officially connected to Trello, Inc. (<http://www.trello.com>).
+by or in any way officially connected to Trello, Inc. (<https://www.trello.com/>).

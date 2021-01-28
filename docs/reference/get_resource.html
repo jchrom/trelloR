@@ -193,7 +193,7 @@ to the cache file.</p></li>
     </tr>
     <tr>
       <th>query</th>
-      <td><p>Named list of key-value pairs, see <a href='https://httr.r-lib.org/reference/GET.html'>httr::GET</a> for details.</p></td>
+      <td><p>Named list of key-value pairs, see <code><a href='https://httr.r-lib.org/reference/GET.html'>httr::GET()</a></code> for details.</p></td>
     </tr>
     <tr>
       <th>url</th>
@@ -220,7 +220,7 @@ to 1.</p></td>
     </tr>
     <tr>
       <th>handle</th>
-      <td><p>The handle to use with this request, see <a href='https://httr.r-lib.org/reference/RETRY.html'>httr::RETRY</a>.</p></td>
+      <td><p>The handle to use with this request, see <code><a href='https://httr.r-lib.org/reference/RETRY.html'>httr::RETRY()</a></code>.</p></td>
     </tr>
     <tr>
       <th>verbose</th>
@@ -261,7 +261,7 @@ and an informative message (produced by the server).</p>
     
 
 
-<p>The API returns JSON objects which are parsed using <a href='https://rdrr.io/pkg/jsonlite/man/fromJSON.html'>jsonlite::fromJSON</a>.
+<p>The API returns JSON objects which are parsed using <code><a href='https://rdrr.io/pkg/jsonlite/man/fromJSON.html'>jsonlite::fromJSON()</a></code>.
 Non-JSON results throw an error, but these should never happen anyway. The
 result is always a data frame, or a <code>tibble</code> if the package is installed.</p>
     <h2 class="hasAnchor" id="filter"><a class="anchor" href="#filter"></a>Filter</h2>
@@ -274,7 +274,7 @@ ignore them in favor of supplying their values as query parameters, eg.
 <code>query = list(filter = "filter_value", limit = "limit_value")</code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='get_token.html'>get_token</a>, <a href='get_id.html'>get_id</a>, <a href='https://httr.r-lib.org/reference/GET.html'>httr::GET</a>, <a href='https://rdrr.io/pkg/jsonlite/man/fromJSON.html'>jsonlite::fromJSON</a></p></div>
+    <div class='dont-index'><p><code><a href='get_token.html'>get_token()</a></code>, <code><a href='get_id.html'>get_id()</a></code>, <code><a href='https://httr.r-lib.org/reference/GET.html'>httr::GET()</a></code>, <code><a href='https://rdrr.io/pkg/jsonlite/man/fromJSON.html'>jsonlite::fromJSON()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
