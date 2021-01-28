@@ -41,4 +41,4 @@ and [jsonlite](https://cran.r-project.org/package=jsonlite).
 
 **Disclaimer:** `trelloR` is not affiliated, associated, authorized,
 endorsed by or in any way officially connected to Trello,
-Inc. (<https://www.trello.com/>).
+Inc. (<https://trello.com/>).
