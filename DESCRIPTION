@@ -1,6 +1,6 @@
 Package: trelloR
 Title: Access the Trello API
-Version: 0.7.0
+Version: 0.7.0.9000
 Authors@R: 
     person(given = "Jakub",
            family = "Chromec",
