@@ -25,8 +25,6 @@ trello_api_verb = function(verb, url, times, handle, token, verbose,
                 httr::accept_json(),
                 httr::progress())
 
-  print(params[["query"]])
-
   res = do.call(httr::RETRY, Filter(length, params))
 
   if (httr::status_code(res) == 429) {
