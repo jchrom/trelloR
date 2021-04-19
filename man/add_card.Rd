@@ -9,7 +9,7 @@ add_card(list, body = list(name = "New card"), ...)
 \arguments{
 \item{list}{List id.}
 
-\item{body}{A named list of query paramters.}
+\item{body}{A named list of query parameters.}
 
 \item{...}{Additional arguments passed to \code{\link[=create_resource]{create_resource()}}.}
 }
@@ -19,6 +19,7 @@ Add card to a list.
 \seealso{
 Other functions to create resources: 
 \code{\link{add_board}()},
+\code{\link{add_card_attachment}()},
 \code{\link{add_checkitem}()},
 \code{\link{add_checklist}()},
 \code{\link{add_comment}()},

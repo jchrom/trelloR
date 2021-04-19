@@ -43,7 +43,8 @@ skip_if_no_token <- function() {
   if (identical(Sys.getenv("TOKEN_PATH"), "")) {
     skip("No authentication available")
   } else {
-    utils::tail(readRDS(Sys.getenv("TOKEN_PATH")))[[1]]
+    tokens <- readRDS(Sys.getenv("TOKEN_PATH"))
+    tokens[[length(tokens)]]
   }
 }
 

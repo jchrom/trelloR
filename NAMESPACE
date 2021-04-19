@@ -3,6 +3,7 @@
 S3method(print,Trello_API_token)
 export(add_board)
 export(add_card)
+export(add_card_attachment)
 export(add_checkitem)
 export(add_checklist)
 export(add_comment)

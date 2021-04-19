@@ -19,7 +19,7 @@ trello_api_verb = function(verb, url, times, handle, token, verbose,
                 body = sanitize_params(body),
                 if (verbose) httr::verbose(),
                 terminate_on = 429,
-                encode = "json",
+                encode = if (detect_form_file(body)) "multipart" else "json",
                 httr::config(token = token),
                 httr::user_agent(agent),
                 httr::accept_json(),
@@ -80,4 +80,19 @@ sanitize_params = function(x) {
   lgl = vapply(x, is.logical, FALSE)
   x[lgl] = lapply(x[lgl], tolower)
   Filter(length, x)
+}
+
+detect_form_file <- function(body) {
+
+  has_file <- vapply(body, inherits, FALSE, "form_file")
+  has_list <- vapply(body, is.list, FALSE)
+
+  if (any(has_file)) {
+    TRUE
+  } else if (any(has_list)) {
+    any(vapply(body[has_list], detect_form_file, FALSE, USE.NAMES = FALSE))
+  } else {
+    FALSE
+  }
+
 }

@@ -12,55 +12,91 @@ skip_if_no_token <- function() {
   if (identical(Sys.getenv("TOKEN_PATH"), "")) {
     skip("No authentication available")
   } else {
-    utils::tail(readRDS(Sys.getenv("TOKEN_PATH")))[[1]]
+    tokens <- readRDS(Sys.getenv("TOKEN_PATH"))
+    tokens[[length(tokens)]]
   }
 }
 
-if (!identical(Sys.getenv("TOKEN_PATH"), "")) {
+testthat::test_that("new board can be created", {
 
-  token = skip_if_no_token()
+  token <<- skip_if_no_token()
 
-  board = trelloR::add_board(
-    name  = paste0("trelloR testing: ", Sys.Date()),
-    body  = list(defaultLists = TRUE,
-                 desc = "Test trelloR with testthat"),
+  board <<- trelloR::add_board(
+    name = paste0("trelloR testing: ", Sys.Date()),
+    body = list(defaultLists = TRUE, desc = "Test trelloR with testthat"),
     token = token
   )
 
-}
-
-test_that("new board can be created", {
-
-  token = skip_if_no_token()
-
-  expect_is(board, "list")
-  expect_equal(board$desc, "Test trelloR with testthat")
+  testthat::expect_is(board, "list")
+  testthat::expect_equal(board$desc, "Test trelloR with testthat")
 
 })
 
-test_that("board description can be updated", {
+testthat::test_that("board description can be updated", {
 
-  token = skip_if_no_token()
+  skip_if_no_token()
 
-  updated = trelloR::update_resource(
+  updated <- trelloR::update_resource(
     "board",
     id    = board$id,
     body  = list(desc = "Updated description"),
     token = token
   )
 
-  expect_is(updated, "list")
-  expect_equal(updated$desc, "Updated description")
+  testthat::expect_is(updated, "list")
+  testthat::expect_equal(updated$desc, "Updated description")
 
 })
 
-test_that("board can be deleted", {
+testthat::test_that("card can be created", {
 
-  token = skip_if_no_token()
+  skip_if_no_token()
 
-  deleted = trelloR::delete_resource("board", board$id, token = token)
+  list_testing <-  trelloR::add_list(board$id, name = "Testing", pos = 1L,
+                                     token = token)
 
-  expect_is(deleted, "list")
-  expect_null(deleted[["_value"]])
+  card_testing <<- trelloR::add_card(
+    list_testing$id,
+    body = list(
+      name = "Testing",
+      desc = "A testing card."
+    ),
+    token = token
+  )
+
+  testthat::expect_is(card_testing, "list")
+  testthat::expect_equal(card_testing$desc, "A testing card.")
+
+})
+
+testthat::test_that("file can be attached to a card", {
+
+  skip_if_no_token()
+
+  attachment <- trelloR::create_resource(
+    resource = "card",
+    path = "attachments",
+    id = card_testing$id,
+    body = list(
+      name = "A dog in yellow tuque",
+      file = httr::upload_file("attachment.jpg"),
+      setCover = TRUE
+    ),
+    token = token
+  )
+
+  testthat::expect_is(card_testing, "list")
+  testthat::expect_equal(card_testing$desc, "A testing card.")
+
+})
+
+testthat::test_that("board can be deleted", {
+
+  skip_if_no_token()
+
+  deleted <- trelloR::delete_resource("board", board$id, token = token)
+
+  testthat::expect_is(deleted, "list")
+  testthat::expect_null(deleted[["_value"]])
 
 })
