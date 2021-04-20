@@ -85,8 +85,10 @@ testthat::test_that("file can be attached to a card", {
     token = token
   )
 
-  testthat::expect_is(card_testing, "list")
-  testthat::expect_equal(card_testing$desc, "A testing card.")
+  updated_card <- get_resource("card", id = card_testing$id, token = token)
+
+  testthat::expect_is(attachment, "list")
+  testthat::expect_equal(updated_card$idAttachmentCover, attachment$id)
 
 })
 
