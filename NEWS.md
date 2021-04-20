@@ -1,5 +1,12 @@
 # trelloR (development version)
 
+# trelloR 0.7.1
+
+**New features & bug fixes**
+
+* Ensure elements created with `httr::upload_file()` are handled with correct encoding, and added unit test for file upload
+* provide convenience wrapper `add_card_attachment()` which also can be used to change the card cover image with `cover=TRUE`
+
 # trelloR 0.7.0
 
 **New features**

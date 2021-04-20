@@ -3,10 +3,12 @@
 
 ## API client for Trello
 
-[![Build
-Status](https://travis-ci.org/jchrom/trelloR.svg?branch=master)](https://travis-ci.org/jchrom/trelloR/)
+<!-- badges: start -->
+
+[![R-CMD-check](https://github.com/jchrom/trelloR/workflows/R-CMD-check/badge.svg)](https://github.com/jchrom/trelloR/actions)
 [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/trelloR)](https://cran.r-project.org/package=trelloR/)
 [![Rdoc](https://www.rdocumentation.org/badges/version/trelloR)](https://www.rdocumentation.org/packages/trelloR/)
+<!-- badges: end -->
 
 The purpose of `trelloR` is to help you interact with the [Trello
 API](https://developer.atlassian.com/cloud/trello/rest) from R.
@@ -21,18 +23,18 @@ board = "https://trello.com/b/wVWPK9I4/r-client-for-the-trello-api"
 cards = get_board_cards(board)
 ```
 
-### Get it from GitHub
+### Get it from CRAN
+
+``` r
+install.packages("trelloR")
+```
+
+### Get development version
 
 ``` r
 # install.packages("remotes")
 remotes::install_github("jchrom/trelloR")
 ```
-
-**CRAN (version 0.1)**
-
-The CRAN version is in dire need of an update, which will happen when
-0.7 is released (hopefully very soon). In the meantime, please use the
-development version above.
 
 ### Imports
 

@@ -3,7 +3,7 @@
 #' Add card to a list.
 #'
 #' @param list List id.
-#' @param body A named list of query paramters.
+#' @param body A named list of query parameters.
 #' @param ... Additional arguments passed to [create_resource()].
 #' @export
 #'
@@ -147,4 +147,26 @@ add_checkitem = function(checklist, name, checked = FALSE, position = "bottom",
     body = list(name = name, pos = position, checked = tolower(checked)),
     ...
   )
+}
+
+#' Add card attachment
+#'
+#' Add attachment to a card.
+#'
+#' @param card Card id.
+#' @param file,url Path to a file to be attached, or a URL.
+#' @param cover Whether the attached file should be set as cover.
+#' @param name Name of the attachment, shown inside the card.
+#' @param ... Additional arguments passed to [create_resource()].
+#' @export
+#'
+#' @family functions to create resources
+
+add_card_attachment = function(card, file = NULL, url = NULL, cover = FALSE,
+                               name = NULL, ...) {
+  create_resource(
+    resource = "card", path = "attachments", id = card,
+    body = list(name = name, file = httr::upload_file(file), url = url,
+                setCover = cover),
+    ...)
 }

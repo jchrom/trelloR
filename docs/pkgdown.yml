@@ -1,9 +1,0 @@
-pandoc: 2.7.3
-pkgdown: 1.6.1
-pkgdown_sha: ~
-articles:
-  auth-access: auth-access.html
-  create-update-delete: create-update-delete.html
-  getting-public-data: getting-public-data.html
-last_built: 2021-01-28T18:27Z
-

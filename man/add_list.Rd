@@ -21,6 +21,7 @@ Add list to a board.
 \seealso{
 Other functions to create resources: 
 \code{\link{add_board}()},
+\code{\link{add_card_attachment}()},
 \code{\link{add_card}()},
 \code{\link{add_checkitem}()},
 \code{\link{add_checklist}()},
