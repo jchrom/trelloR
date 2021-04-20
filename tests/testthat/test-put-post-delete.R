@@ -8,6 +8,7 @@
 #
 # The value will become available on the next login, use `Sys.getenv` to check.
 
+# Avoid running when auth is not available.
 skip_if_no_token <- function() {
   if (identical(Sys.getenv("TOKEN_PATH"), "")) {
     skip("No authentication available")
@@ -17,11 +18,20 @@ skip_if_no_token <- function() {
   }
 }
 
-testthat::test_that("new board can be created", {
+token <- skip_if_no_token()
 
-  token <<- skip_if_no_token()
+# In the below, some of the tests rely on the results from the other tests,
+# which could be considered bad practice. A setup-teardown approach would be most
+# appropriate, with resources created beforehand. This would allow for tests
+# like "attach file to a card" to be performed independently from card creation
+# tests. On the other hand, it is better to have suboptimal tests rather than
+# no tests at all.
 
-  board <<- trelloR::add_board(
+testthat::test_that("create, update, upload file, delete", {
+
+  skip_if_no_token()
+
+  board <- trelloR::add_board(
     name = paste0("trelloR testing: ", Sys.Date()),
     body = list(defaultLists = TRUE, desc = "Test trelloR with testthat"),
     token = token
@@ -29,12 +39,6 @@ testthat::test_that("new board can be created", {
 
   testthat::expect_is(board, "list")
   testthat::expect_equal(board$desc, "Test trelloR with testthat")
-
-})
-
-testthat::test_that("board description can be updated", {
-
-  skip_if_no_token()
 
   updated <- trelloR::update_resource(
     "board",
@@ -46,17 +50,18 @@ testthat::test_that("board description can be updated", {
   testthat::expect_is(updated, "list")
   testthat::expect_equal(updated$desc, "Updated description")
 
-})
+  list_ <-  trelloR::add_list(
+    board$id,
+    name = "Testing",
+    pos = 1L,
+    token = token
+  )
 
-testthat::test_that("card can be created", {
+  testthat::expect_is(list_, "list")
+  testthat::expect_equal(list_$name, "Testing")
 
-  skip_if_no_token()
-
-  list_testing <-  trelloR::add_list(board$id, name = "Testing", pos = 1L,
-                                     token = token)
-
-  card_testing <<- trelloR::add_card(
-    list_testing$id,
+  card <-  trelloR::add_card(
+    list_$id,
     body = list(
       name = "Testing",
       desc = "A testing card."
@@ -64,19 +69,13 @@ testthat::test_that("card can be created", {
     token = token
   )
 
-  testthat::expect_is(card_testing, "list")
-  testthat::expect_equal(card_testing$desc, "A testing card.")
-
-})
-
-testthat::test_that("file can be attached to a card", {
-
-  skip_if_no_token()
+  testthat::expect_is(card, "list")
+  testthat::expect_equal(card$desc, "A testing card.")
 
   attachment <- trelloR::create_resource(
     resource = "card",
     path = "attachments",
-    id = card_testing$id,
+    id = card$id,
     body = list(
       name = "A dog in yellow tuque",
       file = httr::upload_file("attachment.jpg"),
@@ -85,16 +84,10 @@ testthat::test_that("file can be attached to a card", {
     token = token
   )
 
-  updated_card <- get_resource("card", id = card_testing$id, token = token)
+  cover <- get_resource("card", id = card$id, token = token)
 
   testthat::expect_is(attachment, "list")
-  testthat::expect_equal(updated_card$idAttachmentCover, attachment$id)
-
-})
-
-testthat::test_that("board can be deleted", {
-
-  skip_if_no_token()
+  testthat::expect_equal(cover$idAttachmentCover, attachment$id)
 
   deleted <- trelloR::delete_resource("board", board$id, token = token)
 
