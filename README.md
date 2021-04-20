@@ -23,18 +23,18 @@ board = "https://trello.com/b/wVWPK9I4/r-client-for-the-trello-api"
 cards = get_board_cards(board)
 ```
 
-### Get it from GitHub
+### Get it from CRAN
+
+``` r
+install.packages("trelloR")
+```
+
+### Get development version
 
 ``` r
 # install.packages("remotes")
 remotes::install_github("jchrom/trelloR")
 ```
-
-**CRAN (version 0.1)**
-
-The CRAN version is in dire need of an update, which will happen when
-0.7 is released (hopefully very soon). In the meantime, please use the
-development version above.
 
 ### Imports
 
