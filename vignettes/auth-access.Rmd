@@ -62,7 +62,7 @@ Keep your credentials safe
 --------------------------
 
 Keep your key, secret and any token cache in a **safe, non-shared** location.
-Using environment variables or packages like [askpass](https://github.com/jeroen/askpass)
+Using environment variables or packages like [askpass](https://github.com/r-lib/askpass)
 are good options.
 
 Token cache is by default stored in a file called `.httr-oauth`. You should avoid

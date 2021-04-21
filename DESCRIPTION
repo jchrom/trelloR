@@ -15,8 +15,7 @@ Imports:
     httr (>= 1.4.0),
     jsonlite (>= 1.7.0)
 License: GPL-3
-LazyData: true
-URL: http://jchrom.github.io/trelloR
+URL: https://github.com/jchrom/trelloR
 BugReports: https://github.com/jchrom/trelloR/issues
 Date: 2021-04-20
 RoxygenNote: 7.1.1
