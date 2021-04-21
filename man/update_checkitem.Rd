@@ -17,5 +17,5 @@ update_checkitem(card, checkitem, body = list(state = "complete"), ...)
 \item{...}{Additional arguments passed to \code{\link[=update_resource]{update_resource()}}.}
 }
 \description{
-Update checklist item state, name, position and which chekclist it is in.
+Update checklist item state, name, position and which checklist it is in.
 }

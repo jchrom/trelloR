@@ -61,7 +61,7 @@ move_card = function(card, list, ...) {
 
 #' Update item
 #'
-#' Update checklist item state, name, position and which chekclist it is in.
+#' Update checklist item state, name, position and which checklist it is in.
 #' @param card Card id.
 #' @param checkitem Checklist item id.
 #' @param body A named list of query parameters. Defaults to
