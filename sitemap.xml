@@ -1,7 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://jchrom.github.io/trelloR/404.html</loc>
+  </url>
+  <url>
+    <loc>http://jchrom.github.io/trelloR/articles/auth-access.html</loc>
+  </url>
+  <url>
+    <loc>http://jchrom.github.io/trelloR/articles/create-update-delete.html</loc>
+  </url>
+  <url>
+    <loc>http://jchrom.github.io/trelloR/articles/getting-public-data.html</loc>
+  </url>
+  <url>
+    <loc>http://jchrom.github.io/trelloR/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>http://jchrom.github.io/trelloR/authors.html</loc>
+  </url>
+  <url>
     <loc>http://jchrom.github.io/trelloR/index.html</loc>
+  </url>
+  <url>
+    <loc>http://jchrom.github.io/trelloR/news/index.html</loc>
   </url>
   <url>
     <loc>http://jchrom.github.io/trelloR/reference/Deprecated.html</loc>
@@ -67,6 +88,9 @@
     <loc>http://jchrom.github.io/trelloR/reference/extract_id.html</loc>
   </url>
   <url>
+    <loc>http://jchrom.github.io/trelloR/reference/get_batch.html</loc>
+  </url>
+  <url>
     <loc>http://jchrom.github.io/trelloR/reference/get_board.html</loc>
   </url>
   <url>
@@ -97,6 +121,9 @@
     <loc>http://jchrom.github.io/trelloR/reference/get_token.html</loc>
   </url>
   <url>
+    <loc>http://jchrom.github.io/trelloR/reference/index.html</loc>
+  </url>
+  <url>
     <loc>http://jchrom.github.io/trelloR/reference/move_card.html</loc>
   </url>
   <url>
@@ -106,7 +133,7 @@
     <loc>http://jchrom.github.io/trelloR/reference/search_resource.html</loc>
   </url>
   <url>
-    <loc>http://jchrom.github.io/trelloR/reference/trelloR.html</loc>
+    <loc>http://jchrom.github.io/trelloR/reference/trelloR-package.html</loc>
   </url>
   <url>
     <loc>http://jchrom.github.io/trelloR/reference/update_card.html</loc>
@@ -128,14 +155,5 @@
   </url>
   <url>
     <loc>http://jchrom.github.io/trelloR/reference/update_resource.html</loc>
-  </url>
-  <url>
-    <loc>http://jchrom.github.io/trelloR/articles/auth-access.html</loc>
-  </url>
-  <url>
-    <loc>http://jchrom.github.io/trelloR/articles/create-update-delete.html</loc>
-  </url>
-  <url>
-    <loc>http://jchrom.github.io/trelloR/articles/getting-public-data.html</loc>
   </url>
 </urlset>
