@@ -18,7 +18,7 @@ Imports:
 License: GPL-3
 URL: https://github.com/jchrom/trelloR, http://jchrom.github.io/trelloR/
 BugReports: https://github.com/jchrom/trelloR/issues
-Date: 2021-04-20
+Date: 2023-08-27
 RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)
 Suggests:
