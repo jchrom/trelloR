@@ -14,6 +14,7 @@ data in a structured way.
 Useful links:
 \itemize{
   \item \url{https://github.com/jchrom/trelloR}
+  \item \url{http://jchrom.github.io/trelloR/}
   \item Report bugs at \url{https://github.com/jchrom/trelloR/issues}
 }
 
