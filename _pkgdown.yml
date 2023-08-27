@@ -1,5 +1,4 @@
-url: http://jchrom.github.io/trelloR
+url: ~
 template:
-  params:
-    bootswatch: cerulean
-    ganalytics: UA-149868790-1
+  bootstrap: 5
+
