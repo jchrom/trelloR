@@ -5,9 +5,10 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/jchrom/trelloR/workflows/R-CMD-check/badge.svg)](https://github.com/jchrom/trelloR/actions)
-[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/trelloR)](https://cran.r-project.org/package=trelloR/)
-[![Rdoc](https://www.rdocumentation.org/badges/version/trelloR)](https://www.rdocumentation.org/packages/trelloR/)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/trelloR)](https://cran.r-project.org/package=trelloR/)
+[![Lifecycle:
+stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+[![R-CMD-check](https://github.com/jchrom/trelloR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jchrom/trelloR/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The purpose of `trelloR` is to help you interact with the [Trello
