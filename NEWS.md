@@ -1,5 +1,14 @@
 # trelloR (development version)
 
+# trelloR 0.8.0
+
+**New features & bug fixes**
+
+* Added new function `get_batch()` to facilitate [batch requests](https://developer.atlassian.com/cloud/trello/rest/api-group-batch/#api-group-batch)
+* Added new function `get_card_fields_values()` to fetch custom field values
+  for a given card id.
+* Fix package doc file.
+
 # trelloR 0.7.1
 
 **New features & bug fixes**

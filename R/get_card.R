@@ -44,3 +44,10 @@ get_card_members = function(id, ...) {
 get_card_fields = function(id, ...) {
   get_resource(parent = "card", child = "customFields", id = id, ...)
 }
+
+#' @export
+#' @rdname get_card
+get_card_fields_values = function(id, ...) {
+  get_resource(parent = "card", child = "customFieldItems", id = id, ...)
+}
+

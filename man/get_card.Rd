@@ -8,6 +8,7 @@
 \alias{get_card_labels}
 \alias{get_card_members}
 \alias{get_card_fields}
+\alias{get_card_fields_values}
 \title{Get Card}
 \usage{
 get_card_actions(id, ...)
@@ -21,6 +22,8 @@ get_card_labels(id, ...)
 get_card_members(id, ...)
 
 get_card_fields(id, ...)
+
+get_card_fields_values(id, ...)
 }
 \arguments{
 \item{id}{Card ID}

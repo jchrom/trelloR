@@ -1,6 +1,6 @@
 Package: trelloR
 Title: Access the Trello API
-Version: 0.7.1
+Version: 0.8
 Authors@R: 
     person(given = "Jakub",
            family = "Chromec",
@@ -12,13 +12,14 @@ Description: An R client for the Trello API. Supports free-tier features such as
 Depends:
     R (>= 3.6.0)
 Imports:
+    curl,
     httr (>= 1.4.0),
     jsonlite (>= 1.7.0)
 License: GPL-3
 URL: https://github.com/jchrom/trelloR
 BugReports: https://github.com/jchrom/trelloR/issues
 Date: 2021-04-20
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)
 Suggests:
     knitr,
