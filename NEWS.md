@@ -4,10 +4,10 @@
 
 **New features & bug fixes**
 
+* Fixed missing -package alias.
 * Added new function `get_batch()` to facilitate [batch requests](https://developer.atlassian.com/cloud/trello/rest/api-group-batch/#api-group-batch)
 * Added new function `get_card_fields_values()` to fetch custom field values
   for a given card id.
-* Fix package doc file.
 
 **New dependency**
 
