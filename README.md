@@ -37,11 +37,7 @@ install.packages("trelloR")
 remotes::install_github("jchrom/trelloR")
 ```
 
-### Imports
+### Disclaimer
 
-trelloR is built using [httr](https://cran.r-project.org/package=httr)
-and [jsonlite](https://cran.r-project.org/package=jsonlite).
-
-**Disclaimer:** `trelloR` is not affiliated, associated, authorized,
-endorsed by or in any way officially connected to Trello,
-Inc. (<https://trello.com/>).
+`trelloR` is not affiliated, associated, authorized, endorsed by or in
+any way officially connected to Trello, Inc. (<https://trello.com/>).

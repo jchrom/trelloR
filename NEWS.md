@@ -9,6 +9,11 @@
   for a given card id.
 * Fix package doc file.
 
+**New dependency**
+
+* Added dependency on curl, but since httr already depends on it, the dependency
+  footprint has not really been increased.
+
 # trelloR 0.7.1
 
 **New features & bug fixes**
